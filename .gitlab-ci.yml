@@ -1,0 +1,36 @@
+stages:
+  - test
+  - build
+
+image: maven:latest
+
+
+variables:
+  MAVEN_CLI_OPTS: "--batch-mode"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository
+
+test:
+  stage: test
+  script:
+    - mvn $MAVEN_CLI_OPTS test
+
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - target/*
+
+build:
+  stage: build
+  script:
+    - mvn $MAVEN_CLI_OPTS -DskipTests package
+  dependencies:
+    - test
+
+
+
+
+
