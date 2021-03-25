@@ -2,7 +2,7 @@ stages:
   - test
   - build
 
-image: maven:latest
+image: maven:3-jdk-11-slim
 
 
 variables:
