@@ -1,14 +1,14 @@
-package io.candydoc.model;
+package io.candydoc.domain.model;
 
 import lombok.*;
-
-import java.util.Objects;
 
 @Builder
 @ToString
 @Value
+@RequiredArgsConstructor
 public class BoundedContext {
-
+    @NonNull
     String name;
+    @NonNull
     String description;
 }
