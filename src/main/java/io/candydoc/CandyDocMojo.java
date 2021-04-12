@@ -3,8 +3,8 @@ package io.candydoc;
 import io.candydoc.domain.Domain;
 import io.candydoc.domain.GenerateDocumentation;
 import io.candydoc.domain.SaveDocumentationAdapterFactory;
-import io.candydoc.infra.SaveDocumentationAdapterFactoryImpl;
 import io.candydoc.domain.SaveDocumentationPort;
+import io.candydoc.infra.SaveDocumentationAdapterFactoryImpl;
 import lombok.SneakyThrows;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -41,8 +41,6 @@ public class CandyDocMojo extends AbstractMojo {
         Domain domain = new Domain(saveDocumentationPort);
         domain.generateDocumentation(GenerateDocumentation.builder().packagesToScan(packagesToScan).build());
     }
-
-
 
     private ClassLoader getProjectClassLoader() throws MojoExecutionException {
         try {

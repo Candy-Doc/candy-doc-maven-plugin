@@ -14,3 +14,4 @@ public class GenerateDocumentation {
     @Singular("packagesToScan")
     List<String> packagesToScan;
 }
+

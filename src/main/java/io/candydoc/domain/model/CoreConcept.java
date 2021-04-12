@@ -2,17 +2,19 @@ package io.candydoc.domain.model;
 
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Builder
 @ToString
 @Value
 @RequiredArgsConstructor
-public class BoundedContext {
+public class CoreConcept {
     @NonNull
     String name;
     @NonNull
     String description;
-    @Singular
-    List<CoreConcept> coreConcepts;
+    @NonNull
+    String className;
+    @Singular("interactsWith")
+    Set<String> interactsWith;
 }

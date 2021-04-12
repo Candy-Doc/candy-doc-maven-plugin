@@ -1,4 +1,5 @@
 package io.candydoc.domain;
+
 import io.candydoc.domain.model.BoundedContext;
 
 import java.io.IOException;
