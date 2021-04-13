@@ -1,11 +1,9 @@
 package io.candydoc.domain;
 
 import candydoc.sample.wrong_bounded_context.NotAPackageInfo;
-import io.candydoc.domain.exceptions.DocumentationGenerationFailed;
-import io.candydoc.domain.exceptions.DomainException;
-import io.candydoc.domain.exceptions.NoBoundedContextFound;
-import io.candydoc.domain.exceptions.WrongUsageOfBoundedContext;
+import io.candydoc.domain.exceptions.*;
 import io.candydoc.domain.model.CoreConcept;
+import io.candydoc.domain.model.ValueObject;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -112,6 +110,13 @@ class DomainTest {
     }
 
     @Test
+    void number_of_extracted_value_objects_is_correct() throws DomainException, IOException {
+        ArgumentCaptor<List> resultCaptor = initDocumentationGenerationTests("candydoc.sample.valid_bounded_contexts");
+        Assertions.assertThat(resultCaptor.getValue()).flatExtracting("valueObjects")
+                .hasSize(1);
+    }
+
+    @Test
     void core_concepts_are_generated_in_the_documentation() throws DomainException, IOException {
         ArgumentCaptor<List> resultCaptor = initDocumentationGenerationTests("candydoc.sample.valid_bounded_contexts");
         Assertions.assertThat(resultCaptor.getValue()).flatExtracting("coreConcepts")
@@ -136,6 +141,16 @@ class DomainTest {
     }
 
     @Test
+    void value_objects_are_generated_in_the_documentation() throws DomainException, IOException {
+        ArgumentCaptor<List> resultCaptor = initDocumentationGenerationTests("candydoc.sample.valid_bounded_contexts");
+        Assertions.assertThat(resultCaptor.getValue()).flatExtracting("valueObjects")
+                .containsExactlyInAnyOrder(ValueObject.builder()
+                        .description("description of value object 1 of bounded context 1")
+                        .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                        .build());
+    }
+
+    @Test
     void extract_core_concepts_from_project() {
         String boundedContextToScan = "candydoc.sample.bounded_context_for_core_concepts_tests";
         Assertions.assertThat(domain.extractCoreConcepts(boundedContextToScan))
@@ -154,6 +169,21 @@ class DomainTest {
     }
 
     @Test
+    void extract_value_objects_from_project() {
+        String boundedContextToScan = "candydoc.sample.bounded_context_for_value_objects_tests";
+        Assertions.assertThat(domain.extractValueObjects(boundedContextToScan))
+                .contains(ValueObject.builder()
+                                .description("description of value object 1")
+                                .className("candydoc.sample.bounded_context_for_value_objects_tests.ValueObject1")
+                                .build(),
+                        ValueObject.builder()
+                                .description("description of value object 2")
+                                .className("candydoc.sample.bounded_context_for_value_objects_tests.ValueObject2")
+                                .build()
+                );
+    }
+
+    @Test
     void throw_exception_when_core_concepts_are_duplicated_in_a_same_bounded_context() {
         String boundedContextToScan = "candydoc.sample.duplicated_core_concepts";
         Assertions.assertThatThrownBy(() -> domain.extractCoreConcepts(boundedContextToScan))
@@ -161,52 +191,84 @@ class DomainTest {
                 .hasMessage("Multiple core concepts share the same name in a bounded context");
     }
 
-    Set<Class<?>> coreConceptClassesToTest() {
+    Set<Class<?>> coreConceptClassesInteractionsToTest() {
         Reflections reflections = new Reflections("candydoc.sample.bounded_context_for_core_concepts_tests");
         return reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.CoreConcept.class);
     }
 
     @Test
     void extract_interaction_from_variable() {
-        Set<Class<?>> coreConceptClassesToTest = coreConceptClassesToTest();
+        Set<Class<?>> coreConceptClassesToTest = coreConceptClassesInteractionsToTest();
         Class<?> currentClass = coreConceptClassesToTest
                 .stream().filter(coreConcept -> coreConcept.getName()
                         .equals("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1"))
                 .collect(Collectors.toList()).get(0);
-        Assertions.assertThat(domain.extractInteractions(currentClass))
+        Assertions.assertThat(domain.extractDDDInteractions(currentClass))
                 .isEqualTo(Set.of("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept2"));
     }
 
     @Test
+    void extract_interaction_from_value_object() {
+        Reflections reflections = new Reflections("candydoc.sample.bounded_context_for_value_objects_tests");
+        Set<Class<?>> coreConceptClassesToTest = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.CoreConcept.class);
+        Class<?> currentClass = coreConceptClassesToTest
+                .stream().filter(coreConcept -> coreConcept.getName()
+                        .equals("candydoc.sample.bounded_context_for_value_objects_tests.CoreConcept1"))
+                .collect(Collectors.toList()).get(0);
+        Assertions.assertThat(domain.extractDDDInteractions(currentClass))
+                .isEqualTo(Set.of("candydoc.sample.bounded_context_for_value_objects_tests.ValueObject1",
+                        "candydoc.sample.bounded_context_for_value_objects_tests.ValueObject2"));
+    }
+
+    @Test
     void extract_interaction_from_return_type() {
-        Set<Class<?>> coreConceptClassesToTest = coreConceptClassesToTest();
+        Set<Class<?>> coreConceptClassesToTest = coreConceptClassesInteractionsToTest();
         Class<?> currentClass = coreConceptClassesToTest
                 .stream().filter(coreConcept -> coreConcept.getName()
                         .equals("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept2"))
                 .collect(Collectors.toList()).get(0);
-        Assertions.assertThat(domain.extractInteractions(currentClass))
+        Assertions.assertThat(domain.extractDDDInteractions(currentClass))
                 .isEqualTo(Set.of("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1"));
     }
 
     @Test
     void extract_interaction_from_argument() {
-        Set<Class<?>> coreConceptClassesToTest = coreConceptClassesToTest();
+        Set<Class<?>> coreConceptClassesToTest = coreConceptClassesInteractionsToTest();
         Class<?> currentClass = coreConceptClassesToTest
                 .stream().filter(coreConcept -> coreConcept.getName()
                         .equals("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept3"))
                 .collect(Collectors.toList()).get(0);
-        Assertions.assertThat(domain.extractInteractions(currentClass))
+        Assertions.assertThat(domain.extractDDDInteractions(currentClass))
                 .isEqualTo(Set.of("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1"));
     }
 
     @Test
     void core_concepts_interactions_extraction_does_not_have_any_duplicates() {
-        Set<Class<?>> coreConceptClassesToTest = coreConceptClassesToTest();
+        Set<Class<?>> coreConceptClassesToTest = coreConceptClassesInteractionsToTest();
         Class<?> currentClass = coreConceptClassesToTest
                 .stream().filter(coreConcept -> coreConcept.getName()
                         .equals("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConceptWithDuplicates"))
                 .collect(Collectors.toList()).get(0);
-        Assertions.assertThat(domain.extractInteractions(currentClass))
+        Assertions.assertThat(domain.extractDDDInteractions(currentClass))
                 .isEqualTo(Set.of("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1"));
+    }
+
+    @Test
+    void get_classes_annotated_with_ddd_annotations() {
+        Reflections reflections = new Reflections("candydoc.sample.bounded_context_for_value_objects_tests");
+        Set<Class<?>> coreConceptClassesToTest = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.CoreConcept.class);
+        Class<?> currentClass = coreConceptClassesToTest
+                .stream().filter(coreConcept -> coreConcept.getName()
+                        .equals("candydoc.sample.bounded_context_for_value_objects_tests.CoreConcept1"))
+                .collect(Collectors.toList()).get(0);
+        Assertions.assertThat(domain.getClassesAnnotatedWithDDDAnnotations(currentClass)).isEqualTo(Set.of(io.candydoc.domain.annotations.CoreConcept.class));
+    }
+
+    @Test
+    void value_object_is_not_following_ddd() {
+        String packagesToScan = "candydoc.sample.bounded_context_for_wrong_usage_of_value_objects";
+        Assertions.assertThatThrownBy(() -> domain.extractValueObjects(packagesToScan))
+                .isInstanceOf(WrongUsageOfValueObject.class)
+                .hasMessage("Value object should use primitive types only: [class candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.ValueObject]");
     }
 }

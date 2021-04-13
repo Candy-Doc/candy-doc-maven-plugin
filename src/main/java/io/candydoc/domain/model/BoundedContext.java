@@ -15,4 +15,6 @@ public class BoundedContext {
     String description;
     @Singular
     List<CoreConcept> coreConcepts;
+    @Singular
+    List<ValueObject> valueObjects;
 }
