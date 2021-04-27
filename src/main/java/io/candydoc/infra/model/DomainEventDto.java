@@ -1,4 +1,4 @@
-package io.candydoc.domain.model;
+package io.candydoc.infra.model;
 
 import lombok.*;
 
@@ -6,7 +6,8 @@ import lombok.*;
 @ToString
 @Value
 @RequiredArgsConstructor
-public class ValueObject {
+@EqualsAndHashCode
+public class DomainEventDto {
     @NonNull
     String description;
     @NonNull

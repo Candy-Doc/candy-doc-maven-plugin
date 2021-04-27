@@ -1,9 +1,8 @@
 package io.candydoc.domain;
 
 import candydoc.sample.wrong_bounded_context.NotAPackageInfo;
+import io.candydoc.domain.events.*;
 import io.candydoc.domain.exceptions.*;
-import io.candydoc.domain.model.CoreConcept;
-import io.candydoc.domain.model.ValueObject;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,23 +55,46 @@ class DomainTest {
     }
 
     @Test
-    void bounded_contexts_names_are_generated_in_the_documentation() throws DomainException, IOException {
-        ArgumentCaptor<List> resultCaptor = initDocumentationGenerationTests("candydoc.sample.valid_bounded_contexts");
-        Assertions.assertThat(resultCaptor.getValue()).extracting("name")
-                .containsExactlyInAnyOrder("candydoc.sample.valid_bounded_contexts.bounded_context_one",
-                        "candydoc.sample.valid_bounded_contexts.bounded_context_two");
+    void bounded_context_found_event_are_generated() {
+        Assertions.assertThat(domain.extractBoundedContexts("candydoc.sample.valid_bounded_contexts"))
+                .contains(BoundedContextFound.builder().name("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                        .description("description of bounded context 1").build(), BoundedContextFound.builder().name("candydoc.sample.valid_bounded_contexts.bounded_context_two")
+                        .description("description of bounded context 2").build());
     }
 
     @Test
-    void bounded_contexts_descriptions_are_generated_in_the_documentation() throws DomainException, IOException {
-        ArgumentCaptor<List> resultCaptor = initDocumentationGenerationTests("candydoc.sample.valid_bounded_contexts");
-        Assertions.assertThat(resultCaptor.getValue()).extracting("description")
-                .containsExactlyInAnyOrder("description of bounded context 1",
-                        "description of bounded context 2");
+    void core_concept_found_event_are_generated() {
+        Assertions.assertThat(domain.extractCoreConcepts("candydoc.sample.valid_bounded_contexts.bounded_context_one"))
+                .contains(CoreConceptFound.builder()
+                        .name("name of core concept 1 of bounded context 1").description("description of core concept 1 of bounded context 1").className("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1").boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                        .name("name of core concept 2 of bounded context 1").description("description of core concept 2 of bounded context 1").className("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2").boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                        .build());
     }
 
     @Test
-    void generated_documentation_from_multiple_folder_is_saved() throws DomainException, IOException {
+    void value_object_found_event_are_generated() {
+        Assertions.assertThat(domain.extractValueObjects("candydoc.sample.valid_bounded_contexts.bounded_context_one"))
+                .contains(ValueObjectFound.builder()
+                        .description("description of value object 1 of bounded context 1").className("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1").boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                        .build());
+    }
+
+    @Test
+    void domain_event_found_are_generated() {
+        Assertions.assertThat(domain.extractDomainEvent("candydoc.sample.valid_bounded_contexts.bounded_context_one"))
+                .contains(DomainEventFound.builder()
+                        .description("domain event 1 of boundedcontext 1").className("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1").boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                        .build());
+    }
+
+   @Test
+    void generation_receive_right_number_of_event() throws DomainException, IOException {
+        ArgumentCaptor<List> resultCaptor = initDocumentationGenerationTests("candydoc.sample.valid_bounded_contexts");
+        Assertions.assertThat(resultCaptor.getValue()).hasSize(8);
+    }
+
+    @Test
+    void generated_documentation_from_multiple_folder_is_saved() throws DomainException, IOException{
         ArgumentCaptor<List> resultCaptor = ArgumentCaptor.forClass(List.class);
         domain.generateDocumentation(GenerateDocumentation.builder()
                 .packagesToScan("candydoc.sample.valid_bounded_contexts.bounded_context_one")
@@ -80,7 +102,7 @@ class DomainTest {
                 .build());
         verify(saveDocumentationPort, times(1)).save(resultCaptor.capture());
         Assertions.assertThat(resultCaptor.getValue())
-                .hasSize(2);
+                .hasSize(7);
     }
 
     @Test
@@ -100,87 +122,6 @@ class DomainTest {
                 .isInstanceOf(WrongUsageOfBoundedContext.class)
                 .extracting("wrongClasses")
                 .isEqualTo(List.of(NotAPackageInfo.class));
-    }
-
-    @Test
-    void number_of_extracted_core_concepts_is_correct() throws DomainException, IOException {
-        ArgumentCaptor<List> resultCaptor = initDocumentationGenerationTests("candydoc.sample.valid_bounded_contexts");
-        Assertions.assertThat(resultCaptor.getValue()).flatExtracting("coreConcepts")
-                .hasSize(3);
-    }
-
-    @Test
-    void number_of_extracted_value_objects_is_correct() throws DomainException, IOException {
-        ArgumentCaptor<List> resultCaptor = initDocumentationGenerationTests("candydoc.sample.valid_bounded_contexts");
-        Assertions.assertThat(resultCaptor.getValue()).flatExtracting("valueObjects")
-                .hasSize(1);
-    }
-
-    @Test
-    void core_concepts_are_generated_in_the_documentation() throws DomainException, IOException {
-        ArgumentCaptor<List> resultCaptor = initDocumentationGenerationTests("candydoc.sample.valid_bounded_contexts");
-        Assertions.assertThat(resultCaptor.getValue()).flatExtracting("coreConcepts")
-                .containsExactlyInAnyOrder(CoreConcept.builder()
-                                .name("name of core concept 1 of bounded context 1")
-                                .description("description of core concept 1 of bounded context 1")
-                                .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
-                                .interactsWith(Set.of())
-                                .build(),
-                        CoreConcept.builder()
-                                .name("name of core concept 2 of bounded context 1")
-                                .description("description of core concept 2 of bounded context 1")
-                                .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
-                                .interactsWith(Set.of())
-                                .build(),
-                        CoreConcept.builder()
-                                .name("name of core concept 1 of bounded context 2")
-                                .description("description of core concept 1 of bounded context 2")
-                                .className("candydoc.sample.valid_bounded_contexts.bounded_context_two.CoreConcept1")
-                                .interactsWith(Set.of())
-                                .build());
-    }
-
-    @Test
-    void value_objects_are_generated_in_the_documentation() throws DomainException, IOException {
-        ArgumentCaptor<List> resultCaptor = initDocumentationGenerationTests("candydoc.sample.valid_bounded_contexts");
-        Assertions.assertThat(resultCaptor.getValue()).flatExtracting("valueObjects")
-                .containsExactlyInAnyOrder(ValueObject.builder()
-                        .description("description of value object 1 of bounded context 1")
-                        .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
-                        .build());
-    }
-
-    @Test
-    void extract_core_concepts_from_project() {
-        String boundedContextToScan = "candydoc.sample.bounded_context_for_core_concepts_tests";
-        Assertions.assertThat(domain.extractCoreConcepts(boundedContextToScan))
-                .contains(CoreConcept.builder()
-                                .name("name of core concept 1")
-                                .description("description of core concept 1")
-                                .className("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
-                                .interactsWith(Set.of("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept2"))
-                                .build(),
-                        CoreConcept.builder()
-                                .name("name of core concept 2")
-                                .description("description of core concept 2")
-                                .className("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept2")
-                                .interactsWith(Set.of("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1"))
-                                .build());
-    }
-
-    @Test
-    void extract_value_objects_from_project() {
-        String boundedContextToScan = "candydoc.sample.bounded_context_for_value_objects_tests";
-        Assertions.assertThat(domain.extractValueObjects(boundedContextToScan))
-                .contains(ValueObject.builder()
-                                .description("description of value object 1")
-                                .className("candydoc.sample.bounded_context_for_value_objects_tests.ValueObject1")
-                                .build(),
-                        ValueObject.builder()
-                                .description("description of value object 2")
-                                .className("candydoc.sample.bounded_context_for_value_objects_tests.ValueObject2")
-                                .build()
-                );
     }
 
     @Test
@@ -204,7 +145,8 @@ class DomainTest {
                         .equals("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1"))
                 .collect(Collectors.toList()).get(0);
         Assertions.assertThat(domain.extractDDDInteractions(currentClass))
-                .isEqualTo(Set.of("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept2"));
+                .isEqualTo(Set.of(InteractionBetweenConceptFound.builder().from("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
+                        .with("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept2").build()));
     }
 
     @Test
@@ -216,8 +158,11 @@ class DomainTest {
                         .equals("candydoc.sample.bounded_context_for_value_objects_tests.CoreConcept1"))
                 .collect(Collectors.toList()).get(0);
         Assertions.assertThat(domain.extractDDDInteractions(currentClass))
-                .isEqualTo(Set.of("candydoc.sample.bounded_context_for_value_objects_tests.ValueObject1",
-                        "candydoc.sample.bounded_context_for_value_objects_tests.ValueObject2"));
+                .isEqualTo(Set.of(InteractionBetweenConceptFound.builder().from("candydoc.sample.bounded_context_for_value_objects_tests.CoreConcept1")
+                        .with("candydoc.sample.bounded_context_for_value_objects_tests.ValueObject2").build(),
+                        InteractionBetweenConceptFound.builder().from("candydoc.sample.bounded_context_for_value_objects_tests.CoreConcept1")
+                                .with("candydoc.sample.bounded_context_for_value_objects_tests.ValueObject1").build()
+                ));
     }
 
     @Test
@@ -228,7 +173,8 @@ class DomainTest {
                         .equals("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept2"))
                 .collect(Collectors.toList()).get(0);
         Assertions.assertThat(domain.extractDDDInteractions(currentClass))
-                .isEqualTo(Set.of("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1"));
+                .isEqualTo(Set.of(InteractionBetweenConceptFound.builder().from("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept2")
+                        .with("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1").build()));
     }
 
     @Test
@@ -239,7 +185,8 @@ class DomainTest {
                         .equals("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept3"))
                 .collect(Collectors.toList()).get(0);
         Assertions.assertThat(domain.extractDDDInteractions(currentClass))
-                .isEqualTo(Set.of("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1"));
+                .isEqualTo(Set.of(InteractionBetweenConceptFound.builder().from("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept3")
+                        .with("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1").build()));
     }
 
     @Test
@@ -250,7 +197,8 @@ class DomainTest {
                         .equals("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConceptWithDuplicates"))
                 .collect(Collectors.toList()).get(0);
         Assertions.assertThat(domain.extractDDDInteractions(currentClass))
-                .isEqualTo(Set.of("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1"));
+                .isEqualTo(Set.of(InteractionBetweenConceptFound.builder().from("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConceptWithDuplicates")
+                        .with("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1").build()));
     }
 
     @Test

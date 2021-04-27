@@ -48,6 +48,7 @@ public class CandyDocMojo extends AbstractMojo {
             URL[] urls = new URL[classpathElements.size()];
             for (int i = 0; i < classpathElements.size(); ++i) {
                 urls[i] = new File(classpathElements.get(i)).toURI().toURL();
+
             }
             return new URLClassLoader(urls, getClass().getClassLoader());
         } catch (Exception e) {

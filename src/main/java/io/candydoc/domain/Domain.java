@@ -1,9 +1,7 @@
 package io.candydoc.domain;
 
+import io.candydoc.domain.events.*;
 import io.candydoc.domain.exceptions.*;
-import io.candydoc.domain.model.BoundedContext;
-import io.candydoc.domain.model.CoreConcept;
-import io.candydoc.domain.model.ValueObject;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -31,22 +29,20 @@ public class Domain {
         }
     }
 
-    public void generateDocumentation(GenerateDocumentation command) throws IOException, DomainException {
+   public void generateDocumentation(GenerateDocumentation command) throws IOException, DomainException {
         checkParameters(command);
-        List<BoundedContext> boundedContexts = extractBoundedContexts(command.getPackagesToScan());
-        saveDocumentationPort.save(boundedContexts);
+        List<DomainEvent> domainEvents = extractBoundedContexts(command.getPackagesToScan());
+        saveDocumentationPort.save(domainEvents);
         logger.info("Documentation generation has succeeded.");
     }
 
-    public List<BoundedContext> extractBoundedContexts(List<String> packagesToScan) throws DomainException {
+    public List<DomainEvent> extractBoundedContexts(List<String> packagesToScan) {
         logger.info("Bounded contexts extraction has started...");
         return packagesToScan.stream()
-                .map(this::extractBoundedContexts)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toUnmodifiableList());
+                .map(packageToScan -> extractBoundedContexts(packageToScan)).flatMap(Collection::stream).collect(Collectors.toUnmodifiableList());
     }
 
-    private List<BoundedContext> extractBoundedContexts(String packageToScan) throws DomainException {
+    public List<DomainEvent> extractBoundedContexts(String packageToScan) {
         if (packageToScan.isBlank()) {
             throw new DocumentationGenerationFailed("Empty parameters for 'packagesToScan'. Check your pom configuration");
         }
@@ -61,47 +57,31 @@ public class Domain {
             throw new WrongUsageOfBoundedContext(filteredBoundedContexts.get(false));
         }
         return filteredBoundedContexts.get(true).stream()
-                .map(boundedContext -> BoundedContext.builder()
+                .map(boundedContext -> {
+                    BoundedContextFound newBoundedContextEvent = BoundedContextFound.builder()
                         .name(boundedContext.getPackageName())
                         .description(boundedContext.getAnnotation(io.candydoc.domain.annotations.BoundedContext.class).description())
-                        .coreConcepts(extractCoreConcepts(boundedContext.getPackageName()))
-                        .valueObjects(extractValueObjects(boundedContext.getPackageName()))
-                        .build())
+                        .build();
+                        List<DomainEvent> events = new LinkedList<>(Collections.singleton(newBoundedContextEvent));
+                        events.addAll(extractCoreConcepts(newBoundedContextEvent.getName()));
+                        events.addAll(extractValueObjects(newBoundedContextEvent.getName()));
+                        events.addAll(extractDomainEvent(newBoundedContextEvent.getName()));
+                        return events;
+                })
+                .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
 
-    public List<CoreConcept> extractCoreConcepts(String boundedContextToScan) {
-        Reflections reflections = new Reflections(boundedContextToScan);
-        Set<Class<?>> coreConceptClasses = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.CoreConcept.class);
-        List<CoreConcept> coreConcepts = coreConceptClasses.stream()
-                .map(coreConcept -> CoreConcept.builder()
-                        .name(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).name())
-                        .description(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).description())
-                        .className(coreConcept.getName())
-                        .interactsWith(extractDDDInteractions(coreConcept))
-                        .build())
-                .collect(Collectors.toList());
-        if (coreConcepts.stream().map(CoreConcept::getName).collect(Collectors.toList())
-                .stream()
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                .entrySet().stream()
-                .filter(entry -> entry.getValue() > 1L)
-                .map(Map.Entry::getKey).count() > 0) {
-            throw new DocumentationGenerationFailed("Multiple core concepts share the same name in a bounded context");
-        }
-        return coreConcepts;
-    }
-
-    public List<ValueObject> extractValueObjects(String boundedContextToScan) {
+    public List<ValueObjectFound> extractValueObjects(String boundedContextToScan) {
         Reflections reflections = new Reflections(boundedContextToScan);
         Set<Class<?>> valueObjectClasses = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.ValueObject.class);
-        List<ValueObject> valueObjects = valueObjectClasses.stream()
-                .map(valueObject -> ValueObject.builder()
+        List<ValueObjectFound> valueObjects = valueObjectClasses.stream()
+                .map(valueObject -> ValueObjectFound.builder()
                         .description(valueObject.getAnnotation(io.candydoc.domain.annotations.ValueObject.class).description())
                         .className(valueObject.getName())
+                        .boundedContext(boundedContextToScan)
                         .build())
                 .collect(Collectors.toList());
-
         List<Class<?>> wrongValueObjects = valueObjectClasses.stream()
                 .filter(clazz -> !extractDDDInteractions(clazz).isEmpty())
                 .collect(Collectors.toUnmodifiableList());
@@ -109,6 +89,64 @@ public class Domain {
             throw new WrongUsageOfValueObject(wrongValueObjects);
         }
         return valueObjects;
+    }
+
+    public void verifyCoreConcept(Set<Class<?>> coreConceptClasses) {
+        List<CoreConceptFound> coreConcepts = coreConceptClasses.stream()
+                .map(coreConcept -> {List<CoreConceptFound> eventList = new LinkedList<>(Collections.singleton(CoreConceptFound.builder()
+                        .name(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).name())
+                        .description(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).description())
+                        .className(coreConcept.getName())
+                        .boundedContext("error handling")
+                        .build()));
+                    return eventList;})
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        if (coreConcepts.stream().filter(entry -> entry.getName() != "link")
+                .collect(Collectors.toList())
+                .stream()
+                .map(definedCoreConcept -> definedCoreConcept.getName()).collect(Collectors.toList())
+                .stream()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream()
+                .filter(entry -> entry.getValue() > 1L)
+                .map(Map.Entry::getKey).count() > 0) {
+            throw new DocumentationGenerationFailed("Multiple core concepts share the same name in a bounded context");
+        }
+    }
+
+    public List<DomainEvent> extractCoreConcepts(String boundedContextToScan) {
+        Reflections reflections = new Reflections(boundedContextToScan);
+        Set<Class<?>> coreConceptClasses = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.CoreConcept.class);
+        verifyCoreConcept(coreConceptClasses);
+        List<DomainEvent> coreConcepts = coreConceptClasses.stream()
+                .map(coreConcept -> {List<DomainEvent> eventList = new LinkedList<>(Collections.singleton(CoreConceptFound.builder()
+                        .name(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).name())
+                        .description(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).description())
+                        .className(coreConcept.getName())
+                        .boundedContext(boundedContextToScan)
+                        .build()));
+                    eventList.addAll(extractDDDInteractions(coreConcept));
+                    return eventList;})
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        return coreConcepts;
+    }
+
+    List<DomainEvent> extractDomainEvent(String boundedContextToScan) {
+        Reflections reflections = new Reflections(boundedContextToScan);
+        Set<Class<?>> domainEventClass = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.DomainEvent.class);
+        List<DomainEvent> domainEvents = domainEventClass.stream()
+                .map(domainEvent -> {List<DomainEvent> eventList = new LinkedList<>(Collections.singleton(DomainEventFound.builder()
+                        .description(domainEvent.getAnnotation(io.candydoc.domain.annotations.DomainEvent.class).description())
+                        .className(domainEvent.getName())
+                        .boundedContext(boundedContextToScan)
+                        .build()));
+                    eventList.addAll(extractDDDInteractions(domainEvent));
+                    return eventList;})
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        return domainEvents;
     }
 
     private Set<Class<?>> getSetOfDDDAnnotations() {
@@ -140,13 +178,17 @@ public class Domain {
         return classesInCurrentConcept;
     }
 
-    public Set<String> extractDDDInteractions(Class<?> currentConcept) {
+    public Set<InteractionBetweenConceptFound> extractDDDInteractions(Class<?> currentConcept) {
         Set<Class<?>> classesInCurrentConcept = extractInteractingClasses(currentConcept);
         return classesInCurrentConcept.stream()
                 .filter(classInCurrentConcept -> classInCurrentConcept
                         .getAnnotation(io.candydoc.domain.annotations.CoreConcept.class) != null || classInCurrentConcept
-                        .getAnnotation(io.candydoc.domain.annotations.ValueObject.class) != null)
+                        .getAnnotation(io.candydoc.domain.annotations.ValueObject.class) != null || classInCurrentConcept
+                        .getAnnotation(io.candydoc.domain.annotations.DomainEvent.class) != null)
                 .map(Class::getName)
+                .collect(Collectors.toUnmodifiableSet())
+                .stream()
+                .map(interactingClass -> InteractionBetweenConceptFound.builder().from(currentConcept.getName()).with(interactingClass).build())
                 .collect(Collectors.toUnmodifiableSet());
     }
 }

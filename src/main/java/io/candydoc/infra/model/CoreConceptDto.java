@@ -1,4 +1,4 @@
-package io.candydoc.domain.model;
+package io.candydoc.infra.model;
 
 import lombok.*;
 
@@ -6,15 +6,18 @@ import java.util.Set;
 
 @Builder
 @ToString
-@Value
-@RequiredArgsConstructor
-public class CoreConcept {
+@Getter
+@EqualsAndHashCode
+public class CoreConceptDto {
     @NonNull
     String name;
     @NonNull
     String description;
     @NonNull
     String className;
-    @Singular("interactsWith")
     Set<String> interactsWith;
+
+    public void addInteractsWith(String interaction) {
+        interactsWith.add(interaction);
+    }
 }

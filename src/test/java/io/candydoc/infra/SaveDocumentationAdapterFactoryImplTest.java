@@ -2,11 +2,12 @@ package io.candydoc.infra;
 
 import io.candydoc.domain.SaveDocumentationAdapterFactory;
 import io.candydoc.domain.SaveDocumentationPort;
-import io.candydoc.domain.model.BoundedContext;
+import io.candydoc.domain.events.BoundedContextFound;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,9 +36,9 @@ class SaveDocumentationAdapterFactoryImplTest {
     }
 
     @Test
-    void save_documentation_as_json() throws IOException {
+    void save_documentation_as_json() throws IOException, URISyntaxException{
         SaveDocumentationPort saveDocumentationPort = adapterFactory.getAdapter("json", "target");
-        saveDocumentationPort.save(List.of(BoundedContext.builder()
+        saveDocumentationPort.save(List.of(BoundedContextFound.builder()
                 .name("candydoc.sample.bounded_context_one")
                 .description("test package 1")
                 .build()));
@@ -48,9 +49,9 @@ class SaveDocumentationAdapterFactoryImplTest {
     }
 
     @Test
-    void save_documentation_as_yml() throws IOException {
+    void save_documentation_as_yml() throws IOException, URISyntaxException {
         SaveDocumentationPort saveDocumentationPort = adapterFactory.getAdapter("yml", "target");
-        saveDocumentationPort.save(List.of(BoundedContext.builder()
+        saveDocumentationPort.save(List.of(BoundedContextFound.builder()
                 .name("candydoc.sample.bounded_context_one")
                 .description("test package 1")
                 .build()));
