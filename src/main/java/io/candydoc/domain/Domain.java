@@ -1,6 +1,8 @@
 package io.candydoc.domain;
 
 import io.candydoc.domain.events.*;
+import io.candydoc.domain.events.NameConflictBetweenCoreConcept;
+import io.candydoc.domain.events.WrongUsageOfValueObjectFound;
 import io.candydoc.domain.exceptions.*;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -43,6 +45,8 @@ public class Domain {
     }
 
     public List<DomainEvent> extractBoundedContexts(String packageToScan) {
+        List<DomainEvent> occurredEvents = new LinkedList<>();
+        List<DomainEvent> wrongDomainEvents = List.of();
         if (packageToScan.isBlank()) {
             throw new DocumentationGenerationFailed("Empty parameters for 'packagesToScan'. Check your pom configuration");
         }
@@ -56,7 +60,7 @@ public class Domain {
         if (filteredBoundedContexts.get(false) != null && !filteredBoundedContexts.get(false).isEmpty()) {
             throw new WrongUsageOfBoundedContext(filteredBoundedContexts.get(false));
         }
-        return filteredBoundedContexts.get(true).stream()
+         occurredEvents.addAll(filteredBoundedContexts.get(true).stream()
                 .map(boundedContext -> {
                     BoundedContextFound newBoundedContextEvent = BoundedContextFound.builder()
                         .name(boundedContext.getPackageName())
@@ -69,13 +73,15 @@ public class Domain {
                         return events;
                 })
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        occurredEvents.addAll(wrongDomainEvents);
+        return occurredEvents;
     }
 
-    public List<ValueObjectFound> extractValueObjects(String boundedContextToScan) {
+    public List<DomainEvent> extractValueObjects(String boundedContextToScan) {
         Reflections reflections = new Reflections(boundedContextToScan);
         Set<Class<?>> valueObjectClasses = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.ValueObject.class);
-        List<ValueObjectFound> valueObjects = valueObjectClasses.stream()
+        List<DomainEvent> valueObjects = valueObjectClasses.stream()
                 .map(valueObject -> ValueObjectFound.builder()
                         .description(valueObject.getAnnotation(io.candydoc.domain.annotations.ValueObject.class).description())
                         .className(valueObject.getName())
@@ -86,12 +92,15 @@ public class Domain {
                 .filter(clazz -> !extractDDDInteractions(clazz).isEmpty())
                 .collect(Collectors.toUnmodifiableList());
         if (!wrongValueObjects.isEmpty()) {
-            throw new WrongUsageOfValueObject(wrongValueObjects);
+            wrongValueObjects.stream().forEach(wrongValueObject -> valueObjects.add(WrongUsageOfValueObjectFound.builder()
+                    .valueObject(wrongValueObject.getName())
+                    .usageError("Value Object should only contain primitive type")
+                    .build()));
         }
         return valueObjects;
     }
 
-    public void verifyCoreConcept(Set<Class<?>> coreConceptClasses) {
+    public List<DomainEvent> verifyCoreConcept(Set<Class<?>> coreConceptClasses) {
         List<CoreConceptFound> coreConcepts = coreConceptClasses.stream()
                 .map(coreConcept -> {List<CoreConceptFound> eventList = new LinkedList<>(Collections.singleton(CoreConceptFound.builder()
                         .name(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).name())
@@ -102,23 +111,26 @@ public class Domain {
                     return eventList;})
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-        if (coreConcepts.stream().filter(entry -> entry.getName() != "link")
-                .collect(Collectors.toList())
-                .stream()
+        return coreConcepts.stream()
                 .map(definedCoreConcept -> definedCoreConcept.getName()).collect(Collectors.toList())
                 .stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet().stream()
                 .filter(entry -> entry.getValue() > 1L)
-                .map(Map.Entry::getKey).count() > 0) {
-            throw new DocumentationGenerationFailed("Multiple core concepts share the same name in a bounded context");
-        }
+                .map(DuplicatedCoreConcept -> NameConflictBetweenCoreConcept.builder()
+                        .conflictingCoreConcepts(coreConcepts.stream()
+                                .filter(coreConcept -> coreConcept.getName().equals(DuplicatedCoreConcept.getKey()))
+                                .map(coreConceptFound -> coreConceptFound.getClassName())
+                                .collect(Collectors.toList()))
+                        .UsageError("Share same name with another core concept")
+                        .build())
+                .collect(Collectors.toList());
     }
 
     public List<DomainEvent> extractCoreConcepts(String boundedContextToScan) {
         Reflections reflections = new Reflections(boundedContextToScan);
         Set<Class<?>> coreConceptClasses = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.CoreConcept.class);
-        verifyCoreConcept(coreConceptClasses);
+        List<DomainEvent> wrongCoreConcept = verifyCoreConcept(coreConceptClasses);
         List<DomainEvent> coreConcepts = coreConceptClasses.stream()
                 .map(coreConcept -> {List<DomainEvent> eventList = new LinkedList<>(Collections.singleton(CoreConceptFound.builder()
                         .name(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).name())
@@ -130,6 +142,7 @@ public class Domain {
                     return eventList;})
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
+        coreConcepts.addAll(wrongCoreConcept);
         return coreConcepts;
     }
 
@@ -149,14 +162,15 @@ public class Domain {
         return domainEvents;
     }
 
-    private Set<Class<?>> getSetOfDDDAnnotations() {
+    private Set<Class<? extends Annotation>> getSetOfDDDAnnotations() {
         return Set.of(io.candydoc.domain.annotations.BoundedContext.class,
                 io.candydoc.domain.annotations.CoreConcept.class,
-                io.candydoc.domain.annotations.ValueObject.class);
+                io.candydoc.domain.annotations.ValueObject.class,
+                io.candydoc.domain.annotations.DomainEvent.class);
     }
 
     public Set<Class<?>> getClassesAnnotatedWithDDDAnnotations(Class<?> classToScan) {
-        Set<Class<?>> DDDAnnotations = getSetOfDDDAnnotations();
+        Set<Class<? extends Annotation>> DDDAnnotations = getSetOfDDDAnnotations();
         return Arrays.stream(classToScan.getAnnotations())
                 .map(Annotation::annotationType)
                 .filter(DDDAnnotations::contains)
@@ -180,15 +194,14 @@ public class Domain {
 
     public Set<InteractionBetweenConceptFound> extractDDDInteractions(Class<?> currentConcept) {
         Set<Class<?>> classesInCurrentConcept = extractInteractingClasses(currentConcept);
+        Set<Class<? extends Annotation>> conceptAnnotations = getSetOfDDDAnnotations();
+
         return classesInCurrentConcept.stream()
-                .filter(classInCurrentConcept -> classInCurrentConcept
-                        .getAnnotation(io.candydoc.domain.annotations.CoreConcept.class) != null || classInCurrentConcept
-                        .getAnnotation(io.candydoc.domain.annotations.ValueObject.class) != null || classInCurrentConcept
-                        .getAnnotation(io.candydoc.domain.annotations.DomainEvent.class) != null)
-                .map(Class::getName)
-                .collect(Collectors.toUnmodifiableSet())
-                .stream()
-                .map(interactingClass -> InteractionBetweenConceptFound.builder().from(currentConcept.getName()).with(interactingClass).build())
+                .filter(classInCurrentConcept -> conceptAnnotations.stream().anyMatch(classInCurrentConcept::isAnnotationPresent))
+                .map(interactingConcept -> InteractionBetweenConceptFound.builder()
+                        .from(currentConcept.getName())
+                        .with(interactingConcept.getName())
+                        .build())
                 .collect(Collectors.toUnmodifiableSet());
     }
 }

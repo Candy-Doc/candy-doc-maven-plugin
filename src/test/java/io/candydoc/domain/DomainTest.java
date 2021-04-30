@@ -1,7 +1,7 @@
 package io.candydoc.domain;
 
-import candydoc.sample.wrong_bounded_context.NotAPackageInfo;
 import io.candydoc.domain.events.*;
+import io.candydoc.domain.events.WrongUsageOfValueObjectFound;
 import io.candydoc.domain.exceptions.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -113,25 +113,6 @@ class DomainTest {
                 .hasMessage("No bounded context has been found in the package : 'wrong.package.to.scan'.");
     }
 
-    @Test
-    void bounded_context_annotation_must_only_exist_on_package_info() {
-        GenerateDocumentation command = GenerateDocumentation.builder()
-                .packagesToScan(List.of("candydoc.sample.wrong_bounded_context"))
-                .build();
-        Assertions.assertThatThrownBy(() -> domain.generateDocumentation(command))
-                .isInstanceOf(WrongUsageOfBoundedContext.class)
-                .extracting("wrongClasses")
-                .isEqualTo(List.of(NotAPackageInfo.class));
-    }
-
-    @Test
-    void throw_exception_when_core_concepts_are_duplicated_in_a_same_bounded_context() {
-        String boundedContextToScan = "candydoc.sample.duplicated_core_concepts";
-        Assertions.assertThatThrownBy(() -> domain.extractCoreConcepts(boundedContextToScan))
-                .isInstanceOf(DocumentationGenerationFailed.class)
-                .hasMessage("Multiple core concepts share the same name in a bounded context");
-    }
-
     Set<Class<?>> coreConceptClassesInteractionsToTest() {
         Reflections reflections = new Reflections("candydoc.sample.bounded_context_for_core_concepts_tests");
         return reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.CoreConcept.class);
@@ -213,10 +194,18 @@ class DomainTest {
     }
 
     @Test
-    void value_object_is_not_following_ddd() {
+    void wrong_usage_of_value_object_found_is_generated() {
         String packagesToScan = "candydoc.sample.bounded_context_for_wrong_usage_of_value_objects";
-        Assertions.assertThatThrownBy(() -> domain.extractValueObjects(packagesToScan))
-                .isInstanceOf(WrongUsageOfValueObject.class)
-                .hasMessage("Value object should use primitive types only: [class candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.ValueObject]");
+        Assertions.assertThat(domain.extractValueObjects(packagesToScan))
+                .contains(WrongUsageOfValueObjectFound.builder()
+                        .valueObject("candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.ValueObject")
+                        .usageError("Value Object should only contain primitive type")
+                        .build());
+    }
+
+    @Test
+    void same_name_core_concept_found_is_generated() {
+        String packagesToScan = "candydoc.sample.duplicated_core_concepts";
+        Assertions.assertThat(domain.extractCoreConcepts(packagesToScan)).hasSize(3);
     }
 }

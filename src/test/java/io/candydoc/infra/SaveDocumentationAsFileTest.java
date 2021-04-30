@@ -66,6 +66,7 @@ class SaveDocumentationAsFileTest {
                         .className("candydoc.sample.CoreConcept")
                         .description("core c 1")
                         .interactsWith(Set.of())
+                        .errors(List.of())
                         .build()));
     }
 }

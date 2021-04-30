@@ -1,6 +1,8 @@
 package io.candydoc.infra;
 
 import io.candydoc.domain.events.*;
+import io.candydoc.domain.events.NameConflictBetweenCoreConcept;
+import io.candydoc.domain.events.WrongUsageOfValueObjectFound;
 import io.candydoc.infra.model.BoundedContextDto;
 import io.candydoc.infra.model.CoreConceptDto;
 import io.candydoc.infra.model.DomainEventDto;
@@ -21,6 +23,26 @@ public class BoundedContextDtoMapper {
             boundedContextDtos = dtos;
         }
 
+        public void apply(NameConflictBetweenCoreConcept event) {
+            event.getConflictingCoreConcepts().stream()
+                    .forEach(conflictingClasses -> boundedContextDtos.stream()
+                            .map(BoundedContextDto::getCoreConcepts)
+                            .flatMap(Collection::stream)
+                            .collect(Collectors.toList())
+                            .stream()
+                            .filter(coreConceptDto -> coreConceptDto.getClassName().equals(conflictingClasses))
+                            .forEach(coreConceptDto -> coreConceptDto.addError(event.getUsageError())));
+        }
+
+        public void apply(WrongUsageOfValueObjectFound event) {
+            boundedContextDtos.stream()
+                    .map(BoundedContextDto::getValueObjects)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList()).stream()
+                    .filter(valueObjectDto -> valueObjectDto.getClassName().equals(event.getValueObject()))
+                    .forEach(valueObjectDto -> valueObjectDto.addError(event.getUsageError()));
+        }
+
         public void apply(BoundedContextFound event) {
             boundedContextDtos.add(BoundedContextDto.builder()
                     .name(event.getName())
@@ -28,6 +50,7 @@ public class BoundedContextDtoMapper {
                     .coreConcepts(new LinkedList<>())
                     .valueObjects(new LinkedList<>())
                     .domainEvents(new LinkedList<>())
+                    .errors(new LinkedList<>())
                     .build());
         }
 
@@ -37,6 +60,7 @@ public class BoundedContextDtoMapper {
                     .description(event.getDescription())
                     .className(event.getClassName() )
                     .interactsWith(new HashSet<>())
+                    .errors(new LinkedList<>())
                     .build();
             boundedContextDtos.stream()
                     .filter(boundedContext -> boundedContext.getName().equals(event.getBoundedContext()))
@@ -66,6 +90,7 @@ public class BoundedContextDtoMapper {
             ValueObjectDto object = ValueObjectDto.builder()
                     .description(event.getDescription())
                     .className(event.getClassName())
+                    .errors(new LinkedList<>())
                     .build();
             boundedContextDtos.stream()
                     .filter(boundedContext -> boundedContext.getName().equals(event.getBoundedContext()))

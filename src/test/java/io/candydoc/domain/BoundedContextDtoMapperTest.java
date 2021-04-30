@@ -36,6 +36,7 @@ class BoundedContextDtoMapperTest {
                 .coreConcepts(List.of())
                 .valueObjects(List.of())
                 .domainEvents(List.of())
+                .errors(List.of())
                 .build());
     }
 
@@ -51,6 +52,7 @@ class BoundedContextDtoMapperTest {
                         .name("core concept")
                         .description("core concept description")
                         .className("CoreConceptClass")
+                        .errors(List.of())
                         .interactsWith(Set.of())
                         .build());
     }
@@ -78,6 +80,34 @@ class BoundedContextDtoMapperTest {
         Assertions.assertThat(boundedContextDtoMapper.map(eventList)).flatExtracting("valueObjects").contains(ValueObjectDto.builder()
                         .description("Value Object description")
                         .className("ValueObjectClass")
+                        .errors(List.of())
                         .build());
+    }
+
+    @Test
+    void generate_error_in_core_concept_dto() {
+        eventList.add(CoreConceptFound.builder()
+                .name("core concept")
+                .description("core concept description")
+                .className("CoreConceptClass")
+                .boundedContext("bounded context").build());
+        eventList.add(NameConflictBetweenCoreConcept.builder()
+                .conflictingCoreConcepts(List.of("CoreConceptClass"))
+                .UsageError("Warning: Share same name with another core concept").build());
+        Assertions.assertThat(boundedContextDtoMapper.map(eventList)).flatExtracting("coreConcepts").flatExtracting("errors")
+                .contains("Warning: Share same name with another core concept");
+    }
+
+    @Test
+    void generate_error_in_value_object_dto() {
+        eventList.add(ValueObjectFound.builder()
+                .description("core concept description")
+                .className("valueObjectClass")
+                .boundedContext("bounded context").build());
+        eventList.add(WrongUsageOfValueObjectFound.builder()
+                .valueObject("valueObjectClass")
+                .usageError("Warning: Value Object should only contain primitive type").build());
+        Assertions.assertThat(boundedContextDtoMapper.map(eventList)).flatExtracting("valueObjects").flatExtracting("errors")
+                .contains("Warning: Value Object should only contain primitive type");
     }
 }

@@ -16,6 +16,7 @@ public class BoundedContextDto {
     List<CoreConceptDto> coreConcepts;
     List<ValueObjectDto> valueObjects;
     List<DomainEventDto> domainEvents;
+    List <String> errors;
 
     public void addCoreConcept(CoreConceptDto concept) {
         coreConcepts.add(concept);
@@ -26,4 +27,6 @@ public class BoundedContextDto {
     public void addValueObject(ValueObjectDto object) {
         valueObjects.add(object);
     }
+
+    public void addError(String error) {errors.add(error);}
 }
