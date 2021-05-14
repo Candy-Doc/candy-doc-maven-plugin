@@ -10,6 +10,7 @@ public interface DomainEvent {
         void apply(InteractionBetweenConceptFound event);
         void apply(ValueObjectFound event);
         void apply(DomainEventFound event);
+        void apply(DomainCommandFound event);
 
         void apply(NameConflictBetweenCoreConcept event);
         void apply(WrongUsageOfValueObjectFound event);

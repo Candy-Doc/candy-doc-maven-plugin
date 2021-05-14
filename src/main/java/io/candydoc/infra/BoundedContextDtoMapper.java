@@ -3,10 +3,7 @@ package io.candydoc.infra;
 import io.candydoc.domain.events.*;
 import io.candydoc.domain.events.NameConflictBetweenCoreConcept;
 import io.candydoc.domain.events.WrongUsageOfValueObjectFound;
-import io.candydoc.infra.model.BoundedContextDto;
-import io.candydoc.infra.model.CoreConceptDto;
-import io.candydoc.infra.model.DomainEventDto;
-import io.candydoc.infra.model.ValueObjectDto;
+import io.candydoc.infra.model.*;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -43,6 +40,16 @@ public class BoundedContextDtoMapper {
                     .forEach(valueObjectDto -> valueObjectDto.addError(event.getUsageError()));
         }
 
+        public void apply(DomainCommandFound event) {
+            DomainCommandDto command = DomainCommandDto.builder()
+                    .description(event.getDescription())
+                    .className(event.getClassName() )
+                    .build();
+            boundedContextDtos.stream()
+                    .filter(boundedContext -> boundedContext.getName().equals(event.getBoundedContext()))
+                    .forEach(boundedContext -> boundedContext.addDomainCommand(command));
+        }
+
         public void apply(BoundedContextFound event) {
             boundedContextDtos.add(BoundedContextDto.builder()
                     .name(event.getName())
@@ -50,6 +57,7 @@ public class BoundedContextDtoMapper {
                     .coreConcepts(new LinkedList<>())
                     .valueObjects(new LinkedList<>())
                     .domainEvents(new LinkedList<>())
+                    .domainCommands(new LinkedList<>())
                     .errors(new LinkedList<>())
                     .build());
         }
@@ -74,7 +82,7 @@ public class BoundedContextDtoMapper {
                     .build();
             boundedContextDtos.stream()
                     .filter(boundedContext -> boundedContext.getName().equals(event.getBoundedContext()))
-                    .forEach(boundedContext -> boundedContext.addDomainEvents(domainEventDto));
+                    .forEach(boundedContext -> boundedContext.addDomainEvent(domainEventDto));
         }
 
         public void apply(InteractionBetweenConceptFound event) {

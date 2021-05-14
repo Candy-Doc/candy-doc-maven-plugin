@@ -1,7 +1,7 @@
 package io.candydoc;
 
 import io.candydoc.domain.Domain;
-import io.candydoc.domain.GenerateDocumentation;
+import io.candydoc.domain.command.ExtractDDDConcept;
 import io.candydoc.domain.SaveDocumentationAdapterFactory;
 import io.candydoc.domain.SaveDocumentationPort;
 import io.candydoc.infra.SaveDocumentationAdapterFactoryImpl;
@@ -39,7 +39,7 @@ public class CandyDocMojo extends AbstractMojo {
         SaveDocumentationAdapterFactory adapterFactory = new SaveDocumentationAdapterFactoryImpl();
         SaveDocumentationPort saveDocumentationPort = adapterFactory.getAdapter(outputFormat, outputDirectory);
         Domain domain = new Domain(saveDocumentationPort);
-        domain.generateDocumentation(GenerateDocumentation.builder().packagesToScan(packagesToScan).build());
+        domain.generateDocumentation(ExtractDDDConcept.builder().packagesToScan(packagesToScan).build());
     }
 
     private ClassLoader getProjectClassLoader() throws MojoExecutionException {

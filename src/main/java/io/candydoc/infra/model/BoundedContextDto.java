@@ -16,17 +16,18 @@ public class BoundedContextDto {
     List<CoreConceptDto> coreConcepts;
     List<ValueObjectDto> valueObjects;
     List<DomainEventDto> domainEvents;
+    List<DomainCommandDto> domainCommands;
     List <String> errors;
 
     public void addCoreConcept(CoreConceptDto concept) {
         coreConcepts.add(concept);
     }
 
-    public void addDomainEvents(DomainEventDto event) { domainEvents.add(event);}
+    public void addDomainEvent(DomainEventDto event) { domainEvents.add(event);}
 
     public void addValueObject(ValueObjectDto object) {
         valueObjects.add(object);
     }
 
-    public void addError(String error) {errors.add(error);}
+    public void addDomainCommand(DomainCommandDto command) { domainCommands.add(command); }
 }
