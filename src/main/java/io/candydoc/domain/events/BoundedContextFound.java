@@ -6,7 +6,7 @@ import lombok.*;
 @ToString
 @Value
 @RequiredArgsConstructor
-public class BoundedContextFound implements DomainEvent{
+public class BoundedContextFound implements DomainEvent {
     @NonNull
     String name;
     @NonNull

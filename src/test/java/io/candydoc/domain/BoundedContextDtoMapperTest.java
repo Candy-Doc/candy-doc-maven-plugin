@@ -26,7 +26,7 @@ class BoundedContextDtoMapperTest {
     }
 
     @Test
-    void generate_bounded_context_from_bounded_context_found_() {
+    void generate_bounded_context_from_bounded_context_found() {
         //when
         List<BoundedContextDto> dto = boundedContextDtoMapper.map(eventList);
         //then
@@ -47,8 +47,16 @@ class BoundedContextDtoMapperTest {
         eventList.add(CoreConceptFound.builder()
                 .name("core concept")
                 .description("core concept description")
-                .className("CoreConceptClass")
-                .boundedContext("bounded context").build());
+                .className("CoreConcept1")
+                .fullName("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
+                .packageName("candydoc.sample.bounded_context_for_core_concepts_tests")
+                .boundedContext("bounded context")
+                .build());
+        eventList.add(InteractionBetweenConceptFound.builder()
+                .from("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
+                .withFullName("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept2")
+                .withSimpleName("CoreConcept2")
+                .build());
         //when
         List<BoundedContextDto> dto = boundedContextDtoMapper.map(eventList);
         //then
@@ -56,9 +64,13 @@ class BoundedContextDtoMapperTest {
                 .contains(CoreConceptDto.builder()
                         .name("core concept")
                         .description("core concept description")
-                        .className("CoreConceptClass")
                         .errors(List.of())
-                        .interactsWith(Set.of())
+                        .className("CoreConcept1")
+                        .fullName("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
+                        .interactsWith(Set.of(InteractionDto.builder()
+                                .simpleName("CoreConcept2")
+                                .fullName("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept2")
+                                .build()))
                         .build());
     }
 
@@ -67,7 +79,9 @@ class BoundedContextDtoMapperTest {
         //given
         eventList.add(DomainCommandFound.builder()
                 .description("domain command description")
-                .className("DomainCommandClass")
+                .className("DomainCommand1")
+                .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainCommand1")
+                .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("bounded context")
                 .build());
         //when
@@ -76,24 +90,29 @@ class BoundedContextDtoMapperTest {
         Assertions.assertThat(dto).flatExtracting("domainCommands")
                 .contains(DomainCommandDto.builder()
                         .description("domain command description")
-                        .className("DomainCommandClass")
+                        .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainCommand1")
+                        .className("DomainCommand1")
                         .build());
     }
 
     @Test
     void generate_domain_event_dto_from_domain_event_found() {
-        //given
+        // given
         eventList.add(DomainEventFound.builder()
                 .description("domain event description")
+                .className("DomainEvent1")
+                .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
+                .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("bounded context")
-                .className("domainEventClass").build());
-        //when
+                .build());
+        // when
         List<BoundedContextDto> dto = boundedContextDtoMapper.map(eventList);
-        //then
+        // then
         Assertions.assertThat(dto).flatExtracting("domainEvents")
                 .contains(DomainEventDto.builder()
                         .description("domain event description")
-                        .className("domainEventClass")
+                        .className("DomainEvent1")
+                        .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
                         .build());
     }
 
@@ -102,17 +121,19 @@ class BoundedContextDtoMapperTest {
         //given
         eventList.add(ValueObjectFound.builder()
                 .description("Value Object description")
-                .className("ValueObjectClass")
+                .className("ValueObject1")
+                .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("bounded context")
                 .build());
         //when
         List<BoundedContextDto> dto = boundedContextDtoMapper.map(eventList);
         //then
-        Assertions.assertThat(dto)
-                .flatExtracting("valueObjects")
+        Assertions.assertThat(dto).flatExtracting("valueObjects")
                 .contains(ValueObjectDto.builder()
                         .description("Value Object description")
-                        .className("ValueObjectClass")
+                        .className("ValueObject1")
+                        .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
                         .errors(List.of())
                         .build());
     }
@@ -123,10 +144,13 @@ class BoundedContextDtoMapperTest {
         eventList.add(CoreConceptFound.builder()
                 .name("core concept")
                 .description("core concept description")
-                .className("CoreConceptClass")
-                .boundedContext("bounded context").build());
+                .className("CoreConcept1")
+                .fullName("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
+                .packageName("candydoc.sample.bounded_context_for_core_concepts_tests")
+                .boundedContext("bounded context")
+                .build());
         eventList.add(NameConflictBetweenCoreConcept.builder()
-                .conflictingCoreConcepts(List.of("CoreConceptClass"))
+                .conflictingCoreConcepts(List.of("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1"))
                 .UsageError("Warning: Share same name with another core concept").build());
         //when
         List<BoundedContextDto> dto = boundedContextDtoMapper.map(eventList);
@@ -141,15 +165,18 @@ class BoundedContextDtoMapperTest {
     void generate_error_in_value_object_dto() {
         //given
         eventList.add(ValueObjectFound.builder()
-                .description("core concept description")
-                .className("valueObjectClass")
+                .description("value object description")
+                .className("ValueObject1")
+                .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("bounded context").build());
         eventList.add(WrongUsageOfValueObjectFound.builder()
-                .valueObject("valueObjectClass")
-                .usageError("Warning: Value Object should only contain primitive type").build());
-        //when
+                .valueObject("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                .usageError("Warning: Value Object should only contain primitive type")
+                .build());
+        // when
         List<BoundedContextDto> dto = boundedContextDtoMapper.map(eventList);
-        //then
+        // then
         Assertions.assertThat(dto)
                 .flatExtracting("valueObjects")
                 .flatExtracting("errors")

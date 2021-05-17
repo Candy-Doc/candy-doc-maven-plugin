@@ -1,15 +1,16 @@
 package io.candydoc.domain;
 
 import io.candydoc.domain.command.ExtractDDDConcept;
-import io.candydoc.domain.events.*;
-import io.candydoc.domain.exceptions.*;
+import io.candydoc.domain.events.DomainEvent;
+import io.candydoc.domain.exceptions.DocumentationGenerationFailed;
+import io.candydoc.domain.exceptions.DomainException;
 import io.candydoc.domain.extractor.DDDConceptExtractor;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Value
@@ -26,7 +27,7 @@ public class Domain {
         }
     }
 
-   public void generateDocumentation(ExtractDDDConcept command) throws IOException, DomainException {
+    public void generateDocumentation(ExtractDDDConcept command) throws IOException, DomainException {
         DDDConceptExtractor DDDConceptExtractor = new DDDConceptExtractor();
         checkParameters(command);
         List<DomainEvent> domainEvents = DDDConceptExtractor.extract(command);

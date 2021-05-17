@@ -6,13 +6,19 @@ public interface DomainEvent {
 
     interface Visitor {
         void apply(BoundedContextFound event);
+
         void apply(CoreConceptFound event);
+
         void apply(InteractionBetweenConceptFound event);
+
         void apply(ValueObjectFound event);
+
         void apply(DomainEventFound event);
+
         void apply(DomainCommandFound event);
 
         void apply(NameConflictBetweenCoreConcept event);
+
         void apply(WrongUsageOfValueObjectFound event);
-    };
+    }
 }

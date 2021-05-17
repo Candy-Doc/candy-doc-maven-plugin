@@ -6,7 +6,9 @@ import io.candydoc.domain.exceptions.ClassNotAnnotatedByDDDConcept;
 import lombok.SneakyThrows;
 
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class InteractionChecker {
 

@@ -6,11 +6,13 @@ import lombok.*;
 @ToString
 @Value
 @RequiredArgsConstructor
-public class InteractionBetweenConceptFound implements DomainEvent{
+public class InteractionBetweenConceptFound implements DomainEvent {
     @NonNull
     String from;
     @NonNull
-    String with;
+    String withFullName;
+    @NonNull
+    String withSimpleName;
 
     public void accept(Visitor visitor) {
         visitor.apply(this);

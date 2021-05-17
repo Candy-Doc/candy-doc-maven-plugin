@@ -32,13 +32,15 @@ class SaveDocumentationAsFileTest {
 
     ArgumentCaptor<List> initDocumentationGenerationTests() throws IOException {
         saveDocumentationAsFile.save(List.of(BoundedContextFound.builder()
-                .name("candydoc.sample.bounded_context_one")
+                .name("candydoc.sample.bounded_context_for_core_concepts_tests")
                 .description("test package 1")
                 .build(), CoreConceptFound.builder()
-                .name("candydoc.sample.core_concept")
-                .className("candydoc.sample.CoreConcept")
-                .description("core c 1")
-                .boundedContext("candydoc.sample.bounded_context_one")
+                .name("core concept 1")
+                .className("CoreConcept1")
+                .fullName("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
+                .packageName("candydoc.sample.bounded_context_for_core_concepts_tests")
+                .description("core concept 1")
+                .boundedContext("candydoc.sample.bounded_context_for_core_concepts_tests")
                 .build()));
         ArgumentCaptor<List> resultCaptor = ArgumentCaptor.forClass(List.class);
         ArgumentCaptor<File> test = ArgumentCaptor.forClass(File.class);
@@ -46,10 +48,10 @@ class SaveDocumentationAsFileTest {
         return resultCaptor;
     }
 
-   @Test
+    @Test
     void serialization_get_correct_bounded_context_name() {
-       Assertions.assertThat(resultCaptor.getValue()).extracting("name")
-               .containsExactlyInAnyOrder("candydoc.sample.bounded_context_one");
+        Assertions.assertThat(resultCaptor.getValue()).extracting("name")
+                .containsExactlyInAnyOrder("candydoc.sample.bounded_context_for_core_concepts_tests");
     }
 
     @Test
@@ -62,9 +64,10 @@ class SaveDocumentationAsFileTest {
     void serialization_get_correct_core_concept() {
         Assertions.assertThat(resultCaptor.getValue()).extracting("coreConcepts")
                 .contains(List.of(CoreConceptDto.builder()
-                        .name("candydoc.sample.core_concept")
-                        .className("candydoc.sample.CoreConcept")
-                        .description("core c 1")
+                        .name("core concept 1")
+                        .className("CoreConcept1")
+                        .fullName("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
+                        .description("core concept 1")
                         .interactsWith(Set.of())
                         .errors(List.of())
                         .build()));

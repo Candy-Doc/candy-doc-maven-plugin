@@ -1,0 +1,140 @@
+html {
+    font-family: Arial, Verdana, sans-serif;
+    list-style: none;
+    background-color: aliceblue;
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+}
+
+.navigation {
+    z-index: 1;
+    position: fixed;
+    height: 100%;
+    background-color: #FFFFFF;
+    font-size: large;
+    width: 300px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.navigation a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.navigation .project-name {
+    text-transform: uppercase;
+    font-weight: 100;
+    letter-spacing: 4px;
+    margin-left: 20px;
+    font-size: larger;
+}
+
+.navigation .concepts {
+    border-top-style: solid;
+}
+
+.navigation .concepts-list {
+    list-style: none;
+    padding-inline: 0;
+}
+
+.navigation .concepts__item {
+    height: fit-content;
+    padding: 0.2em;
+    text-indent: 30px;
+    background-color: #FFFFFF;
+    text-align: left;
+    border-bottom-style: solid;
+}
+
+.navigation .concept--bounded-context:hover, .navigation .concept:hover {
+    background: -webkit-linear-gradient(top, #F0F8FF 0%, #FAFDFF 100%);
+}
+
+.navigation .concept--bounded-context {
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.navigation .concept--simple-concept {
+    text-indent: 80px;
+}
+
+.navigation .concept__name {
+    text-indent: 50px;
+    font-size: small;
+    text-transform: uppercase;
+}
+
+.concept {
+    margin-left: 300px;
+    padding: 1em;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: row;
+}
+
+.concept .concept__information {
+    padding: 0.5em;
+    width: 20em;
+}
+
+.concept .concept__name {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.concept .concept__fullName {
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.concept .concept__description {
+    font-style: italic;
+}
+
+.concept .interactions {
+    display: flex;
+    flex-direction: row;
+    border-style: solid;
+    padding: 0.5em;
+    background-color: #FFFF;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+}
+
+.concept .interactions-box {
+    display: flex;
+    flex-direction: column;
+    margin: 0.25em;
+}
+
+.concept .interaction__title {
+    font-weight: bold;
+}
+
+.concept .interaction {
+    color: #FFFFFF;
+    background: #75bfff;
+    border-radius: 50px;
+    font-weight: bold;
+    border-style: none;
+    line-height: 2em;
+    margin: 0.25em;
+    text-decoration: none;
+    padding: 0.25em;
+}
+
+.concept .interaction:hover {
+    background: rgba(117, 191, 255, 0.75);
+    cursor: pointer;
+}

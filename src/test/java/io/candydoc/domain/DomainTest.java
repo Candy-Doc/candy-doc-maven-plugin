@@ -54,7 +54,7 @@ class DomainTest {
     }
 
     @Test
-    void generated_documentation_from_multiple_folder_is_saved() throws DomainException, IOException{
+    void generated_documentation_from_multiple_folder_is_saved() throws DomainException, IOException {
         //given
         ArgumentCaptor<List> resultCaptor = ArgumentCaptor.forClass(List.class);
         //when
@@ -109,16 +109,20 @@ class DomainTest {
         //then
         Assertions.assertThat(actualEvents)
                 .contains(CoreConceptFound.builder()
-                        .name("name of core concept 1 of bounded context 1")
-                        .description("description of core concept 1 of bounded context 1")
-                        .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
-                        .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
-                        .build(),
+                                .name("name of core concept 1 of bounded context 1")
+                                .description("description of core concept 1 of bounded context 1")
+                                .className("CoreConcept1")
+                                .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
+                                .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                                .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                                .build(),
                         CoreConceptFound.builder().name("name of core concept 2 of bounded context 1")
-                        .description("description of core concept 2 of bounded context 1")
-                        .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
-                        .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
-                        .build());
+                                .description("description of core concept 2 of bounded context 1")
+                                .className("CoreConcept2")
+                                .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
+                                .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                                .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                                .build());
     }
 
     @Test
@@ -131,7 +135,9 @@ class DomainTest {
         Assertions.assertThat(actualEvents)
                 .contains(ValueObjectFound.builder()
                         .description("description of value object 1 of bounded context 1")
-                        .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                        .className("ValueObject1")
+                        .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                        .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .build());
     }
@@ -153,7 +159,7 @@ class DomainTest {
     }
 
     @Test
-    void domain_event_found_are_generated(){
+    void domain_event_found_are_generated() {
         //given
         ExtractDDDConcept command = ExtractDDDConcept.builder()
                 .packagesToScan("candydoc.sample.valid_bounded_contexts.bounded_context_one")
@@ -164,7 +170,9 @@ class DomainTest {
         Assertions.assertThat(actualEvents)
                 .contains(DomainEventFound.builder()
                         .description("domain event 1 of boundedcontext 1")
-                        .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
+                        .className("DomainEvent1")
+                        .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
+                        .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .build());
     }
@@ -181,7 +189,9 @@ class DomainTest {
         Assertions.assertThat(actualEvents)
                 .contains(DomainCommandFound.builder()
                         .description("Domain Command for Bounded context 1")
-                        .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainCommand1")
+                        .className("DomainCommand1")
+                        .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainCommand1")
+                        .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .build());
     }
@@ -198,7 +208,8 @@ class DomainTest {
         Assertions.assertThat(actualEvents)
                 .contains(InteractionBetweenConceptFound.builder()
                         .from("candydoc.sample.bounded_context_for_value_objects_tests.CoreConcept1")
-                        .with("candydoc.sample.bounded_context_for_value_objects_tests.ValueObject1")
+                        .withFullName("candydoc.sample.bounded_context_for_value_objects_tests.ValueObject1")
+                        .withSimpleName("ValueObject1")
                         .build());
     }
 }

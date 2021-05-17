@@ -1,9 +1,9 @@
 package io.candydoc;
 
 import io.candydoc.domain.Domain;
-import io.candydoc.domain.command.ExtractDDDConcept;
 import io.candydoc.domain.SaveDocumentationAdapterFactory;
 import io.candydoc.domain.SaveDocumentationPort;
+import io.candydoc.domain.command.ExtractDDDConcept;
 import io.candydoc.infra.SaveDocumentationAdapterFactoryImpl;
 import lombok.SneakyThrows;
 import org.apache.maven.plugin.AbstractMojo;
@@ -33,7 +33,6 @@ public class CandyDocMojo extends AbstractMojo {
     @SneakyThrows
     @Override
     public void execute() {
-
         String outputDirectory = project.getBuild().getDirectory();
         Thread.currentThread().setContextClassLoader(getProjectClassLoader());
         SaveDocumentationAdapterFactory adapterFactory = new SaveDocumentationAdapterFactoryImpl();
@@ -48,7 +47,6 @@ public class CandyDocMojo extends AbstractMojo {
             URL[] urls = new URL[classpathElements.size()];
             for (int i = 0; i < classpathElements.size(); ++i) {
                 urls[i] = new File(classpathElements.get(i)).toURI().toURL();
-
             }
             return new URLClassLoader(urls, getClass().getClassLoader());
         } catch (Exception e) {

@@ -1,14 +1,14 @@
 package io.candydoc.domain.extractor;
 
-import io.candydoc.domain.strategy.InteractionChecker;
 import io.candydoc.domain.command.*;
 import io.candydoc.domain.events.*;
+import io.candydoc.domain.strategy.InteractionChecker;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class DDDConceptExtractor implements Command.Visitor, DomainEvent.Visitor, Extractor<Command> {
-    private List<DomainEvent> eventsList = new LinkedList<>();
+    private final List<DomainEvent> eventsList = new LinkedList<>();
     private final ValueObjectExtractor valueObjectExtractor = new ValueObjectExtractor();
     private final BoundedContextExtractor boundedContextExtractor = new BoundedContextExtractor();
     private final CoreConceptExtractor coreConceptExtractor = new CoreConceptExtractor();
@@ -68,7 +68,7 @@ public class DDDConceptExtractor implements Command.Visitor, DomainEvent.Visitor
 
     public void apply(CoreConceptFound event) {
         this.handle(CheckConceptInteraction.builder()
-                .className(event.getClassName())
+                .className(event.getFullName())
                 .build());
     }
 
@@ -77,19 +77,19 @@ public class DDDConceptExtractor implements Command.Visitor, DomainEvent.Visitor
 
     public void apply(ValueObjectFound event) {
         this.handle(CheckConceptInteraction.builder()
-                .className(event.getClassName())
+                .className(event.getFullName())
                 .build());
     }
 
     public void apply(DomainEventFound event) {
         this.handle(CheckConceptInteraction.builder()
-                .className(event.getClassName())
+                .className(event.getFullName())
                 .build());
     }
 
-    public  void apply(DomainCommandFound event) {
+    public void apply(DomainCommandFound event) {
         this.handle(CheckConceptInteraction.builder()
-                .className(event.getClassName())
+                .className(event.getFullName())
                 .build());
 
     }

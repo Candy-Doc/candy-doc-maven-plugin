@@ -1,15 +1,13 @@
 package io.candydoc.infra.model;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Value;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @ToString
 @Value
-@RequiredArgsConstructor
-@EqualsAndHashCode
-public class DomainEventDto {
-    @NonNull
-    String description;
-    @NonNull
-    String className;
+@EqualsAndHashCode(callSuper = true)
+public class DomainEventDto extends ConceptDto {
 }

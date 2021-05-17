@@ -6,13 +6,17 @@ import lombok.*;
 @ToString
 @Value
 @RequiredArgsConstructor
-public class CoreConceptFound implements DomainEvent{
+public class CoreConceptFound implements DomainEvent {
     @NonNull
     String name;
     @NonNull
     String description;
     @NonNull
     String className;
+    @NonNull
+    String fullName;
+    @NonNull
+    String packageName;
     @NonNull
     String boundedContext;
 

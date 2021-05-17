@@ -43,7 +43,8 @@ public class ValueObjectInteractionStrategy implements InteractionStrategy{
                 .filter(classInCurrentConcept -> DDD_ANNOTATION_CLASSES.stream().anyMatch(classInCurrentConcept::isAnnotationPresent))
                 .map(interactingConcept -> InteractionBetweenConceptFound.builder()
                         .from(currentConcept.getName())
-                        .with(interactingConcept.getName())
+                        .withFullName(interactingConcept.getName())
+                        .withSimpleName(interactingConcept.getSimpleName())
                         .build())
                 .collect(Collectors.toUnmodifiableSet());
     }

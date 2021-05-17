@@ -3,12 +3,11 @@ package io.candydoc.domain.strategy;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.InteractionBetweenConceptFound;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class CoreConceptInteractionStrategy implements InteractionStrategy{
+public class CoreConceptInteractionStrategy implements InteractionStrategy {
 
     public List<DomainEvent> checkInteractions(Class<?> concept) {
         return new LinkedList<>(extractDDDInteractions(concept));
@@ -36,7 +35,8 @@ public class CoreConceptInteractionStrategy implements InteractionStrategy{
                 .filter(classInCurrentConcept -> DDD_ANNOTATION_CLASSES.stream().anyMatch(classInCurrentConcept::isAnnotationPresent))
                 .map(interactingConcept -> InteractionBetweenConceptFound.builder()
                         .from(currentConcept.getName())
-                        .with(interactingConcept.getName())
+                        .withFullName(interactingConcept.getName())
+                        .withSimpleName(interactingConcept.getSimpleName())
                         .build())
                 .collect(Collectors.toUnmodifiableSet());
     }

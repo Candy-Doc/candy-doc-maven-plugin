@@ -1,6 +1,5 @@
 package io.candydoc.domain.events;
 
-import io.candydoc.domain.events.DomainEvent;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;

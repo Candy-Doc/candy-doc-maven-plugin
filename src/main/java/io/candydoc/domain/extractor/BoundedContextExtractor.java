@@ -11,7 +11,7 @@ import org.reflections8.Reflections;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BoundedContextExtractor implements Extractor<ExtractDDDConcept>{
+public class BoundedContextExtractor implements Extractor<ExtractDDDConcept> {
 
     @Override
     public List<DomainEvent> extract(ExtractDDDConcept command) {
@@ -33,16 +33,16 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcept>{
             throw new NoBoundedContextFound(packageToScan);
         }
         Map<Boolean, List<Class<?>>> filteredBoundedContexts = rawBoundedContexts.stream()
-                .collect(Collectors.partitioningBy(bc -> "package-info".equals(bc.getSimpleName())));
+                .collect(Collectors.partitioningBy(boundedContext -> "package-info".equals(boundedContext.getSimpleName())));
         if (filteredBoundedContexts.get(false) != null && !filteredBoundedContexts.get(false).isEmpty()) {
             throw new WrongUsageOfBoundedContext(filteredBoundedContexts.get(false));
         }
         occurredEvents.addAll(filteredBoundedContexts.get(true).stream()
                 .map(boundedContext ->
-                    BoundedContextFound.builder()
-                            .name(boundedContext.getPackageName())
-                            .description(boundedContext.getAnnotation(io.candydoc.domain.annotations.BoundedContext.class).description())
-                            .build())
+                        BoundedContextFound.builder()
+                                .name(boundedContext.getPackageName())
+                                .description(boundedContext.getAnnotation(io.candydoc.domain.annotations.BoundedContext.class).description())
+                                .build())
                 .collect(Collectors.toList()));
         occurredEvents.addAll(wrongDomainEvents);
         return occurredEvents;

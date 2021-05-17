@@ -1,8 +1,6 @@
 package io.candydoc.domain.extractor;
 
-import io.candydoc.domain.command.ExtractCoreConcept;
 import io.candydoc.domain.command.ExtractDomainCommand;
-import io.candydoc.domain.command.ExtractDomainEvent;
 import io.candydoc.domain.events.DomainCommandFound;
 import io.candydoc.domain.events.DomainEvent;
 import org.reflections8.Reflections;
@@ -20,7 +18,9 @@ public class DomainCommandExtractor implements Extractor<ExtractDomainCommand> {
         return domainCommands.stream()
                 .map(domainCommand -> DomainCommandFound.builder()
                         .description(domainCommand.getAnnotation(io.candydoc.domain.annotations.DomainCommand.class).description())
-                        .className(domainCommand.getName())
+                        .className(domainCommand.getSimpleName())
+                        .fullName(domainCommand.getName())
+                        .packageName(domainCommand.getPackageName())
                         .boundedContext(command.getPackageToScan())
                         .build())
                 .collect(Collectors.toUnmodifiableList());

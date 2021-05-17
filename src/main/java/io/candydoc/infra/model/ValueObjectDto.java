@@ -1,20 +1,21 @@
 package io.candydoc.infra.model;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.Value;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Builder
+@SuperBuilder
 @ToString
 @Value
-@RequiredArgsConstructor
-@EqualsAndHashCode
-public class ValueObjectDto {
-    @NonNull
-    String description;
-    @NonNull
-    String className;
+@EqualsAndHashCode(callSuper = true)
+public class ValueObjectDto extends ConceptDto {
+
     List<String> errors;
 
-    public void addError(String error) {errors.add(error);}
+    public void addError(String error) {
+        errors.add(error);
+    }
 }

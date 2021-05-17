@@ -17,12 +17,14 @@ public class CoreConceptExtractor implements Extractor<ExtractCoreConcept> {
                 .map(coreConcept -> CoreConceptFound.builder()
                         .name(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).name())
                         .description(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).description())
-                        .className(coreConcept.getName())
+                        .className(coreConcept.getSimpleName())
+                        .fullName(coreConcept.getName())
+                        .packageName(coreConcept.getPackageName())
                         .boundedContext("error handling")
                         .build())
                 .collect(Collectors.toList());
         return coreConcepts.stream()
-                .map(definedCoreConcept -> definedCoreConcept.getName()).collect(Collectors.toList())
+                .map(CoreConceptFound::getName).collect(Collectors.toList())
                 .stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet().stream()
@@ -30,7 +32,7 @@ public class CoreConceptExtractor implements Extractor<ExtractCoreConcept> {
                 .map(foundDuplicate -> NameConflictBetweenCoreConcept.builder()
                         .conflictingCoreConcepts(coreConcepts.stream()
                                 .filter(coreConcept -> coreConcept.getName().equals(foundDuplicate.getKey()))
-                                .map(coreConceptFound -> coreConceptFound.getClassName())
+                                .map(CoreConceptFound::getClassName)
                                 .collect(Collectors.toList()))
                         .UsageError("Share same name with another core concept")
                         .build())
@@ -43,13 +45,15 @@ public class CoreConceptExtractor implements Extractor<ExtractCoreConcept> {
         Set<Class<?>> coreConceptClasses = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.CoreConcept.class);
         List<DomainEvent> wrongCoreConcept = verifyCoreConcept(coreConceptClasses);
         List<DomainEvent> coreConcepts = coreConceptClasses.stream()
-                .map(coreConcept -> {List<DomainEvent> eventList = new LinkedList<>(Collections.singleton(CoreConceptFound.builder()
-                        .name(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).name())
-                        .description(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).description())
-                        .className(coreConcept.getName())
-                        .boundedContext(command.getPackageToScan())
-                        .build()));
-                    return eventList;})
+                .map(coreConcept -> (List<DomainEvent>) new LinkedList<DomainEvent>(Collections.singleton(
+                        CoreConceptFound.builder()
+                                .name(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).name())
+                                .description(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).description())
+                                .className(coreConcept.getSimpleName())
+                                .fullName(coreConcept.getName())
+                                .packageName(coreConcept.getPackageName())
+                                .boundedContext(command.getPackageToScan())
+                                .build())))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
         coreConcepts.addAll(wrongCoreConcept);

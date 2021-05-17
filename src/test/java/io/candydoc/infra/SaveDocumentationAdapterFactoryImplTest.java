@@ -7,11 +7,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.Collections;
+import java.util.LinkedList;
 
 class SaveDocumentationAdapterFactoryImplTest {
 
@@ -23,7 +23,7 @@ class SaveDocumentationAdapterFactoryImplTest {
         String outputDirectory = "target";
         Assertions.assertThatThrownBy(() -> adapterFactory.getAdapter(outputFormat, outputDirectory))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File format must be 'json' or 'yml'.");
+                .hasMessage("File format must be 'json', 'yml' or 'html'.");
     }
 
     @Test
@@ -36,12 +36,13 @@ class SaveDocumentationAdapterFactoryImplTest {
     }
 
     @Test
-    void save_documentation_as_json() throws IOException, URISyntaxException{
+    void save_documentation_as_json() throws IOException {
         SaveDocumentationPort saveDocumentationPort = adapterFactory.getAdapter("json", "target");
-        saveDocumentationPort.save(List.of(BoundedContextFound.builder()
+        BoundedContextFound newBoundedContextEvent = BoundedContextFound.builder()
                 .name("candydoc.sample.bounded_context_one")
                 .description("test package 1")
-                .build()));
+                .build();
+        saveDocumentationPort.save(new LinkedList<>(Collections.singleton(newBoundedContextEvent)));
         Path expectedPath = Paths.get("target", "candy-doc", "bounded_contexts.json");
         Assertions.assertThat(saveDocumentationPort).isInstanceOf(SaveDocumentationAsFile.class);
         Assertions.assertThat(expectedPath).exists();
@@ -49,12 +50,13 @@ class SaveDocumentationAdapterFactoryImplTest {
     }
 
     @Test
-    void save_documentation_as_yml() throws IOException, URISyntaxException {
+    void save_documentation_as_yml() throws IOException {
         SaveDocumentationPort saveDocumentationPort = adapterFactory.getAdapter("yml", "target");
-        saveDocumentationPort.save(List.of(BoundedContextFound.builder()
+        BoundedContextFound newBoundedContextEvent = BoundedContextFound.builder()
                 .name("candydoc.sample.bounded_context_one")
                 .description("test package 1")
-                .build()));
+                .build();
+        saveDocumentationPort.save(new LinkedList<>(Collections.singleton(newBoundedContextEvent)));
         Path expectedPath = Paths.get("target", "candy-doc", "bounded_contexts.yml");
         Assertions.assertThat(saveDocumentationPort).isInstanceOf(SaveDocumentationAsFile.class);
         Assertions.assertThat(expectedPath).exists();

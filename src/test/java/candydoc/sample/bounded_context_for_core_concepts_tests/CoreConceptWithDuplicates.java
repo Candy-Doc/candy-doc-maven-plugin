@@ -2,7 +2,7 @@ package candydoc.sample.bounded_context_for_core_concepts_tests;
 
 import io.candydoc.domain.annotations.CoreConcept;
 
-@CoreConcept(name = "name of core concept with duplicates", description = "description of core concept with duplicates")
+@CoreConcept(name = "name of core concept withFullName duplicates", description = "description of core concept withFullName duplicates")
 public class CoreConceptWithDuplicates {
 
     CoreConcept1 concept1;

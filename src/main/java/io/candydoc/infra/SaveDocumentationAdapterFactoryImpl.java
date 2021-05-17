@@ -23,7 +23,9 @@ public class SaveDocumentationAdapterFactoryImpl implements SaveDocumentationAda
                 return new SaveDocumentationAsFile(new ObjectMapper(new JsonFactory()), outputFile);
             case "yml":
                 return new SaveDocumentationAsFile(new ObjectMapper(new YAMLFactory()), outputFile);
+            case "html":
+                return new SaveDocumentationAsHTML(new FreemarkerEngine());
         }
-        throw new IllegalArgumentException("File format must be 'json' or 'yml'.");
+        throw new IllegalArgumentException("File format must be 'json', 'yml' or 'html'.");
     }
 }

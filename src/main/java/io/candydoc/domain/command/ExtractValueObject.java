@@ -8,7 +8,7 @@ import lombok.Value;
 @Builder
 @Value
 @ToString
-public class ExtractValueObject implements Command{
+public class ExtractValueObject implements Command {
     String packageToScan;
 
     public void accept(Visitor visitor) {

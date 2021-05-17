@@ -17,5 +17,4 @@ class CoreConceptDtoTest {
                 .name("name")
                 .build()).isInstanceOf(NullPointerException.class);
     }
-
 }
