@@ -18,6 +18,7 @@
         <log4j.version>2.7</log4j.version>
         <junit.version>5.7.1</junit.version>
         <jackson.version>2.8.6</jackson.version>
+        <maven.release.plugin.version>3.0.0-M4</maven.release.plugin.version>
     </properties>
 
     <dependencies>
@@ -116,7 +117,16 @@
             <artifactId>commons-io</artifactId>
             <version>2.8.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>${maven.release.plugin.version}</version>
+        </dependency>
     </dependencies>
+
+    <scm>
+        <developerConnection>scm:git:ssh://gitlab.ippon.fr:ippon-lille/osaka/candy-doc</developerConnection>
+    </scm>
 
     <build>
         <plugins>
@@ -144,6 +154,28 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven.release.plugin.version}</version>
+            </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>gitlab-maven</id>
+            <url>${env.CI_SERVER_URL}/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <repository>
+            <id>gitlab-maven</id>
+            <url>${env.CI_SERVER_URL}/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
+        </repository>
+        <snapshotRepository>
+            <id>gitlab-maven</id>
+            <url>${env.CI_SERVER_URL}/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
