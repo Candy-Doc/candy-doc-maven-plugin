@@ -3,7 +3,8 @@ package io.candydoc.infra;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.candydoc.domain.events.BoundedContextFound;
 import io.candydoc.domain.events.CoreConceptFound;
-import io.candydoc.infra.model.CoreConceptDto;
+import io.candydoc.infra.model.BoundedContextDto;
+import io.candydoc.infra.model.ConceptDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,7 @@ class SaveDocumentationAsFileTest {
     ArgumentCaptor<List> initDocumentationGenerationTests() throws IOException {
         saveDocumentationAsFile.save(List.of(BoundedContextFound.builder()
                 .name("candydoc.sample.bounded_context_for_core_concepts_tests")
+                .packageName("candydoc.sample.bounded_context_for_core_concepts_tests")
                 .description("test package 1")
                 .build(), CoreConceptFound.builder()
                 .name("core concept 1")
@@ -63,11 +65,11 @@ class SaveDocumentationAsFileTest {
     @Test
     void serialization_get_correct_core_concept() {
         Assertions.assertThat(resultCaptor.getValue()).extracting("coreConcepts")
-                .contains(List.of(CoreConceptDto.builder()
+                .contains(List.of(ConceptDto.builder()
                         .name("core concept 1")
-                        .className("CoreConcept1")
                         .fullName("candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
                         .description("core concept 1")
+                        .conceptType(BoundedContextDto.ConceptType.CORE_CONCEPT)
                         .interactsWith(Set.of())
                         .errors(List.of())
                         .build()));

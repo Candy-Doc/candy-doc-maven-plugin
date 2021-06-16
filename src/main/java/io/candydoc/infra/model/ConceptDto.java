@@ -1,20 +1,36 @@
 package io.candydoc.infra.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 @SuperBuilder
 @ToString
 @Getter
 @EqualsAndHashCode
 public class ConceptDto {
+
     @NonNull
     String description;
     @NonNull
-    String className;
+    String name;
     @NonNull
     String fullName;
+    @NonNull
+    BoundedContextDto.ConceptType conceptType;
+    @Builder.Default
+    Set<InteractionDto> interactsWith = new LinkedHashSet<>();
+    @Builder.Default
+    List<String> errors= new LinkedList<>();
+
+    public void addInteractsWith(InteractionDto interaction) {
+        interactsWith.add(interaction);
+    }
+    public void addError(String error) {
+        errors.add(error);
+    }
 }

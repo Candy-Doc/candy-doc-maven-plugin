@@ -20,10 +20,12 @@ class SaveDocumentationAsHTMLTest {
 
     List<DomainEvent> boundedContextsForHTMLGenerationTests = List.of(BoundedContextFound.builder()
                     .name("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                    .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                     .description("description of bounded context 1")
                     .build(),
             BoundedContextFound.builder()
                     .name("candydoc.sample.valid_bounded_contexts.bounded_context_two")
+                    .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_two")
                     .description("description of bounded context 2")
                     .build(),
             CoreConceptFound.builder()
@@ -59,17 +61,16 @@ class SaveDocumentationAsHTMLTest {
             InteractionBetweenConceptFound.builder()
                     .from("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
                     .withFullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
-                    .withSimpleName("CoreConcept2")
                     .build(),
             InteractionBetweenConceptFound.builder()
                     .from("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
                     .withFullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
-                    .withSimpleName("ValueObject1")
                     .build());
 
     List<DomainEvent> emptyBoundedContext = List.of(BoundedContextFound.builder()
             .name("io.emptyBoundedContext")
             .description("description of empty bounded context")
+            .packageName("io.emptyBoundedContext")
             .build());
 
     @AfterEach
@@ -244,7 +245,7 @@ class SaveDocumentationAsHTMLTest {
     void interactions_are_not_rendered_when_they_are_empty() throws IOException {
         saveDocumentationAsHTML.save(boundedContextsForHTMLGenerationTests);
         Assertions.assertThat(getDocument("candydoc.sample.valid_bounded_contexts.bounded_context_one/" +
-                "candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2.html")
+                "candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1.html")
                 .getElementsByClass("interaction"))
                 .isEmpty();
     }
@@ -257,4 +258,22 @@ class SaveDocumentationAsHTMLTest {
                 .getElementsByClass("interaction"))
                 .hasSize(2);
     }
+
+    @Test
+    void concept_titles_are_translated() throws IOException {
+        saveDocumentationAsHTML.save(boundedContextsForHTMLGenerationTests);
+        Assertions.assertThat(getDocument("index.html")
+                .getElementsByClass("concept__name").eachText())
+                .containsExactlyInAnyOrder("CoreConcept", "DomainEvent", "ValueObject");
+    }
+
+    @Test
+    void interaction_is_translated() throws IOException {
+        saveDocumentationAsHTML.save(boundedContextsForHTMLGenerationTests);
+        Assertions.assertThat(getDocument("candydoc.sample.valid_bounded_contexts.bounded_context_one/" +
+                "candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1.html")
+                .getElementsByClass("interaction__title").text())
+                .isEqualTo("Interactions");
+    }
+
 }

@@ -8,36 +8,16 @@
                 <li class="concepts__item concept--bounded-context">
                     <a href="${boundedContext.name}/${boundedContext.name}.html">${boundedContext.name}</a>
                 </li>
-                <#if boundedContext.coreConcepts?has_content>
-                    <li class="concepts__item concept__name">Core concepts:</li>
-                    <#list boundedContext.coreConcepts as coreConcept>
-                        <li class="concepts__item concept--simple-concept">
-                            <a href="${boundedContext.name}/${coreConcept.fullName}.html">${coreConcept.className}</a>
-                        </li>
-                    </#list>
-                </#if>
-                <#if boundedContext.valueObjects?has_content>
-                    <li class="concepts__item concept__name">Value objects:</li>
-                    <#list boundedContext.valueObjects as valueObject>
-                        <li class="concepts__item concept--simple-concept">
-                            <a href="${boundedContext.name}/${valueObject.fullName}.html">${valueObject.className}</a>
-                        </li>
-                    </#list>
-                </#if>
-                <#if boundedContext.domainEvents?has_content>
-                    <li class="concepts__item concept__name">Domain Events:</li>
-                    <#list boundedContext.domainEvents as domainEvent>
-                        <li class="concepts__item concept--simple-concept">
-                            <a href="${boundedContext.name}/${domainEvent.fullName}.html">${domainEvent.className}</a>
-                        </li>
-                    </#list>
-                </#if>
-                <#if boundedContext.domainCommands?has_content>
-                    <li class="concepts__item concept__name">Domain Commands:</li>
-                    <#list boundedContext.domainCommands as domainCommand>
-                        <li class="concepts__item concept--simple-concept">
-                            <a href="${boundedContext.name}/${domainCommand.fullName}.html">${domainCommand.className}</a>
-                        </li>
+                <#if boundedContext.getConcepts()?has_content>
+                    <#list boundedContext.getConceptTypes() as conceptType>
+                        <#if boundedContext.getConcepts(conceptType)?has_content>
+                            <li class="concepts__item concept__name">${i18n.getString(conceptType.name())}</li>
+                            <#list boundedContext.getConcepts(conceptType) as concept>
+                                <li class="concepts__item concept--simple-concept">
+                                    <a href="${boundedContext.name}/${concept.fullName}.html">${concept.name}</a>
+                                </li>
+                            </#list>
+                        </#if>
                     </#list>
                 </#if>
             </ul>

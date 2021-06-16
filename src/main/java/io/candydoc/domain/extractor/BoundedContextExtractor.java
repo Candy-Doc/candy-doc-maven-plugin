@@ -40,7 +40,8 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcept> {
         occurredEvents.addAll(filteredBoundedContexts.get(true).stream()
                 .map(boundedContext ->
                         BoundedContextFound.builder()
-                                .name(boundedContext.getPackageName())
+                                .name(boundedContext.getAnnotation(io.candydoc.domain.annotations.BoundedContext.class).name())
+                                .packageName(boundedContext.getPackageName())
                                 .description(boundedContext.getAnnotation(io.candydoc.domain.annotations.BoundedContext.class).description())
                                 .build())
                 .collect(Collectors.toList()));

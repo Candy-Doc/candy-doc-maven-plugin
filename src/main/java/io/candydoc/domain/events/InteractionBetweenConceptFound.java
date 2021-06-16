@@ -6,13 +6,12 @@ import lombok.*;
 @ToString
 @Value
 @RequiredArgsConstructor
+@io.candydoc.domain.annotations.DomainEvent(description = "Emitted when an interaction is found between two concepts")
 public class InteractionBetweenConceptFound implements DomainEvent {
     @NonNull
     String from;
     @NonNull
     String withFullName;
-    @NonNull
-    String withSimpleName;
 
     public void accept(Visitor visitor) {
         visitor.apply(this);

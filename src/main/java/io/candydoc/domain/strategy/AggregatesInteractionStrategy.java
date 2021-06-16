@@ -1,7 +1,5 @@
 package io.candydoc.domain.strategy;
 
-import io.candydoc.domain.annotations.Aggregate;
-import io.candydoc.domain.events.ConceptRuleViolated;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.InteractionBetweenConceptFound;
 
@@ -9,25 +7,9 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class CoreConceptInteractionStrategy implements InteractionStrategy {
-
+public class AggregatesInteractionStrategy implements InteractionStrategy{
     public List<DomainEvent> checkInteractions(Class<?> concept) {
-        List<DomainEvent> domainEvents = new LinkedList<>();
-        domainEvents.addAll(extractWrongInteractions(concept));
-        domainEvents.addAll(extractDDDInteractions(concept));
-        return domainEvents;
-    }
-
-    private List<DomainEvent> extractWrongInteractions(Class<?> currentConcept) {
-        Set<Class<?>> classesInCurrentConcept = Arrays.stream(currentConcept.getDeclaredFields())
-                .map(Field::getType)
-                .collect(Collectors.toSet());
-        return classesInCurrentConcept.stream()
-                .filter(classInCurrentConcept -> classInCurrentConcept.isAnnotationPresent(Aggregate.class))
-                .map(wrongClass -> ConceptRuleViolated.builder()
-                        .conceptFullName(currentConcept.getName())
-                        .reason("CoreConcept interact with Aggregates " + wrongClass.getName() + ".")
-                        .build()).collect(Collectors.toList());
+        return new LinkedList<>(extractDDDInteractions(concept));
     }
 
     private Set<Class<?>> extractInteractingClasses(Class<?> currentConcept) {

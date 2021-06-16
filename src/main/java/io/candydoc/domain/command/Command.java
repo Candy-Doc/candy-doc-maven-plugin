@@ -9,6 +9,7 @@ public interface Command {
         void handle(ExtractCoreConcept command);
         void handle(ExtractDomainEvent command);
         void handle(ExtractDomainCommand command);
-        void handle(CheckConceptInteraction command);
+        void handle(CheckConceptInteractions command);
+        void handle(ExtractAggregates command);
     }
 }

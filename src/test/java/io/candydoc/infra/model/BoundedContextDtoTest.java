@@ -18,4 +18,8 @@ class BoundedContextDtoTest {
                 .name("name")
                 .build()).isInstanceOf(NullPointerException.class);
     }
+
+    @Test
+    void retrieve_concept_translation_in_the_correct_language() {
+    }
 }

@@ -6,8 +6,8 @@ import lombok.*;
 @ToString
 @Value
 @RequiredArgsConstructor
-@io.candydoc.domain.annotations.DomainEvent(description = "Emitted when a core concept is found in a bounded context")
-public class CoreConceptFound implements DomainEvent {
+@io.candydoc.domain.annotations.DomainEvent(description = "Emitted when an aggregate is found in a bounded context")
+public class AggregateFound implements DomainEvent{
     @NonNull
     String name;
     @NonNull

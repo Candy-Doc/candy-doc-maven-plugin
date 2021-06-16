@@ -2,9 +2,8 @@ package io.candydoc.domain.strategy;
 
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.InteractionBetweenConceptFound;
-import io.candydoc.domain.events.WrongUsageOfValueObjectFound;
+import io.candydoc.domain.events.ConceptRuleViolated;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,9 +12,9 @@ public class ValueObjectInteractionStrategy implements InteractionStrategy{
 
     public List<DomainEvent> checkInteractions(Class<?> concept) {
         if (!extractDDDInteractions(concept).isEmpty()) {
-            return List.of(WrongUsageOfValueObjectFound.builder()
-                    .valueObject(concept.getName())
-                    .usageError("Value Object should only contain primitive type")
+            return List.of(ConceptRuleViolated.builder()
+                    .conceptFullName(concept.getName())
+                    .reason("Value Object should only contain primitive types")
                     .build());
         }
         return List.of();
@@ -40,11 +39,10 @@ public class ValueObjectInteractionStrategy implements InteractionStrategy{
         Set<Class<?>> classesInCurrentConcept = extractInteractingClasses(currentConcept);
 
         return classesInCurrentConcept.stream()
-                .filter(classInCurrentConcept -> DDD_ANNOTATION_CLASSES.stream().anyMatch(classInCurrentConcept::isAnnotationPresent))
+                    .filter(classInCurrentConcept -> DDD_ANNOTATION_CLASSES.stream().anyMatch(classInCurrentConcept::isAnnotationPresent))
                 .map(interactingConcept -> InteractionBetweenConceptFound.builder()
                         .from(currentConcept.getName())
                         .withFullName(interactingConcept.getName())
-                        .withSimpleName(interactingConcept.getSimpleName())
                         .build())
                 .collect(Collectors.toUnmodifiableSet());
     }

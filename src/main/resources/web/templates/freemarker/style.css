@@ -89,9 +89,17 @@ body {
     width: 20em;
 }
 
+.concept interaction__title:after {
+    content: ":";
+}
+
 .concept .concept__name {
     font-weight: bold;
     text-transform: uppercase;
+}
+
+.navigation .concept__name:after {
+    content: ":";
 }
 
 .concept .concept__fullName {
@@ -122,8 +130,13 @@ body {
     font-weight: bold;
 }
 
+.concept .interaction__title:after {
+    content: ":";
+}
+
 .concept .interaction {
     color: #FFFFFF;
+    text-align: center;
     background: #75bfff;
     border-radius: 50px;
     font-weight: bold;

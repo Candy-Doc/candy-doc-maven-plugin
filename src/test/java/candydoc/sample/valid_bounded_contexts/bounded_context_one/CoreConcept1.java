@@ -5,4 +5,5 @@ import io.candydoc.domain.annotations.CoreConcept;
 @CoreConcept(name = "name of core concept 1 of bounded context 1", description = "description of core concept 1 of bounded context 1")
 public class CoreConcept1 {
     CoreConcept2 concept2;
+    ValueObject1 valueObject1;
 }

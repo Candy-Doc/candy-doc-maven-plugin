@@ -1,20 +1,20 @@
 package io.candydoc.infra;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.candydoc.domain.SaveDocumentationPort;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.exceptions.DocumentationGenerationFailed;
 import io.candydoc.infra.model.BoundedContextDto;
 import io.candydoc.infra.model.ConceptDto;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class SaveDocumentationAsHTML implements SaveDocumentationPort {
 
     private static final Path HTML_DESTINATION_FOLDER = Paths.get("target", "candy-doc", "html");
     private static final Path HTML_BASE_FOLDER = HTML_DESTINATION_FOLDER.toAbsolutePath();
-    private final TemplateEngine templateEngine;
+    private final FreemarkerEngine templateEngine;
 
     @Override
     public void save(List<DomainEvent> domainEvents) throws IOException {
@@ -57,14 +57,10 @@ public class SaveDocumentationAsHTML implements SaveDocumentationPort {
         model.put("baseFolder", HTML_BASE_FOLDER);
         Path fileDestination = boundedContextDirectory.resolve(boundedContext.getName() + ".html");
         templateEngine.generatePage("bounded_context", fileDestination, model);
-        boundedContext.getCoreConcepts().forEach(coreConcept ->
-                generatePage(coreConcept, boundedContextDirectory, boundedContext, boundedContexts));
-        boundedContext.getValueObjects().forEach(valueObject ->
-                generatePage(valueObject, boundedContextDirectory, boundedContext, boundedContexts));
-        boundedContext.getDomainEvents().forEach(domainEvent ->
-                generatePage(domainEvent, boundedContextDirectory, boundedContext, boundedContexts));
-        boundedContext.getDomainCommands().forEach(domainCommand ->
-                generatePage(domainCommand, boundedContextDirectory, boundedContext, boundedContexts));
+        Arrays.stream(BoundedContextDto.ConceptType.values())
+                .map(conceptType -> boundedContext.getConcepts(conceptType))
+                .flatMap(Collection::stream)
+                .forEach(concepts -> generatePage(concepts, boundedContextDirectory, boundedContext, boundedContexts));
     }
 
     private void generatePage(ConceptDto concept, Path boundedContextDirectory, BoundedContextDto boundedContext, List<BoundedContextDto> boundedContexts) {

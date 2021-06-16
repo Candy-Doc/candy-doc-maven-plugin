@@ -11,12 +11,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-@Value
+
 @RequiredArgsConstructor
 class SaveDocumentationAsFile implements SaveDocumentationPort {
 
-    ObjectMapper serializer;
-    Path fileToSave;
+    private final ObjectMapper serializer;
+    private final Path fileToSave;
 
     @Override
     public void save(List<DomainEvent> domainEvents) throws IOException {

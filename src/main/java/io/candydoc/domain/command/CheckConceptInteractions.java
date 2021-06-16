@@ -10,7 +10,7 @@ import java.lang.annotation.Annotation;
 @Builder
 @Value
 @ToString
-public class CheckConceptInteraction implements Command{
+public class CheckConceptInteractions implements Command{
     String className;
 
     public void accept(Visitor visitor) {

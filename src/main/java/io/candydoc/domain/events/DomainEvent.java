@@ -17,8 +17,11 @@ public interface DomainEvent {
 
         void apply(DomainCommandFound event);
 
+        void apply(AggregateFound event);
+
         void apply(NameConflictBetweenCoreConcept event);
 
-        void apply(WrongUsageOfValueObjectFound event);
+        void apply(ConceptRuleViolated event);
+
     }
 }

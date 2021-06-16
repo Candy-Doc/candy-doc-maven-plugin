@@ -65,7 +65,7 @@ class DomainTest {
         verify(saveDocumentationPort, times(1)).save(resultCaptor.capture());
         //then
         Assertions.assertThat(resultCaptor.getValue())
-                .hasSize(8);
+                .hasSize(10);
     }
 
     @Test
@@ -89,11 +89,13 @@ class DomainTest {
         //then
         Assertions.assertThat(actualEvents)
                 .contains(BoundedContextFound.builder()
-                                .name("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                                .name("bounded_context_one")
                                 .description("description of bounded context 1")
+                                .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                                 .build(),
                         BoundedContextFound.builder()
-                                .name("candydoc.sample.valid_bounded_contexts.bounded_context_two")
+                                .name("bounded_context_two")
+                                .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_two")
                                 .description("description of bounded context 2")
                                 .build());
     }
@@ -152,9 +154,9 @@ class DomainTest {
         List<DomainEvent> actualEvents = DDDConceptExtractor.extract(command);
         //then
         Assertions.assertThat(actualEvents)
-                .contains(WrongUsageOfValueObjectFound.builder()
-                        .valueObject("candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.ValueObject")
-                        .usageError("Value Object should only contain primitive type")
+                .contains(ConceptRuleViolated.builder()
+                        .conceptFullName("candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.ValueObject")
+                        .reason("Value Object should only contain primitive types")
                         .build());
     }
 
@@ -197,19 +199,38 @@ class DomainTest {
     }
 
     @Test
+    void aggregate_found_is_generated() {
+        //given
+        ExtractDDDConcept command = ExtractDDDConcept.builder()
+                .packagesToScan("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                .build();
+        //when
+        List<DomainEvent> actualEvents = DDDConceptExtractor.extract(command);
+        //then
+        Assertions.assertThat(actualEvents)
+                .contains(AggregateFound.builder()
+                        .name("aggregate 1")
+                        .description("Aggregate for Bounded context 1")
+                        .className("Aggregate1")
+                        .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.Aggregate1")
+                        .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                        .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                        .build());
+    }
+
+    @Test
     void domain_command_interaction_between_concept_found() {
         //given
         ExtractDDDConcept command = ExtractDDDConcept.builder()
-                .packagesToScan("candydoc.sample.bounded_context_for_value_objects_tests")
+                .packagesToScan("candydoc.sample.valid_bounded_contexts")
                 .build();
         //when
         List<DomainEvent> actualEvents = DDDConceptExtractor.extract(command);
         //then
         Assertions.assertThat(actualEvents)
                 .contains(InteractionBetweenConceptFound.builder()
-                        .from("candydoc.sample.bounded_context_for_value_objects_tests.CoreConcept1")
-                        .withFullName("candydoc.sample.bounded_context_for_value_objects_tests.ValueObject1")
-                        .withSimpleName("ValueObject1")
+                        .from("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
+                        .withFullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
                         .build());
     }
 }

@@ -6,6 +6,7 @@ import lombok.*;
 @ToString
 @Value
 @RequiredArgsConstructor
+@io.candydoc.domain.annotations.DomainEvent(description = "Emitted when a Domain event is found in a bounded context")
 public class DomainEventFound implements DomainEvent {
     @NonNull
     String description;

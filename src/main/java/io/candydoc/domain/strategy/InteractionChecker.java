@@ -1,7 +1,7 @@
 package io.candydoc.domain.strategy;
 
 import io.candydoc.domain.annotations.*;
-import io.candydoc.domain.command.CheckConceptInteraction;
+import io.candydoc.domain.command.CheckConceptInteractions;
 import io.candydoc.domain.exceptions.ClassNotAnnotatedByDDDConcept;
 import lombok.SneakyThrows;
 
@@ -16,11 +16,12 @@ public class InteractionChecker {
             CoreConcept.class, new CoreConceptInteractionStrategy(),
             ValueObject.class, new ValueObjectInteractionStrategy(),
             DomainCommand.class, new DomainCommandInteractionStrategy(),
-            DomainEvent.class, new DomainCommandInteractionStrategy(),
-            BoundedContext.class, new BoundedContextInteractionStrategy());
+            DomainEvent.class, new DomainEventInteractionStrategy(),
+            BoundedContext.class, new BoundedContextInteractionStrategy(),
+            Aggregate.class, new AggregatesInteractionStrategy());
 
     @SneakyThrows
-    public List<io.candydoc.domain.events.DomainEvent> check(CheckConceptInteraction command) {
+    public List<io.candydoc.domain.events.DomainEvent> check(CheckConceptInteractions command) {
         Class<?> conceptClass = Class.forName(command.getClassName(), true, Thread.currentThread().getContextClassLoader());
         Annotation dddAnnotation = conceptTypeFor(conceptClass);
         return strategyFor(dddAnnotation).checkInteractions(conceptClass);

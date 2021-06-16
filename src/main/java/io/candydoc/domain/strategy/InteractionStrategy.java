@@ -13,5 +13,6 @@ public interface InteractionStrategy {
             io.candydoc.domain.annotations.CoreConcept.class,
             io.candydoc.domain.annotations.ValueObject.class,
             io.candydoc.domain.annotations.DomainEvent.class,
-            io.candydoc.domain.annotations.DomainCommand.class);
+            io.candydoc.domain.annotations.DomainCommand.class,
+            io.candydoc.domain.annotations.Aggregate.class);
 }

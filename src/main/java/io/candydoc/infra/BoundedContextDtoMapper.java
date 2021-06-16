@@ -3,118 +3,142 @@ package io.candydoc.infra;
 import io.candydoc.domain.events.*;
 import io.candydoc.infra.model.*;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.awt.desktop.OpenFilesEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BoundedContextDtoMapper {
 
-    private class DtoVisitor implements DomainEvent.Visitor {
-        List<BoundedContextDto> boundedContextDtos;
+    private static final class DtoVisitor implements DomainEvent.Visitor {
 
-        DtoVisitor(List<BoundedContextDto> dtos) {
-            boundedContextDtos = dtos;
+        Map<String, List<ConceptDto>> conceptMap = new HashMap<>();
+        List<BoundedContextFound> boundedContextFounds = new LinkedList<>();
+        List<InteractionBetweenConceptFound> returningInteractions = new LinkedList<>();
+
+        private Map<BoundedContextDto.ConceptType, List<ConceptDto>> ConceptMapper(List<ConceptDto> concepts) {
+            return concepts.stream()
+                    .collect(Collectors.groupingBy(ConceptDto::getConceptType));
+        }
+
+        public List<BoundedContextDto> apply(List<DomainEvent> events) {
+            events.forEach(domainEvent -> domainEvent.accept(this));
+            applyInteraction();
+            return boundedContextFounds.stream().map(context -> BoundedContextDto.builder()
+                    .packageName(context.getPackageName())
+                    .conceptsMap(ConceptMapper(conceptMap.get(context.getPackageName())))
+                    .name(context.getName())
+                    .description(context.getDescription())
+                    .errors(new LinkedList<>())
+                    .build())
+                    .collect(Collectors.toList());
         }
 
         public void apply(NameConflictBetweenCoreConcept event) {
-            event.getConflictingCoreConcepts().stream()
-                    .forEach(conflictingClasses -> boundedContextDtos.stream()
-                            .map(BoundedContextDto::getCoreConcepts)
+            event.getConflictingCoreConcepts()
+                    .forEach(conflictingClasse -> conceptMap.values().stream()
                             .flatMap(Collection::stream)
-                            .collect(Collectors.toList())
-                            .stream()
-                            .filter(coreConceptDto -> coreConceptDto.getFullName().equals(conflictingClasses))
+                            .filter(coreConceptDto -> coreConceptDto.getFullName().equals(conflictingClasse))
                             .forEach(coreConceptDto -> coreConceptDto.addError(event.getUsageError())));
         }
 
-        public void apply(WrongUsageOfValueObjectFound event) {
-            boundedContextDtos.stream()
-                    .map(BoundedContextDto::getValueObjects)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList()).stream()
-                    .filter(valueObjectDto -> valueObjectDto.getFullName().equals(event.getValueObject()))
-                    .forEach(valueObjectDto -> valueObjectDto.addError(event.getUsageError()));
+        public void apply(ConceptRuleViolated event) {
+            conceptMap.values().stream().flatMap(Collection::stream)
+                    .filter(concept -> concept.getFullName().equals(event.getConceptFullName()))
+                    .forEach(concept -> concept.addError(event.getReason()));
         }
 
         public void apply(DomainCommandFound event) {
-            DomainCommandDto command = DomainCommandDto.builder()
+            ConceptDto command = ConceptDto.builder()
                     .description(event.getDescription())
-                    .className(event.getClassName())
+                    .name(event.getClassName())
                     .fullName(event.getFullName())
+                    .conceptType(BoundedContextDto.ConceptType.DOMAIN_COMMAND)
                     .build();
-            boundedContextDtos.stream()
-                    .filter(boundedContext -> boundedContext.getName().equals(event.getBoundedContext()))
-                    .forEach(boundedContext -> boundedContext.addDomainCommand(command));
+            conceptMap.get(event.getBoundedContext()).add(command);
         }
 
         public void apply(BoundedContextFound event) {
-            boundedContextDtos.add(BoundedContextDto.builder()
-                    .name(event.getName())
-                    .description(event.getDescription())
-                    .coreConcepts(new LinkedList<>())
-                    .valueObjects(new LinkedList<>())
-                    .domainEvents(new LinkedList<>())
-                    .domainCommands(new LinkedList<>())
-                    .errors(new LinkedList<>())
-                    .build());
+            boundedContextFounds.add(event);
+            conceptMap.put(event.getPackageName(), new LinkedList<>());
         }
 
         public void apply(CoreConceptFound event) {
-            CoreConceptDto concept = CoreConceptDto.builder()
+            ConceptDto concept = ConceptDto.builder()
                     .name(event.getName())
                     .description(event.getDescription())
-                    .className(event.getClassName())
                     .fullName(event.getFullName())
-                    .interactsWith(new HashSet<>())
-                    .errors(new LinkedList<>())
+                    .conceptType(BoundedContextDto.ConceptType.CORE_CONCEPT)
                     .build();
-            boundedContextDtos.stream()
-                    .filter(boundedContext -> boundedContext.getName().equals(event.getBoundedContext()))
-                    .forEach(boundedContext -> boundedContext.addCoreConcept(concept));
+            conceptMap.get(event.getBoundedContext()).add(concept);
         }
 
         public void apply(DomainEventFound event) {
-            DomainEventDto domainEventDto = DomainEventDto.builder()
+            ConceptDto domainEventDto = ConceptDto.builder()
                     .description(event.getDescription())
-                    .className(event.getClassName())
+                    .name(event.getClassName())
                     .fullName(event.getFullName())
+                    .conceptType(BoundedContextDto.ConceptType.DOMAIN_EVENT)
                     .build();
-            boundedContextDtos.stream()
-                    .filter(boundedContext -> boundedContext.getName().equals(event.getBoundedContext()))
-                    .forEach(boundedContext -> boundedContext.addDomainEvent(domainEventDto));
+            conceptMap.get(event.getBoundedContext()).add(domainEventDto);
+        }
+
+        public void apply(AggregateFound event) {
+            ConceptDto aggregateDto = ConceptDto.builder()
+                    .description(event.getDescription())
+                    .name(event.getName())
+                    .fullName(event.getFullName())
+                    .conceptType(BoundedContextDto.ConceptType.AGGREGATE)
+                    .build();
+            conceptMap.get(event.getBoundedContext()).add(aggregateDto);
         }
 
         public void apply(InteractionBetweenConceptFound event) {
-            boundedContextDtos.stream()
-                    .map(BoundedContextDto::getCoreConcepts)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList()).stream()
-                    .filter(coreConceptDto -> coreConceptDto.getFullName().equals(event.getFrom()))
-                    .forEach(coreConceptDto -> coreConceptDto.addInteractsWith(InteractionDto.builder()
-                            .fullName(event.getWithFullName())
-                            .simpleName(event.getWithSimpleName())
-                            .build()));
+            returningInteractions.add(event);
         }
 
         public void apply(ValueObjectFound event) {
-            ValueObjectDto object = ValueObjectDto.builder()
+            ConceptDto object = ConceptDto.builder()
                     .description(event.getDescription())
-                    .className(event.getClassName())
-                    .errors(new LinkedList<>())
+                    .name(event.getClassName())
                     .fullName(event.getFullName())
+                    .conceptType(BoundedContextDto.ConceptType.VALUE_OBJECT)
                     .build();
-            boundedContextDtos.stream()
-                    .filter(boundedContext -> boundedContext.getName().equals(event.getBoundedContext()))
-                    .forEach(boundedContext -> boundedContext.addValueObject(object));
+            conceptMap.get(event.getBoundedContext()).add(object);
+        }
+
+        public void applyInteraction() {
+            returningInteractions.forEach(interaction -> {
+                List<ConceptDto> fromConcepts = conceptMap.values().stream()
+                        .flatMap(Collection::stream)
+                        .filter(conceptDto -> conceptDto.getFullName().equals(interaction.getFrom()))
+                        .collect(Collectors.toList());
+                List<ConceptDto> withConcepts = conceptMap.values().stream()
+                        .flatMap(Collection::stream)
+                        .filter(conceptDto -> conceptDto.getFullName().equals(interaction.getWithFullName()))
+                        .collect(Collectors.toList());
+                fromConcepts.forEach(fromConcept -> withConcepts.forEach(withConcept -> fromConcept.addInteractsWith(
+                        InteractionDto.builder()
+                                .simpleName(withConcept.getName())
+                                .fullName(withConcept.getFullName())
+                                .build()
+                )));
+                withConcepts.forEach(withConcept -> fromConcepts.forEach(fromConcept -> withConcept.addInteractsWith(
+                        InteractionDto.builder()
+                                .simpleName(fromConcept.getName())
+                                .fullName(fromConcept.getFullName())
+                                .build()
+                )));
+            });
         }
     }
 
     public List<BoundedContextDto> map(List<DomainEvent> domainEvents) {
-        List<BoundedContextDto> boundedContextDtos = new LinkedList<>();
-        DtoVisitor visitor = new DtoVisitor(boundedContextDtos);
-        domainEvents.forEach(domainEvent -> domainEvent.accept(visitor));
+        DtoVisitor visitor = new DtoVisitor();
+        List<BoundedContextDto> boundedContextDtos = visitor.apply(domainEvents);
         return List.copyOf(boundedContextDtos);
     }
 }
