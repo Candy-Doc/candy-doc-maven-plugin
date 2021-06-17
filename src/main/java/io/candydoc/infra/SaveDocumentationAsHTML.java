@@ -53,36 +53,24 @@ public class SaveDocumentationAsHTML implements SaveDocumentationPort {
         Files.createDirectories(boundedContextDirectory);
         Map<String, Object> model = new HashMap<>();
         model.put("boundedContext", boundedContext);
-        model.put("navigation", generateNavigationFragment(boundedContexts));
+        model.put("boundedContexts", boundedContexts);
         model.put("baseFolder", HTML_BASE_FOLDER);
         Path fileDestination = boundedContextDirectory.resolve(boundedContext.getName() + ".html");
         templateEngine.generatePage("bounded_context", fileDestination, model);
         Arrays.stream(BoundedContextDto.ConceptType.values())
-                .map(conceptType -> boundedContext.getConcepts(conceptType))
+                .map(boundedContext::getConcepts)
                 .flatMap(Collection::stream)
                 .forEach(concepts -> generatePage(concepts, boundedContextDirectory, boundedContext, boundedContexts));
     }
 
     private void generatePage(ConceptDto concept, Path boundedContextDirectory, BoundedContextDto boundedContext, List<BoundedContextDto> boundedContexts) {
         Map<String, Object> model = new HashMap<>();
-        model.put("concept", generateConceptFragment(concept, boundedContext));
-        model.put("navigation", generateNavigationFragment(boundedContexts));
         model.put("baseFolder", HTML_BASE_FOLDER);
+        model.put("boundedContext", boundedContext);
+        model.put("boundedContexts", boundedContexts);
+        model.put("concept", concept);
         Path fileDestination = boundedContextDirectory.resolve(concept.getFullName() + ".html");
         templateEngine.generatePage("concept_page", fileDestination, model);
-    }
-
-    private String generateConceptFragment(ConceptDto concept, BoundedContextDto boundedContext) {
-        Map<String, Object> model = new HashMap<>();
-        model.put("concept", concept);
-        model.put("boundedContext", boundedContext);
-        return templateEngine.generateFragment("concept", model);
-    }
-
-    private String generateNavigationFragment(List<BoundedContextDto> boundedContexts) {
-        Map<String, Object> model = new HashMap<>();
-        model.put("boundedContexts", boundedContexts);
-        return templateEngine.generateFragment("navigation", model);
     }
 
     private void generateStyle() {

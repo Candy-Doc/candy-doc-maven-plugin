@@ -21,8 +21,6 @@
         <maven.release.plugin.version>3.0.0-M4</maven.release.plugin.version>
     </properties>
 
-
-
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>

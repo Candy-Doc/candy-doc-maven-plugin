@@ -7,6 +7,4 @@ public interface TemplateEngine {
     void generatePage(String templateName, Path pageName, Map<String, Object> model);
 
     void generateStyle(Path pageName);
-
-    String generateFragment(String fragmentName, Map<String, Object> model);
 }
