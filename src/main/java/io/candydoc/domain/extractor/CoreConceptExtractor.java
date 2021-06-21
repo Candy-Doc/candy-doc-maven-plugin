@@ -1,6 +1,6 @@
 package io.candydoc.domain.extractor;
 
-import io.candydoc.domain.command.ExtractCoreConcept;
+import io.candydoc.domain.command.ExtractCoreConcepts;
 import io.candydoc.domain.events.CoreConceptFound;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.NameConflictBetweenCoreConcept;
@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class CoreConceptExtractor implements Extractor<ExtractCoreConcept> {
+public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
 
     private List<DomainEvent> verifyCoreConcept(Set<Class<?>> coreConceptClasses) {
         List<CoreConceptFound> coreConcepts = coreConceptClasses.stream()
@@ -40,7 +40,7 @@ public class CoreConceptExtractor implements Extractor<ExtractCoreConcept> {
     }
 
     @Override
-    public List<DomainEvent> extract(ExtractCoreConcept command) {
+    public List<DomainEvent> extract(ExtractCoreConcepts command) {
         Reflections reflections = new Reflections(command.getPackageToScan());
         Set<Class<?>> coreConceptClasses = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.CoreConcept.class);
         List<DomainEvent> wrongCoreConcept = verifyCoreConcept(coreConceptClasses);
