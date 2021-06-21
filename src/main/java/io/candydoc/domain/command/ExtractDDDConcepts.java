@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @Value
 @ToString
-public class ExtractDDDConcept implements Command {
+public class ExtractDDDConcepts implements Command {
 
     public void accept(Visitor visitor) {
         visitor.handle(this);

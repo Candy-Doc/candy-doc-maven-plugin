@@ -1,6 +1,6 @@
 package io.candydoc.domain.extractor;
 
-import io.candydoc.domain.command.ExtractDDDConcept;
+import io.candydoc.domain.command.ExtractDDDConcepts;
 import io.candydoc.domain.events.BoundedContextFound;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.exceptions.DocumentationGenerationFailed;
@@ -11,10 +11,10 @@ import org.reflections8.Reflections;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BoundedContextExtractor implements Extractor<ExtractDDDConcept> {
+public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
 
     @Override
-    public List<DomainEvent> extract(ExtractDDDConcept command) {
+    public List<DomainEvent> extract(ExtractDDDConcepts command) {
         return command.getPackagesToScan().stream()
                 .map(this::extractBoundedContexts)
                 .flatMap(Collection::stream)
