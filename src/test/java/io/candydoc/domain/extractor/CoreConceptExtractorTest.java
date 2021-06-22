@@ -30,14 +30,33 @@ class CoreConceptExtractorTest {
                     .description("")
                     .packageName("candydoc.sample.concepts_with_deducted_annotations.sub_package")
                     .boundedContext("candydoc.sample.concepts_with_deducted_annotations")
-                    .build(),
-                CoreConceptFound.builder()
-                    .name("My core concept 2")
-                    .className("candydoc.sample.concepts_with_deducted_annotations.sub_package.CoreConcept2")
-                    .description("My core concept description 2")
-                    .packageName("candydoc.sample.concepts_with_deducted_annotations.sub_package")
-                    .boundedContext("candydoc.sample.concepts_with_deducted_annotations")
                     .build());
+    }
+
+    @Test
+    public void anonymous_core_concepts_are_skipped() {
+        // given
+        ExtractCoreConcepts command = ExtractCoreConcepts.builder()
+            .packageToScan("candydoc.sample.concepts_with_deducted_annotations")
+            .build();
+
+        // when
+        List<DomainEvent> occurredEvents = coreConceptExtractor.extract(command);
+
+        // then
+        Assertions.assertThat(occurredEvents)
+            .filteredOn(CoreConceptFound.class::isInstance)
+            .extracting("name")
+            .containsOnlyOnce("My enum core concept");
+
+        Assertions.assertThat(occurredEvents)
+            .contains(CoreConceptFound.builder()
+                .name("My enum core concept")
+                .className("candydoc.sample.concepts_with_deducted_annotations.sub_package.EnumCoreConcept")
+                .description("My enum core concept description")
+                .packageName("candydoc.sample.concepts_with_deducted_annotations.sub_package")
+                .boundedContext("candydoc.sample.concepts_with_deducted_annotations")
+                .build());
     }
 
 }
