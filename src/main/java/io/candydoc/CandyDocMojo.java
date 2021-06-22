@@ -22,7 +22,7 @@ import java.net.URLClassLoader;
 import java.util.List;
 
 @Mojo(name = "candy-doc",
-    defaultPhase = LifecyclePhase.PACKAGE,
+    defaultPhase = LifecyclePhase.PROCESS_SOURCES,
     requiresDependencyResolution = ResolutionScope.RUNTIME_PLUS_SYSTEM,
     requiresDependencyCollection = ResolutionScope.RUNTIME_PLUS_SYSTEM,
     instantiationStrategy = InstantiationStrategy.SINGLETON,

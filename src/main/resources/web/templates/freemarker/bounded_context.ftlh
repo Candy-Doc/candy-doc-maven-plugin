@@ -46,7 +46,7 @@
             <div class="interactions-box">
                 <p class="interaction__title">${i18n.getString(conceptType.name())}</p>
                 <#list boundedContext.getConcepts(conceptType) as concept>
-                    <a href="${boundedContext.name}/${concept.fullName}.html" class="interaction">
+                    <a href="${boundedContext.name}/${concept.className}.html" class="interaction">
                         ${concept.name}
                     </a>
                 </#list>

@@ -17,13 +17,17 @@ public class AggregatesExtractor implements Extractor<ExtractAggregates> {
         Set<Class<?>> aggregatesClass = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.Aggregate.class);
         return aggregatesClass.stream()
             .map(aggregate -> AggregateFound.builder()
-                .name(aggregate.getAnnotation(io.candydoc.domain.annotations.Aggregate.class).name())
+                .name(getSimpleName(aggregate))
                 .description(aggregate.getAnnotation(io.candydoc.domain.annotations.Aggregate.class).description())
-                .className(aggregate.getSimpleName())
-                .fullName(aggregate.getName())
+                .className(aggregate.getName())
                 .packageName(aggregate.getPackageName())
                 .boundedContext(command.getPackageToScan())
                 .build())
             .collect(Collectors.toUnmodifiableList());
+    }
+
+    private String getSimpleName(Class<?> aggregate) {
+        String annotatedName = aggregate.getAnnotation(io.candydoc.domain.annotations.Aggregate.class).name();
+        return annotatedName.isBlank() ? aggregate.getSimpleName() : annotatedName;
     }
 }

@@ -19,7 +19,7 @@ public class ConceptDto {
     @NonNull
     String name;
     @NonNull
-    String fullName;
+    String className;
     @NonNull
     ConceptType type;
     @Builder.Default

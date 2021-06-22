@@ -9,7 +9,7 @@ import lombok.*;
 @io.candydoc.domain.annotations.DomainEvent(description = "Emitted when a rule is violated")
 public class ConceptRuleViolated implements DomainEvent{
     @NonNull
-    String conceptFullName;
+    String className;
     @NonNull
     String reason;
 

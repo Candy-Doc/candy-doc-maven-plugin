@@ -130,15 +130,13 @@ class GenerateDocumentationUseCaseTest {
                 .contains(CoreConceptFound.builder()
                                 .name("name of core concept 1 of bounded context 1")
                                 .description("description of core concept 1 of bounded context 1")
-                                .className("CoreConcept1")
-                                .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
+                                .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
                                 .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                                 .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                                 .build(),
                         CoreConceptFound.builder().name("name of core concept 2 of bounded context 1")
                                 .description("description of core concept 2 of bounded context 1")
-                                .className("CoreConcept2")
-                                .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
+                                .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
                                 .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                                 .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                                 .build());
@@ -154,8 +152,8 @@ class GenerateDocumentationUseCaseTest {
         Assertions.assertThat(actualEvents)
                 .contains(ValueObjectFound.builder()
                         .description("description of value object 1 of bounded context 1")
-                        .className("ValueObject1")
-                        .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                        .name("ValueObject1")
+                        .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
                         .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .build());
@@ -172,7 +170,7 @@ class GenerateDocumentationUseCaseTest {
         // then
         Assertions.assertThat(actualEvents)
                 .contains(ConceptRuleViolated.builder()
-                        .conceptFullName("candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.ValueObject")
+                        .className("candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.ValueObject")
                         .reason("Value Object should only contain primitive types")
                         .build());
     }
@@ -189,8 +187,8 @@ class GenerateDocumentationUseCaseTest {
         Assertions.assertThat(actualEvents)
                 .contains(DomainEventFound.builder()
                         .description("domain event 1 of boundedcontext 1")
-                        .className("DomainEvent1")
-                        .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
+                        .name("DomainEvent1")
+                        .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
                         .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .build());
@@ -210,8 +208,8 @@ class GenerateDocumentationUseCaseTest {
         Assertions.assertThat(actualEvents)
                 .contains(DomainCommandFound.builder()
                         .description("Domain Command for Bounded context 1")
-                        .className("DomainCommand1")
-                        .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainCommand1")
+                        .name("DomainCommand1")
+                        .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainCommand1")
                         .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .build());
@@ -232,8 +230,7 @@ class GenerateDocumentationUseCaseTest {
                 .contains(AggregateFound.builder()
                         .name("aggregate 1")
                         .description("Aggregate for Bounded context 1")
-                        .className("Aggregate1")
-                        .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.Aggregate1")
+                        .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.Aggregate1")
                         .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                         .build());

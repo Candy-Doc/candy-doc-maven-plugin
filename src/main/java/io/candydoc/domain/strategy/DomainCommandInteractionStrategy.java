@@ -18,7 +18,7 @@ public class DomainCommandInteractionStrategy implements InteractionStrategy {
                 .filter(classInCurrentConcept -> DDD_ANNOTATION_CLASSES.stream()
                         .anyMatch(classInCurrentConcept::isAnnotationPresent))
                 .map(match -> ConceptRuleViolated.builder()
-                        .conceptFullName(concept.getName())
+                        .className(concept.getName())
                         .reason("Wrong interaction with class " + match.getName() + ".")
                         .build())
                 .collect(Collectors.toList());

@@ -11,9 +11,9 @@ public class DomainEventFound implements DomainEvent {
     @NonNull
     String description;
     @NonNull
-    String className;
+    String name;
     @NonNull
-    String fullName;
+    String className;
     @NonNull
     String packageName;
     @NonNull
