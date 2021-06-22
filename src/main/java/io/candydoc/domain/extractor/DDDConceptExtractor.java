@@ -67,26 +67,26 @@ public class DDDConceptExtractor implements Command.Visitor, DomainEvent.Visitor
 
     public void apply(BoundedContextFound event) {
         this.handle(ExtractCoreConcepts.builder()
-                .packageToScan(event.getPackageName())
-                .build());
+            .packageToScan(event.getPackageName())
+            .build());
         this.handle(ExtractValueObjects.builder()
-                .packageToScan(event.getPackageName())
-                .build());
+            .packageToScan(event.getPackageName())
+            .build());
         this.handle(ExtractDomainEvents.builder()
-                .packageToScan(event.getPackageName())
-                .build());
+            .packageToScan(event.getPackageName())
+            .build());
         this.handle(ExtractDomainCommands.builder()
-                .packageToScan(event.getPackageName())
-                .build());
+            .packageToScan(event.getPackageName())
+            .build());
         this.handle(ExtractAggregates.builder()
-                .packageToScan(event.getPackageName())
-                .build());
+            .packageToScan(event.getPackageName())
+            .build());
     }
 
     public void apply(CoreConceptFound event) {
         this.handle(CheckConceptInteractions.builder()
-                .className(event.getFullName())
-                .build());
+            .className(event.getFullName())
+            .build());
     }
 
     public void apply(InteractionBetweenConceptFound event) {
@@ -94,29 +94,29 @@ public class DDDConceptExtractor implements Command.Visitor, DomainEvent.Visitor
 
     public void apply(ValueObjectFound event) {
         this.handle(CheckConceptInteractions.builder()
-                .className(event.getFullName())
-                .build());
+            .className(event.getFullName())
+            .build());
     }
 
     public void apply(DomainEventFound event) {
         this.handle(CheckConceptInteractions.builder()
-                .className(event.getFullName())
-                .build());
+            .className(event.getFullName())
+            .build());
     }
 
     public void apply(DomainCommandFound event) {
         this.handle(CheckConceptInteractions.builder()
-                .className(event.getFullName())
-                .build());
+            .className(event.getFullName())
+            .build());
     }
 
     public void apply(AggregateFound event) {
         this.handle(CheckConceptInteractions.builder()
-                .className(event.getFullName())
-                .build());
+            .className(event.getFullName())
+            .build());
     }
 
-    public void apply(NameConflictBetweenCoreConcept event) {
+    public void apply(NameConflictBetweenCoreConcepts event) {
     }
 
     public void apply(ConceptRuleViolated event) {
