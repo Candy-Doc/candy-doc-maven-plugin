@@ -25,20 +25,12 @@ class AggregatesExtractorTest {
         // then
         Assertions.assertThat(occurredEvents)
             .contains(AggregateFound.builder()
-                    .name("Aggregate1")
-                    .className("candydoc.sample.concepts_with_deducted_annotations.sub_package.Aggregate1")
-                    .description("")
-                    .packageName("candydoc.sample.concepts_with_deducted_annotations.sub_package")
-                    .boundedContext("candydoc.sample.concepts_with_deducted_annotations")
-                    .build(),
-                AggregateFound.builder()
-                    .name("My aggregate 2")
-                    .className("candydoc.sample.concepts_with_deducted_annotations.sub_package.Aggregate2")
-                    .description("My aggregate description 2")
-                    .packageName("candydoc.sample.concepts_with_deducted_annotations.sub_package")
-                    .boundedContext("candydoc.sample.concepts_with_deducted_annotations")
-                    .build());
+                .name("Aggregate1")
+                .className("candydoc.sample.concepts_with_deducted_annotations.sub_package.Aggregate1")
+                .description("")
+                .packageName("candydoc.sample.concepts_with_deducted_annotations.sub_package")
+                .boundedContext("candydoc.sample.concepts_with_deducted_annotations")
+                .build());
     }
-
 
 }
