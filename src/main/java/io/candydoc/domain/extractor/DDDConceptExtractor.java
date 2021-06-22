@@ -85,7 +85,7 @@ public class DDDConceptExtractor implements Command.Visitor, DomainEvent.Visitor
 
     public void apply(CoreConceptFound event) {
         this.handle(CheckConceptInteractions.builder()
-            .className(event.getFullName())
+            .className(event.getClassName())
             .build());
     }
 
@@ -94,25 +94,25 @@ public class DDDConceptExtractor implements Command.Visitor, DomainEvent.Visitor
 
     public void apply(ValueObjectFound event) {
         this.handle(CheckConceptInteractions.builder()
-            .className(event.getFullName())
+            .className(event.getClassName())
             .build());
     }
 
     public void apply(DomainEventFound event) {
         this.handle(CheckConceptInteractions.builder()
-            .className(event.getFullName())
+            .className(event.getClassName())
             .build());
     }
 
     public void apply(DomainCommandFound event) {
         this.handle(CheckConceptInteractions.builder()
-            .className(event.getFullName())
+            .className(event.getClassName())
             .build());
     }
 
     public void apply(AggregateFound event) {
         this.handle(CheckConceptInteractions.builder()
-            .className(event.getFullName())
+            .className(event.getClassName())
             .build());
     }
 

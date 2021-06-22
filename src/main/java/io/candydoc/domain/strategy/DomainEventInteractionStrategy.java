@@ -19,7 +19,7 @@ public class DomainEventInteractionStrategy implements InteractionStrategy {
                 .filter(classInCurrentConcept -> DDD_ANNOTATION_CLASSES.stream()
                         .anyMatch(classInCurrentConcept::isAnnotationPresent))
                 .map(match -> ConceptRuleViolated.builder()
-                        .conceptFullName(concept.getName())
+                        .className(concept.getName())
                         .reason("Wrong interaction with concept " + match.getName() + ".")
                         .build())
                 .collect(Collectors.toList());

@@ -67,7 +67,7 @@ public class SaveDocumentationAsHTML implements SaveDocumentationPort {
         model.put("concept", generateConceptFragment(concept, boundedContext));
         model.put("navigation", generateNavigationFragment(boundedContexts));
         model.put("baseFolder", HTML_BASE_FOLDER);
-        Path fileDestination = boundedContextDirectory.resolve(concept.getFullName() + ".html");
+        Path fileDestination = boundedContextDirectory.resolve(concept.getClassName() + ".html");
         templateEngine.generatePage("concept_page", fileDestination, model);
     }
 

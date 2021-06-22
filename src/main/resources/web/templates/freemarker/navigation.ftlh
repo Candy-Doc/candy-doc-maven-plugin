@@ -14,7 +14,7 @@
                             <li class="concepts__item concept__name">${i18n.getString(conceptType.name())}</li>
                             <#list boundedContext.getConcepts(conceptType) as concept>
                                 <li class="concepts__item concept--simple-concept">
-                                    <a href="${boundedContext.name}/${concept.fullName}.html">${concept.name}</a>
+                                    <a href="${boundedContext.name}/${concept.className}.html">${concept.name}</a>
                                 </li>
                             </#list>
                         </#if>

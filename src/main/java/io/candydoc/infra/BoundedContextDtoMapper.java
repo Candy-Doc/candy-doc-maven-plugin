@@ -37,9 +37,9 @@ public class BoundedContextDtoMapper {
                 .collect(Collectors.toUnmodifiableList());
         }
 
-        private Optional<ConceptDto> conceptFromFullName(String fullName) {
+        private Optional<ConceptDto> conceptFromClassName(String className) {
             return allConcepts().stream()
-                .filter(conceptDto -> conceptDto.getFullName().equals(fullName))
+                .filter(conceptDto -> conceptDto.getClassName().equals(className))
                 .findFirst();
         }
 
@@ -60,20 +60,20 @@ public class BoundedContextDtoMapper {
             event.getCoreConceptClassNames()
                 .forEach(conflictingClass -> concepts.values().stream()
                     .flatMap(Collection::stream)
-                    .filter(coreConceptDto -> coreConceptDto.getFullName().equals(conflictingClass))
+                    .filter(coreConceptDto -> coreConceptDto.getClassName().equals(conflictingClass))
                     .forEach(coreConceptDto -> coreConceptDto.addError("Share same name with another core concept")));
         }
 
         public void apply(ConceptRuleViolated event) {
-            conceptFromFullName(event.getConceptFullName())
+            conceptFromClassName(event.getClassName())
                 .ifPresent(conceptDto -> conceptDto.addError(event.getReason()));
         }
 
         public void apply(DomainCommandFound event) {
             ConceptDto commandDto = ConceptDto.builder()
                 .description(event.getDescription())
-                .name(event.getClassName())
-                .fullName(event.getFullName())
+                .name(event.getName())
+                .className(event.getClassName())
                 .type(ConceptType.DOMAIN_COMMAND)
                 .build();
 
@@ -90,7 +90,7 @@ public class BoundedContextDtoMapper {
             ConceptDto coreConceptDto = ConceptDto.builder()
                 .name(event.getName())
                 .description(event.getDescription())
-                .fullName(event.getFullName())
+                .className(event.getClassName())
                 .type(ConceptType.CORE_CONCEPT)
                 .build();
 
@@ -100,8 +100,8 @@ public class BoundedContextDtoMapper {
         public void apply(DomainEventFound event) {
             ConceptDto domainEventDto = ConceptDto.builder()
                 .description(event.getDescription())
-                .name(event.getClassName())
-                .fullName(event.getFullName())
+                .name(event.getName())
+                .className(event.getClassName())
                 .type(ConceptType.DOMAIN_EVENT)
                 .build();
 
@@ -112,7 +112,7 @@ public class BoundedContextDtoMapper {
             ConceptDto aggregateDto = ConceptDto.builder()
                 .description(event.getDescription())
                 .name(event.getName())
-                .fullName(event.getFullName())
+                .className(event.getClassName())
                 .type(ConceptType.AGGREGATE)
                 .build();
 
@@ -126,8 +126,8 @@ public class BoundedContextDtoMapper {
         public void apply(ValueObjectFound event) {
             ConceptDto valueObjectDto = ConceptDto.builder()
                 .description(event.getDescription())
-                .name(event.getClassName())
-                .fullName(event.getFullName())
+                .name(event.getName())
+                .className(event.getClassName())
                 .type(ConceptType.VALUE_OBJECT)
                 .build();
 
@@ -136,21 +136,21 @@ public class BoundedContextDtoMapper {
 
         public void applyInteraction() {
             returningInteractions.forEach(interaction -> {
-                Optional<ConceptDto> fromConceptOpt = conceptFromFullName(interaction.getFrom());
-                Optional<ConceptDto> withConceptOpt = conceptFromFullName(interaction.getWith());
+                Optional<ConceptDto> fromConceptOpt = conceptFromClassName(interaction.getFrom());
+                Optional<ConceptDto> withConceptOpt = conceptFromClassName(interaction.getWith());
 
                 if (fromConceptOpt.isPresent() && withConceptOpt.isPresent()) {
                     ConceptDto fromConcept = fromConceptOpt.get();
                     ConceptDto withConcept = withConceptOpt.get();
 
                     fromConcept.addInteractsWith(InteractionDto.builder()
-                        .simpleName(withConcept.getName())
-                        .fullName(withConcept.getFullName())
+                        .name(withConcept.getName())
+                        .className(withConcept.getClassName())
                         .build());
 
                     withConcept.addInteractsWith(InteractionDto.builder()
-                        .simpleName(fromConcept.getName())
-                        .fullName(fromConcept.getFullName())
+                        .name(fromConcept.getName())
+                        .className(fromConcept.getClassName())
                         .build());
                 }
             });

@@ -25,7 +25,7 @@ public class CoreConceptInteractionStrategy implements InteractionStrategy {
         return classesInCurrentConcept.stream()
                 .filter(classInCurrentConcept -> classInCurrentConcept.isAnnotationPresent(Aggregate.class))
                 .map(wrongClass -> ConceptRuleViolated.builder()
-                        .conceptFullName(currentConcept.getName())
+                        .className(currentConcept.getName())
                         .reason("CoreConcept interact with Aggregates " + wrongClass.getName() + ".")
                         .build()).collect(Collectors.toList());
     }

@@ -10,13 +10,13 @@ import lombok.*;
 public class DomainCommandFound implements DomainEvent {
 
     @NonNull
-    String description;
+    String name;
     @NonNull
-    String className;
+    String description;
     @NonNull
     String boundedContext;
     @NonNull
-    String fullName;
+    String className;
     @NonNull
     String packageName;
 

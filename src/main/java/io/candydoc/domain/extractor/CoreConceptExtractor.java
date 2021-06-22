@@ -40,13 +40,17 @@ public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
     private List<CoreConceptFound> findCoreConcepts(ExtractCoreConcepts command, Set<Class<?>> coreConceptClasses) {
         return coreConceptClasses.stream()
             .map(coreConcept -> CoreConceptFound.builder()
-                .name(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).name())
+                .name(getSimpleName(coreConcept))
                 .description(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).description())
-                .className(coreConcept.getSimpleName())
-                .fullName(coreConcept.getName())
+                .className(coreConcept.getName())
                 .packageName(coreConcept.getPackageName())
                 .boundedContext(command.getPackageToScan())
                 .build())
             .collect(Collectors.toUnmodifiableList());
+    }
+
+    private String getSimpleName(Class<?> aggregate) {
+        String annotatedName = aggregate.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).name();
+        return annotatedName.isBlank() ? aggregate.getSimpleName() : annotatedName;
     }
 }

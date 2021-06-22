@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValueObject {
-    String description();
+    String description() default "";
 }
