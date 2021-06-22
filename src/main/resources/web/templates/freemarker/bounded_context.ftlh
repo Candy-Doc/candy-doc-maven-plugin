@@ -19,7 +19,7 @@ ${navigation ?no_esc}
         <#list boundedContext.getConceptTypes() as conceptType>
             <#if boundedContext.getConcepts(conceptType)?has_content>
             <div class="interactions-box">
-                <p class="interaction__title">${i18n.getString(conceptType.name())}</p>
+                <h2 class="interaction__title">${i18n.getString(conceptType.name())}</h2>
                 <#list boundedContext.getConcepts(conceptType) as concept>
                     <a href="${boundedContext.name}/${concept.className}.html" class="interaction">
                         ${concept.name}
