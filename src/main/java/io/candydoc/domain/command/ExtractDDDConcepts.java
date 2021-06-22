@@ -12,12 +12,11 @@ import java.util.List;
 @Value
 @ToString
 public class ExtractDDDConcepts implements Command {
+    @Singular("packageToScan")
+    List<String> packagesToScan;
 
     public void accept(Visitor visitor) {
         visitor.handle(this);
     }
-
-    @Singular("packageToScan")
-    List<String> packagesToScan;
 }
 
