@@ -15,13 +15,14 @@ public class ValueObjectExtractor implements Extractor<ExtractValueObjects> {
         Reflections reflections = new Reflections(command.getPackageToScan());
         Set<Class<?>> valueObjectClasses = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.ValueObject.class);
         return valueObjectClasses.stream()
-                .map(valueObject -> ValueObjectFound.builder()
-                        .description(valueObject.getAnnotation(io.candydoc.domain.annotations.ValueObject.class).description())
-                        .className(valueObject.getSimpleName())
-                        .fullName(valueObject.getName())
-                        .packageName(valueObject.getPackageName())
-                        .boundedContext(command.getPackageToScan())
-                        .build())
-                .collect(Collectors.toUnmodifiableList());
+            .map(valueObject -> ValueObjectFound.builder()
+                .description(valueObject.getAnnotation(io.candydoc.domain.annotations.ValueObject.class).description())
+                .className(valueObject.getSimpleName())
+                .fullName(valueObject.getName())
+                .packageName(valueObject.getPackageName())
+                .boundedContext(command.getPackageToScan())
+                .build())
+            .collect(Collectors.toUnmodifiableList());
     }
+
 }

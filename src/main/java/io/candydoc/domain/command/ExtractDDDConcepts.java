@@ -17,7 +17,7 @@ public class ExtractDDDConcepts implements Command {
         visitor.handle(this);
     }
 
-    @Singular("packagesToScan")
+    @Singular("packageToScan")
     List<String> packagesToScan;
 }
 

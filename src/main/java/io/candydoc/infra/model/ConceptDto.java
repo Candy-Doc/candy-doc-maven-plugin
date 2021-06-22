@@ -21,15 +21,16 @@ public class ConceptDto {
     @NonNull
     String fullName;
     @NonNull
-    BoundedContextDto.ConceptType conceptType;
+    ConceptType type;
     @Builder.Default
     Set<InteractionDto> interactsWith = new LinkedHashSet<>();
     @Builder.Default
-    List<String> errors= new LinkedList<>();
+    List<String> errors = new LinkedList<>();
 
     public void addInteractsWith(InteractionDto interaction) {
         interactsWith.add(interaction);
     }
+
     public void addError(String error) {
         errors.add(error);
     }

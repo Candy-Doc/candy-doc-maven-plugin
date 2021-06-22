@@ -12,12 +12,10 @@ import java.util.List;
 @Value
 @RequiredArgsConstructor
 @io.candydoc.domain.annotations.DomainEvent(description = "Emitted when two core concept share the same name")
-public class NameConflictBetweenCoreConcept implements DomainEvent {
+public class NameConflictBetweenCoreConcepts implements DomainEvent {
+    List<String> coreConceptClassNames;
 
     public void accept(Visitor v) {
         v.apply(this);
     }
-
-    List<String> conflictingCoreConcepts;
-    String UsageError;
 }

@@ -16,13 +16,13 @@ public class DomainCommandExtractor implements Extractor<ExtractDomainCommands> 
         Reflections reflections = new Reflections(command.getPackageToScan());
         Set<Class<?>> domainCommands = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.DomainCommand.class);
         return domainCommands.stream()
-                .map(domainCommand -> DomainCommandFound.builder()
-                        .description(domainCommand.getAnnotation(io.candydoc.domain.annotations.DomainCommand.class).description())
-                        .className(domainCommand.getSimpleName())
-                        .fullName(domainCommand.getName())
-                        .packageName(domainCommand.getPackageName())
-                        .boundedContext(command.getPackageToScan())
-                        .build())
-                .collect(Collectors.toUnmodifiableList());
+            .map(domainCommand -> DomainCommandFound.builder()
+                .description(domainCommand.getAnnotation(io.candydoc.domain.annotations.DomainCommand.class).description())
+                .className(domainCommand.getSimpleName())
+                .fullName(domainCommand.getName())
+                .packageName(domainCommand.getPackageName())
+                .boundedContext(command.getPackageToScan())
+                .build())
+            .collect(Collectors.toUnmodifiableList());
     }
 }

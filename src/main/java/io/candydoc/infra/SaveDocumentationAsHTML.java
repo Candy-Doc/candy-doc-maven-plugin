@@ -1,13 +1,12 @@
 package io.candydoc.infra;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.candydoc.domain.SaveDocumentationPort;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.exceptions.DocumentationGenerationFailed;
 import io.candydoc.infra.model.BoundedContextDto;
 import io.candydoc.infra.model.ConceptDto;
+import io.candydoc.infra.model.ConceptType;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
@@ -57,7 +56,7 @@ public class SaveDocumentationAsHTML implements SaveDocumentationPort {
         model.put("baseFolder", HTML_BASE_FOLDER);
         Path fileDestination = boundedContextDirectory.resolve(boundedContext.getName() + ".html");
         templateEngine.generatePage("bounded_context", fileDestination, model);
-        Arrays.stream(BoundedContextDto.ConceptType.values())
+        Arrays.stream(ConceptType.values())
                 .map(conceptType -> boundedContext.getConcepts(conceptType))
                 .flatMap(Collection::stream)
                 .forEach(concepts -> generatePage(concepts, boundedContextDirectory, boundedContext, boundedContexts));
