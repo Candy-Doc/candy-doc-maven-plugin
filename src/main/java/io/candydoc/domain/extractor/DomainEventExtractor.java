@@ -16,6 +16,7 @@ public class DomainEventExtractor implements Extractor<ExtractDomainEvents> {
     public List<DomainEvent> extract(ExtractDomainEvents command) {
         Reflections reflections = new Reflections(command.getPackageToScan());
         Set<Class<?>> domainEventClasses = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.DomainEvent.class);
+        log.info("Domain events found in {}: {}", command.getPackageToScan(), domainEventClasses);
         return domainEventClasses.stream()
             .map(domainEvent -> DomainEventFound.builder()
                 .description(domainEvent.getAnnotation(io.candydoc.domain.annotations.DomainEvent.class).description())

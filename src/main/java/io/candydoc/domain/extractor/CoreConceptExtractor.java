@@ -4,18 +4,21 @@ import io.candydoc.domain.command.ExtractCoreConcepts;
 import io.candydoc.domain.events.CoreConceptFound;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.NameConflictBetweenCoreConcepts;
+import lombok.extern.slf4j.Slf4j;
 import org.reflections8.Reflections;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
 
     @Override
     public List<DomainEvent> extract(ExtractCoreConcepts command) {
         Reflections reflections = new Reflections(command.getPackageToScan());
         Set<Class<?>> coreConceptClasses = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.CoreConcept.class);
+        log.info("Core concepts found in {}: {}", command.getPackageToScan(), coreConceptClasses);
         List<CoreConceptFound> coreConcepts = findCoreConcepts(command, coreConceptClasses);
         List<DomainEvent> conflicts = checkConflictBetweenCoreConcepts(coreConcepts);
         return Stream.of(coreConcepts, conflicts)
