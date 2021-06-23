@@ -6,7 +6,6 @@ html {
 }
 
 body {
-    height: 100%;
     margin: 0;
     display: flex;
     flex-flow: row nowrap;
@@ -15,12 +14,12 @@ body {
 /** NAVIGATION **/
 
 .navigation {
-    position: fixed;
-    height: 100%;
-    width: 400px;
+    height: 100vh;
+    max-width: 400px;
+    min-width: 400px;
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
+    overflow-y: auto;
     background-color: #FFFFFF;
 }
 
@@ -54,12 +53,15 @@ body {
 .navigation .concepts {
     padding: 0.2rem 1.5rem;
 }
+.navigation .bounded-context {
+    padding: 0.5rem 0;
+}
 .navigation .bounded-context > a {
     font-size: 1.5rem;
     font-weight: bold;
     text-transform: uppercase;
 }
-.navigation .concepts__type {
+.navigation .concept-type {
     font-size: 1.2rem;
     font-weight: bold;
     padding: 0.2rem 0;
@@ -69,16 +71,37 @@ body {
     padding: 0.3rem 0;
 }
 
-/** CURRENT CONCEPT **/
+/** MAIN CONTENT **/
+main {
+    height: 100vh;
+    width: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    padding: 0 1rem;
+}
+
 .concept {
-    margin-left: 400px;
+    width: 100%;
+}
+.concept__name {
+    font-size: 1.3rem;
+}
+.concept__class-name {
+    font-size: 0.9rem;
+}
+.concept__description {
+    font-style: italic;
 }
 
 /** INTERACTIONS **/
 .interactions {
     display: flex;
     flex-flow: row wrap;
+    justify-content: space-between;
     gap: 2rem;
+    width: 100%;
 }
 .interactions-box {
     display: flex;
@@ -94,4 +117,5 @@ body {
 }
 .interaction__title {
     font-weight: bold;
+    font-size: 1.1rem;
 }
