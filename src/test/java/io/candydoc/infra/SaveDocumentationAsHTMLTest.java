@@ -73,7 +73,7 @@ class SaveDocumentationAsHTMLTest {
     @AfterEach
     public void afterEach() throws IOException {
         Path HTMLDestinationFolder = Paths.get("target", "candy-doc", "html");
-        //FileUtils.deleteDirectory(HTMLDestinationFolder.toFile());
+        FileUtils.deleteDirectory(HTMLDestinationFolder.toFile());
     }
 
     private Document getDocument(String documentPathInHTMLDirectory) throws IOException {
