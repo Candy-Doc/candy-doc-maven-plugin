@@ -4,7 +4,6 @@ import io.candydoc.domain.command.ExtractValueObjects;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.ValueObjectFound;
 import lombok.extern.slf4j.Slf4j;
-import org.netbeans.lib.cvsclient.commandLine.command.log;
 import org.reflections8.Reflections;
 
 import java.util.List;
