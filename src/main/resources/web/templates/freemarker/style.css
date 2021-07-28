@@ -75,8 +75,18 @@ body {
     text-transform: uppercase;
 }
 
+.graph {
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    display: flex;
+    margin-right: 300px;
+}
+
+
 .concept {
     margin-left: 300px;
+    margin-top: 30em;
     padding: 1em;
     width: 100%;
     background: rgba(255, 255, 255, 0.5);
