@@ -34,7 +34,7 @@
         </#list>
     </nav>
 </div>
-<div id="graph"></div>
+<div id="concept__graph"></div>
 <article class="concept">
     <section class="concept__information">
         <h1 class="concept__name">${boundedContext.name}</h1>
@@ -96,7 +96,7 @@
 
     ]);
     var data = {nodes: nodes, edges: edges};
-    var container = document.getElementById("graph");
+    var container = document.getElementById("concept__graph");
     var options = {
         autoResize: true,
         height: '100%',
