@@ -77,27 +77,27 @@ body {
 
 .concept {
     margin-left: 300px;
-    margin-top: 30em;
     padding: 1em;
     width: 100%;
-    background: rgba(255, 255, 255, 0.5);
+    background-color: aliceblue;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 
-#concept__graph {
-    margin-left: 300px;
+.concept #concept__graph {
     justify-content: space-evenly;
     align-items: center;
-    height: 100%;
     display: flex;
-    background-color: khaki;
+    background-color: #FFEBCD;
+    height: 70%;
+    width: 100%;
 }
 
 .concept .concept__information {
     padding: 0.5em;
-    width: 20em;
+    flex-direction: row;
+    background-color: aliceblue;
 }
 
 .concept interaction__title:after {
