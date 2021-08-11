@@ -49,7 +49,7 @@ release:
     - CI_REPOSITORY_SSH_URL=`echo ${CI_REPOSITORY_URL} | perl -pe 's#.*@(.+?(\:\d+)?)/#git@\1:#'`
     - git remote set-url --push origin ${CI_REPOSITORY_SSH_URL}
   script:
-    - git checkout -B ${CI_COMMIT_REF_NAME}
+    - git checkout -b ${CI_COMMIT_REF_NAME}
     - echo "${CI_COMMIT_REF_NAME}"
     - mvn $MAVEN_CLI_OPTS release:clean -DskipTests=true
     - mvn $MAVEN_CLI_OPTS release:prepare -DskipTests=true
