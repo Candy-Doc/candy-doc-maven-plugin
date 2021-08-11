@@ -110,6 +110,17 @@ class SaveDocumentationAsHTMLTest {
     }
 
     @Test
+    void bounded_contexts_have_distinct_folders() throws IOException {
+        saveDocumentationAsHTML.save(boundedContextsForHTMLGenerationTests);
+        Assertions.assertThat(new File(String.valueOf(Paths.get("target", "candy-doc", "html",
+                "candydoc.sample.valid_bounded_contexts.bounded_context_one")))
+                .exists());
+        Assertions.assertThat(new File(String.valueOf(Paths.get("target", "candy-doc", "html",
+                "candydoc.sample.valid_bounded_contexts.bounded_context_two")))
+                .exists());
+    }
+
+    @Test
     void core_concept_file_is_generated() throws IOException {
         saveDocumentationAsHTML.save(boundedContextsForHTMLGenerationTests);
         Assertions.assertThat(new File(String.valueOf(Paths.get("target", "candy-doc", "html",
