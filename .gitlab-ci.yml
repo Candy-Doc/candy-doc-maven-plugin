@@ -43,7 +43,7 @@ release:
     - echo "$CI_TOKEN_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - echo "$CI_TOKEN_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - '[[ -f /.dockerenv ]] && echo -e "Host gitlab.ippon.fr:ippon-lille\n\tStrictHostKeyChecking no\n\tUser git\n\tIdentityFile ~/.ssh/id_rsa\n\n" > ~/.ssh/config'
+    - '[[ -f /.dockerenv ]] && echo -e "Host gitlab.ippon.fr\n\tStrictHostKeyChecking no\n\tUser git\n\tIdentityFile ~/.ssh/id_rsa\n\n" > ~/.ssh/config'
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
     - CI_REPOSITORY_SSH_URL=`echo ${CI_REPOSITORY_URL} | perl -pe 's#.*@(.+?(\:\d+)?)/#git@\1:#'`
