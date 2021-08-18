@@ -32,6 +32,7 @@ build:
   except:
     - master
 
+
 release:
   stage: release
   before_script:
