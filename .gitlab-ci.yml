@@ -47,7 +47,7 @@ release:
     - '[[ -f /.dockerenv ]] && echo -e "Host gitlab.ippon.fr:ippon-lille\n\tStrictHostKeyChecking no\n\tUser git\n\tIdentityFile ~/.ssh/id_rsa\n\n" > ~/.ssh/config'
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
-    - `echo ${CI_REPOSITORY_URL} | perl -pe 's#.*@(.+?(\:\d+)?)/#git@\1:#'`
+    - echo ${CI_REPOSITORY_URL} | perl -pe 's#.*@(.+?(\:\d+)?)/#git@\1:#'
     - CI_REPOSITORY_SSH_URL=`echo ${CI_REPOSITORY_URL} | perl -pe 's#.*@(.+?(\:\d+)?)/#git@\1:#'`
     - git remote set-url --push origin ${CI_REPOSITORY_SSH_URL}
   script:
