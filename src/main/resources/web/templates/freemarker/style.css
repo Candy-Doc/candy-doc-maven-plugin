@@ -77,7 +77,6 @@ body {
 
 .concept {
     margin-left: 300px;
-    padding: 1em;
     width: 100%;
     background-color: aliceblue;
     display: flex;
@@ -95,7 +94,7 @@ body {
 }
 
 .concept .concept__information {
-    padding: 0.5em;
+    padding: 1em;
     flex-direction: row;
     background-color: aliceblue;
 }
