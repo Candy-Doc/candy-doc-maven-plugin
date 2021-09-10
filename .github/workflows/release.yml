@@ -16,7 +16,7 @@ jobs:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
         with:
           release-branch-name: "feat/CI_release"
-          maven-release-version-number: ${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT
+          maven-release-version-number: ${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}
           git-release-bot-name: "release-bot"
           git-release-bot-email: "release-bot@ippon.io"
           
