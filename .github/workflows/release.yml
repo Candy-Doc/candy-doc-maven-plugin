@@ -15,6 +15,7 @@ jobs:
         env:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
         with:
+          path: ~/.m2/release
           maven-release-version-number: ${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT
           git-release-bot-name: "release-bot"
           git-release-bot-email: "release-bot@ippon.io"
