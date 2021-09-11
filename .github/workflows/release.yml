@@ -22,15 +22,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
             ${{ runner.os }}-m2-
-      - name: Release
+      - name: Maven Release
         run: |
+          git config --global user.email "ipponbot@ippon.fr"
+          git config --global user.name "ipponbot"
           mvn release:clean -DskipTests=true
           mvn build-helper:parse-version versions:set \
           release:prepare \ -DdevelopmentVersion =\${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT \
           release:perform
-      - name: Create local changes
-        run: |
-          git push
       - name: Commit & Push changes
         uses: actions-js/push@master
         with:
