@@ -13,14 +13,14 @@ jobs:
           MAVEN_CLI_OPTS: -s settings.xml -B -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
           GITHUB_EMAIL: ${{ secrets.GIT_BOT_EMAIL }}
           GITHUB_USERNAME: ${{ secrets.GIT_BOT_USERNAME }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
       - name: Set up JDK 11
         uses: joschi/setup-jdk@v2
         with:
           java-version: '11'
           server-id: github
-          server-username: $GITHUB_USERNAME
-          server-password: $GITHUB_TOKEN
+          server-username: ${{ secrets.GIT_BOT_USERNAME }}
+          server-password: ${{ secrets.GIT_TOKEN }}
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
@@ -31,6 +31,8 @@ jobs:
             ${{ runner.os }}-m2-
       - name: Maven Release
         run: |
+          git config --global user.email "$GITHUB_EMAIL"
+          git config --global user.name "$GITHUB_USERNAME"
           mvn $MAVEN_CLI_OPTS release:clean -DskipTests=true
           mvn $MAVEN_CLI_OPTS build-helper:parse-version versions:set \
           release:prepare DskipTests=true \ -DdevelopmentVersion =\${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT \
