@@ -26,8 +26,8 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "${{ SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add -
-          echo "${{ SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add -
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           git config --global user.email "${{ secrets.GIT_BOT_EMAIL }}"
           git config --global user.name "${{ secrets.GIT_BOT_USERNAME }}"
