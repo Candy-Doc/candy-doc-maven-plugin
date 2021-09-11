@@ -52,6 +52,7 @@ jobs:
           env:
             JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
           with:
+            m2-home-folder: /root/.m2/release
             gpg-enabled: true
             gpg-key-id: ${{ secrets.GPG_KEY_ID }}
             gpg-key: ${{ secrets.GPG_KEY }}
