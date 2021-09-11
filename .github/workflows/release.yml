@@ -24,13 +24,13 @@ jobs:
             ${{ runner.os }}-m2-
       - name: Release
         run: |
-          - mvn release:clean -DskipTests=true
-          - mvn build-helper:parse-version versions:set \
+          mvn release:clean -DskipTests=true
+          mvn build-helper:parse-version versions:set \
           release:prepare \ -DdevelopmentVersion =\${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT \
           release:perform
       - name: Create local changes
         run: |
-          - git push
+          git push
       - name: Commit & Push changes
         uses: actions-js/push@master
         with:
