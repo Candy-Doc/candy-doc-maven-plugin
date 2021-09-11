@@ -24,6 +24,7 @@ jobs:
             ${{ runner.os }}-m2-
       - name: Maven Release
         run: |
+         'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
           eval $(ssh-agent -s)
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
