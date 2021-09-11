@@ -23,8 +23,8 @@ jobs:
             ${{ runner.os }}-m2-
       - name: Maven Release
         run: |
-          git config --global user.email "$GITHUB_MAIL"
-          git config --global user.username "$GITHUB_USERNAME"
+          git config --global user.email "$GITHUB_EMAIL"
+          git config --global user.name "$GITHUB_USERNAME"
           mvn $MAVEN_CLI_OPTS release:clean -DskipTests=true
           mvn $MAVEN_CLI_OPTS build-helper:parse-version versions:set \
           release:prepare DskipTests=true \ -DdevelopmentVersion =\${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT \
@@ -32,5 +32,6 @@ jobs:
           release:perform DskipTests=true
         env:
           MAVEN_CLI_OPTS: -s ci_settings.xml -B -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+          GITHUB_EMAIL: ${{ secrets.GIT_BOT_EMAIL }}
           GITHUB_USERNAME: ${{ secrets.GIT_BOT_USERNAME }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
