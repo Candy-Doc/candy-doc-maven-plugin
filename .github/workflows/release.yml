@@ -26,6 +26,7 @@ jobs:
           mvn $MAVEN_CLI_OPTS release:clean -DskipTests=true
           mvn $MAVEN_CLI_OPTS build-helper:parse-version versions:set \
           release:prepare DskipTests=true \ -DdevelopmentVersion =\${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT \
+          -DnewVersion =\${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT
           release:perform DskipTests=true
         env:
           MAVEN_CLI_OPTS: -s ci_settings.xml -B -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
