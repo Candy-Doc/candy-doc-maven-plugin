@@ -2,8 +2,8 @@ name: release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - feat/CI_release
 jobs:
   run_tests:
     runs-on: ubuntu-latest
@@ -66,9 +66,9 @@ jobs:
           JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
         with:
           release-branch-name: "feat/CI_release"
-          maven-release-version-number: ${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT
-          git-release-bot-name: "release-bot"
-          git-release-bot-email: "release-bot@ippon.io"
+          version-major: true
+          git-release-bot-name: "bot-idhub"
+          git-release-bot-email: "bot@idhub.io"
 
           maven-args: "-Dmaven.javadoc.skip=true -DskipTests -DskipITs -Ddockerfile.skip -DdockerCompose.skip -Dmaven.deploy.skip=true"
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
