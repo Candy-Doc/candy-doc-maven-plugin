@@ -24,6 +24,11 @@ jobs:
             ${{ runner.os }}-m2-
       - name: Maven Release
         run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "${{ SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add -
+          echo "${{ SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
           git config --global user.email "${{ secrets.GIT_BOT_EMAIL }}"
           git config --global user.name "${{ secrets.GIT_BOT_USERNAME }}"
           mvn release:clean -DskipTests=true
