@@ -6,7 +6,7 @@ stages:
 image: maven:3-jdk-11-slim
 
 variables:
-  MAVEN_CLI_OPTS: "-s ci_settings.xml -B -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  MAVEN_CLI_OPTS: "-s settings.xml -B -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
 
 cache:
   paths:
