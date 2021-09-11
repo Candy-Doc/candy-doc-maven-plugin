@@ -24,8 +24,8 @@ jobs:
             ${{ runner.os }}-m2-
       - name: Maven Release
         run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
+          mkdir -p /root/.ssh
+          chmod 700 /root/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add -
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
