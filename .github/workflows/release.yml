@@ -60,9 +60,10 @@ jobs:
             git-release-bot-name: "ipponbot"
             git-release-bot-email: "bot@idhub.io"
             maven-args: "-Dmaven.javadoc.skip=true -DskipTests -DskipITs -Dmaven.deploy.skip=true"
+
             ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
         - name: Upload a Build Artifact
           uses: actions/upload-artifact@v2.2.4
           with:
-            name: build_and_release
+            name: build
             path: target/*
