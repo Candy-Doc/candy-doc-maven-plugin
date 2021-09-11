@@ -56,6 +56,7 @@ jobs:
             gpg-enabled: true
             gpg-key-id: ${{ secrets.GPG_KEY_ID }}
             gpg-key: ${{ secrets.GPG_KEY }}
+            gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
             release-branch-name: "feat/CI_release"
             version-major: true
             git-release-bot-name: "ipponbot"
