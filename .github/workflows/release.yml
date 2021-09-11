@@ -9,6 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        env:
+          MAVEN_CLI_OPTS: -s settings.xml -B -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+          GITHUB_EMAIL: ${{ secrets.GIT_BOT_EMAIL }}
+          GITHUB_USERNAME: ${{ secrets.GIT_BOT_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up JDK 11
         uses: joschi/setup-jdk@v2
         with:
@@ -31,8 +36,3 @@ jobs:
           release:prepare DskipTests=true \ -DdevelopmentVersion =\${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT \
           -DnewVersion =\${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT
           release:perform DskipTests=true
-        env:
-          MAVEN_CLI_OPTS: -s settings.xml -B -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
-          GITHUB_EMAIL: ${{ secrets.GIT_BOT_EMAIL }}
-          GITHUB_USERNAME: ${{ secrets.GIT_BOT_USERNAME }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
