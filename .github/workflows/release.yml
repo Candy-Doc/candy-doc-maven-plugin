@@ -52,9 +52,12 @@ jobs:
           env:
             JAVA_HOME: /usr/lib/jvm/java-11-openjdk/
           with:
+            gpg-enabled: true
+            gpg-key-id: ${{ secrets.GPG_KEY_ID }}
+            gpg-key: ${{ secrets.GPG_KEY }}
             release-branch-name: "feat/CI_release"
             version-major: true
-            git-release-bot-name: "bot-idhub"
+            git-release-bot-name: "ipponbot"
             git-release-bot-email: "bot@idhub.io"
             maven-args: "-Dmaven.javadoc.skip=true -DskipTests -DskipITs -Dmaven.deploy.skip=true"
             ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
