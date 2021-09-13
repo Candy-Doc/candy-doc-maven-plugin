@@ -10,12 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
-        uses: joschi/setup-jdk@v2
+        uses: actions/setup-java@v1.4.2
         with:
           java-version: '11'
           server-id: github
-          server-username: ${{ secrets.GIT_BOT_USERNAME }}
-          server-password: ${{ secrets.GIT_TOKEN }}
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
@@ -28,7 +26,7 @@ jobs:
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-      - name: Publish JAR
-        run: mvn -B release:prepare release:perform
+      - name: Maven tag
+        run: ./mvnw -B release:prepare
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
