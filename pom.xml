@@ -125,7 +125,7 @@
     </dependencies>
 
     <scm>
-        <developerConnection>scm:git:https://github.com/${git.repository}.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/CANDY-DOC/candy-doc.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
