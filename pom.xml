@@ -125,8 +125,7 @@
     </dependencies>
 
     <scm>
-        <connection>scm:git:ssh://git@github.com:CANDY-DOC/candy-doc.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:CANDY-DOC/candy-doc.git</developerConnection>
+        <developerConnection>scm:git:https://github.com/${git.repository}.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -170,6 +169,13 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub</name>
+            <url>https://maven.pkg.github.com/${git.repository}</url>
+        </repository>
+    </distributionManagement>
 <!--
     <repositories>
         <repository>
