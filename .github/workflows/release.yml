@@ -24,12 +24,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
             ${{ runner.os }}-m2-
-      - name: Maven Release
+      - name: Configure Git user
         run: |
-          git config --global user.email "${{ secrets.GIT_BOT_EMAIL }}"
-          git config --global user.name "Github CI"
-          mvn $MAVEN_CLI_OPTS release:clean -DskipTests=true
-          mvn $MAVEN_CLI_OPTS build-helper:parse-version versions:set \
-          release:prepare DskipTests=true \ -DdevelopmentVersion =\${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT \
-          -DnewVersion =\${parsedVersion.nextMajorVersion}.\${parsedVersion.minorVersion}-SNAPSHOT
-          release:perform DskipTests=true
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+      - name: Publish JAR
+        run: ./mvnw -B release:prepare release:perform
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
