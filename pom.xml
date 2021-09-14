@@ -4,7 +4,7 @@
 
     <groupId>io.candy-doc</groupId>
     <artifactId>candy-doc</artifactId>
-    <version>1.45-SNAPSHOT</version>
+    <version>1.${minor_version}-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <properties>
