@@ -124,9 +124,8 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/CANDY-DOC/candy-doc</developerConnection>
-        <tag>v1.8</tag>
+        <tag>v1.44</tag>
     </scm>
-
     <build>
         <plugins>
             <plugin>
