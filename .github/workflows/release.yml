@@ -11,23 +11,22 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          
+
       - name: 'Get Previous tag'
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
           fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
-          
+
       - name: Storing Previous tag value
+        run: |
+          echo "$PREVIOUS_GIT_TAG"
+          echo ${TAG_ARRAY[0]}
         env:
           PREVIOUS_GIT_TAG: echo ${{ steps.previoustag.outputs.tag }} | sed -ne 's/.*\([0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p'
           #split version to identify if we have a major/minor change
           TAG_ARRAY: IFS='.' read -ra array <<< "$PREVIOUS_GIT_TAG"
-          
-        run: |
-          echo $PREVIOUS_GIT_TAG
-          echo "${TAG_ARRAY[0]}"
-        
+
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
@@ -36,17 +35,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
             ${{ runner.os }}-m2-
-            
+
       - uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
           java-version: 11
-          
+
       - name: Configure Git user
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-          
+
       - name: Maven tag
         run: mvn release:prepare
         env:
