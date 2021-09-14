@@ -2,8 +2,8 @@ name: release
 
 on:
   push:
-    branches:
-      - feat/CI_release
+    tags:
+      - 'v*'
 jobs:
   release:
     runs-on: ubuntu-latest
