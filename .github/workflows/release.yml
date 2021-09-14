@@ -65,7 +65,7 @@ jobs:
           echo $MAVEN_MINOR_VERSION
 
       - name: Major Maven release
-        if: ${{ env.GITHUB_MAJOR_VERSION }} != ${{ env.MAVEN_MAJOR_VERSION }}
+        if: env.GITHUB_MAJOR_VERSION > env.MAVEN_MAJOR_VERSION
         run: |
           mvn build-helper:parse-version versions:set \
           release:prepare \
@@ -76,7 +76,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Minor Maven release
-        if: ${{ env.GITHUB_MINOR_VERSION }} > ${{ env.MAVEN_MINOR_VERSION }}
+        if: env.GITHUB_MINOR_VERSION > env.MAVEN_MINOR_VERSION
         run: |
           mvn build-helper:parse-version versions:set \
           release:prepare \
