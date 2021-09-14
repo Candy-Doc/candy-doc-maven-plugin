@@ -70,7 +70,7 @@ jobs:
         run: |
           git tag --delete v$GITHUB_TAG_VERSION
           git push --delete origin v$GITHUB_TAG_VERSION
-          major_version=$GITHUB_MAJOR_VERSION+1
+          major_version= $(echo $(( $GITHUB_MAJOR_VERSION+1)))
           mvn build-helper:parse-version versions:set \
           release:prepare \
           -DdevelopmentVersion=$major_version.1-SNAPSHOT \
@@ -84,7 +84,7 @@ jobs:
         run: |
           git tag --delete v$GITHUB_TAG_VERSION
           git push --delete origin v$GITHUB_TAG_VERSION
-          minor_version=$GITHUB_MINOR_VERSION+1
+          minor_version= $(echo $(( $GITHUB_MINOR_VERSION+1)))
           mvn build-helper:parse-version versions:set \
           release:prepare \
           -DdevelopmentVersion=\${parsedVersion.majorVersion}.$minor_version-SNAPSHOT \
