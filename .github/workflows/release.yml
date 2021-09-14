@@ -24,7 +24,7 @@ jobs:
       - name: Save changelog
         run: |
           echo "CHANGELOG_NAME=$(echo ${{ steps.changelog_reader.outputs.version }})" >> $GITHUB_ENV
-          echo "CHANGELOG_BODY=$(echo ${{ ssteps.changelog_reader.outputs.changes }})" >> $GITHUB_ENV
+          echo "CHANGELOG_BODY=$(echo ${{ steps.changelog_reader.outputs.changes }})" >> $GITHUB_ENV
 
       - name: Check changelog value
         run: |
