@@ -21,8 +21,14 @@ jobs:
       - name: Storing Previous tag value
         run: echo "GITHUB_TAG_VERSION=$(echo ${{ steps.previoustag.outputs.tag }} \
           | sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')" >> $GITHUB_ENV
-      - name: Display env var
-        run: echo $GITHUB_TAG_VERSION
+      - name: Splitting version
+        run: |
+          IFS='.' read -r -a result <<< $GITHUB_TAG_VERSION
+          echo "GITHUB_MAJOR_VERSION=$(echo ${result[0]})" >> $GITHUB_ENV
+          echo "GITHUB_MINOR_VERSION=$(echo ${result[1]})" >> $GITHUB_ENV
+
+          echo $GITHUB_MAJOR_VERSION
+          echo $GITHUB_MINOR_VERSION
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
