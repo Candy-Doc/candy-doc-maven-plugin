@@ -79,13 +79,12 @@ jobs:
       - name: Minor Maven release
         if: ${{ env.MAVEN_UPDATE_TYPE == 'false' }}
         run: |
+          git tag --delete v$GITHUB_TAG_VERSION
+          git push --delete origin v$GITHUB_TAG_VERSION
           mvn build-helper:parse-version versions:set \
           release:prepare \
           -DdevelopmentVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}-SNAPSHOT \
           -Dmaven.javadoc.skip=true -DskipTests=true \
           -DreleaseVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}
-
-          git reset --hard HEAD~1
-          git push --force origin feat/CI_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
