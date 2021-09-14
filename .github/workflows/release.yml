@@ -20,7 +20,7 @@ jobs:
 
       - name: Storing Previous tag value
         run: |
-          echo "GITHUB_TAG_VERSION=$(${{ steps.previoustag.outputs.tag }} | sed -ne 's/.*\([0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p')" >> $GITHUB_ENV
+          echo "GITHUB_TAG_VERSION=$(echo ${{ steps.previoustag.outputs.tag }} | sed -ne 's/.*\([0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p')" >> $GITHUB_ENV
           echo $GITHUB_TAG_VERSION
 
       - name: Cache Maven packages
