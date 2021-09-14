@@ -22,11 +22,13 @@ jobs:
       - name: Storing Github tag value
         run: echo "GITHUB_TAG_VERSION=$(echo ${{ steps.previoustag.outputs.tag }} \
           | sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')" >> $GITHUB_ENV
+
       - name: Splitting version
         run: |
           IFS='.' read -r -a result <<< $GITHUB_TAG_VERSION
           echo "GITHUB_MAJOR_VERSION=$(echo ${result[0]})" >> $GITHUB_ENV
           echo "GITHUB_MINOR_VERSION=$(echo ${result[1]})" >> $GITHUB_ENV
+
 
       - name: Cache Maven packages
         uses: actions/cache@v2
@@ -36,6 +38,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
             ${{ runner.os }}-m2-
+
 
       - uses: actions/setup-java@v2
         with:
@@ -47,6 +50,7 @@ jobs:
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
+
       - name: Extract Maven project version
         run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
         id: project
@@ -54,16 +58,19 @@ jobs:
       - name: Storing Maven tag value
         run: echo "MAVEN_TAG_VERSION=$(echo ${{ steps.project.outputs.version }} \
           | sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')" >> $GITHUB_ENV
+
       - name: Splitting version
         run: |
           IFS='.' read -r -a result <<< $MAVEN_TAG_VERSION
           echo "MAVEN_MAJOR_VERSION=$(echo ${result[0]})" >> $GITHUB_ENV
           echo "MAVEN_MINOR_VERSION=$(echo ${result[1]})" >> $GITHUB_ENV
+
       - name: Checking Minor or Major update
         run: |
           if [ $GITHUB_MAJOR_VERSION > $MAVEN_MAJOR_VERSION ] && [ $GITHUB_MAJOR_VERSION != $MAVEN_MAJOR_VERSION ]; \
           then result=true; else result=false; fi
           echo "MAVEN_UPDATE_TYPE=$(echo $result)" >> $GITHUB_ENV
+
 
       - name: Major Maven release
         if: ${{ env.MAVEN_UPDATE_TYPE == 'true' }}
