@@ -28,7 +28,6 @@ jobs:
           echo "GITHUB_MAJOR_VERSION=$(echo ${result[0]})" >> $GITHUB_ENV
           echo "GITHUB_MINOR_VERSION=$(echo ${result[1]})" >> $GITHUB_ENV
 
-
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
