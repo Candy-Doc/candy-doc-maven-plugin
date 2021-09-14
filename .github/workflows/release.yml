@@ -26,10 +26,8 @@ jobs:
           IFS='.' read -r -a result <<< $GITHUB_TAG_VERSION
           echo "GITHUB_MAJOR_VERSION=$(echo ${result[0]})" >> $GITHUB_ENV
           echo "GITHUB_MINOR_VERSION=$(echo ${result[1]})" >> $GITHUB_ENV
-      - name: Reading version value
-        run: |
-          echo $GITHUB_MAJOR_VERSION
-          echo $GITHUB_MINOR_VERSION
+
+
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
@@ -49,7 +47,24 @@ jobs:
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
 
-      - name: Maven tag
-        run: mvn release:prepare
+      - name: Major Maven release
+        if: ${{ GITHUB_MAJOR_VERSION > ${parsedVersion.majorVersion} }}
+        run: |
+          mvn build-helper:parse-version versions:set \
+          release:prepare \
+          -DdevelopmentVersion=\${parsedVersion.nextMajorVersion}.1-SNAPSHOT \
+          -Dmaven.javadoc.skip=true -DskipTests=true \
+          -DreleaseVersion=\${parsedVersion.nextMajorVersion}.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Minor Maven release
+        if: ${{ $GITHUB_MINOR_VERSION > ${parsedVersion.minorVersion} }}
+        run: |
+          mvn build-helper:parse-version versions:set \
+          release:prepare \
+          -DdevelopmentVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}-SNAPSHOT \
+          -Dmaven.javadoc.skip=true -DskipTests=true \
+          -DreleaseVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
