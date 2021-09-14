@@ -84,5 +84,8 @@ jobs:
           -DdevelopmentVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}-SNAPSHOT \
           -Dmaven.javadoc.skip=true -DskipTests=true \
           -DreleaseVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}
+
+          git reset --hard HEAD~1
+          git push --force origin feat/CI_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
