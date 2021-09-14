@@ -13,7 +13,25 @@ jobs:
           fetch-depth: 0
           ref: 'feat/CI_release'
 
-      - name: 'Get Previous tag'
+      - name: Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          validation_depth: 10
+          version: ${{ steps.tag_name.outputs.current_version }}
+          path: ./CHANGELOG.md
+
+      - name: Save changelog
+        run: |
+          echo "CHANGELOG_NAME=$(echo ${{ steps.changelog_reader.outputs.version }})" >> $GITHUB_ENV
+          echo "CHANGELOG_BODY=$(echo ${{ ssteps.changelog_reader.outputs.changes }})" >> $GITHUB_ENV
+
+      - name: Check changelog value
+        run: |
+          echo $CHANGELOG_NAME
+          echo $CHANGELOG_BODY
+
+      - name: Get Previous tag
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
