@@ -18,10 +18,15 @@ jobs:
         with:
           fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
           
-      - name: Storing Previous tag
+      - name: Storing Previous tag value
         env:
-          PREVIOUS_GIT_TAG: ${{ steps.previoustag.outputs.tag }}
-        run: echo $PREVIOUS_GIT_TAG
+          PREVIOUS_GIT_TAG: echo ${{ steps.previoustag.outputs.tag }} | sed -ne 's/.*\([0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p'
+          #split version to identify if we have a major/minor change
+          TAG_ARRAY: IFS='.' read -ra array <<< "$PREVIOUS_GIT_TAG"
+          
+        run: |
+          echo $PREVIOUS_GIT_TAG
+          echo "${TAG_ARRAY[0]}"
         
       - name: Cache Maven packages
         uses: actions/cache@v2
