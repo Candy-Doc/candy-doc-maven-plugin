@@ -59,13 +59,14 @@ jobs:
           IFS='.' read -r -a result <<< $MAVEN_TAG_VERSION
           echo "MAVEN_MAJOR_VERSION=$(echo ${result[0]})" >> $GITHUB_ENV
           echo "MAVEN_MINOR_VERSION=$(echo ${result[1]})" >> $GITHUB_ENV
-      - name: Showing Maven Version
+      - name: Checking Minor or Major update
         run: |
-          echo $MAVEN_MAJOR_VERSION
-          echo $MAVEN_MINOR_VERSION
+          if [ $GITHUB_MAJOR_VERSION > $MAVEN_MAJOR_VERSION ]; \
+          then result=true; else result=false; fi
+          echo "MAVEN_UPDATE_TYPE=$(echo $result)" >> $GITHUB_ENV
 
       - name: Major Maven release
-        if: env.GITHUB_MAJOR_VERSION > env.MAVEN_MAJOR_VERSION
+        if: {{ env.MAVEN_UPDATE_TYPE }} == 'true'
         run: |
           mvn build-helper:parse-version versions:set \
           release:prepare \
@@ -76,7 +77,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Minor Maven release
-        if: env.GITHUB_MINOR_VERSION > env.MAVEN_MINOR_VERSION
+        if: {{ env.MAVEN_UPDATE_TYPE }} == 'false'
         run: |
           mvn build-helper:parse-version versions:set \
           release:prepare \
