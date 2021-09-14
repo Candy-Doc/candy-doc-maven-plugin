@@ -68,11 +68,14 @@ jobs:
       - name: Major Maven release
         if: ${{ env.MAVEN_UPDATE_TYPE == 'true' }}
         run: |
+          git tag --delete v$GITHUB_TAG_VERSION
+          git push --delete origin v$GITHUB_TAG_VERSION
+          major_version=$GITHUB_MAJOR_VERSION+1
           mvn build-helper:parse-version versions:set \
           release:prepare \
-          -DdevelopmentVersion=\${parsedVersion.nextMajorVersion}.1-SNAPSHOT \
+          -DdevelopmentVersion=\${major_version}.1-SNAPSHOT \
           -Dmaven.javadoc.skip=true -DskipTests=true \
-          -DreleaseVersion=\${parsedVersion.nextMajorVersion}.0
+          -DreleaseVersion=\${major_version}.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -81,10 +84,11 @@ jobs:
         run: |
           git tag --delete v$GITHUB_TAG_VERSION
           git push --delete origin v$GITHUB_TAG_VERSION
+          minor_version=$GITHUB_MINOR_VERSION+1
           mvn build-helper:parse-version versions:set \
           release:prepare \
-          -DdevelopmentVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}-SNAPSHOT \
+          -DdevelopmentVersion=\${parsedVersion.majorVersion}.\${minor_version}-SNAPSHOT \
           -Dmaven.javadoc.skip=true -DskipTests=true \
-          -DreleaseVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}
+          -DreleaseVersion=\${parsedVersion.majorVersion}.\${minor_version}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
