@@ -53,25 +53,3 @@ jobs:
 
       - name: Show extracted Maven project version
         run: echo ${{ steps.project.outputs.version }}
-
-      - name: Major Maven release
-        if: ${{ env.GITHUB_MAJOR_VERSION > ${parsedVersion.majorVersion} }}
-        run: |
-          mvn build-helper:parse-version versions:set \
-          release:prepare \
-          -DdevelopmentVersion=\${parsedVersion.nextMajorVersion}.1-SNAPSHOT \
-          -Dmaven.javadoc.skip=true -DskipTests=true \
-          -DreleaseVersion=\${parsedVersion.nextMajorVersion}.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Minor Maven release
-        if: ${{ env.GITHUB_MINOR_VERSION > ${parsedVersion.minorVersion} }}
-        run: |
-          mvn build-helper:parse-version versions:set \
-          release:prepare \
-          -DdevelopmentVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}-SNAPSHOT \
-          -Dmaven.javadoc.skip=true -DskipTests=true \
-          -DreleaseVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
