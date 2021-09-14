@@ -48,7 +48,7 @@ jobs:
           git config user.name "GitHub Actions"
 
       - name: Major Maven release
-        if: ${{ GITHUB_MAJOR_VERSION > ${parsedVersion.majorVersion} }}
+        if: ${{ $GITHUB_MAJOR_VERSION > ${parsedVersion.majorVersion} }}
         run: |
           mvn build-helper:parse-version versions:set \
           release:prepare \
