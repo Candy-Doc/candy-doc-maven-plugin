@@ -65,7 +65,7 @@ jobs:
           echo "MAVEN_UPDATE_TYPE=$(echo $result)" >> $GITHUB_ENV
 
       - name: Major Maven release
-        if: {{ env.MAVEN_UPDATE_TYPE }} == 'true'
+        if: ${{ env.MAVEN_UPDATE_TYPE }} == 'true'
         run: |
           mvn build-helper:parse-version versions:set \
           release:prepare \
@@ -76,7 +76,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Minor Maven release
-        if: {{ env.MAVEN_UPDATE_TYPE }} == 'false'
+        if: ${{ env.MAVEN_UPDATE_TYPE }} == 'false'
         run: |
           mvn build-helper:parse-version versions:set \
           release:prepare \
