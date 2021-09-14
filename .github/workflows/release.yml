@@ -61,7 +61,8 @@ jobs:
           echo "MAVEN_MINOR_VERSION=$(echo ${result[1]})" >> $GITHUB_ENV
       - name: Checking Minor or Major update
         run: |
-          if [ $GITHUB_MAJOR_VERSION > $MAVEN_MAJOR_VERSION ]; then result=true; else result=false; fi
+          if [ $GITHUB_MAJOR_VERSION > $MAVEN_MAJOR_VERSION ] && [ $GITHUB_MAJOR_VERSION > $MAVEN_MAJOR_VERSION]; \
+          then result=true; else result=false; fi
           echo "MAVEN_UPDATE_TYPE=$(echo $result)" >> $GITHUB_ENV
 
       - name: Major Maven release
