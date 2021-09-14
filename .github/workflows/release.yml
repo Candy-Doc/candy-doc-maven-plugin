@@ -63,3 +63,25 @@ jobs:
         run: |
           echo $MAVEN_MAJOR_VERSION
           echo $MAVEN_MINOR_VERSION
+
+      - name: Major Maven release
+        if: ${{ env.GITHUB_MAJOR_VERSION > env.MAVEN_MAJOR_VERSION }}
+        run: |
+          mvn build-helper:parse-version versions:set \
+          release:prepare \
+          -DdevelopmentVersion=\${parsedVersion.nextMajorVersion}.1-SNAPSHOT \
+          -Dmaven.javadoc.skip=true -DskipTests=true \
+          -DreleaseVersion=\${parsedVersion.nextMajorVersion}.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Minor Maven release
+        if: ${{ env.GITHUB_MINOR_VERSION > env.MAVEN_MINOR_VERSION }}
+        run: |
+          mvn build-helper:parse-version versions:set \
+          release:prepare \
+          -DdevelopmentVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}-SNAPSHOT \
+          -Dmaven.javadoc.skip=true -DskipTests=true \
+          -DreleaseVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
