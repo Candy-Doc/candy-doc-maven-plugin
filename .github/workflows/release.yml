@@ -73,9 +73,9 @@ jobs:
           major_version=$GITHUB_MAJOR_VERSION+1
           mvn build-helper:parse-version versions:set \
           release:prepare \
-          -DdevelopmentVersion=\${major_version}.1-SNAPSHOT \
+          -DdevelopmentVersion=$major_version.1-SNAPSHOT \
           -Dmaven.javadoc.skip=true -DskipTests=true \
-          -DreleaseVersion=\${major_version}.0
+          -DreleaseVersion=$major_version.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -87,8 +87,8 @@ jobs:
           minor_version=$GITHUB_MINOR_VERSION+1
           mvn build-helper:parse-version versions:set \
           release:prepare \
-          -DdevelopmentVersion=\${parsedVersion.majorVersion}.\${minor_version}-SNAPSHOT \
+          -DdevelopmentVersion=\${parsedVersion.majorVersion}.$minor_version-SNAPSHOT \
           -Dmaven.javadoc.skip=true -DskipTests=true \
-          -DreleaseVersion=\${parsedVersion.majorVersion}.\${minor_version}
+          -DreleaseVersion=\${parsedVersion.majorVersion}.$minor_version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
