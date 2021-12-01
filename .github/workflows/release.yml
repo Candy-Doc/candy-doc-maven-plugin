@@ -106,10 +106,11 @@ jobs:
       - name: Minor Maven release
         if: ${{ env.MAVEN_UPDATE_TYPE == 'false' }}
         run: |
+          echo $CHANGELOG_BODY >> CHANGELOG.md
+          git commit -am ":memo: Update changelog"
           git tag --delete v$GITHUB_TAG_VERSION
           git push --delete origin v$GITHUB_TAG_VERSION
           minor_version=$(echo $(( $GITHUB_MINOR_VERSION+1)))
-          echo $CHANGELOG_BODY >> CHANGELOG.md
           mvn build-helper:parse-version versions:set \
           release:prepare \
           -DdevelopmentVersion=\${parsedVersion.majorVersion}.$minor_version-SNAPSHOT \
