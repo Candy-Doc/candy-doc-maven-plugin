@@ -23,8 +23,8 @@ jobs:
 
       - name: Save changelog
         run: |
-          echo "CHANGELOG_NAME=$(echo "${{ steps.changelog_reader.outputs.version }}")" >> $GITHUB_ENV
-          echo "CHANGELOG_BODY=$(echo "${{ steps.changelog_reader.outputs.changes }}")" >> $GITHUB_ENV
+          echo "CHANGELOG_NAME=$(echo ${{ steps.changelog_reader.outputs.version }})" >> $GITHUB_ENV
+          echo "CHANGELOG_BODY=$(echo ${{ steps.changelog_reader.outputs.changes }})" >> $GITHUB_ENV
 
       - name: Check changelog value
         run: |
@@ -109,6 +109,7 @@ jobs:
           git tag --delete v$GITHUB_TAG_VERSION
           git push --delete origin v$GITHUB_TAG_VERSION
           minor_version=$(echo $(( $GITHUB_MINOR_VERSION+1)))
+          echo $CHANGELOG_BODY >> CHANGELOG.md
           mvn build-helper:parse-version versions:set \
           release:prepare \
           -DdevelopmentVersion=\${parsedVersion.majorVersion}.$minor_version-SNAPSHOT \
