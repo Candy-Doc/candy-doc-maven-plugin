@@ -202,3 +202,5 @@ Test element changed
 [0.0.2]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/olivierlacan/keep-a-changelog/releases/tag/v0.0.1
 
+' ### Added Changelog inconsistency section in Bad Practices ### Changed Test element changed'
+1.1.0
