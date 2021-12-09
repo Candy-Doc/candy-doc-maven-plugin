@@ -25,14 +25,14 @@ jobs:
         run: |
           echo "CHANGELOG_NAME=$(echo ${{ steps.changelog_reader.outputs.version }})" >> $GITHUB_ENV
           test="'${{ steps.changelog_reader.outputs.changes }}'"
-          echo "CHANGELOG_BODY=$(echo test)" >> exemple.txt
+          echo "CHANGELOG_BODY=$(echo $test)" >> $GITHUB_ENV
 
           
 
       - name: Check changelog value
         run: |
           echo $CHANGELOG_NAME
-          cat exemple.txt
+          echo CHANGELOG_BODY
 
       - name: Get Previous tag
         id: previoustag
