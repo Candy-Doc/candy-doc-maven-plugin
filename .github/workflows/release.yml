@@ -32,7 +32,7 @@ jobs:
       - name: Check changelog value
         run: |
           echo $CHANGELOG_NAME
-          echo CHANGELOG_BODY
+          echo $CHANGELOG_BODY
 
       - name: Get Previous tag
         id: previoustag
@@ -109,7 +109,8 @@ jobs:
       - name: Minor Maven release
         if: ${{ env.MAVEN_UPDATE_TYPE == 'false' }}
         run: |
-          echo ${{ steps.changelog_reader.outputs.changes }} >> CHANGELOG.md
+          echo $CHANGELOG_BODY >> CHANGELOG.md
+          echo $CHANGELOG_NAME >> CHANGELOG.md
           git commit -am ":memo: Update changelog"
           git tag --delete v$GITHUB_TAG_VERSION
           git push --delete origin v$GITHUB_TAG_VERSION
