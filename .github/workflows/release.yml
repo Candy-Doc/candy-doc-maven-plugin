@@ -12,34 +12,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: 'feat/CI_release'
-
-      - name: Get Changelog Entry
-        id: changelog_reader
-        uses: mindsers/changelog-reader-action@v2
-        with:
-          validation_depth: 10
-          version: ${{ steps.tag_name.outputs.current_version }}
-          path: ./CHANGELOG.md
-
-      - name: Save changelog
-        run: |
-          echo "CHANGELOG_NAME=$(echo ${{ steps.changelog_reader.outputs.version }})" >> $GITHUB_ENV
-          test="'${{ steps.changelog_reader.outputs.changes }}'"
-          echo "CHANGELOG_BODY=$(echo $test)" >> $GITHUB_ENV
-
-          
-
-      - name: Check changelog value
-        run: |
-          echo $CHANGELOG_NAME
-          echo $CHANGELOG_BODY
-
-      - name: Get Previous tag
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        with:
-          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
-
+  
       - name: Storing Github tag value
         run: echo "GITHUB_TAG_VERSION=$(echo ${{ steps.previoustag.outputs.tag }} \
           | sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')" >> $GITHUB_ENV
@@ -92,6 +65,12 @@ jobs:
           then result=true; else result=false; fi
           echo "MAVEN_UPDATE_TYPE=$(echo $result)" >> $GITHUB_ENV
 
+      - name: Update changelog
+        if: ${{ env.MAVEN_UPDATE_TYPE == 'true' }}
+        uses: thomaseizinger/keep-a-changelog-new-release@v1
+        with:
+          tag: $GITHUB_MAJOR_VERSION.0 # You probably want to have this dynamic :)
+
 
       - name: Major Maven release
         if: ${{ env.MAVEN_UPDATE_TYPE == 'true' }}
@@ -105,6 +84,12 @@ jobs:
           -DreleaseVersion=$GITHUB_MAJOR_VERSION.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update changelog
+        if: ${{ env.MAVEN_UPDATE_TYPE == 'false' }}
+        uses: thomaseizinger/keep-a-changelog-new-release@v1
+        with:
+          tag: $GITHUB_MAJOR_VERSION.$GITHUB_MINOR_VERSION+1 # You probably want to have this dynamic :)
 
       - name: Minor Maven release
         if: ${{ env.MAVEN_UPDATE_TYPE == 'false' }}
