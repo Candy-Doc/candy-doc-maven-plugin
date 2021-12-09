@@ -69,7 +69,7 @@ jobs:
         if: ${{ env.MAVEN_UPDATE_TYPE == 'true' }}
         uses: thomaseizinger/keep-a-changelog-new-release@v1
         with:
-          tag: v$GITHUB_MAJOR_VERSION.0 # You probably want to have this dynamic :)
+          tag: v$MAVEN_MAJOR_VERSION.0 # You probably want to have this dynamic :)
 
 
       - name: Major Maven release
@@ -89,7 +89,7 @@ jobs:
         if: ${{ env.MAVEN_UPDATE_TYPE == 'false' }}
         uses: thomaseizinger/keep-a-changelog-new-release@v1
         with:
-          tag: v$GITHUB_MAJOR_VERSION.$GITHUB_MINOR_VERSION+1 # You probably want to have this dynamic :)
+          tag: v$MAVEN_MAJOR_VERSION.$MAVEN_MINOR_VERSION+1 # You probably want to have this dynamic :)
 
       - name: Minor Maven release
         if: ${{ env.MAVEN_UPDATE_TYPE == 'false' }}
