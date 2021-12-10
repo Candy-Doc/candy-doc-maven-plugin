@@ -11,7 +11,7 @@ public class InteractionBetweenConceptFound implements DomainEvent {
     @NonNull
     String from;
     @NonNull
-    String withFullName;
+    String with;
 
     public void accept(Visitor visitor) {
         visitor.apply(this);

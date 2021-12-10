@@ -19,7 +19,7 @@ public interface DomainEvent {
 
         void apply(AggregateFound event);
 
-        void apply(NameConflictBetweenCoreConcept event);
+        void apply(NameConflictBetweenCoreConcepts event);
 
         void apply(ConceptRuleViolated event);
 

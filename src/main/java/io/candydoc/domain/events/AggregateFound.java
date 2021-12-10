@@ -15,8 +15,6 @@ public class AggregateFound implements DomainEvent{
     @NonNull
     String className;
     @NonNull
-    String fullName;
-    @NonNull
     String packageName;
     @NonNull
     String boundedContext;

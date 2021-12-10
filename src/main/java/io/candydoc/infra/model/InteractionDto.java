@@ -8,7 +8,7 @@ import lombok.*;
 @EqualsAndHashCode
 public class InteractionDto {
     @NonNull
-    String simpleName;
+    String name;
     @NonNull
-    String fullName;
+    String className;
 }

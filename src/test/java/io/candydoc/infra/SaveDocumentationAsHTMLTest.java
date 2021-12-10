@@ -16,9 +16,8 @@ import java.util.List;
 
 class SaveDocumentationAsHTMLTest {
 
-    SaveDocumentationAsHTML saveDocumentationAsHTML = new SaveDocumentationAsHTML(new FreemarkerEngine());
-
-    List<DomainEvent> boundedContextsForHTMLGenerationTests = List.of(BoundedContextFound.builder()
+    private final SaveDocumentationAsHTML saveDocumentationAsHTML = new SaveDocumentationAsHTML(new FreemarkerEngine());
+    private final List<DomainEvent> boundedContextsForHTMLGenerationTests = List.of(BoundedContextFound.builder()
                     .name("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                     .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                     .description("description of bounded context 1")
@@ -31,43 +30,41 @@ class SaveDocumentationAsHTMLTest {
             CoreConceptFound.builder()
                     .name("Core Concept 1")
                     .description("Description of core concept 1")
-                    .className("CoreConcept1")
-                    .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
+                    .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
                     .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                     .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                     .build(),
             CoreConceptFound.builder()
                     .name("Core Concept 2")
                     .description("Description of core concept 2")
-                    .className("CoreConcept2")
-                    .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
+                    .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
                     .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                     .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                     .build(),
             ValueObjectFound.builder()
                     .description("Description of value object 1")
-                    .className("ValueObject1")
-                    .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                    .name("ValueObject1")
+                    .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
                     .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                     .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                     .build(),
             DomainEventFound.builder()
                     .description("Description of domain event 1")
-                    .className("DomainEvent1")
-                    .fullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
+                    .name("DomainEvent1")
+                    .className("candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
                     .packageName("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                     .boundedContext("candydoc.sample.valid_bounded_contexts.bounded_context_one")
                     .build(),
             InteractionBetweenConceptFound.builder()
                     .from("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
-                    .withFullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
+                    .with("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
                     .build(),
             InteractionBetweenConceptFound.builder()
                     .from("candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
-                    .withFullName("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                    .with("candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
                     .build());
 
-    List<DomainEvent> emptyBoundedContext = List.of(BoundedContextFound.builder()
+    private final List<DomainEvent> emptyBoundedContext = List.of(BoundedContextFound.builder()
             .name("io.emptyBoundedContext")
             .description("description of empty bounded context")
             .packageName("io.emptyBoundedContext")
@@ -87,16 +84,14 @@ class SaveDocumentationAsHTMLTest {
     @Test
     void index_file_is_generated() throws IOException {
         saveDocumentationAsHTML.save(boundedContextsForHTMLGenerationTests);
-        Assertions.assertThat(new File(String.valueOf(Paths.get("target", "candy-doc", "html",
-                "index.html"))))
+        Assertions.assertThat(new File(String.valueOf(Paths.get("target", "candy-doc", "html", "index.html"))))
                 .exists();
     }
 
     @Test
     void css_is_generated() throws IOException {
         saveDocumentationAsHTML.save(boundedContextsForHTMLGenerationTests);
-        Assertions.assertThat(new File(String.valueOf(Paths.get("target", "candy-doc", "html",
-                "style.css"))))
+        Assertions.assertThat(new File(String.valueOf(Paths.get("target", "candy-doc", "html", "style.css"))))
                 .exists();
     }
 
@@ -140,7 +135,7 @@ class SaveDocumentationAsHTMLTest {
     void number_of_bounded_contexts_is_correct_in_the_index() throws IOException {
         saveDocumentationAsHTML.save(boundedContextsForHTMLGenerationTests);
         Assertions.assertThat(getDocument("index.html")
-                .getElementsByClass("concept--bounded-context"))
+                .getElementsByClass("bounded-context"))
                 .hasSize(2);
     }
 
@@ -148,7 +143,7 @@ class SaveDocumentationAsHTMLTest {
     void number_of_concepts_is_correct_in_the_index() throws IOException {
         saveDocumentationAsHTML.save(boundedContextsForHTMLGenerationTests);
         Assertions.assertThat(getDocument("index.html")
-                .getElementsByClass("concept--simple-concept"))
+                .getElementsByClass("concepts__item"))
                 .hasSize(4);
     }
 
@@ -156,7 +151,7 @@ class SaveDocumentationAsHTMLTest {
     void navigation_is_not_rendered_in_the_index_when_bounded_context_is_empty() throws IOException {
         saveDocumentationAsHTML.save(emptyBoundedContext);
         Assertions.assertThat(getDocument("index.html")
-                .getElementsByClass("concept--simple-concept"))
+                .getElementsByClass("concepts__item"))
                 .isEmpty();
     }
 
@@ -263,8 +258,8 @@ class SaveDocumentationAsHTMLTest {
     void concept_titles_are_translated() throws IOException {
         saveDocumentationAsHTML.save(boundedContextsForHTMLGenerationTests);
         Assertions.assertThat(getDocument("index.html")
-                .getElementsByClass("concept__name").eachText())
-                .containsExactlyInAnyOrder("CoreConcept", "DomainEvent", "ValueObject");
+                .getElementsByClass("concept-type").eachText())
+                .containsExactlyInAnyOrder("Core concepts", "Domain events", "Value objects");
     }
 
     @Test
