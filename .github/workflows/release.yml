@@ -76,10 +76,10 @@ jobs:
         run: |
           git tag --delete v$GITHUB_TAG_VERSION
           git push --delete origin v$GITHUB_TAG_VERSION
-          mvn build-helper:parse-version versions:set \
+          mvn -DskipTests build-helper:parse-version versions:set \
           release:prepare \
           -DdevelopmentVersion=$GITHUB_MAJOR_VERSION.1.0-SNAPSHOT \
-          -Dmaven.javadoc.skip=true -DskipTests=true \
+          -Dmaven.javadoc.skip=true \
           -DreleaseVersion=$GITHUB_MAJOR_VERSION.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -90,10 +90,10 @@ jobs:
           git tag --delete v$GITHUB_TAG_VERSION
           git push --delete origin v$GITHUB_TAG_VERSION
           minor_version=$(echo $(( $GITHUB_MINOR_VERSION+1)))
-          mvn build-helper:parse-version versions:set \
+          mvn -DskipTests build-helper:parse-version versions:set \
           release:prepare \
           -DdevelopmentVersion=\${parsedVersion.majorVersion}.$minor_version.0-SNAPSHOT \
-          -Dmaven.javadoc.skip=true -DskipTests=true \
+          -Dmaven.javadoc.skip=true \
           -DreleaseVersion=\${parsedVersion.majorVersion}.$GITHUB_MINOR_VERSION.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
