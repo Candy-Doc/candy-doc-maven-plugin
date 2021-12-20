@@ -98,22 +98,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Get version from tag
-        id: tag_name
-        run: |
-          echo ::set-output name=current_version::${GITHUB_REF#refs/tags/v}
-        shell: bash
+
       - name: Get Changelog Entry
         id: changelog_reader
         uses: mindsers/changelog-reader-action@v2
         with:
-          version: ${{ steps.tag_name.outputs.current_version }}
+          validation_depth: 10
           path: ./CHANGELOG.md
-        
-      - name: Check changelog value
-        run: |
-          echo ${{ steps.tag_name.outputs.current_version }}
-          echo ${{ steps.changelog_reader.outputs.changes }}
 
       - name: Create/update release
         uses: ncipollo/release-action@v1
