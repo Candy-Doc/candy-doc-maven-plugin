@@ -1,0 +1,121 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: 'feat/CI_release'
+
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+  
+      - name: Storing Github tag value
+        run: echo "GITHUB_TAG_VERSION=$(echo ${{ steps.previoustag.outputs.tag }} \
+          | sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')" >> $GITHUB_ENV
+
+      - name: Splitting version
+        run: |
+          IFS='.' read -r -a result <<< $GITHUB_TAG_VERSION
+          echo "GITHUB_MAJOR_VERSION=$(echo ${result[0]})" >> $GITHUB_ENV
+          echo "GITHUB_MINOR_VERSION=$(echo ${result[1]})" >> $GITHUB_ENV
+
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+            ${{ runner.os }}-m2-
+
+
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 11
+
+      - name: Configure Git user
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+
+      - name: Extract Maven project version
+        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        id: project
+
+      - name: Storing Maven tag value
+        run: echo "MAVEN_TAG_VERSION=$(echo ${{ steps.project.outputs.version }} \
+          | sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')" >> $GITHUB_ENV
+
+      - name: Splitting version
+        run: |
+          IFS='.' read -r -a result <<< $MAVEN_TAG_VERSION
+          echo "MAVEN_MAJOR_VERSION=$(echo ${result[0]})" >> $GITHUB_ENV
+          echo "MAVEN_MINOR_VERSION=$(echo ${result[1]})" >> $GITHUB_ENV
+
+      - name: Checking Minor or Major update
+        run: |
+          if [ $GITHUB_MAJOR_VERSION > $MAVEN_MAJOR_VERSION ] && [ $GITHUB_MAJOR_VERSION != $MAVEN_MAJOR_VERSION ]; \
+          then result=true; else result=false; fi
+          echo "MAVEN_UPDATE_TYPE=$(echo $result)" >> $GITHUB_ENV
+
+      - name: Major Maven release
+        if: ${{ env.MAVEN_UPDATE_TYPE == 'true' }}
+        run: |
+          git tag --delete v$GITHUB_TAG_VERSION
+          git push --delete origin v$GITHUB_TAG_VERSION
+          mvn -DskipTests build-helper:parse-version versions:set \
+          release:prepare \
+          -DdevelopmentVersion=$GITHUB_MAJOR_VERSION.1.0-SNAPSHOT \
+          -Dmaven.javadoc.skip=true \
+          -DreleaseVersion=$GITHUB_MAJOR_VERSION.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Minor Maven release
+        if: ${{ env.MAVEN_UPDATE_TYPE == 'false' }}
+        run: |
+          git tag --delete v$GITHUB_TAG_VERSION
+          git push --delete origin v$GITHUB_TAG_VERSION
+          minor_version=$(echo $(( $GITHUB_MINOR_VERSION+1)))
+          mvn -DskipTests build-helper:parse-version versions:set \
+          release:prepare \
+          -DdevelopmentVersion=\${parsedVersion.majorVersion}.$minor_version.0-SNAPSHOT \
+          -Dmaven.javadoc.skip=true \
+          -DreleaseVersion=\${parsedVersion.majorVersion}.$GITHUB_MINOR_VERSION.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Get version from tag
+        id: tag_name
+        run: |
+          echo ::set-output name=current_version::${GITHUB_REF#refs/tags/v}
+        shell: bash
+      - name: Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          validation_depth: 10
+          version: ${{ steps.tag_name.outputs.current_version }}
+          path: ./CHANGELOG.md
+
+      - name: Create/update release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ steps.changelog_reader.outputs.version }}
+          name: Release ${{ steps.changelog_reader.outputs.version }}
+          body: ${{ steps.changelog_reader.outputs.changes }}
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
