@@ -94,7 +94,7 @@ jobs:
           release:prepare \
           -DdevelopmentVersion=\${parsedVersion.majorVersion}.$minor_version.0-SNAPSHOT \
           -Dmaven.javadoc.skip=true -DskipTests=true \
-          -DreleaseVersion=\${parsedVersion.majorVersion}.$GITHUB_MINOR_VERSION
+          -DreleaseVersion=\${parsedVersion.majorVersion}.$GITHUB_MINOR_VERSION.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
