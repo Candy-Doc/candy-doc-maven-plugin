@@ -4,7 +4,7 @@
 
     <groupId>io.candy-doc</groupId>
     <artifactId>candy-doc</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <properties>
@@ -124,7 +124,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/CANDY-DOC/candy-doc</developerConnection>
-      <tag>v3.1.0</tag>
+      <tag>v1.0</tag>
   </scm>
     <build>
         <plugins>
