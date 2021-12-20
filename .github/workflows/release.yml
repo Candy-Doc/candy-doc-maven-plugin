@@ -117,7 +117,6 @@ jobs:
           tag: v${{ steps.changelog_reader.outputs.version }}
           name: Release ${{ steps.changelog_reader.outputs.version }}
           body: ${{ steps.changelog_reader.outputs.changes }}
-          draft: ${{ steps.changelog_reader.outputs.status == 'released' }}
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
       
