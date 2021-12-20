@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.31] - 2021-12-20
+## [2.32] - 2021-12-20
 
 ### Added
 
@@ -16,16 +16,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed foldouts in Dutch translation
 
-## [2.30] - 2021-12-20
+## [2.31] - 2021-12-20
 
 ### Added
 
-Changelog inconsistency section in Bad Practices
+- Changelog inconsistency section in Bad Practices
 - Added this part
 
 ### Changed
 
-Test element changed
+- Test element changed
 - Added this part
 
 ## [1.0.0] - 2017-06-20
