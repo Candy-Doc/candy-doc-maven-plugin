@@ -5,9 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.candy-doc</groupId>
-    <artifactId>candy-doc</artifactId>
+    <artifactId>candy-doc-maven-plugin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
+
+    <name>Candy-Doc</name>
+    <description>Candy-Doc is a documentation generator plugin for projects built with the Domain-Driven-Design
+        approach
+    </description>
+    <url>https://github.com/CANDY-DOC/candy-doc</url>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -155,8 +162,10 @@
     </dependencies>
 
     <scm>
+        <connection>scm:git:git://github.com/CANDY-DOC/candy-doc.git</connection>
         <developerConnection>scm:git:https://github.com/CANDY-DOC/candy-doc</developerConnection>
-      <tag>v1.0</tag>
+        <url>https://github.com/CANDY-DOC/candy-doc</url>
+        <tag>v1.0</tag>
     </scm>
 
     <build>
@@ -194,24 +203,83 @@
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-<!--
-    <repositories>
-        <repository>
-            <id>gitlab-maven</id>
-            <url>${env.CI_SERVER_URL}/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
-        </repository>
-    </repositories>
-    <distributionManagement>
-        <repository>
-            <id>gitlab-maven</id>
-            <url>${env.CI_SERVER_URL}/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
-        </repository>
-        <snapshotRepository>
-            <id>gitlab-maven</id>
-            <url>${env.CI_SERVER_URL}/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
-        </snapshotRepository>
-    </distributionManagement>
--->
+
+
+    <!--
+        <licenses>
+            <license>
+                <name>license to fill</name>
+                <url></url>
+            </license>
+        </licenses>
+
+        <developers>
+            <developer>
+                <name>Manfred Moser</name>
+                <email>manfred@sonatype.com</email>
+                <organization>Sonatype</organization>
+                <organizationUrl>http://www.sonatype.com</organizationUrl>
+            </developer>
+        </developers>
+
+        <repositories>
+            <repository>
+                <id>gitlab-maven</id>
+                <url>${env.CI_SERVER_URL}/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
+            </repository>
+        </repositories>
+
+        <distributionManagement>
+            <repository>
+                <id>gitlab-maven</id>
+                <url>${env.CI_SERVER_URL}/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
+            </repository>
+            <snapshotRepository>
+                <id>gitlab-maven</id>
+                <url>${env.CI_SERVER_URL}/api/v4/projects/${env.CI_PROJECT_ID}/packages/maven</url>
+            </snapshotRepository>
+        </distributionManagement>-->
+
 </project>
