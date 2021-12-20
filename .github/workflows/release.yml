@@ -65,13 +65,6 @@ jobs:
           then result=true; else result=false; fi
           echo "MAVEN_UPDATE_TYPE=$(echo $result)" >> $GITHUB_ENV
 
-      - name: Major update changelog 
-        if: ${{ env.MAVEN_UPDATE_TYPE == 'true' }}
-        uses: thomaseizinger/keep-a-changelog-new-release@v1
-        with:
-          tag: v$MAVEN_MAJOR_VERSION.0 # You probably want to have this dynamic :)
-
-
       - name: Major Maven release
         if: ${{ env.MAVEN_UPDATE_TYPE == 'true' }}
         run: |
@@ -84,12 +77,6 @@ jobs:
           -DreleaseVersion=$GITHUB_MAJOR_VERSION.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Minor update changelog 
-        if: ${{ env.MAVEN_UPDATE_TYPE == 'false' }}
-        uses: thomaseizinger/keep-a-changelog-new-release@v1
-        with:
-          tag: v$MAVEN_MAJOR_VERSION.$MAVEN_MINOR_VERSION+1 # You probably want to have this dynamic :)
 
       - name: Minor Maven release
         if: ${{ env.MAVEN_UPDATE_TYPE == 'false' }}
@@ -107,3 +94,28 @@ jobs:
           -DreleaseVersion=\${parsedVersion.majorVersion}.$GITHUB_MINOR_VERSION
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Get version from tag
+        id: tag_name
+        run: |
+          echo ::set-output name=current_version::${GITHUB_REF#refs/tags/v}
+        shell: bash
+      - name: Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          validation_depth: 10
+          version: ${{ steps.tag_name.outputs.current_version }}
+          path: ./CHANGELOG.md
+          
+      - name: Create/update release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.changelog_reader.outputs.version }}
+          name: Release ${{ steps.changelog_reader.outputs.version }}
+          body: ${{ steps.changelog_reader.outputs.changes }}
+          prerelease: ${{ steps.changelog_reader.outputs.status == 'prereleased' }}
+          draft: ${{ steps.changelog_reader.outputs.status == 'unreleased' }}
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
