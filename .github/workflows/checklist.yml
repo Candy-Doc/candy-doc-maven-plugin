@@ -1,0 +1,19 @@
+name: Checklist
+on:
+# triggered when pull request is created
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
+      - ready_for_review
+
+jobs:
+  checkboxes-all-filled:
+    name: Checkboxes All Filled
+    runs-on: ubuntu-latest
+    steps:
+      - name: Uses checkboxes-all-filled
+      # use a github action, created by pione30
+        uses: pione30/checkboxes-all-filled@v1
