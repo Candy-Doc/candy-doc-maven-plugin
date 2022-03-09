@@ -1,19 +1,12 @@
-name: Checklist
-on:
-# triggered when pull request is created
+name: 'PR Tasks Completed Check'
+on: 
   pull_request:
-    types:
-      - opened
-      - reopened
-      - edited
-      - synchronize
-      - ready_for_review
+    types: [opened, edited]
 
 jobs:
-  checkboxes-all-filled:
-    name: Checkboxes All Filled
+  task-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Uses checkboxes-all-filled
-      # use a github action, created by pione30
-        uses: pione30/checkboxes-all-filled@v1
+      - uses: kentaro-m/task-completed-checker-action@v0.1.0
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
