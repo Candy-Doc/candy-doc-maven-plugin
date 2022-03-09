@@ -13,6 +13,7 @@ Candy-Doc is a documentation generator plugin for projects built with the Domain
 ## Table of content
 
 * [Installation](#Installation)
+* [Contributing to Candy-Doc](#Contributing-to-Candy-Doc)
 * [DDD Annotations](#DDD_Annotations)
   *  [Aggregate](#Aggregate)
   *  [Bounded Context](#Bounded_Context)
@@ -29,6 +30,8 @@ Candy-Doc is a documentation generator plugin for projects built with the Domain
 
 ## Installation
 
+## Contributing to Candy-Doc
+* [Contributing to the project][]
 ### With Maven
 
 To run this plugin, import the following:
@@ -292,3 +295,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+
+[Contributing to the project]: CONTRIBUTING.md
