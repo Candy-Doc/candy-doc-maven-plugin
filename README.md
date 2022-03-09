@@ -8,6 +8,7 @@ Candy-Doc is a documentation generator plugin for projects built with the Domain
 ## Table of content
 
 * [Installation](#Installation)
+* [Contributing to Candy-Doc](#Contributing-to-Candy-Doc)
 * [DDD Annotations](#DDD_Annotations)
   *  [Aggregate](#Aggregate)
   *  [Bounded Context](#Bounded_Context)
@@ -24,6 +25,8 @@ Candy-Doc is a documentation generator plugin for projects built with the Domain
 
 ## Installation
 
+## Contributing to Candy-Doc
+* [Contributing to the project][]
 ### With Maven
 
 To run this plugin, import the following:
@@ -256,3 +259,7 @@ Project created with:
 - DDD (Martin Fowler): https://martinfowler.com/tags/domain%20driven%20design.html
   
 - Summary of a 4 days DDD Training (Thomas Ferro): https://thomasferro.medium.com/summary-of-a-four-days-ddd-training-74103a6d99a1
+
+
+
+[Contributing to the project]: CONTRIBUTING.md
