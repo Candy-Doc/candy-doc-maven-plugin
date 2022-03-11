@@ -13,7 +13,7 @@ Go through the following points, before creating a new PR.
 1. Make sure to start from the `main`, since this is the up to date branch.
 1. Make sure to keep commits small and relevant.
 1. Follow [our git commit message convention](#Git-Commit-Messages).
-1. Once done with all the changes, create a PR against the develop branch.
+1. Once done with all the changes, create a PR against the `main` branch.
 
 ## Git Commit Messages
 
