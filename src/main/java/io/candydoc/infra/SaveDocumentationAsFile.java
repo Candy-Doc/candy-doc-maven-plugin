@@ -20,8 +20,7 @@ class SaveDocumentationAsFile implements SaveDocumentationPort {
 
     @Override
     public void save(List<DomainEvent> domainEvents) throws IOException {
-        BoundedContextDtoMapper boundedContextDtoMapper = new BoundedContextDtoMapper();
         Files.createDirectories(fileToSave.getParent());
-        serializer.writeValue(fileToSave.toFile(), boundedContextDtoMapper.map(domainEvents));
+        serializer.writeValue(fileToSave.toFile(), BoundedContextDtoMapper.map(domainEvents));
     }
 }

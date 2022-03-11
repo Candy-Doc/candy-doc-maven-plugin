@@ -13,7 +13,7 @@ public class ValueObjectInteractionStrategy implements InteractionStrategy{
     public List<DomainEvent> checkInteractions(Class<?> concept) {
         if (!extractDDDInteractions(concept).isEmpty()) {
             return List.of(ConceptRuleViolated.builder()
-                    .conceptFullName(concept.getName())
+                    .className(concept.getName())
                     .reason("Value Object should only contain primitive types")
                     .build());
         }
@@ -42,7 +42,7 @@ public class ValueObjectInteractionStrategy implements InteractionStrategy{
                     .filter(classInCurrentConcept -> DDD_ANNOTATION_CLASSES.stream().anyMatch(classInCurrentConcept::isAnnotationPresent))
                 .map(interactingConcept -> InteractionBetweenConceptFound.builder()
                         .from(currentConcept.getName())
-                        .withFullName(interactingConcept.getName())
+                        .with(interactingConcept.getName())
                         .build())
                 .collect(Collectors.toUnmodifiableSet());
     }

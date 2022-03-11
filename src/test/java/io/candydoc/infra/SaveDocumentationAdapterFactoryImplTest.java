@@ -15,7 +15,7 @@ import java.util.LinkedList;
 
 class SaveDocumentationAdapterFactoryImplTest {
 
-    SaveDocumentationAdapterFactory adapterFactory = new SaveDocumentationAdapterFactoryImpl();
+    private final SaveDocumentationAdapterFactory adapterFactory = new SaveDocumentationAdapterFactoryImpl();
 
     @Test
     void throws_an_exception_when_output_format_is_wrong() {

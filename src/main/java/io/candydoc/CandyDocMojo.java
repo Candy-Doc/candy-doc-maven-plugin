@@ -1,25 +1,33 @@
 package io.candydoc;
 
-import io.candydoc.domain.Domain;
+import io.candydoc.domain.GenerateDocumentationUseCase;
 import io.candydoc.domain.SaveDocumentationAdapterFactory;
 import io.candydoc.domain.SaveDocumentationPort;
-import io.candydoc.domain.command.ExtractDDDConcept;
+import io.candydoc.domain.command.ExtractDDDConcepts;
 import io.candydoc.infra.SaveDocumentationAdapterFactoryImpl;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.InstantiationStrategy;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
-import java.util.ResourceBundle;
 
-@Mojo(name = "candy-doc", defaultPhase = LifecyclePhase.COMPILE)
+@Mojo(name = "candy-doc",
+    defaultPhase = LifecyclePhase.PROCESS_SOURCES,
+    requiresDependencyResolution = ResolutionScope.RUNTIME_PLUS_SYSTEM,
+    requiresDependencyCollection = ResolutionScope.RUNTIME_PLUS_SYSTEM,
+    instantiationStrategy = InstantiationStrategy.SINGLETON,
+    threadSafe = true
+)
 public class CandyDocMojo extends AbstractMojo {
 
     @Parameter(property = "packagesToScan")
@@ -38,8 +46,8 @@ public class CandyDocMojo extends AbstractMojo {
         Thread.currentThread().setContextClassLoader(getProjectClassLoader());
         SaveDocumentationAdapterFactory adapterFactory = new SaveDocumentationAdapterFactoryImpl();
         SaveDocumentationPort saveDocumentationPort = adapterFactory.getAdapter(outputFormat, outputDirectory);
-        Domain domain = new Domain(saveDocumentationPort);
-        domain.generateDocumentation(ExtractDDDConcept.builder().packagesToScan(packagesToScan).build());
+        GenerateDocumentationUseCase generateDocumentationUseCase = new GenerateDocumentationUseCase(saveDocumentationPort);
+        generateDocumentationUseCase.execute(ExtractDDDConcepts.builder().packagesToScan(packagesToScan).build());
     }
 
     private ClassLoader getProjectClassLoader() throws MojoExecutionException {

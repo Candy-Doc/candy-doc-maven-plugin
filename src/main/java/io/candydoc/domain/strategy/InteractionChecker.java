@@ -13,12 +13,12 @@ import java.util.Map;
 public class InteractionChecker {
 
     private final Map<Class<?>, InteractionStrategy> interactionStrategies = Map.of(
-            CoreConcept.class, new CoreConceptInteractionStrategy(),
-            ValueObject.class, new ValueObjectInteractionStrategy(),
-            DomainCommand.class, new DomainCommandInteractionStrategy(),
-            DomainEvent.class, new DomainEventInteractionStrategy(),
-            BoundedContext.class, new BoundedContextInteractionStrategy(),
-            Aggregate.class, new AggregatesInteractionStrategy());
+        CoreConcept.class, new CoreConceptInteractionStrategy(),
+        ValueObject.class, new ValueObjectInteractionStrategy(),
+        DomainCommand.class, new DomainCommandInteractionStrategy(),
+        DomainEvent.class, new DomainEventInteractionStrategy(),
+        BoundedContext.class, new BoundedContextInteractionStrategy(),
+        Aggregate.class, new AggregatesInteractionStrategy());
 
     @SneakyThrows
     public List<io.candydoc.domain.events.DomainEvent> check(CheckConceptInteractions command) {
@@ -28,9 +28,17 @@ public class InteractionChecker {
     }
 
     private Annotation conceptTypeFor(Class<?> concept) {
-        return Arrays.stream(concept.getAnnotations()).filter(InteractionChecker::dddAnnotationOnly)
-                .findFirst()
-                .orElseThrow(() -> new ClassNotAnnotatedByDDDConcept(concept));
+        return Arrays.stream(concept.getAnnotations())
+            .filter(InteractionChecker::dddAnnotationOnly)
+            .findFirst()
+            .orElseGet(() -> conceptTypeForSuperClassOf(concept));
+    }
+
+    private Annotation conceptTypeForSuperClassOf(Class<?> concept) {
+        return Arrays.stream(concept.getSuperclass().getAnnotations())
+            .filter(InteractionChecker::dddAnnotationOnly)
+            .findFirst()
+            .orElseThrow(() -> new ClassNotAnnotatedByDDDConcept(concept));
     }
 
     private static Boolean dddAnnotationOnly(Annotation annotation) {

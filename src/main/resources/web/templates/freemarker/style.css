@@ -6,22 +6,21 @@ html {
 }
 
 body {
-    height: 100%;
     margin: 0;
     display: flex;
+    flex-flow: row nowrap;
 }
 
+/** NAVIGATION **/
+
 .navigation {
-    z-index: 1;
-    position: fixed;
-    height: 100%;
-    background-color: #FFFFFF;
-    font-size: large;
-    width: 300px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-    overflow: auto;
+    height: 100vh;
+    max-width: 400px;
+    min-width: 400px;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    background-color: #FFFFFF;
 }
 
 .navigation a {
@@ -30,124 +29,93 @@ body {
 }
 
 .navigation .project-name {
+    padding: 20px;
     text-transform: uppercase;
+    text-align: center;
     font-weight: 100;
     letter-spacing: 4px;
-    margin-left: 20px;
     font-size: larger;
-}
-
-.navigation .concepts {
-    border-top-style: solid;
-}
-
-.navigation .concepts-list {
-    list-style: none;
-    padding-inline: 0;
-}
-
-.navigation .concepts__item {
-    height: fit-content;
-    padding: 0.2em;
-    text-indent: 30px;
-    background-color: #FFFFFF;
-    text-align: left;
     border-bottom-style: solid;
 }
 
-.navigation .concept--bounded-context:hover, .navigation .concept:hover {
-    background: -webkit-linear-gradient(top, #F0F8FF 0%, #FAFDFF 100%);
+.navigation ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
-.navigation .concept--bounded-context {
+.navigation .bounded-contexts {
+    padding: 0 0.5rem;
+}
+.navigation .bounded-context__concepts {
+    padding: 0.5rem 1rem;
+}
+.navigation .concepts {
+    padding: 0.2rem 1.5rem;
+}
+.navigation .bounded-context {
+    padding: 0.5rem 0;
+}
+.navigation .bounded-context > a {
+    font-size: 1.5rem;
     font-weight: bold;
-    letter-spacing: 1px;
     text-transform: uppercase;
 }
-
-.navigation .concept--simple-concept {
-    text-indent: 80px;
+.navigation .concept-type {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.2rem 0;
+}
+.navigation .concepts__item {
+    font-size: 1rem;
+    padding: 0.3rem 0;
 }
 
-.navigation .concept__name {
-    text-indent: 50px;
-    font-size: small;
-    text-transform: uppercase;
+/** MAIN CONTENT **/
+main {
+    height: 100vh;
+    width: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    padding: 0 1rem;
 }
 
 .concept {
-    margin-left: 300px;
-    padding: 1em;
     width: 100%;
-    background: rgba(255, 255, 255, 0.5);
-    display: flex;
-    flex-direction: row;
 }
-
-.concept .concept__information {
-    padding: 0.5em;
-    width: 20em;
+.concept__name {
+    font-size: 1.3rem;
 }
-
-.concept interaction__title:after {
-    content: ":";
+.concept__class-name {
+    font-size: 0.9rem;
 }
-
-.concept .concept__name {
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.navigation .concept__name:after {
-    content: ":";
-}
-
-.concept .concept__fullName {
-    color: rgba(0, 0, 0, 0.3);
-}
-
-.concept .concept__description {
+.concept__description {
     font-style: italic;
 }
 
-.concept .interactions {
+/** INTERACTIONS **/
+.interactions {
     display: flex;
-    flex-direction: row;
-    border-style: solid;
-    padding: 0.5em;
-    background-color: #FFFF;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-    height: fit-content;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    gap: 2rem;
+    width: 100%;
 }
-
-.concept .interactions-box {
+.interactions-box {
     display: flex;
-    flex-direction: column;
-    margin: 0.25em;
+    flex-flow: column wrap;
 }
-
-.concept .interaction__title {
-    font-weight: bold;
-}
-
-.concept .interaction__title:after {
-    content: ":";
-}
-
-.concept .interaction {
-    color: #FFFFFF;
-    text-align: center;
-    background: #75bfff;
-    border-radius: 50px;
-    font-weight: bold;
-    border-style: none;
-    line-height: 2em;
-    margin: 0.25em;
+.interaction {
+    padding: 0.5rem;
+    margin: 0.2rem;
+    background: #75BFFF;
+    color: #fff;
     text-decoration: none;
-    padding: 0.25em;
+    border-radius: 10px;
 }
-
-.concept .interaction:hover {
-    background: rgba(117, 191, 255, 0.75);
-    cursor: pointer;
+.interaction__title {
+    font-weight: bold;
+    font-size: 1.1rem;
 }

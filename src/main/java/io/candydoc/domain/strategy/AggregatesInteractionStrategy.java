@@ -34,7 +34,7 @@ public class AggregatesInteractionStrategy implements InteractionStrategy{
                 .filter(classInCurrentConcept -> DDD_ANNOTATION_CLASSES.stream().anyMatch(classInCurrentConcept::isAnnotationPresent))
                 .map(interactingConcept -> InteractionBetweenConceptFound.builder()
                         .from(currentConcept.getName())
-                        .withFullName(interactingConcept.getName())
+                        .with(interactingConcept.getName())
                         .build())
                 .collect(Collectors.toUnmodifiableSet());
     }

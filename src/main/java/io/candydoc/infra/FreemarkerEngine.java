@@ -54,18 +54,6 @@ public class FreemarkerEngine implements TemplateEngine {
         }
     }
 
-    @Override
-    public String generateFragment(String templateName, Map<String, Object> model) {
-        try {
-            StringWriter writer = new StringWriter();
-            Template template = getFreemarkerTemplate(templateName + ".ftlh");
-            template.process(modelWithI18n(model), writer);
-            return writer.toString();
-        } catch (IOException | TemplateException e) {
-            throw new DocumentationGenerationFailed(e.getMessage());
-        }
-    }
-
     private Template getFreemarkerTemplate(String freemarkerTemplateFile) throws IOException {
         Configuration freemarkerConfiguration = getFreemarkerConfiguration();
         return freemarkerConfiguration.getTemplate(freemarkerTemplateFile);

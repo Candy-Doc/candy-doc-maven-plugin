@@ -1,62 +1,72 @@
 package io.candydoc.domain.extractor;
 
-import io.candydoc.domain.command.ExtractCoreConcept;
+import io.candydoc.domain.annotations.CoreConcept;
+import io.candydoc.domain.command.ExtractCoreConcepts;
 import io.candydoc.domain.events.CoreConceptFound;
 import io.candydoc.domain.events.DomainEvent;
-import io.candydoc.domain.events.NameConflictBetweenCoreConcept;
+import io.candydoc.domain.events.NameConflictBetweenCoreConcepts;
+import lombok.extern.slf4j.Slf4j;
 import org.reflections8.Reflections;
 
+import java.lang.annotation.Annotation;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class CoreConceptExtractor implements Extractor<ExtractCoreConcept> {
-
-    private List<DomainEvent> verifyCoreConcept(Set<Class<?>> coreConceptClasses) {
-        List<CoreConceptFound> coreConcepts = coreConceptClasses.stream()
-                .map(coreConcept -> CoreConceptFound.builder()
-                        .name(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).name())
-                        .description(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).description())
-                        .className(coreConcept.getSimpleName())
-                        .fullName(coreConcept.getName())
-                        .packageName(coreConcept.getPackageName())
-                        .boundedContext("error handling")
-                        .build())
-                .collect(Collectors.toList());
-        return coreConcepts.stream()
-                .map(CoreConceptFound::getName).collect(Collectors.toList())
-                .stream()
-                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                .entrySet().stream()
-                .filter(entry -> entry.getValue() > 1L)
-                .map(foundDuplicate -> NameConflictBetweenCoreConcept.builder()
-                        .conflictingCoreConcepts(coreConcepts.stream()
-                                .filter(coreConcept -> coreConcept.getName().equals(foundDuplicate.getKey()))
-                                .map(CoreConceptFound::getClassName)
-                                .collect(Collectors.toList()))
-                        .UsageError("Share same name with another core concept")
-                        .build())
-                .collect(Collectors.toUnmodifiableList());
-    }
+@Slf4j
+public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
 
     @Override
-    public List<DomainEvent> extract(ExtractCoreConcept command) {
+    public List<DomainEvent> extract(ExtractCoreConcepts command) {
         Reflections reflections = new Reflections(command.getPackageToScan());
         Set<Class<?>> coreConceptClasses = reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.CoreConcept.class);
-        List<DomainEvent> wrongCoreConcept = verifyCoreConcept(coreConceptClasses);
-        List<DomainEvent> coreConcepts = coreConceptClasses.stream()
-                .map(coreConcept -> (List<DomainEvent>) new LinkedList<DomainEvent>(Collections.singleton(
-                        CoreConceptFound.builder()
-                                .name(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).name())
-                                .description(coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class).description())
-                                .className(coreConcept.getSimpleName())
-                                .fullName(coreConcept.getName())
-                                .packageName(coreConcept.getPackageName())
-                                .boundedContext(command.getPackageToScan())
-                                .build())))
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-        coreConcepts.addAll(wrongCoreConcept);
-        return coreConcepts;
+        log.info("Core concepts found in {}: {}", command.getPackageToScan(), coreConceptClasses);
+        List<CoreConceptFound> coreConcepts = findCoreConcepts(command, coreConceptClasses);
+        List<DomainEvent> conflicts = checkConflictBetweenCoreConcepts(coreConcepts);
+        return Stream.of(coreConcepts, conflicts)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toUnmodifiableList());
+    }
+
+    private List<DomainEvent> checkConflictBetweenCoreConcepts(List<CoreConceptFound> foundCoreConcepts) {
+        return foundCoreConcepts.stream()
+            .collect(Collectors.groupingBy(CoreConceptFound::getName))
+            .values()
+            .stream()
+            .filter(coreConceptFounds -> coreConceptFounds.size() > 1)
+            .map(duplicateConcepts -> NameConflictBetweenCoreConcepts.builder()
+                .coreConceptClassNames(duplicateConcepts.stream()
+                    .map(CoreConceptFound::getClassName)
+                    .collect(Collectors.toList()))
+                .build())
+            .collect(Collectors.toUnmodifiableList());
+    }
+
+    private List<CoreConceptFound> findCoreConcepts(ExtractCoreConcepts command, Set<Class<?>> coreConceptClasses) {
+        return coreConceptClasses.stream()
+            .filter(coreConcept -> !isAnonymous(coreConcept))
+            .map(coreConcept -> CoreConceptFound.builder()
+                .name(getSimpleName(coreConcept))
+                .description(getDescription(coreConcept))
+                .className(coreConcept.getName())
+                .packageName(coreConcept.getPackageName())
+                .boundedContext(command.getPackageToScan())
+                .build())
+            .collect(Collectors.toUnmodifiableList());
+    }
+
+    private boolean isAnonymous(Class<?> coreConcept) {
+        return coreConcept.isAnonymousClass();
+    }
+
+    private String getSimpleName(Class<?> aggregate) {
+        io.candydoc.domain.annotations.CoreConcept annotation = aggregate.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class);
+        String annotatedName = annotation.name();
+        return annotatedName.isBlank() ? aggregate.getSimpleName() : annotatedName;
+    }
+
+    private String getDescription(Class<?> coreConcept) {
+        io.candydoc.domain.annotations.CoreConcept annotation = coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class);
+        return annotation.description();
     }
 }
