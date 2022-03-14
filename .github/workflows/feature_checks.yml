@@ -1,12 +1,12 @@
-name: pre-commit
+name: feature_checks
 
 on:
-  pull_request:
   push:
-    branches: [dev]
+    branches:
+    - feat/**
 
 jobs:
-  pre-commit:
+  feature_checks:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -14,5 +14,3 @@ jobs:
     - uses: pre-commit/action@v2.0.3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        env:
-          SKIP: check-xml
