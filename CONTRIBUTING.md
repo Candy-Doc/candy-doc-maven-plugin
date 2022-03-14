@@ -9,11 +9,11 @@ We appreciate every time you report a bug in the product. However, taking time t
 Go through the following points, before creating a new PR.
 
 1. Create an issue discussing the bug.
-1. Once approved, go ahead and fork the REPO.
-1. Make sure to start from the `main`, since this is the up to date branch.
-1. Make sure to keep commits small and relevant.
-1. Follow [our git commit message convention](#Git-Commit-Messages).
-1. Once done with all the changes, create a PR against the `main` branch.
+2. Once approved, go ahead and fork the REPO.
+3. Make sure to start from the `main`, since this is the up to date branch.
+4. Make sure to keep commits small and relevant.
+5. Follow [our git commit message convention](#Git-Commit-Messages).
+6. Once done with all the changes, create a PR against the `main` branch.
 
 ## Git Commit Messages
 
