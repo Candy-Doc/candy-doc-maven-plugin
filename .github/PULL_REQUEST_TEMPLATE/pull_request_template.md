@@ -1,5 +1,5 @@
 ### Your checklist for this pull request
-🚨 Please review the [guidelines for contributing](./CONTRIBUTING.md) to this repository.
+🚨 Please review the [guidelines for contributing](../../CONTRIBUTING.md) to this repository.
 
 - [ ] Make sure you are requesting to **pull a feature/bugfix branch** (right side). Don't request your master!
 - [ ] Make sure you are making a pull request against the **main branch** (left side).
