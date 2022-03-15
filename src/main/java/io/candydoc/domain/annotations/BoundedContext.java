@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.PACKAGE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface BoundedContext {
-    String name() default "";
-    String description() default "";
+  String name() default "";
+
+  String description() default "";
 }

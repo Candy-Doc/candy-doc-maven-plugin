@@ -9,10 +9,9 @@ import lombok.Value;
 @Value
 @ToString
 public class ExtractValueObjects implements Command {
-    @NonNull
-    String packageToScan;
+  @NonNull String packageToScan;
 
-    public void accept(Visitor visitor) {
-        visitor.handle(this);
-    }
+  public void accept(Visitor visitor) {
+    visitor.handle(this);
+  }
 }

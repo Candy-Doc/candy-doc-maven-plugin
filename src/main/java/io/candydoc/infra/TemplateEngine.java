@@ -4,7 +4,7 @@ import java.nio.file.Path;
 import java.util.Map;
 
 public interface TemplateEngine {
-    void generatePage(String templateName, Path pageName, Map<String, Object> model);
+  void generatePage(String templateName, Path pageName, Map<String, Object> model);
 
-    void generateStyle(Path pageName);
+  void generateStyle(Path pageName);
 }
