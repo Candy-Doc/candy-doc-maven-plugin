@@ -1,3 +1,13 @@
+# [2.0.0](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v1.0.0...v2.0.0) (2022-03-15)
+
+
+* :memo: Test ([3021ddc](https://github.com/Candy-Doc/candy-doc-maven-plugin/commit/3021ddc5dfef5554d49b29f5d7a6acfb6c29be4e))
+
+
+### BREAKING CHANGES
+
+* Je teste si ça se met bien ou pas
+
 # 1.0.0 (2022-03-15)
 
 
