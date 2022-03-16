@@ -2,14 +2,24 @@
   "projectName": "candy-doc-maven-plugin",
   "projectOwner": "Candy-Doc",
   "repoType": "github",
-  "repoHost": "https://github.com/Candy-Doc/candy-doc-maven-plugin",
+  "repoHost": "https://github.com",
   "files": [
     "README.md"
   ],
   "imageSize": 100,
   "commit": true,
   "commitConvention": "gitmoji",
-  "contributors": [],
+  "contributors": [
+    {
+      "login": "mderoullers",
+      "name": "Maxime Deroullers",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17534552?v=4",
+      "profile": "https://github.com/mderoullers",
+      "contributions": [
+        "review"
+      ]
+    }
+  ],
   "contributorsPerLine": 7,
   "skipCi": true
 }
