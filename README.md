@@ -1,6 +1,6 @@
 # CANDY-DOC
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Candy-Doc is a documentation generator plugin for projects built with the Domain-Driven-Design approach.
@@ -273,6 +273,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://ctacquet.com"><img src="https://avatars.githubusercontent.com/u/22562938?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Charles Tacquet</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=ctacquet" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/ecattez"><img src="https://avatars.githubusercontent.com/u/10498113?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Edouard CATTEZ</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/pulls?q=is%3Apr+reviewed-by%3Aecattez" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/Tifloz"><img src="https://avatars.githubusercontent.com/u/32623039?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tiflo</b></sub></a><br /><a href="#infra-Tifloz" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://maji.kiwi"><img src="https://avatars.githubusercontent.com/u/33150916?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Maji</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=M4gie" title="Documentation">📖</a></td>
   </tr>
 </table>
 

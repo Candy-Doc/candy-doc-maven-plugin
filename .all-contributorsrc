@@ -45,6 +45,15 @@
       "contributions": [
         "infra"
       ]
+    },
+    {
+      "login": "M4gie",
+      "name": "Maji",
+      "avatar_url": "https://avatars.githubusercontent.com/u/33150916?v=4",
+      "profile": "https://maji.kiwi",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
