@@ -27,6 +27,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "ecattez",
+      "name": "Edouard CATTEZ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10498113?v=4",
+      "profile": "https://github.com/ecattez",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
