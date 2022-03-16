@@ -1,0 +1,15 @@
+{
+  "projectName": "candy-doc-maven-plugin",
+  "projectOwner": "Candy-Doc",
+  "repoType": "github",
+  "repoHost": "https://github.com/Candy-Doc/candy-doc-maven-plugin",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "gitmoji",
+  "contributors": [],
+  "contributorsPerLine": 7,
+  "skipCi": true
+}

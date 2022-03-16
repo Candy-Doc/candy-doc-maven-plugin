@@ -1,4 +1,7 @@
 # CANDY-DOC
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Candy-Doc is a documentation generator plugin for projects built with the Domain-Driven-Design approach.
 
@@ -256,3 +259,16 @@ Project created with:
 - DDD (Martin Fowler): https://martinfowler.com/tags/domain%20driven%20design.html
   
 - Summary of a 4 days DDD Training (Thomas Ferro): https://thomasferro.medium.com/summary-of-a-four-days-ddd-training-74103a6d99a1
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
