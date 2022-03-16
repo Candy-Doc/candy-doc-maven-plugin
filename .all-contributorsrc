@@ -36,6 +36,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "Tifloz",
+      "name": "Tiflo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32623039?v=4",
+      "profile": "https://github.com/Tifloz",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
