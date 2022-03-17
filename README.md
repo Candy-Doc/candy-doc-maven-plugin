@@ -2,6 +2,8 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+![Discord](https://img.shields.io/discord/951511594972631120?logo=discord)
+
 
 Candy-Doc is a documentation generator plugin for projects built with the Domain-Driven-Design approach.
 
@@ -259,6 +261,12 @@ Project created with:
 - DDD (Martin Fowler): https://martinfowler.com/tags/domain%20driven%20design.html
   
 - Summary of a 4 days DDD Training (Thomas Ferro): https://thomasferro.medium.com/summary-of-a-four-days-ddd-training-74103a6d99a1
+
+## Join us 🙋
+
+If you want to get in touch with our community there is a [Discord server](https://discord.gg/CxwdeKjtcT), join us !
+
+![Discord](https://img.shields.io/discord/951511594972631120?label=%20)
 
 ## Contributors ✨
 
