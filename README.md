@@ -31,7 +31,8 @@ Domain-Driven-Design approach.
 
 <a name="Installation"></a>
 
-## Installation
+Installation
+=====
 
 ## Contributing to Candy-Doc
 
