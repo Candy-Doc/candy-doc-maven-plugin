@@ -26,7 +26,7 @@ Candy-Doc is a documentation generator plugin for projects built with the Domain
    * [Technologies](#technologies)
    * [References](#references)
 
-<!-- Added by: runner, at: Thu Mar 17 13:55:10 UTC 2022 -->
+<!-- Added by: runner, at: Thu Mar 17 15:48:20 UTC 2022 -->
 
 <!--te-->
 
