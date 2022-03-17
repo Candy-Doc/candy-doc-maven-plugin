@@ -11,7 +11,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install Dependencies
       run: |
-        npm install commitlint-config-gitmoji commitlint && echo "module.exports = {extends: ['gitmoji']};" > commitlint.config.js
+        npm install commitlint-config-gitmoji commitlint 
+        echo "module.exports = {extends: ['gitmoji']};" > commitlint.config.js
     - name: Run PR name linter
       uses: JulienKode/pull-request-name-linter-action@v0.5.0
 
