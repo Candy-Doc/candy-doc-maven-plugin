@@ -12,7 +12,8 @@ Candy-Doc is a documentation generator plugin for projects built with the Domain
 
 <a name="Installation"></a>
 
-## Installation
+Installation
+=====
 
 ### With Maven
 
