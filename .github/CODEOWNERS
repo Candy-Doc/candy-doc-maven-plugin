@@ -15,7 +15,6 @@
 
 # Continuous integration:
 .github/*    @mderoullers
-.gitlab-ci.yml    @mderoullers
 .pre-commit-config.yaml    @mderoullers
 ci_settings.xml    @mderoullers
 
