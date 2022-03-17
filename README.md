@@ -8,6 +8,26 @@ Candy-Doc is a documentation generator plugin for projects built with the Domain
 ## Table of content
 
 <!--ts-->
+* [CANDY-DOC](#candy-doc)
+   * [Table of content](#table-of-content)
+* [Installation](#installation)
+      * [With Maven](#with-maven)
+   * [DDD Annotations](#ddd-annotations)
+      * [Aggregate](#aggregate)
+      * [Bounded Context](#bounded-context)
+      * [Core Concept](#core-concept)
+      * [Domain Command](#domain-command)
+      * [Domain Event](#domain-event)
+      * [Value Object](#value-object)
+   * [HTML Documentation](#html-documentation)
+   * [[FOR DEVELOPERS ONLY] Development workflow](#for-developers-only-development-workflow)
+      * [Release policy:](#release-policy)
+      * [SSH Access:](#ssh-access)
+   * [Technologies](#technologies)
+   * [References](#references)
+
+<!-- Added by: runner, at: Thu Mar 17 13:55:10 UTC 2022 -->
+
 <!--te-->
 
 <a name="Installation"></a>
