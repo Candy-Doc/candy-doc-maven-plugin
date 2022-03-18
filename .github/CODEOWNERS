@@ -18,10 +18,6 @@
 .pre-commit-config.yaml    @mderoullers
 ci_settings.xml    @mderoullers
 
-# Web:
-src/main/resources/templates/freemarker/*.ftlh    @ecattez
-src/main/resources/templates/freemarker/style.css    @ecattez
 
-
-# Java:
-*.java    @ecattez
+# Plugin
+src/    @ecattez, @mderoullers, @NaelFR
