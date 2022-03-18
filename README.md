@@ -18,12 +18,12 @@ Domain-Driven-Design approach.
 * [Installation](#Installation)
 * [Contributing to Candy-Doc](#Contributing-to-Candy-Doc)
 * [DDD Annotations](#DDD_Annotations)
-  *  [Aggregate](#Aggregate)
-  *  [Bounded Context](#Bounded_Context)
-  *  [Core Concept](#Core_Concept)
-  *  [Domain Command](#Domain_Command)
-  *  [Domain Event](#Domain_Event)
-  *  [Value Object](#Value_Object)
+  * [Aggregate](#Aggregate)
+  * [Bounded Context](#Bounded_Context)
+  * [Core Concept](#Core_Concept)
+  * [Domain Command](#Domain_Command)
+  * [Domain Event](#Domain_Event)
+  * [Value Object](#Value_Object)
 * [HTML Documentation](#HTML_Documentation)
 * [[FOR DEVELOPERS ONLY] Development workflow](#Development_workflow)
 * [Technologies](#Technologies)
@@ -34,6 +34,7 @@ Domain-Driven-Design approach.
 ## Installation
 
 ## Contributing to Candy-Doc
+
 * [Contributing to the project][]
 
 ### With Maven
@@ -241,9 +242,9 @@ Therefore, you must check the following variables are correct before making any
 changes to the _
 master_ branch:
 
-- `Settings > Repository > Deploy keys > ci-token` (must be the public ssh key
+* `Settings > Repository > Deploy keys > ci-token` (must be the public ssh key
   with write permissions granted)
-- `Settings > CI/CD > CI_TOKEN_PRIVATE_KEY` (must be the private ssh key)
+* `Settings > CI/CD > CI_TOKEN_PRIVATE_KEY` (must be the private ssh key)
 
 ## Technologies
 
@@ -262,11 +263,11 @@ Project created with:
 
 ## References
 
-- DDD, en vrai pour le développeur (Cyrille Martraire):
+* DDD, en vrai pour le développeur (Cyrille Martraire):
   <https://www.youtube.com/watch?v=h3DLKrvp5V8>
-- DDD (Martin Fowler):
+* DDD (Martin Fowler):
   <https://martinfowler.com/tags/domain%20driven%20design.html>
-- Summary of a 4 days DDD Training (Thomas Ferro):
+* Summary of a 4 days DDD Training (Thomas Ferro):
   <https://thomasferro.medium.com/summary-of-a-four-days-ddd-training-74103a6d99a1>
 
 ## Join us 🙋

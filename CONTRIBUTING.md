@@ -21,7 +21,7 @@ Example : ✨(infra): create a new orm interface
 
 - Use this format `<type>(optional scope): <description>`
 - Limit the first line to 72 characters or less
-- Consider starting the commit message with an applicable emoji: 
+- Consider starting the commit message with an applicable emoji:
   - ✨ - `:sparkles:` - Introduce new features.  
   - ⚡️ - `:zap:` - Improve performance.  
   - 🔥 - `:fire:` - Remove code or files.  
@@ -36,4 +36,3 @@ Example : ✨(infra): create a new orm interface
   - ♻️ - `:recycle:` - Refactor code.  
   - ✏️ - `:pencil2:` - Fix typos.  
   - 🧪 - `:test_tube:` - Add test(s).  
-
