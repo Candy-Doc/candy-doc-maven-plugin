@@ -1,5 +1,8 @@
+name: "Auto-generate a table of content in readme.md"
 on:
   push:
+    branches-ignore:
+      - 'main'
     paths: ['README.md']
 
 jobs:
