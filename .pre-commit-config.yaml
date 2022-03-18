@@ -19,3 +19,18 @@ repos:
     args: [--autofix]
   - id: pretty-format-yaml
     args: [--autofix, --indent, '2']
+- repo: https://github.com/igorshubovych/markdownlint-cli
+  rev: v0.31.1
+  hooks:
+  - id: markdownlint
+    name: markdownlint
+    description: Checks the style of Markdown/Commonmark files.
+    entry: markdownlint
+    args: [--ignore=CHANGELOG.md, --disable=MD040, --disable=MD033, --disable=MD013, --disable=MD028]
+    types: [markdown]
+  - id: markdownlint-fix
+    name: markdownlint-fix
+    description: Fixes the style of Markdown/Commonmark files.
+    entry: markdownlint --fix
+    args: [--ignore=CHANGELOG.md, --disable=MD040, --disable=MD033, --disable=MD013, --disable=MD028]
+    types: [markdown]
