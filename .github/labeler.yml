@@ -5,6 +5,5 @@ Web:
 Continuous integration:
 - '.github/**/*'
 - '.github/*'
-- '.gitlab-ci.yml'
 - '.pre-commit-config.yaml'
 - 'ci_settings.xml'
