@@ -1,6 +1,13 @@
-on: push
+name: Package the plugin ( Tests and build )
+
+on:
+  push:
+    paths:
+    - '**.java'
+    - ./pom.xml
+
 jobs:
-  run_tests:
+  tests:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout the repository
@@ -12,11 +19,6 @@ jobs:
         cache: maven
     - name: Run tests with Maven
       run: mvn -B test --file pom.xml
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.2.4
-      with:
-        name: test
-        path: target/*
   build:
     needs: run_tests
     runs-on: ubuntu-latest
