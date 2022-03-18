@@ -32,6 +32,7 @@ Candy-Doc is a documentation generator plugin for projects built with the Domain
 
 ## Contributing to Candy-Doc
 * [Contributing to the project][]
+
 ### With Maven
 
 To run this plugin, import the following:
