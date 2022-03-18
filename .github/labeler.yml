@@ -1,10 +1,3 @@
-Java:
-- '**/*.java'
-
-Documentation:
-- '**/*.java'
-- 'src/main/resources/screenshots/*'
-
 Web:
 - 'src/main/resources/templates/freemarker/*.ftlh'
 - 'src/main/resources/templates/freemarker/style.css'
@@ -15,11 +8,3 @@ Continuous integration:
 - '.gitlab-ci.yml'
 - '.pre-commit-config.yaml'
 - 'ci_settings.xml'
-
-
-
-
-# *.java => Java label
-# *.md & src/main/ressources/screenshots/ -> Documentation label
-# src/main/ressources/web.template.freemaker/*.ftlh & *.style.css -> Web label
-# .github/* & .gitlab-ci.yml & .pre-commit-config.yml & ci_settings.xml -> Continious integration label
