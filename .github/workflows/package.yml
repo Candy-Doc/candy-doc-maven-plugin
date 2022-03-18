@@ -1,3 +1,5 @@
+name: Package the plugin ( Tests and build )
+
 on:
   push:
     paths:
