@@ -1,4 +1,4 @@
-name: pull_request_checker
+name: linters_and_detect_secrets
 
 on:
   pull_request:
