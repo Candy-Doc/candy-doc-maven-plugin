@@ -4,7 +4,6 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 ![Discord](https://img.shields.io/discord/951511594972631120?logo=discord)
 
-
 Candy-Doc is a documentation generator plugin for projects built with the
 Domain-Driven-Design approach.
 
