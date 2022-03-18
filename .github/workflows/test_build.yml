@@ -1,4 +1,9 @@
-on: push
+on:
+  push:
+    paths:
+    - '**.java'
+    - ./pom.xml
+
 jobs:
   run_tests:
     runs-on: ubuntu-latest
