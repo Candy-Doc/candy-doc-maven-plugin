@@ -1,4 +1,4 @@
-name: linters_and_detect_secrets
+name: Run the linters and detect if a secret has leaked
 
 on:
   pull_request:
