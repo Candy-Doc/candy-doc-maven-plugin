@@ -1,3 +1,19 @@
+# Changelog
+
+# 1.0.0 (2022-03-23)
+
+
+* :memo: Test ([74c712f](https://github.com/Candy-Doc/candy-doc-maven-plugin/commit/74c712f))
+* :construction_worker: Test for semantic release config ([c7fd9aa](https://github.com/Candy-Doc/candy-doc-maven-plugin/commit/c7fd9aa))
+* :construction_worker: Test for semantic release config ([d58e586](https://github.com/Candy-Doc/candy-doc-maven-plugin/commit/d58e586))
+
+
+### 💥 BREAKING CHANGES
+
+* Je teste si ça se met bien ou pas
+* test
+* test2 GNEUH GNEUH
+
 # [2.0.0](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v1.0.0...v2.0.0) (2022-03-15)
 
 
