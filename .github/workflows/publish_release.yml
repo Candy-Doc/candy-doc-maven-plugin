@@ -2,7 +2,7 @@ name: Publish a new release
 on:
   push:
     branches:
-    - feat/*   #TODO:modify in main at the final push
+    - main
 
 jobs:
   build:
