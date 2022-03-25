@@ -1,9 +1,9 @@
 Web:
-- 'src/main/resources/templates/freemarker/*.ftlh'
-- 'src/main/resources/templates/freemarker/style.css'
+- src/main/resources/templates/freemarker/*.ftlh
+- src/main/resources/templates/freemarker/style.css
 
 Continuous integration:
-- '.github/**/*'
-- '.github/*'
-- '.pre-commit-config.yaml'
-- 'ci_settings.xml'
+- .github/**/*
+- .github/*
+- .pre-commit-config.yaml
+- ci_settings.xml
