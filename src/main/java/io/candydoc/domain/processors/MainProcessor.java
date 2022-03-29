@@ -19,10 +19,8 @@ import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.annotation.Annotation;
+import java.util.*;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 @AutoService(Processor.class)
@@ -67,24 +65,48 @@ public class MainProcessor extends AbstractProcessor {
         try {
             if (processingEnv.getOptions().get("packagesToScan") != null && processingEnv.getOptions().get("packagesToScan") instanceof String) {
                 packagesToScan = List.of(processingEnv.getOptions().get("packagesToScan").split(","));
-                messager.printMessage(Diagnostic.Kind.NOTE, "packagesToScans : " + packagesToScan);
+                messager.printMessage(Diagnostic.Kind.NOTE, "packagesToScan: " + packagesToScan);
             } else {
                 throw new ProcessingException(null, "You should specify the packages to scan with the option 'packagesToScan' (in pom.xml in compiler args like this: <arg>-ApackagesToScan='packageName'</arg>)");
             }
             if ((outputFormat = processingEnv.getOptions().get("outputFormat")) != null && outputFormat instanceof String) {
-                messager.printMessage(Diagnostic.Kind.NOTE, "outputFormat : " + outputFormat);
+                messager.printMessage(Diagnostic.Kind.NOTE, "outputFormat: " + outputFormat);
             } else {
                 outputFormat = "json";
                 messager.printMessage(Diagnostic.Kind.WARNING, "You didn't specify the output format. The default format is 'json'");
             }
 
-            ClassesFinder.getInstance().addElements((Set<TypeElement>) typeElements);
-
             messager.printMessage(Diagnostic.Kind.NOTE, "CandyDoc is processing...");
+
+            for(Element element : roundEnv.getElementsAnnotatedWith(Aggregate.class)) {
+                ClassesFinder.getInstance().addElement(element);
+                messager.printMessage(Diagnostic.Kind.NOTE, "Aggregate found: " + element.getSimpleName().toString());
+            }
+            for(Element element : roundEnv.getElementsAnnotatedWith(BoundedContext.class)) {
+                ClassesFinder.getInstance().addElement(element);
+                messager.printMessage(Diagnostic.Kind.NOTE, "BoundedContext found: " + element.getSimpleName().toString());
+            }
+            for(Element element : roundEnv.getElementsAnnotatedWith(CoreConcept.class)) {
+                ClassesFinder.getInstance().addElement(element);
+                messager.printMessage(Diagnostic.Kind.NOTE, "CoreConcept found: " + element.getSimpleName().toString());
+            }
+            for(Element element : roundEnv.getElementsAnnotatedWith(DomainCommand.class)) {
+                ClassesFinder.getInstance().addElement(element);
+                messager.printMessage(Diagnostic.Kind.NOTE, "DomainCommand found: " + element.getSimpleName().toString());
+            }
+            for(Element element : roundEnv.getElementsAnnotatedWith(DomainEvent.class)) {
+                ClassesFinder.getInstance().addElement(element);
+                messager.printMessage(Diagnostic.Kind.NOTE, "DomainEvent found: " + element.getSimpleName().toString());
+            }
+            for(Element element : roundEnv.getElementsAnnotatedWith(ValueObject.class)) {
+                ClassesFinder.getInstance().addElement(element);
+                messager.printMessage(Diagnostic.Kind.NOTE, "ValueObject found: " + element.getSimpleName().toString());
+            }
 
             FileObject output = filer.createResource(StandardLocation.SOURCE_OUTPUT, "", "candydoc/boundedContexts.json");
             File file = new File(output.toUri());
-            String outputDirectory = file.getAbsolutePath();
+            String outputDirectory = file.getParentFile().getAbsolutePath();
+            messager.printMessage(Diagnostic.Kind.NOTE, "CandyDoc output directory is: " + outputDirectory);
             SaveDocumentationAdapterFactory adapterFactory = new SaveDocumentationAdapterFactoryImpl();
             SaveDocumentationPort saveDocumentationPort =
                     adapterFactory.getAdapter(outputFormat, outputDirectory);
