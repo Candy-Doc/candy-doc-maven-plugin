@@ -17,6 +17,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
+/*
 @Mojo(
     name = "candy-doc",
     defaultPhase = LifecyclePhase.PROCESS_SOURCES,
@@ -24,6 +25,7 @@ import org.apache.maven.project.MavenProject;
     requiresDependencyCollection = ResolutionScope.RUNTIME_PLUS_SYSTEM,
     instantiationStrategy = InstantiationStrategy.SINGLETON,
     threadSafe = true)
+ */
 public class CandyDocMojo extends AbstractMojo {
 
   @Parameter(property = "packagesToScan")
