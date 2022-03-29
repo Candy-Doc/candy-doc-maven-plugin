@@ -2,7 +2,7 @@ Web:
 - src/main/resources/templates/freemarker/*.ftlh
 - src/main/resources/templates/freemarker/style.css
 
-Continuous integration:
+CI/CD:
 - .github/**/*
 - .github/*
 - .pre-commit-config.yaml
