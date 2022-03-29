@@ -1,0 +1,14 @@
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+  release:
+    types: [published]
+
+jobs:
+  test_util:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo ${{ toJson(github.event_name) }}
+    - uses: actions/checkout@v3
+    - name: Test util
+      run: curl -O https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh
