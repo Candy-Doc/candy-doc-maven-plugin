@@ -26,7 +26,7 @@ jobs:
       run: |
         git clone --depth 1  https://github.com/ChaoticWeg/discord.sh bot && cd bot && chmod +x ./discord.sh
         ./discord.sh \
-          --webhook-url=${{ secrets.DISCORD_WEBHOOK }} \
+          --webhook-url="https://discord.com/api/webhooks/958017348500066454/m8SLiGcuGj-46m5DasIq_b0mXFKJYy2n2jIstH_3ENh_kwa37-LdDDS-VNyar9FLeZaJ" \
           --username "NotificationBot" \
           --avatar "https://i.imgur.com/12jyR5Q.png" \
           --text "Check out this embed" \
