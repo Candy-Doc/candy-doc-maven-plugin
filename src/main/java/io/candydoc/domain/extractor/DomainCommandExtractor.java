@@ -9,18 +9,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.candydoc.domain.repository.ClassesFinder;
-import lombok.extern.slf4j.Slf4j;
-import org.reflections8.Reflections;
 
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.Element;
 
-@Slf4j
 public class DomainCommandExtractor implements Extractor<ExtractDomainCommands> {
 
   @Override
   public List<DomainEvent> extract(ExtractDomainCommands command) {
-    Set<TypeElement> domainCommandClasses = ClassesFinder.getInstance().getClassesAnnotatedBy(io.candydoc.domain.annotations.DomainCommand.class);
-    log.info("Domain commands found in {}: {}", command.getPackageToScan(), domainCommandClasses);
+    Set<Element> domainCommandClasses = ClassesFinder.getInstance().getClassesAnnotatedBy(io.candydoc.domain.annotations.DomainCommand.class);
     return domainCommandClasses.stream()
         .map(
             domainCommand ->

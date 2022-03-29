@@ -13,12 +13,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.candydoc.domain.repository.ClassesFinder;
-import lombok.extern.slf4j.Slf4j;
-import org.reflections8.Reflections;
 
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.Element;
 
-@Slf4j
 public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
 
   @Override
@@ -34,11 +31,11 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
       throw new DocumentationGenerationFailed(
           "Empty parameters for 'packagesToScan'. Check your pom configuration");
     }
-    Set<TypeElement> boundedContextClasses = ClassesFinder.getInstance().getClassesAnnotatedBy(BoundedContext.class);
+    Set<Element> boundedContextClasses =
+        ClassesFinder.getInstance().getClassesAnnotatedBy(BoundedContext.class);
     if (boundedContextClasses.isEmpty()) {
       throw new NoBoundedContextFound(packageToScan);
     }
-    log.info("Bounded contexts found in {}: {}", packageToScan, boundedContextClasses);
     return boundedContextClasses.stream()
         .map(
             boundedContext ->

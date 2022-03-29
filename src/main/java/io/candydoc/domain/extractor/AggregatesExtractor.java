@@ -9,18 +9,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.candydoc.domain.repository.ClassesFinder;
-import lombok.extern.slf4j.Slf4j;
-import org.reflections8.Reflections;
 
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.Element;
 
-@Slf4j
 public class AggregatesExtractor implements Extractor<ExtractAggregates> {
 
   @Override
   public List<DomainEvent> extract(ExtractAggregates command) {
-    Set<TypeElement> aggregatesClasses = ClassesFinder.getInstance().getClassesAnnotatedBy(io.candydoc.domain.annotations.Aggregate.class);
-    log.info("Aggregates found in {}: {}", command.getPackageToScan(), aggregatesClasses);
+    Set<Element> aggregatesClasses =
+        ClassesFinder.getInstance().getClassesAnnotatedBy(io.candydoc.domain.annotations.Aggregate.class);
     return aggregatesClasses.stream()
         .map(
             aggregate ->
@@ -33,16 +30,10 @@ public class AggregatesExtractor implements Extractor<ExtractAggregates> {
                         aggregate
                             .getAnnotation(io.candydoc.domain.annotations.Aggregate.class)
                             .description())
-                    .className(aggregate.getQualifiedName().toString())
+                    .className(aggregate.getSimpleName().toString())
                     .packageName(aggregate.getClass().getPackageName())
                     .boundedContext(command.getPackageToScan())
                     .build())
         .collect(Collectors.toUnmodifiableList());
-  }
-
-  private String getSimpleName(Class<?> aggregate) {
-    String annotatedName =
-        aggregate.getAnnotation(io.candydoc.domain.annotations.Aggregate.class).name();
-    return annotatedName.isBlank() ? aggregate.getSimpleName() : annotatedName;
   }
 }

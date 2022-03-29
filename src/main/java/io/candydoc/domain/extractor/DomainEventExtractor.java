@@ -7,19 +7,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import io.candydoc.domain.repository.ClassesFinder;
-import lombok.extern.slf4j.Slf4j;
-import org.reflections8.Reflections;
 
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.Element;
 
-@Slf4j
 public class DomainEventExtractor implements Extractor<ExtractDomainEvents> {
 
   @Override
   public List<DomainEvent> extract(ExtractDomainEvents command) {
-    Set<TypeElement> domainEventClasses =
+    Set<Element> domainEventClasses =
         ClassesFinder.getInstance().getClassesAnnotatedBy(io.candydoc.domain.annotations.DomainEvent.class);
-    log.info("Domain events found in {}: {}", command.getPackageToScan(), domainEventClasses);
     return domainEventClasses.stream()
         .map(
             domainEvent ->

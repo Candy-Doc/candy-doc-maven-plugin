@@ -9,18 +9,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.candydoc.domain.repository.ClassesFinder;
-import lombok.extern.slf4j.Slf4j;
-import org.reflections8.Reflections;
 
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.Element;
 
-@Slf4j
 public class ValueObjectExtractor implements Extractor<ExtractValueObjects> {
 
   public List<DomainEvent> extract(ExtractValueObjects command) {
-    Set<TypeElement> valueObjectClasses =
+    Set<Element> valueObjectClasses =
         ClassesFinder.getInstance().getClassesAnnotatedBy(io.candydoc.domain.annotations.ValueObject.class);
-    log.info("Value objects found in {}: {}", command.getPackageToScan(), valueObjectClasses);
     return valueObjectClasses.stream()
         .filter(valueObject -> !isAnonymous(valueObject))
         .map(
@@ -38,7 +34,7 @@ public class ValueObjectExtractor implements Extractor<ExtractValueObjects> {
         .collect(Collectors.toUnmodifiableList());
   }
 
-  private boolean isAnonymous(TypeElement valueObject) {
+  private boolean isAnonymous(Element valueObject) {
     return valueObject.getClass().isAnonymousClass();
   }
 }

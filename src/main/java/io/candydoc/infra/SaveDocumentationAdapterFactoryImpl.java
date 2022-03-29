@@ -14,9 +14,9 @@ public class SaveDocumentationAdapterFactoryImpl implements SaveDocumentationAda
   @Override
   public SaveDocumentationPort getAdapter(String outputFormat, String outputDirectory) {
     if (Files.notExists((Path.of(outputDirectory)))) {
-      throw new IllegalArgumentException("Output directory does not exist.");
+      if(!Path.of(outputDirectory).toFile().mkdirs()) throw new IllegalArgumentException("Output directory does not exist and can't be created.");
     }
-    Path outputFile = Paths.get(outputDirectory, "candy-doc", "bounded_contexts." + outputFormat);
+    Path outputFile = Paths.get(outputDirectory, "bounded_contexts." + outputFormat);
     switch (outputFormat) {
       case "json":
         return new SaveDocumentationAsFile(new ObjectMapper(new JsonFactory()), outputFile);

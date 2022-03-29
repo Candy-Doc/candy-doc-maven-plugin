@@ -7,9 +7,6 @@ import io.candydoc.domain.strategy.InteractionChecker;
 import java.util.LinkedList;
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class DDDConceptExtractor
     implements Command.Visitor, DomainEvent.Visitor, Extractor<Command> {
   private final List<DomainEvent> eventsList = new LinkedList<>();
@@ -33,37 +30,37 @@ public class DDDConceptExtractor
   }
 
   public void handle(ExtractValueObjects command) {
-    log.info("Extract value objects from {}", command.getPackageToScan());
+    //log.info("Extract value objects from {}", command.getPackageToScan());
     trackAndApply(valueObjectExtractor.extract(command));
   }
 
   public void handle(ExtractDDDConcepts command) {
-    log.info("Extract ddd concepts from {}", command.getPackagesToScan());
+    //log.info("Extract ddd concepts from {}", command.getPackagesToScan());
     trackAndApply(boundedContextExtractor.extract(command));
   }
 
   public void handle(ExtractCoreConcepts command) {
-    log.info("Extract core concepts from {}", command.getPackageToScan());
+    //log.info("Extract core concepts from {}", command.getPackageToScan());
     trackAndApply(coreConceptExtractor.extract(command));
   }
 
   public void handle(ExtractDomainEvents command) {
-    log.info("Extract domain events from {}", command.getPackageToScan());
+    //log.info("Extract domain events from {}", command.getPackageToScan());
     trackAndApply(domainEventExtractor.extract(command));
   }
 
   public void handle(ExtractDomainCommands command) {
-    log.info("Extract domain commands from {}", command.getPackageToScan());
+    //log.info("Extract domain commands from {}", command.getPackageToScan());
     trackAndApply(domainCommandExtractor.extract(command));
   }
 
   public void handle(CheckConceptInteractions command) {
-    log.info("Check concept interactions from {}", command.getClassName());
+    //log.info("Check concept interactions from {}", command.getClassName());
     trackAndApply(interactionChecker.check(command));
   }
 
   public void handle(ExtractAggregates command) {
-    log.info("Extract aggregates from {}", command.getPackageToScan());
+    //log.info("Extract aggregates from {}", command.getPackageToScan());
     trackAndApply(aggregatesExtractor.extract(command));
   }
 
