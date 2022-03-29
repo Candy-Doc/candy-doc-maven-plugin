@@ -7,7 +7,6 @@
     <groupId>io.candy-doc</groupId>
     <artifactId>candy-doc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>maven-plugin</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,7 +20,7 @@
         <maven.project.version>2.2.1</maven.project.version>
         <maven.core.version>3.0.3</maven.core.version>
         <java.version>11</java.version>
-        <lombok.version>1.18.12</lombok.version>
+        <lombok.version>1.18.22</lombok.version>
         <log4j.version>2.7</log4j.version>
         <reflections.version>0.11.5</reflections.version>
         <freemarker.version>2.3.31</freemarker.version>
@@ -31,6 +30,7 @@
         <assertj.version>3.20.2</assertj.version>
         <jsoup.version>1.13.1</jsoup.version>
         <mockito.version>3.11.2</mockito.version>
+        <auto-service.version>1.0.1</auto-service.version>
     </properties>
 
     <dependencies>
@@ -88,6 +88,13 @@
             <version>${log4j.version}</version>
             <scope>compile</scope>
         </dependency>
+        <!-- AutoService for annotation processors -->
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <version>${auto-service.version}</version>
+        </dependency>
+
 
         <!-- Maven plugin dependencies -->
         <dependency>
@@ -156,7 +163,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/CANDY-DOC/candy-doc</developerConnection>
-      <tag>v1.0</tag>
+        <tag>v1.0</tag>
     </scm>
 
     <build>
@@ -181,6 +188,11 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>com.google.auto.service</groupId>
+                            <artifactId>auto-service</artifactId>
+                            <version>${auto-service.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 @Documented
 @Target({ElementType.PACKAGE})
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 public @interface BoundedContext {
   String name() default "";
 

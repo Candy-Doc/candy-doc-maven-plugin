@@ -3,8 +3,10 @@ package io.candydoc.domain.extractor;
 import io.candydoc.domain.command.*;
 import io.candydoc.domain.events.*;
 import io.candydoc.domain.strategy.InteractionChecker;
+
 import java.util.LinkedList;
 import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -77,7 +79,8 @@ public class DDDConceptExtractor
     this.handle(CheckConceptInteractions.builder().className(event.getClassName()).build());
   }
 
-  public void apply(InteractionBetweenConceptFound event) {}
+  public void apply(InteractionBetweenConceptFound event) {
+  }
 
   public void apply(ValueObjectFound event) {
     this.handle(CheckConceptInteractions.builder().className(event.getClassName()).build());
@@ -95,7 +98,9 @@ public class DDDConceptExtractor
     this.handle(CheckConceptInteractions.builder().className(event.getClassName()).build());
   }
 
-  public void apply(NameConflictBetweenCoreConcepts event) {}
+  public void apply(NameConflictBetweenCoreConcepts event) {
+  }
 
-  public void apply(ConceptRuleViolated event) {}
+  public void apply(ConceptRuleViolated event) {
+  }
 }
