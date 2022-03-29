@@ -3,7 +3,7 @@ name: Package the plugin ( Tests and build )
 on:
   push:
     paths:
-    - '**.java'
+    - '**/*.java'
     - ./pom.xml
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
     - name: Run tests with Maven
       run: mvn -B test --file pom.xml
   build:
-    needs: run_tests
+    needs: tests
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

@@ -1,3 +1,5 @@
+name: Test du discord bot
+
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
@@ -5,10 +7,40 @@ on:
     types: [published]
 
 jobs:
-  test_util:
+  pull_request:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
     steps:
     - run: echo ${{ toJson(github.event_name) }}
     - uses: actions/checkout@v3
-    - name: Test util
+    - name: Test PR
       run: curl -O https://raw.githubusercontent.com/ChaoticWeg/discord.sh/master/discord.sh
+
+  release:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'release' }}
+    steps:
+    - run: echo ${{ toJson(github.event_name) }}
+    - uses: actions/checkout@v3
+    - name: Test release
+      run: |
+        git clone --depth 1  https://github.com/ChaoticWeg/discord.sh bot && cd bot && chmod +x ./discord.sh
+        ./discord.sh \
+          --webhook-url=${{ secrets.DISCORD_WEBHOOK }} \
+          --username "NotificationBot" \
+          --avatar "https://i.imgur.com/12jyR5Q.png" \
+          --text "Check out this embed" \
+          --title "New Notification\!" \
+          --description "This is a description\nPretty cool huh?" \
+          --color "0xFFFFFF" \
+          --url "https://github.com/ChaoticWeg/discord.sh" \
+          --author "discord.sh" \
+          --author-url "https://github.com/ChaoticWeg/discord.sh" \
+          --author-icon "https://i.imgur.com/12jyR5Q.png" \
+          --image "https://i.imgur.com/12jyR5Q.png" \
+          --thumbnail "https://i.imgur.com/12jyR5Q.png" \
+          --field "Author;ChaoticWeg" \
+          --field "Author;fieu" \
+          --footer "discord.sh" \
+          --footer-icon "https://i.imgur.com/12jyR5Q.png" \
+          --timestamp
