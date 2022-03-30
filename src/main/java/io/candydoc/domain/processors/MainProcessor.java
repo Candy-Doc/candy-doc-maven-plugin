@@ -7,6 +7,7 @@ import io.candydoc.domain.SaveDocumentationPort;
 import io.candydoc.domain.annotations.*;
 import io.candydoc.domain.command.ExtractDDDConcepts;
 import io.candydoc.domain.repository.ClassesFinder;
+import io.candydoc.domain.repository.ProcessorUtils;
 import io.candydoc.infra.SaveDocumentationAdapterFactoryImpl;
 
 import javax.annotation.processing.*;
@@ -14,6 +15,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
@@ -27,17 +29,32 @@ import java.util.*;
 public class MainProcessor extends AbstractProcessor {
     private Messager messager;
     private Elements elementsUtils;
+    private Types typesUtils;
     private Filer filer;
 
     private List<String> packagesToScan;
     private String outputFormat;
+
+    private static final Set<Class<? extends Annotation>> DDD_ANNOTATION_CLASSES =
+        Set.of(
+            io.candydoc.domain.annotations.BoundedContext.class,
+            io.candydoc.domain.annotations.CoreConcept.class,
+            io.candydoc.domain.annotations.ValueObject.class,
+            io.candydoc.domain.annotations.DomainEvent.class,
+            io.candydoc.domain.annotations.DomainCommand.class,
+            io.candydoc.domain.annotations.Aggregate.class);
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
         messager = processingEnv.getMessager();
         elementsUtils = processingEnv.getElementUtils();
+        typesUtils = processingEnv.getTypeUtils();
         filer = processingEnv.getFiler();
+
+        ProcessorUtils.getInstance().setMessager(messager);
+        ProcessorUtils.getInstance().setElementsUtils(elementsUtils);
+        ProcessorUtils.getInstance().setTypesUtils(typesUtils);
     }
 
     @Override
@@ -78,30 +95,9 @@ public class MainProcessor extends AbstractProcessor {
 
             messager.printMessage(Diagnostic.Kind.NOTE, "CandyDoc is processing...");
 
-            for(Element element : roundEnv.getElementsAnnotatedWith(Aggregate.class)) {
-                ClassesFinder.getInstance().addElement(element);
-                messager.printMessage(Diagnostic.Kind.NOTE, "Aggregate found: " + element.getSimpleName().toString());
-            }
-            for(Element element : roundEnv.getElementsAnnotatedWith(BoundedContext.class)) {
-                ClassesFinder.getInstance().addElement(element);
-                messager.printMessage(Diagnostic.Kind.NOTE, "BoundedContext found: " + element.getSimpleName().toString());
-            }
-            for(Element element : roundEnv.getElementsAnnotatedWith(CoreConcept.class)) {
-                ClassesFinder.getInstance().addElement(element);
-                messager.printMessage(Diagnostic.Kind.NOTE, "CoreConcept found: " + element.getSimpleName().toString());
-            }
-            for(Element element : roundEnv.getElementsAnnotatedWith(DomainCommand.class)) {
-                ClassesFinder.getInstance().addElement(element);
-                messager.printMessage(Diagnostic.Kind.NOTE, "DomainCommand found: " + element.getSimpleName().toString());
-            }
-            for(Element element : roundEnv.getElementsAnnotatedWith(DomainEvent.class)) {
-                ClassesFinder.getInstance().addElement(element);
-                messager.printMessage(Diagnostic.Kind.NOTE, "DomainEvent found: " + element.getSimpleName().toString());
-            }
-            for(Element element : roundEnv.getElementsAnnotatedWith(ValueObject.class)) {
-                ClassesFinder.getInstance().addElement(element);
-                messager.printMessage(Diagnostic.Kind.NOTE, "ValueObject found: " + element.getSimpleName().toString());
-            }
+            ClassesFinder.getInstance().addElements((Set<Element>) roundEnv.getElementsAnnotatedWithAny(DDD_ANNOTATION_CLASSES));
+
+            messager.printMessage(Diagnostic.Kind.NOTE, "All classes found were added to ClassesFinder.");
 
             FileObject output = filer.createResource(StandardLocation.SOURCE_OUTPUT, "", "candydoc/boundedContexts.json");
             File file = new File(output.toUri());
@@ -112,8 +108,10 @@ public class MainProcessor extends AbstractProcessor {
                     adapterFactory.getAdapter(outputFormat, outputDirectory);
             GenerateDocumentationUseCase generateDocumentationUseCase =
                     new GenerateDocumentationUseCase(saveDocumentationPort);
+            messager.printMessage(Diagnostic.Kind.NOTE, "GenerateDocumentationUseCase created");
             generateDocumentationUseCase.execute(
                     ExtractDDDConcepts.builder().packagesToScan(packagesToScan).build());
+            messager.printMessage(Diagnostic.Kind.NOTE, "GenerateDocumentationUseCase executed");
 
             return true;
         } catch (ProcessingException e) {

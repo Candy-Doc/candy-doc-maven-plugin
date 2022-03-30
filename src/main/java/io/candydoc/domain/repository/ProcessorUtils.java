@@ -5,12 +5,13 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
 public class ProcessorUtils {
-  private static final ProcessorUtils INSTANCE = new ProcessorUtils();
+  private final static ProcessorUtils INSTANCE = new ProcessorUtils();
   private Messager messager;
   private Elements elementsUtils;
   private Types typesUtils;
 
-  public ProcessorUtils() {}
+  public ProcessorUtils() {
+  }
 
   public Elements getElementUtils() {
     return elementsUtils;
