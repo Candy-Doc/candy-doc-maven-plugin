@@ -1,7 +1,9 @@
 name: Publish a new release
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+    - feat/*
 
 jobs:
   build:
@@ -31,6 +33,7 @@ jobs:
       with:
         extra_plugins: |
           "semantic-release-config-gitmoji"
+          "semantic-release-maven --legacy-peer-deps"
         extends: semantic-release-config-gitmoji
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

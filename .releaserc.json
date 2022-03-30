@@ -1,6 +1,6 @@
 {
   "branches": [
-    "main"
+    "feat/add-semantic-maven-plugin"
   ],
   "plugins": [
     [
@@ -37,6 +37,9 @@
         ],
         "message": ":bookmark: chore(release): ${nextRelease.gitTag} [skip ci] \n\n${nextRelease.notes}"
       }
+    ],
+    [
+      "semantic-release-maven"
     ]
   ],
   "extends": [
