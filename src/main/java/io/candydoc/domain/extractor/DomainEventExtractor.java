@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import io.candydoc.domain.repository.ClassesFinder;
+import io.candydoc.domain.repository.ProcessorUtils;
 
 import javax.lang.model.element.Element;
 
@@ -25,8 +26,8 @@ public class DomainEventExtractor implements Extractor<ExtractDomainEvents> {
                             .getAnnotation(io.candydoc.domain.annotations.DomainEvent.class)
                             .description())
                     .name(domainEvent.getSimpleName().toString())
-                    .className(domainEvent.getSimpleName().toString())
-                    .packageName(domainEvent.getClass().getPackageName())
+                    .className(domainEvent.asType().toString())
+                    .packageName(ProcessorUtils.getInstance().getElementUtils().getPackageOf(domainEvent).getSimpleName().toString())
                     .boundedContext(command.getPackageToScan())
                     .build())
         .collect(Collectors.toUnmodifiableList());

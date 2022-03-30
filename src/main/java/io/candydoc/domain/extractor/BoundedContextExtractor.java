@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.candydoc.domain.repository.ClassesFinder;
+import io.candydoc.domain.repository.ProcessorUtils;
 
 import javax.lang.model.element.Element;
 
@@ -44,7 +45,7 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
                         boundedContext
                             .getAnnotation(io.candydoc.domain.annotations.BoundedContext.class)
                             .name())
-                    .packageName(boundedContext.getClass().getPackageName())
+                    .packageName(ProcessorUtils.getInstance().getElementUtils().getPackageOf(boundedContext).getSimpleName().toString())
                     .description(
                         boundedContext
                             .getAnnotation(io.candydoc.domain.annotations.BoundedContext.class)

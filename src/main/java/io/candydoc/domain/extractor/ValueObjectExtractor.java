@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.candydoc.domain.repository.ClassesFinder;
+import io.candydoc.domain.repository.ProcessorUtils;
 
 import javax.lang.model.element.Element;
 
@@ -18,7 +19,6 @@ public class ValueObjectExtractor implements Extractor<ExtractValueObjects> {
     Set<Element> valueObjectClasses =
         ClassesFinder.getInstance().getClassesAnnotatedBy(io.candydoc.domain.annotations.ValueObject.class);
     return valueObjectClasses.stream()
-        .filter(valueObject -> !isAnonymous(valueObject))
         .map(
             valueObject ->
                 ValueObjectFound.builder()
@@ -27,14 +27,10 @@ public class ValueObjectExtractor implements Extractor<ExtractValueObjects> {
                             .getAnnotation(io.candydoc.domain.annotations.ValueObject.class)
                             .description())
                     .name(valueObject.getSimpleName().toString())
-                    .className(valueObject.getSimpleName().toString())
-                    .packageName(valueObject.getClass().getPackageName())
+                    .className(valueObject.asType().toString())
+                    .packageName(ProcessorUtils.getInstance().getElementUtils().getPackageOf(valueObject).getSimpleName().toString())
                     .boundedContext(command.getPackageToScan())
                     .build())
         .collect(Collectors.toUnmodifiableList());
-  }
-
-  private boolean isAnonymous(Element valueObject) {
-    return valueObject.getClass().isAnonymousClass();
   }
 }

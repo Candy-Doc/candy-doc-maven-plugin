@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.candydoc.domain.repository.ClassesFinder;
+import io.candydoc.domain.repository.ProcessorUtils;
 
 import javax.lang.model.element.Element;
 
@@ -47,7 +48,6 @@ public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
   private List<CoreConceptFound> findCoreConcepts(
       ExtractCoreConcepts command, Set<Element> coreConceptClasses) {
     return coreConceptClasses.stream()
-        .filter(coreConcept -> !isAnonymous(coreConcept))
         .map(
             coreConcept ->
                 CoreConceptFound.builder()
@@ -59,14 +59,10 @@ public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
                         coreConcept
                             .getAnnotation(io.candydoc.domain.annotations.CoreConcept.class)
                             .description())
-                    .className(coreConcept.getSimpleName().toString())
-                    .packageName(coreConcept.getClass().getPackageName())
+                    .className(coreConcept.asType().toString())
+                    .packageName(ProcessorUtils.getInstance().getElementUtils().getPackageOf(coreConcept).getSimpleName().toString())
                     .boundedContext(command.getPackageToScan())
                     .build())
         .collect(Collectors.toUnmodifiableList());
-  }
-
-  private boolean isAnonymous(Element coreConcept) {
-    return coreConcept.getClass().isAnonymousClass();
   }
 }

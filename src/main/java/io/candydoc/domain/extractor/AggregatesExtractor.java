@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.candydoc.domain.repository.ClassesFinder;
+import io.candydoc.domain.repository.ProcessorUtils;
 
 import javax.lang.model.element.Element;
 
@@ -30,8 +31,8 @@ public class AggregatesExtractor implements Extractor<ExtractAggregates> {
                         aggregate
                             .getAnnotation(io.candydoc.domain.annotations.Aggregate.class)
                             .description())
-                    .className(aggregate.getSimpleName().toString())
-                    .packageName(aggregate.getClass().getPackageName())
+                    .className(aggregate.asType().toString())
+                    .packageName(ProcessorUtils.getInstance().getElementUtils().getPackageOf(aggregate).getSimpleName().toString())
                     .boundedContext(command.getPackageToScan())
                     .build())
         .collect(Collectors.toUnmodifiableList());

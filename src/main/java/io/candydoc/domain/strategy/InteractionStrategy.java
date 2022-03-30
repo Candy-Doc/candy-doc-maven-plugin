@@ -1,12 +1,14 @@
 package io.candydoc.domain.strategy;
 
 import io.candydoc.domain.events.DomainEvent;
+
+import javax.lang.model.element.Element;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Set;
 
 public interface InteractionStrategy {
-  List<DomainEvent> checkInteractions(Class<?> concept);
+  List<DomainEvent> checkInteractions(Element concept);
 
   Set<Class<? extends Annotation>> DDD_ANNOTATION_CLASSES =
       Set.of(

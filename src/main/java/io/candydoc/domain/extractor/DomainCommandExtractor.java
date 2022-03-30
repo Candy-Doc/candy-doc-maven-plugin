@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.candydoc.domain.repository.ClassesFinder;
+import io.candydoc.domain.repository.ProcessorUtils;
 
 import javax.lang.model.element.Element;
 
@@ -26,8 +27,8 @@ public class DomainCommandExtractor implements Extractor<ExtractDomainCommands> 
                             .getAnnotation(io.candydoc.domain.annotations.DomainCommand.class)
                             .description())
                     .name(domainCommand.getSimpleName().toString())
-                    .className(domainCommand.getSimpleName().toString())
-                    .packageName(domainCommand.getClass().getPackageName())
+                    .className(domainCommand.asType().toString())
+                    .packageName(ProcessorUtils.getInstance().getElementUtils().getPackageOf(domainCommand).getSimpleName().toString())
                     .boundedContext(command.getPackageToScan())
                     .build())
         .collect(Collectors.toUnmodifiableList());

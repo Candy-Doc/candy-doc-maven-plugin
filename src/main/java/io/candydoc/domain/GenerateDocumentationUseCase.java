@@ -7,11 +7,13 @@ import io.candydoc.domain.exceptions.DomainException;
 import io.candydoc.domain.extractor.DDDConceptExtractor;
 import java.io.IOException;
 import java.util.List;
+
+import io.candydoc.domain.repository.ProcessorUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
+import javax.tools.Diagnostic;
 
 @RequiredArgsConstructor
-@Slf4j
 public class GenerateDocumentationUseCase {
 
   private final SaveDocumentationPort saveDocumentationPort;
@@ -28,6 +30,5 @@ public class GenerateDocumentationUseCase {
     checkParameters(command);
     List<DomainEvent> domainEvents = DDDConceptExtractor.extract(command);
     saveDocumentationPort.save(domainEvents);
-    log.info("Documentation generation has succeeded.");
   }
 }
