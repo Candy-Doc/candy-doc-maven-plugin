@@ -5,14 +5,13 @@ import io.candydoc.domain.events.BoundedContextFound;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.exceptions.DocumentationGenerationFailed;
 import io.candydoc.domain.exceptions.NoBoundedContextFound;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.reflections8.Reflections;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,7 +31,7 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
       throw new DocumentationGenerationFailed(
           "Empty parameters for 'packagesToScan'. Check your pom configuration");
     }
-    Set<Class<?>> boundedContextClasses = conceptFinder.findConcepts(packageToScan);
+    Set<Class<?>> boundedContextClasses = conceptFinder.findConcepts(packageToScan, io.candydoc.domain.annotations.BoundedContext.class);
     if (boundedContextClasses.isEmpty()) {
       throw new NoBoundedContextFound(packageToScan);
     }
