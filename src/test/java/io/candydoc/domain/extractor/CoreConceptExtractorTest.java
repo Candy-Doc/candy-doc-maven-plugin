@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class CoreConceptExtractorTest {
 
-  private final CoreConceptExtractor coreConceptExtractor = new CoreConceptExtractor();
+  private final CoreConceptExtractor coreConceptExtractor = new CoreConceptExtractor(new ReflectionsConceptFinder());
 
   @Test
   public void use_simple_class_name_when_name_is_empty() {

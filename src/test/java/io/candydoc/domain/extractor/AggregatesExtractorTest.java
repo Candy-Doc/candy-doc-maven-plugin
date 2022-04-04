@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class AggregatesExtractorTest {
 
-  private final AggregatesExtractor aggregatesExtractor = new AggregatesExtractor();
+  private final AggregatesExtractor aggregatesExtractor = new AggregatesExtractor(new ReflectionsConceptFinder());
 
   @Test
   public void use_simple_class_name_when_name_is_empty() {
