@@ -8,6 +8,7 @@ import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,13 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class DomainEventExtractor implements Extractor<ExtractDomainEvents> {
 
-  private final DDDConceptFinder DDDConceptFinder;
+  private final ConceptFinder conceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractDomainEvents command) {
-    Set<DDDConcept> domainEventClasses =
-        DDDConceptFinder.findDomainEvents(command.getPackageToScan());
-    DDDConceptRepository.getInstance().addDDDConcepts(domainEventClasses);
+    Set<Class<?>> domainEventClasses = conceptFinder.findConcepts(command.getPackageToScan(), io.candydoc.domain.annotations.DomainEvent.class);
     log.info("Domain events found in {}: {}", command.getPackageToScan(), domainEventClasses);
     return domainEventClasses.stream()
         .map(

@@ -17,13 +17,14 @@ public class DDDConceptExtractor
   private final AggregatesExtractor aggregatesExtractor = new AggregatesExtractor();
   private final BoundedContextExtractor boundedContextExtractor;
   private final CoreConceptExtractor coreConceptExtractor = new CoreConceptExtractor();
-  private final DomainEventExtractor domainEventExtractor = new DomainEventExtractor();
+  private final DomainEventExtractor domainEventExtractor;
   private final DomainCommandExtractor domainCommandExtractor = new DomainCommandExtractor();
   private final InteractionChecker interactionChecker = new InteractionChecker();
 
   public DDDConceptExtractor(ConceptFinder conceptFinder) {
     this.conceptFinder = conceptFinder;
     this.boundedContextExtractor = new BoundedContextExtractor(conceptFinder);
+    this.domainEventExtractor = new DomainEventExtractor(conceptFinder);
   }
 
   @Override
