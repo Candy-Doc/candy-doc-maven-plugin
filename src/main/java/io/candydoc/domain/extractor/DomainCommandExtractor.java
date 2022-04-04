@@ -3,33 +3,33 @@ package io.candydoc.domain.extractor;
 import io.candydoc.domain.command.ExtractDomainCommands;
 import io.candydoc.domain.events.DomainCommandFound;
 import io.candydoc.domain.events.DomainEvent;
-import io.candydoc.domain.model.DDDConcept;
-import io.candydoc.domain.model.DDDConceptRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
 public class DomainCommandExtractor implements Extractor<ExtractDomainCommands> {
 
-  private final DDDConceptFinder DDDConceptFinder;
+  private final ConceptFinder conceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractDomainCommands command) {
-    Set<DDDConcept> domainCommandClasses =
-        DDDConceptFinder.findDomainCommands(command.getPackageToScan());
-    DDDConceptRepository.getInstance().addDDDConcepts(domainCommandClasses);
+    Set<Class<?>> domainCommandClasses = conceptFinder.findConcepts(command.getPackageToScan(), io.candydoc.domain.annotations.DomainCommand.class);
     log.info("Domain commands found in {}: {}", command.getPackageToScan(), domainCommandClasses);
     return domainCommandClasses.stream()
         .map(
             domainCommand ->
                 DomainCommandFound.builder()
-                    .description(domainCommand.getDescription())
-                    .name(domainCommand.getName())
-                    .className(domainCommand.getCanonicalName())
+                    .description(
+                        domainCommand
+                            .getAnnotation(io.candydoc.domain.annotations.DomainCommand.class)
+                            .description())
+                    .name(domainCommand.getSimpleName())
+                    .className(domainCommand.getName())
                     .packageName(domainCommand.getPackageName())
                     .boundedContext(command.getPackageToScan())
                     .build())

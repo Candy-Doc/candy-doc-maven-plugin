@@ -4,25 +4,23 @@ import io.candydoc.domain.command.ExtractCoreConcepts;
 import io.candydoc.domain.events.CoreConceptFound;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.NameConflictBetweenCoreConcepts;
-import io.candydoc.domain.model.DDDConcept;
-import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.reflections8.Reflections;
 
 @Slf4j
 @RequiredArgsConstructor
 public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
 
-  private final DDDConceptFinder DDDConceptFinder;
+  private final ConceptFinder conceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractCoreConcepts command) {
-    Set<DDDConcept> coreConceptClasses =
-        DDDConceptFinder.findCoreConcepts(command.getPackageToScan());
-    DDDConceptRepository.getInstance().addDDDConcepts(coreConceptClasses);
+    Set<Class<?>> coreConceptClasses = conceptFinder.findConcepts(command.getPackageToScan(), io.candydoc.domain.annotations.CoreConcept.class);
     log.info("Core concepts found in {}: {}", command.getPackageToScan(), coreConceptClasses);
     List<CoreConceptFound> coreConcepts = findCoreConcepts(command, coreConceptClasses);
     List<DomainEvent> conflicts = checkConflictBetweenCoreConcepts(coreConcepts);
@@ -50,26 +48,35 @@ public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
   }
 
   private List<CoreConceptFound> findCoreConcepts(
-      ExtractCoreConcepts command, Set<DDDConcept> coreConceptClasses) {
+      ExtractCoreConcepts command, Set<Class<?>> coreConceptClasses) {
     return coreConceptClasses.stream()
+        .filter(coreConcept -> !isAnonymous(coreConcept))
         .map(
             coreConcept ->
                 CoreConceptFound.builder()
                     .name(getSimpleName(coreConcept))
                     .description(getDescription(coreConcept))
-                    .className(coreConcept.getCanonicalName())
+                    .className(coreConcept.getName())
                     .packageName(coreConcept.getPackageName())
                     .boundedContext(command.getPackageToScan())
                     .build())
         .collect(Collectors.toUnmodifiableList());
   }
 
-  private String getSimpleName(DDDConcept aggregate) {
-    String annotatedName = aggregate.getName();
-    return annotatedName.isBlank() ? aggregate.getCanonicalName() : annotatedName;
+  private boolean isAnonymous(Class<?> coreConcept) {
+    return coreConcept.isAnonymousClass();
   }
 
-  private String getDescription(DDDConcept coreConcept) {
-    return coreConcept.getDescription();
+  private String getSimpleName(Class<?> aggregate) {
+    io.candydoc.domain.annotations.CoreConcept annotation =
+        aggregate.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class);
+    String annotatedName = annotation.name();
+    return annotatedName.isBlank() ? aggregate.getSimpleName() : annotatedName;
+  }
+
+  private String getDescription(Class<?> coreConcept) {
+    io.candydoc.domain.annotations.CoreConcept annotation =
+        coreConcept.getAnnotation(io.candydoc.domain.annotations.CoreConcept.class);
+    return annotation.description();
   }
 }

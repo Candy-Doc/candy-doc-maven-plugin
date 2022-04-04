@@ -3,40 +3,43 @@ package io.candydoc.domain.extractor;
 import io.candydoc.domain.command.ExtractAggregates;
 import io.candydoc.domain.events.AggregateFound;
 import io.candydoc.domain.events.DomainEvent;
-import io.candydoc.domain.model.DDDConcept;
-import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.reflections8.Reflections;
 
 @Slf4j
 @RequiredArgsConstructor
 public class AggregatesExtractor implements Extractor<ExtractAggregates> {
 
-  private final DDDConceptFinder DDDConceptFinder;
+  private final ConceptFinder conceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractAggregates command) {
-    Set<DDDConcept> aggregatesClasses = DDDConceptFinder.findAggregates(command.getPackageToScan());
+    Set<Class<?>> aggregatesClasses = conceptFinder.findConcepts(command.getPackageToScan(), io.candydoc.domain.annotations.Aggregate.class);
     log.info("Aggregates found in {}: {}", command.getPackageToScan(), aggregatesClasses);
-    DDDConceptRepository.getInstance().addDDDConcepts(aggregatesClasses);
     return aggregatesClasses.stream()
         .map(
             aggregate ->
                 AggregateFound.builder()
                     .name(getSimpleName(aggregate))
-                    .description(aggregate.getDescription())
-                    .className(aggregate.getCanonicalName())
+                    .description(
+                        aggregate
+                            .getAnnotation(io.candydoc.domain.annotations.Aggregate.class)
+                            .description())
+                    .className(aggregate.getName())
                     .packageName(aggregate.getPackageName())
                     .boundedContext(command.getPackageToScan())
                     .build())
         .collect(Collectors.toUnmodifiableList());
   }
 
-  private String getSimpleName(DDDConcept aggregate) {
-    String annotatedName = aggregate.getName();
-    return annotatedName.isBlank() ? aggregate.getCanonicalName() : annotatedName;
+  private String getSimpleName(Class<?> aggregate) {
+    String annotatedName =
+        aggregate.getAnnotation(io.candydoc.domain.annotations.Aggregate.class).name();
+    return annotatedName.isBlank() ? aggregate.getSimpleName() : annotatedName;
   }
 }
