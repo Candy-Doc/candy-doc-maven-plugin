@@ -5,17 +5,20 @@ import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.DomainEventFound;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections8.Reflections;
 
 @Slf4j
+@RequiredArgsConstructor
 public class DomainEventExtractor implements Extractor<ExtractDomainEvents> {
+
+  private final ConceptFinder conceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractDomainEvents command) {
-    Reflections reflections = new Reflections(command.getPackageToScan());
-    Set<Class<?>> domainEventClasses =
-        reflections.getTypesAnnotatedWith(io.candydoc.domain.annotations.DomainEvent.class);
+    Set<Class<?>> domainEventClasses = conceptFinder.findConcepts(command.getPackageToScan(), io.candydoc.domain.annotations.DomainEvent.class);
     log.info("Domain events found in {}: {}", command.getPackageToScan(), domainEventClasses);
     return domainEventClasses.stream()
         .map(
