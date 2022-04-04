@@ -11,13 +11,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
 public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
-  private final DDDConceptFinder DDDConceptFinder;
+  private final ConceptFinder conceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractDDDConcepts command) {
@@ -32,7 +33,7 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
       throw new DocumentationGenerationFailed(
           "Empty parameters for 'packagesToScan'. Check your pom configuration");
     }
-    Set<DDDConcept> boundedContextClasses = DDDConceptFinder.findBoundedContexts(packageToScan);
+    Set<Class<?>> boundedContextClasses = conceptFinder.findConcepts(packageToScan);
     if (boundedContextClasses.isEmpty()) {
       throw new NoBoundedContextFound(packageToScan);
     }
