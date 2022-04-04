@@ -10,14 +10,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DDDConceptExtractor
     implements Command.Visitor, DomainEvent.Visitor, Extractor<Command> {
+
+  private final ConceptFinder conceptFinder;
   private final List<DomainEvent> eventsList = new LinkedList<>();
   private final ValueObjectExtractor valueObjectExtractor = new ValueObjectExtractor();
   private final AggregatesExtractor aggregatesExtractor = new AggregatesExtractor();
-  private final BoundedContextExtractor boundedContextExtractor = new BoundedContextExtractor();
+  private final BoundedContextExtractor boundedContextExtractor;
   private final CoreConceptExtractor coreConceptExtractor = new CoreConceptExtractor();
   private final DomainEventExtractor domainEventExtractor = new DomainEventExtractor();
   private final DomainCommandExtractor domainCommandExtractor = new DomainCommandExtractor();
   private final InteractionChecker interactionChecker = new InteractionChecker();
+
+  public DDDConceptExtractor(ConceptFinder conceptFinder) {
+    this.conceptFinder = conceptFinder;
+    this.boundedContextExtractor = new BoundedContextExtractor(conceptFinder);
+  }
 
   @Override
   public List<DomainEvent> extract(Command command) {

@@ -4,6 +4,8 @@ import io.candydoc.domain.GenerateDocumentationUseCase;
 import io.candydoc.domain.SaveDocumentationAdapterFactory;
 import io.candydoc.domain.SaveDocumentationPort;
 import io.candydoc.domain.command.ExtractDDDConcepts;
+import io.candydoc.domain.extractor.ConceptFinder;
+import io.candydoc.domain.extractor.ReflectionsConceptFinder;
 import io.candydoc.infra.SaveDocumentationAdapterFactoryImpl;
 import java.io.File;
 import java.net.URL;
@@ -45,8 +47,9 @@ public class CandyDocMojo extends AbstractMojo {
     SaveDocumentationAdapterFactory adapterFactory = new SaveDocumentationAdapterFactoryImpl();
     SaveDocumentationPort saveDocumentationPort =
         adapterFactory.getAdapter(outputFormat, outputDirectory);
+    ConceptFinder conceptFinder = new ReflectionsConceptFinder();
     GenerateDocumentationUseCase generateDocumentationUseCase =
-        new GenerateDocumentationUseCase(saveDocumentationPort);
+        new GenerateDocumentationUseCase(saveDocumentationPort, conceptFinder);
     generateDocumentationUseCase.execute(
         ExtractDDDConcepts.builder().packagesToScan(packagesToScan).build());
   }

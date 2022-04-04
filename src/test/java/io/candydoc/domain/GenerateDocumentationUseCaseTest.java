@@ -7,9 +7,12 @@ import io.candydoc.domain.events.*;
 import io.candydoc.domain.exceptions.DocumentationGenerationFailed;
 import io.candydoc.domain.exceptions.DomainException;
 import io.candydoc.domain.exceptions.NoBoundedContextFound;
+import io.candydoc.domain.extractor.ConceptFinder;
 import io.candydoc.domain.extractor.DDDConceptExtractor;
 import java.io.IOException;
 import java.util.List;
+
+import io.candydoc.domain.extractor.ReflectionsConceptFinder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,12 +23,14 @@ class GenerateDocumentationUseCaseTest {
   private GenerateDocumentationUseCase generateDocumentationUseCase;
   private SaveDocumentationPort saveDocumentationPort;
   private DDDConceptExtractor DDDConceptExtractor;
+  private ConceptFinder conceptFinder;
 
   @BeforeEach
   public void setUp() {
     saveDocumentationPort = mock(SaveDocumentationPort.class);
-    generateDocumentationUseCase = new GenerateDocumentationUseCase(saveDocumentationPort);
-    DDDConceptExtractor = new DDDConceptExtractor();
+    conceptFinder = new ReflectionsConceptFinder();
+    generateDocumentationUseCase = new GenerateDocumentationUseCase(saveDocumentationPort, conceptFinder);
+    DDDConceptExtractor = new DDDConceptExtractor(conceptFinder);
   }
 
   @Test
