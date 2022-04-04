@@ -1,8 +1,12 @@
-package io.candydoc.plugin;
+package io.candydoc;
 
-import io.candydoc.ddd.extract_ddd_concepts.*;
-import io.candydoc.plugin.save_documentation.SaveDocumentationAdapterFactory;
-import io.candydoc.plugin.save_documentation.SaveDocumentationAdapterFactoryImpl;
+import io.candydoc.domain.GenerateDocumentationUseCase;
+import io.candydoc.domain.SaveDocumentationAdapterFactory;
+import io.candydoc.domain.SaveDocumentationPort;
+import io.candydoc.domain.command.ExtractDDDConcepts;
+import io.candydoc.domain.extractor.ConceptFinder;
+import io.candydoc.domain.extractor.ReflectionsConceptFinder;
+import io.candydoc.infra.SaveDocumentationAdapterFactoryImpl;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -43,14 +47,10 @@ public class CandyDocMojo extends AbstractMojo {
     SaveDocumentationAdapterFactory adapterFactory = new SaveDocumentationAdapterFactoryImpl();
     SaveDocumentationPort saveDocumentationPort =
         adapterFactory.getAdapter(outputFormat, outputDirectory);
-    DDDConceptFinder DDDConceptFinder = new ReflectionsConceptFinder();
-    DDDConceptsExtractionService dddConceptsExtractionService =
-        new DDDConceptsExtractionService(DDDConceptFinder);
-
-    ExtractDDDConceptsUseCase extractDDDConceptsUseCase =
-        new ExtractDDDConceptsUseCase(dddConceptsExtractionService, saveDocumentationPort);
-
-    extractDDDConceptsUseCase.execute(
+    ConceptFinder conceptFinder = new ReflectionsConceptFinder();
+    GenerateDocumentationUseCase generateDocumentationUseCase =
+        new GenerateDocumentationUseCase(saveDocumentationPort, conceptFinder);
+    generateDocumentationUseCase.execute(
         ExtractDDDConcepts.builder().packagesToScan(packagesToScan).build());
   }
 
