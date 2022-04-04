@@ -14,26 +14,28 @@ Domain-Driven-Design approach.
 > [See more](#References)
 
 ## Table of content
+
 <!--ts-->
-* [CANDY-DOC](#candy-doc)
-   * [Table of content](#table-of-content)
-   * [Installation](#installation)
-   * [Contributing to Candy-Doc](#contributing-to-candy-doc)
-      * [With Maven](#with-maven)
-   * [DDD Annotations](#ddd-annotations)
-      * [Aggregate](#aggregate)
-      * [Bounded Context](#bounded-context)
-      * [Core Concept](#core-concept)
-      * [Domain Command](#domain-command)
-      * [Domain Event](#domain-event)
-      * [Value Object](#value-object)
-   * [HTML Documentation](#html-documentation)
-   * [[FOR DEVELOPERS ONLY] Development workflow](#for-developers-only-development-workflow)
-      * [Release policy](#release-policy)
-   * [Technologies](#technologies)
-   * [References](#references)
-   * [Join us <g-emoji class="g-emoji" alias="raising_hand" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f64b.png">🙋</g-emoji>](#join-us-)
-   * [Contributors <g-emoji class="g-emoji" alias="sparkles" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2728.png">✨</g-emoji>](#contributors-)
+
+- [CANDY-DOC](#candy-doc)
+  - [Table of content](#table-of-content)
+  - [Installation](#installation)
+  - [Contributing to Candy-Doc](#contributing-to-candy-doc)
+    - [With Maven](#with-maven)
+  - [DDD Annotations](#ddd-annotations)
+    - [Aggregate](#aggregate)
+    - [Bounded Context](#bounded-context)
+    - [Core Concept](#core-concept)
+    - [Domain Command](#domain-command)
+    - [Domain Event](#domain-event)
+    - [Value Object](#value-object)
+  - [HTML Documentation](#html-documentation)
+  - [[FOR DEVELOPERS ONLY] Development workflow](#for-developers-only-development-workflow)
+    - [Release policy](#release-policy)
+  - [Technologies](#technologies)
+  - [References](#references)
+  - [Join us 🙋](#join-us-)
+  - [Contributors ✨](#contributors-)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
 <!-- Added by: runner, at: Mon Apr  4 09:33:09 UTC 2022 -->
@@ -215,7 +217,6 @@ _main_ and merged to this latter once the feature is ready.
 Every time a new version is about to be released, a merge from your new branch to _main_
 will create a new tag and a new package in the package registry.
 
-
 ![feature-branch-rebase-final.png](src/main/resources/screenshots/feature-branch-rebase-final.png)
 
 Explanations:
@@ -234,7 +235,7 @@ Explanations:
 > ```
 >
 > Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your feature will be squash and merge _feat/\<branch name\>_ to _main_.
-> 
+>
 >See contributing rules [here](./CONTRIBUTING.md).
 >
 > /!\ Don't forget to pull the updated pom.xml once the release job is done. /!\
