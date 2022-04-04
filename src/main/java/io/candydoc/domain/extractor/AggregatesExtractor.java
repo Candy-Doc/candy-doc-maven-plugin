@@ -8,6 +8,7 @@ import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,11 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AggregatesExtractor implements Extractor<ExtractAggregates> {
 
-  private final DDDConceptFinder DDDConceptFinder;
+  private final ConceptFinder conceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractAggregates command) {
-    Set<DDDConcept> aggregatesClasses = DDDConceptFinder.findAggregates(command.getPackageToScan());
+    Set<Class<?>> aggregatesClasses = conceptFinder.findConcepts(command.getPackageToScan(), io.candydoc.domain.annotations.Aggregate.class);
     log.info("Aggregates found in {}: {}", command.getPackageToScan(), aggregatesClasses);
     DDDConceptRepository.getInstance().addDDDConcepts(aggregatesClasses);
     return aggregatesClasses.stream()

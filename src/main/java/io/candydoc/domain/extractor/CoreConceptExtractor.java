@@ -9,6 +9,7 @@ import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,13 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
 
-  private final DDDConceptFinder DDDConceptFinder;
+  private final ConceptFinder conceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractCoreConcepts command) {
-    Set<DDDConcept> coreConceptClasses =
-        DDDConceptFinder.findCoreConcepts(command.getPackageToScan());
-    DDDConceptRepository.getInstance().addDDDConcepts(coreConceptClasses);
+    Set<Class<?>> coreConceptClasses = conceptFinder.findConcepts(command.getPackageToScan(), io.candydoc.domain.annotations.CoreConcept.class);
     log.info("Core concepts found in {}: {}", command.getPackageToScan(), coreConceptClasses);
     List<CoreConceptFound> coreConcepts = findCoreConcepts(command, coreConceptClasses);
     List<DomainEvent> conflicts = checkConflictBetweenCoreConcepts(coreConcepts);
