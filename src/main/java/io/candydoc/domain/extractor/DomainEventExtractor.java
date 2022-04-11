@@ -3,6 +3,7 @@ package io.candydoc.domain.extractor;
 import io.candydoc.domain.command.ExtractDomainEvents;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.DomainEventFound;
+import io.candydoc.domain.model.DDDConcept;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,18 +19,15 @@ public class DomainEventExtractor implements Extractor<ExtractDomainEvents> {
 
   @Override
   public List<DomainEvent> extract(ExtractDomainEvents command) {
-    Set<Class<?>> domainEventClasses = conceptFinder.findConcepts(command.getPackageToScan(), io.candydoc.domain.annotations.DomainEvent.class);
+    Set<DDDConcept> domainEventClasses = conceptFinder.findDomainEvent(command.getPackageToScan());
     log.info("Domain events found in {}: {}", command.getPackageToScan(), domainEventClasses);
     return domainEventClasses.stream()
         .map(
             domainEvent ->
                 DomainEventFound.builder()
-                    .description(
-                        domainEvent
-                            .getAnnotation(io.candydoc.domain.annotations.DomainEvent.class)
-                            .description())
-                    .name(domainEvent.getSimpleName())
-                    .className(domainEvent.getName())
+                    .description(domainEvent.getDescription())
+                    .name(domainEvent.getName())
+                    .className(domainEvent.getCanonicalName())
                     .packageName(domainEvent.getPackageName())
                     .boundedContext(command.getPackageToScan())
                     .build())
