@@ -4,12 +4,10 @@ import io.candydoc.domain.command.ExtractCoreConcepts;
 import io.candydoc.domain.events.CoreConceptFound;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.NameConflictBetweenCoreConcepts;
-
+import io.candydoc.domain.model.DDDConcept;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import io.candydoc.domain.model.DDDConcept;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
