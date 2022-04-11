@@ -20,13 +20,13 @@ public class DDDConceptExtractor
   private final DomainCommandExtractor domainCommandExtractor;
   private final InteractionChecker interactionChecker = new InteractionChecker();
 
-  public DDDConceptExtractor(ConceptFinder conceptFinder) {
-    this.valueObjectExtractor = new ValueObjectExtractor(conceptFinder);
-    this.aggregatesExtractor = new AggregatesExtractor(conceptFinder);
-    this.boundedContextExtractor = new BoundedContextExtractor(conceptFinder);
-    this.coreConceptExtractor = new CoreConceptExtractor(conceptFinder);
-    this.domainEventExtractor = new DomainEventExtractor(conceptFinder);
-    this.domainCommandExtractor = new DomainCommandExtractor(conceptFinder);
+  public DDDConceptExtractor(DDDConceptFinder DDDConceptFinder) {
+    this.valueObjectExtractor = new ValueObjectExtractor(DDDConceptFinder);
+    this.aggregatesExtractor = new AggregatesExtractor(DDDConceptFinder);
+    this.boundedContextExtractor = new BoundedContextExtractor(DDDConceptFinder);
+    this.coreConceptExtractor = new CoreConceptExtractor(DDDConceptFinder);
+    this.domainEventExtractor = new DomainEventExtractor(DDDConceptFinder);
+    this.domainCommandExtractor = new DomainCommandExtractor(DDDConceptFinder);
   }
 
   @Override

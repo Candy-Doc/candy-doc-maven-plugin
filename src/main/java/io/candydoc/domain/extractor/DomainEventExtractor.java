@@ -14,11 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class DomainEventExtractor implements Extractor<ExtractDomainEvents> {
 
-  private final ConceptFinder conceptFinder;
+  private final DDDConceptFinder DDDConceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractDomainEvents command) {
-    Set<DDDConcept> domainEventClasses = conceptFinder.findDomainEvent(command.getPackageToScan());
+    Set<DDDConcept> domainEventClasses =
+        DDDConceptFinder.findDomainEvents(command.getPackageToScan());
     log.info("Domain events found in {}: {}", command.getPackageToScan(), domainEventClasses);
     return domainEventClasses.stream()
         .map(

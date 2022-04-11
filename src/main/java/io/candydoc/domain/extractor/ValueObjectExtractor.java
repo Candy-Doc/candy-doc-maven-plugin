@@ -13,10 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class ValueObjectExtractor implements Extractor<ExtractValueObjects> {
-  private final ConceptFinder conceptFinder;
+  private final DDDConceptFinder DDDConceptFinder;
 
   public List<DomainEvent> extract(ExtractValueObjects command) {
-    Set<DDDConcept> valueObjectClasses = conceptFinder.findValueObject(command.getPackageToScan());
+    Set<DDDConcept> valueObjectClasses =
+        DDDConceptFinder.findValueObjects(command.getPackageToScan());
     log.info("Value objects found in {}: {}", command.getPackageToScan(), valueObjectClasses);
     return valueObjectClasses.stream()
         .map(
