@@ -14,11 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AggregatesExtractor implements Extractor<ExtractAggregates> {
 
-  private final ConceptFinder conceptFinder;
+  private final DDDConceptFinder DDDConceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractAggregates command) {
-    Set<DDDConcept> aggregatesClasses = conceptFinder.findAggregate(command.getPackageToScan());
+    Set<DDDConcept> aggregatesClasses = DDDConceptFinder.findAggregates(command.getPackageToScan());
     log.info("Aggregates found in {}: {}", command.getPackageToScan(), aggregatesClasses);
     return aggregatesClasses.stream()
         .map(
