@@ -9,10 +9,9 @@ import io.candydoc.domain.exceptions.DomainException;
 import io.candydoc.domain.exceptions.NoBoundedContextFound;
 import io.candydoc.domain.extractor.ConceptFinder;
 import io.candydoc.domain.extractor.DDDConceptExtractor;
+import io.candydoc.domain.extractor.ReflectionsConceptFinder;
 import java.io.IOException;
 import java.util.List;
-
-import io.candydoc.domain.extractor.ReflectionsConceptFinder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,8 @@ class GenerateDocumentationUseCaseTest {
   public void setUp() {
     saveDocumentationPort = mock(SaveDocumentationPort.class);
     conceptFinder = new ReflectionsConceptFinder();
-    generateDocumentationUseCase = new GenerateDocumentationUseCase(saveDocumentationPort, conceptFinder);
+    generateDocumentationUseCase =
+        new GenerateDocumentationUseCase(saveDocumentationPort, conceptFinder);
     DDDConceptExtractor = new DDDConceptExtractor(conceptFinder);
   }
 
