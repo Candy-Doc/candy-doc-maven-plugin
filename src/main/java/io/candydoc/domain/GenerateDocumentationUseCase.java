@@ -4,7 +4,6 @@ import io.candydoc.domain.command.ExtractDDDConcepts;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.exceptions.DocumentationGenerationFailed;
 import io.candydoc.domain.exceptions.DomainException;
-import io.candydoc.domain.extractor.ConceptFinder;
 import io.candydoc.domain.extractor.DDDConceptExtractor;
 import io.candydoc.domain.extractor.DDDConceptFinder;
 import java.io.IOException;
@@ -17,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class GenerateDocumentationUseCase {
 
   private final SaveDocumentationPort saveDocumentationPort;
-  private final ConceptFinder conceptFinder;
+  private final DDDConceptFinder DDDConceptFinder;
 
   public void checkParameters(ExtractDDDConcepts command) throws DocumentationGenerationFailed {
     if (command.getPackagesToScan() == null || command.getPackagesToScan().isEmpty()) {
@@ -27,7 +26,7 @@ public class GenerateDocumentationUseCase {
   }
 
   public void execute(ExtractDDDConcepts command) throws IOException, DomainException {
-    DDDConceptExtractor DDDConceptExtractor = new DDDConceptExtractor(conceptFinder);
+    DDDConceptExtractor DDDConceptExtractor = new DDDConceptExtractor(DDDConceptFinder);
     checkParameters(command);
     List<DomainEvent> domainEvents = DDDConceptExtractor.extract(command);
     saveDocumentationPort.save(domainEvents);

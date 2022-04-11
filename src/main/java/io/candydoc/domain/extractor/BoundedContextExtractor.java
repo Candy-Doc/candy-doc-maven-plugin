@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
-  private final ConceptFinder conceptFinder;
+  private final DDDConceptFinder DDDConceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractDDDConcepts command) {
@@ -31,7 +31,7 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
       throw new DocumentationGenerationFailed(
           "Empty parameters for 'packagesToScan'. Check your pom configuration");
     }
-    Set<DDDConcept> boundedContextClasses = conceptFinder.findBoundedContext(packageToScan);
+    Set<DDDConcept> boundedContextClasses = DDDConceptFinder.findBoundedContexts(packageToScan);
     if (boundedContextClasses.isEmpty()) {
       throw new NoBoundedContextFound(packageToScan);
     }

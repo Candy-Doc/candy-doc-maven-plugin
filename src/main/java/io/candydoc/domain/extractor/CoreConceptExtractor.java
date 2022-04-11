@@ -15,11 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
 
-  private final ConceptFinder conceptFinder;
+  private final DDDConceptFinder DDDConceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractCoreConcepts command) {
-    Set<DDDConcept> coreConceptClasses = conceptFinder.findCoreConcept(command.getPackageToScan());
+    Set<DDDConcept> coreConceptClasses =
+        DDDConceptFinder.findCoreConcepts(command.getPackageToScan());
     log.info("Core concepts found in {}: {}", command.getPackageToScan(), coreConceptClasses);
     List<CoreConceptFound> coreConcepts = findCoreConcepts(command, coreConceptClasses);
     List<DomainEvent> conflicts = checkConflictBetweenCoreConcepts(coreConcepts);

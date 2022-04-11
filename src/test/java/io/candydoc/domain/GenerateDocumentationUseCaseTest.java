@@ -7,8 +7,8 @@ import io.candydoc.domain.events.*;
 import io.candydoc.domain.exceptions.DocumentationGenerationFailed;
 import io.candydoc.domain.exceptions.DomainException;
 import io.candydoc.domain.exceptions.NoBoundedContextFound;
-import io.candydoc.domain.extractor.ConceptFinder;
 import io.candydoc.domain.extractor.DDDConceptExtractor;
+import io.candydoc.domain.extractor.DDDConceptFinder;
 import io.candydoc.domain.extractor.ReflectionsConceptFinder;
 import java.io.IOException;
 import java.util.List;
@@ -22,15 +22,15 @@ class GenerateDocumentationUseCaseTest {
   private GenerateDocumentationUseCase generateDocumentationUseCase;
   private SaveDocumentationPort saveDocumentationPort;
   private DDDConceptExtractor DDDConceptExtractor;
-  private ConceptFinder conceptFinder;
+  private DDDConceptFinder DDDConceptFinder;
 
   @BeforeEach
   public void setUp() {
     saveDocumentationPort = mock(SaveDocumentationPort.class);
-    conceptFinder = new ReflectionsConceptFinder();
+    DDDConceptFinder = new ReflectionsConceptFinder();
     generateDocumentationUseCase =
-        new GenerateDocumentationUseCase(saveDocumentationPort, conceptFinder);
-    DDDConceptExtractor = new DDDConceptExtractor(conceptFinder);
+        new GenerateDocumentationUseCase(saveDocumentationPort, DDDConceptFinder);
+    DDDConceptExtractor = new DDDConceptExtractor(DDDConceptFinder);
   }
 
   @Test
