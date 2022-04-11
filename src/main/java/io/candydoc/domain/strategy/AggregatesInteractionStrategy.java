@@ -3,12 +3,11 @@ package io.candydoc.domain.strategy;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.InteractionBetweenConceptFound;
 import io.candydoc.domain.repository.ProcessorUtils;
-
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class AggregatesInteractionStrategy implements InteractionStrategy {
   public List<DomainEvent> checkInteractions(Element concept) {
@@ -25,11 +24,14 @@ public class AggregatesInteractionStrategy implements InteractionStrategy {
             .filter(element -> element instanceof ExecutableElement)
             .map(
                 method -> {
-                  Set<Element> parameterClasses = ((ExecutableElement) method).getTypeParameters().stream().collect(Collectors.toSet());
-                  Element returnType = ProcessorUtils.getInstance().getTypesUtils().asElement(
-                      ((ExecutableElement) method).getReturnType()
-                  );
-                  if(returnType != null) parameterClasses.add(returnType);
+                  Set<Element> parameterClasses =
+                      ((ExecutableElement) method)
+                          .getTypeParameters().stream().collect(Collectors.toSet());
+                  Element returnType =
+                      ProcessorUtils.getInstance()
+                          .getTypesUtils()
+                          .asElement(((ExecutableElement) method).getReturnType());
+                  if (returnType != null) parameterClasses.add(returnType);
                   return parameterClasses;
                 })
             .flatMap(Collection::stream)
@@ -43,8 +45,9 @@ public class AggregatesInteractionStrategy implements InteractionStrategy {
         .filter(
             classInCurrentConcept ->
                 DDD_ANNOTATION_CLASSES.stream()
-                    .anyMatch(annotationType -> classInCurrentConcept.getAnnotation(annotationType) != null)
-        )
+                    .anyMatch(
+                        annotationType ->
+                            classInCurrentConcept.getAnnotation(annotationType) != null))
         .map(
             interactingConcept ->
                 InteractionBetweenConceptFound.builder()

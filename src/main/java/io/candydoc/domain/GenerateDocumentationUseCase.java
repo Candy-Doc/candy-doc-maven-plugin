@@ -7,11 +7,7 @@ import io.candydoc.domain.exceptions.DomainException;
 import io.candydoc.domain.extractor.DDDConceptExtractor;
 import java.io.IOException;
 import java.util.List;
-
-import io.candydoc.domain.repository.ProcessorUtils;
 import lombok.RequiredArgsConstructor;
-
-import javax.tools.Diagnostic;
 
 @RequiredArgsConstructor
 public class GenerateDocumentationUseCase {

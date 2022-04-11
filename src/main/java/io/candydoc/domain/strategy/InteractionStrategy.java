@@ -1,11 +1,10 @@
 package io.candydoc.domain.strategy;
 
 import io.candydoc.domain.events.DomainEvent;
-
-import javax.lang.model.element.Element;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Set;
+import javax.lang.model.element.Element;
 
 public interface InteractionStrategy {
   List<DomainEvent> checkInteractions(Element concept);

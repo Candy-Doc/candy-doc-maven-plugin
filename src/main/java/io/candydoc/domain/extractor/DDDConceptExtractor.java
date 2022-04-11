@@ -4,10 +4,9 @@ import io.candydoc.domain.command.*;
 import io.candydoc.domain.events.*;
 import io.candydoc.domain.repository.ProcessorUtils;
 import io.candydoc.domain.strategy.InteractionChecker;
-
-import javax.tools.Diagnostic;
 import java.util.LinkedList;
 import java.util.List;
+import javax.tools.Diagnostic;
 
 public class DDDConceptExtractor
     implements Command.Visitor, DomainEvent.Visitor, Extractor<Command> {
@@ -27,45 +26,73 @@ public class DDDConceptExtractor
   }
 
   private void trackAndApply(List<DomainEvent> occurredEvents) {
-    ProcessorUtils.getInstance().getMessager().printMessage(Diagnostic.Kind.NOTE, "trackAndApply of occurredEvents");
+    ProcessorUtils.getInstance()
+        .getMessager()
+        .printMessage(Diagnostic.Kind.NOTE, "trackAndApply of occurredEvents");
     eventsList.addAll(occurredEvents);
-    ProcessorUtils.getInstance().getMessager().printMessage(Diagnostic.Kind.NOTE, "trackAndApply of " + occurredEvents.size() + " events done");
+    ProcessorUtils.getInstance()
+        .getMessager()
+        .printMessage(
+            Diagnostic.Kind.NOTE, "trackAndApply of " + occurredEvents.size() + " events done");
     occurredEvents.forEach(event -> event.accept(this));
   }
 
   public void handle(ExtractValueObjects command) {
-    ProcessorUtils.getInstance().getMessager().printMessage(Diagnostic.Kind.NOTE, "Extract value objects from " + command.getPackageToScan());
+    ProcessorUtils.getInstance()
+        .getMessager()
+        .printMessage(
+            Diagnostic.Kind.NOTE, "Extract value objects from " + command.getPackageToScan());
     trackAndApply(valueObjectExtractor.extract(command));
   }
 
   public void handle(ExtractDDDConcepts command) {
-    ProcessorUtils.getInstance().getMessager().printMessage(Diagnostic.Kind.NOTE, "Extract ddd concepts from " + command.getPackagesToScan());
+    ProcessorUtils.getInstance()
+        .getMessager()
+        .printMessage(
+            Diagnostic.Kind.NOTE, "Extract ddd concepts from " + command.getPackagesToScan());
     trackAndApply(boundedContextExtractor.extract(command));
   }
 
   public void handle(ExtractCoreConcepts command) {
-    ProcessorUtils.getInstance().getMessager().printMessage(Diagnostic.Kind.NOTE, "Extract core concepts from " + command.getPackageToScan());
+    ProcessorUtils.getInstance()
+        .getMessager()
+        .printMessage(
+            Diagnostic.Kind.NOTE, "Extract core concepts from " + command.getPackageToScan());
     trackAndApply(coreConceptExtractor.extract(command));
   }
 
   public void handle(ExtractDomainEvents command) {
-    ProcessorUtils.getInstance().getMessager().printMessage(Diagnostic.Kind.NOTE, "Extract domain events from " + command.getPackageToScan());
+    ProcessorUtils.getInstance()
+        .getMessager()
+        .printMessage(
+            Diagnostic.Kind.NOTE, "Extract domain events from " + command.getPackageToScan());
     trackAndApply(domainEventExtractor.extract(command));
   }
 
   public void handle(ExtractDomainCommands command) {
-    ProcessorUtils.getInstance().getMessager().printMessage(Diagnostic.Kind.NOTE, "Extract domain commands from " + command.getPackageToScan());
+    ProcessorUtils.getInstance()
+        .getMessager()
+        .printMessage(
+            Diagnostic.Kind.NOTE, "Extract domain commands from " + command.getPackageToScan());
     trackAndApply(domainCommandExtractor.extract(command));
   }
 
   public void handle(CheckConceptInteractions command) {
-    ProcessorUtils.getInstance().getMessager().printMessage(Diagnostic.Kind.NOTE, "Check concept interactions from " + command.getClassName());
+    ProcessorUtils.getInstance()
+        .getMessager()
+        .printMessage(
+            Diagnostic.Kind.NOTE, "Check concept interactions from " + command.getClassName());
     trackAndApply(interactionChecker.check(command));
-    ProcessorUtils.getInstance().getMessager().printMessage(Diagnostic.Kind.NOTE, "trackAndApply of interactionChecker done");
+    ProcessorUtils.getInstance()
+        .getMessager()
+        .printMessage(Diagnostic.Kind.NOTE, "trackAndApply of interactionChecker done");
   }
 
   public void handle(ExtractAggregates command) {
-    ProcessorUtils.getInstance().getMessager().printMessage(Diagnostic.Kind.NOTE, "Extract aggregates from " + command.getPackageToScan());
+    ProcessorUtils.getInstance()
+        .getMessager()
+        .printMessage(
+            Diagnostic.Kind.NOTE, "Extract aggregates from " + command.getPackageToScan());
     trackAndApply(aggregatesExtractor.extract(command));
   }
 
@@ -81,8 +108,7 @@ public class DDDConceptExtractor
     this.handle(CheckConceptInteractions.builder().className(event.getClassName()).build());
   }
 
-  public void apply(InteractionBetweenConceptFound event) {
-  }
+  public void apply(InteractionBetweenConceptFound event) {}
 
   public void apply(ValueObjectFound event) {
     this.handle(CheckConceptInteractions.builder().className(event.getClassName()).build());
@@ -100,9 +126,7 @@ public class DDDConceptExtractor
     this.handle(CheckConceptInteractions.builder().className(event.getClassName()).build());
   }
 
-  public void apply(NameConflictBetweenCoreConcepts event) {
-  }
+  public void apply(NameConflictBetweenCoreConcepts event) {}
 
-  public void apply(ConceptRuleViolated event) {
-  }
+  public void apply(ConceptRuleViolated event) {}
 }

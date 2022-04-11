@@ -5,23 +5,25 @@ import io.candydoc.domain.events.ConceptRuleViolated;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.InteractionBetweenConceptFound;
 import io.candydoc.domain.repository.ProcessorUtils;
-
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
 import javax.tools.Diagnostic;
-import java.lang.reflect.Field;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class CoreConceptInteractionStrategy implements InteractionStrategy {
 
   public List<DomainEvent> checkInteractions(Element concept) {
     List<DomainEvent> domainEvents = new LinkedList<>();
-    ProcessorUtils.getInstance().getMessager().printMessage(Diagnostic.Kind.NOTE, "Checking core concept interactions");
+    ProcessorUtils.getInstance()
+        .getMessager()
+        .printMessage(Diagnostic.Kind.NOTE, "Checking core concept interactions");
     domainEvents.addAll(extractWrongInteractions(concept));
     domainEvents.addAll(extractDDDInteractions(concept));
-    ProcessorUtils.getInstance().getMessager().printMessage(Diagnostic.Kind.NOTE, "Core concept interactions checked");
+    ProcessorUtils.getInstance()
+        .getMessager()
+        .printMessage(Diagnostic.Kind.NOTE, "Core concept interactions checked");
     return domainEvents;
   }
 
@@ -31,12 +33,16 @@ public class CoreConceptInteractionStrategy implements InteractionStrategy {
             .filter(element -> element instanceof VariableElement)
             .collect(Collectors.toSet());
     return classesInCurrentConcept.stream()
-        .filter(classInCurrentConcept -> classInCurrentConcept.getAnnotation(Aggregate.class) != null)
+        .filter(
+            classInCurrentConcept -> classInCurrentConcept.getAnnotation(Aggregate.class) != null)
         .map(
             wrongClass ->
                 ConceptRuleViolated.builder()
                     .className(currentConcept.getSimpleName().toString())
-                    .reason("CoreConcept interact with Aggregates " + wrongClass.getSimpleName().toString() + ".")
+                    .reason(
+                        "CoreConcept interact with Aggregates "
+                            + wrongClass.getSimpleName().toString()
+                            + ".")
                     .build())
         .collect(Collectors.toList());
   }
@@ -51,11 +57,14 @@ public class CoreConceptInteractionStrategy implements InteractionStrategy {
             .filter(element -> element instanceof ExecutableElement)
             .map(
                 method -> {
-                  Set<Element> parameterClasses = ((ExecutableElement) method).getTypeParameters().stream().collect(Collectors.toSet());
-                  Element returnType = ProcessorUtils.getInstance().getTypesUtils().asElement(
-                      ((ExecutableElement) method).getReturnType()
-                  );
-                  if(returnType != null) parameterClasses.add(returnType);
+                  Set<Element> parameterClasses =
+                      ((ExecutableElement) method)
+                          .getTypeParameters().stream().collect(Collectors.toSet());
+                  Element returnType =
+                      ProcessorUtils.getInstance()
+                          .getTypesUtils()
+                          .asElement(((ExecutableElement) method).getReturnType());
+                  if (returnType != null) parameterClasses.add(returnType);
                   return parameterClasses;
                 })
             .flatMap(Collection::stream)
@@ -69,8 +78,9 @@ public class CoreConceptInteractionStrategy implements InteractionStrategy {
         .filter(
             classInCurrentConcept ->
                 DDD_ANNOTATION_CLASSES.stream()
-                    .anyMatch(annotationType -> classInCurrentConcept.getAnnotation(annotationType) != null)
-        )
+                    .anyMatch(
+                        annotationType ->
+                            classInCurrentConcept.getAnnotation(annotationType) != null))
         .map(
             interactingConcept ->
                 InteractionBetweenConceptFound.builder()
