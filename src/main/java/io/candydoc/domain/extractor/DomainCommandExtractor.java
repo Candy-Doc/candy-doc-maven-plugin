@@ -14,12 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class DomainCommandExtractor implements Extractor<ExtractDomainCommands> {
 
-  private final ConceptFinder conceptFinder;
+  private final DDDConceptFinder DDDConceptFinder;
 
   @Override
   public List<DomainEvent> extract(ExtractDomainCommands command) {
     Set<DDDConcept> domainCommandClasses =
-        conceptFinder.findDomainCommand(command.getPackageToScan());
+        DDDConceptFinder.findDomainCommands(command.getPackageToScan());
     log.info("Domain commands found in {}: {}", command.getPackageToScan(), domainCommandClasses);
     return domainCommandClasses.stream()
         .map(

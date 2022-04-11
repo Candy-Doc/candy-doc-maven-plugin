@@ -8,10 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.reflections8.Reflections;
 
 @Slf4j
-public class ReflectionsConceptFinder implements ConceptFinder {
+public class ReflectionsConceptFinder implements DDDConceptFinder {
 
   @Override
-  public Set<DDDConcept> findAggregate(String packageToScan) {
+  public Set<DDDConcept> findAggregates(String packageToScan) {
     Reflections reflections = new Reflections(packageToScan);
     return reflections.getTypesAnnotatedWith(Aggregate.class).stream()
         .map(
@@ -29,7 +29,7 @@ public class ReflectionsConceptFinder implements ConceptFinder {
   }
 
   @Override
-  public Set<DDDConcept> findBoundedContext(String packageToScan) {
+  public Set<DDDConcept> findBoundedContexts(String packageToScan) {
     Reflections reflections = new Reflections(packageToScan);
     return reflections.getTypesAnnotatedWith(BoundedContext.class).stream()
         .map(
@@ -44,7 +44,7 @@ public class ReflectionsConceptFinder implements ConceptFinder {
   }
 
   @Override
-  public Set<DDDConcept> findCoreConcept(String packageToScan) {
+  public Set<DDDConcept> findCoreConcepts(String packageToScan) {
     Reflections reflections = new Reflections(packageToScan);
     return reflections.getTypesAnnotatedWith(CoreConcept.class).stream()
         .filter(coreConcept -> !isAnonymous(coreConcept))
@@ -63,7 +63,7 @@ public class ReflectionsConceptFinder implements ConceptFinder {
   }
 
   @Override
-  public Set<DDDConcept> findDomainCommand(String packageToScan) {
+  public Set<DDDConcept> findDomainCommands(String packageToScan) {
     Reflections reflections = new Reflections(packageToScan);
     return reflections.getTypesAnnotatedWith(DomainCommand.class).stream()
         .map(
@@ -78,7 +78,7 @@ public class ReflectionsConceptFinder implements ConceptFinder {
   }
 
   @Override
-  public Set<DDDConcept> findDomainEvent(String packageToScan) {
+  public Set<DDDConcept> findDomainEvents(String packageToScan) {
     Reflections reflections = new Reflections(packageToScan);
     return reflections.getTypesAnnotatedWith(DomainEvent.class).stream()
         .map(
@@ -93,7 +93,7 @@ public class ReflectionsConceptFinder implements ConceptFinder {
   }
 
   @Override
-  public Set<DDDConcept> findValueObject(String packageToScan) {
+  public Set<DDDConcept> findValueObjects(String packageToScan) {
     Reflections reflections = new Reflections(packageToScan);
     return reflections.getTypesAnnotatedWith(ValueObject.class).stream()
         .filter(coreConcept -> !isAnonymous(coreConcept))
