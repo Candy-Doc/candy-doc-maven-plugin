@@ -22,13 +22,3 @@ jobs:
     - name: Run PR name linter
       uses: JulienKode/pull-request-name-linter-action@v0.5.0
 
-  run_precommit_hooks:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v2
-    - name: Run pre-commit hooks
-      uses: pre-commit/action@v2.0.3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        SKIP: markdownlint-fix
