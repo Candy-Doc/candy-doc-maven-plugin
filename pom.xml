@@ -13,12 +13,12 @@
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <maven.compiler.release>11</maven.compiler.release>
         <maven.release.plugin.version>3.0.0-M4</maven.release.plugin.version>
-        <maven.plugin.api.version>3.6.3</maven.plugin.api.version>
-        <maven.plugin.annotations.version>3.6.0</maven.plugin.annotations.version>
+        <maven.plugin.api.version>3.8.1</maven.plugin.api.version>
+        <maven.plugin.annotations.version>3.6.2</maven.plugin.annotations.version>
         <maven.plugin.plugin.version>3.6.0</maven.plugin.plugin.version>
         <maven.surefire.version>2.22.2</maven.surefire.version>
         <maven.project.version>2.2.1</maven.project.version>
-        <maven.core.version>3.0.3</maven.core.version>
+        <maven.core.version>3.8.1</maven.core.version>
         <java.version>11</java.version>
         <lombok.version>1.18.22</lombok.version>
         <log4j.version>2.7</log4j.version>
@@ -196,6 +196,25 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
