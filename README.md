@@ -14,27 +14,31 @@ Domain-Driven-Design approach.
 > [See more](#References)
 
 ## Table of content
+
 <!--ts-->
-- [CANDY-DOC](#candy-doc)
-  - [Table of content](#table-of-content)
-  - [Installation](#installation)
-  - [Contributing to Candy-Doc](#contributing-to-candy-doc)
-    - [With Maven](#with-maven)
-  - [DDD Annotations](#ddd-annotations)
-    - [Aggregate](#aggregate)
-    - [Bounded Context](#bounded-context)
-    - [Core Concept](#core-concept)
-    - [Domain Command](#domain-command)
-    - [Domain Event](#domain-event)
-    - [Value Object](#value-object)
-  - [HTML Documentation](#html-documentation)
-  - [[FOR DEVELOPERS ONLY] Development workflow](#for-developers-only-development-workflow)
-    - [Release policy](#release-policy)
-    - [SSH Access](#ssh-access)
-  - [Technologies](#technologies)
-  - [References](#references)
-  - [Join us 🙋](#join-us-)
-  - [Contributors ✨](#contributors-)
+* [CANDY-DOC](#candy-doc)
+   * [Table of content](#table-of-content)
+   * [Installation](#installation)
+   * [Contributing to Candy-Doc](#contributing-to-candy-doc)
+      * [With Maven](#with-maven)
+   * [DDD Annotations](#ddd-annotations)
+      * [Aggregate](#aggregate)
+      * [Bounded Context](#bounded-context)
+      * [Core Concept](#core-concept)
+      * [Domain Command](#domain-command)
+      * [Domain Event](#domain-event)
+      * [Value Object](#value-object)
+   * [HTML Documentation](#html-documentation)
+   * [[FOR DEVELOPERS ONLY] Development workflow](#for-developers-only-development-workflow)
+      * [Release policy](#release-policy)
+   * [Technologies](#technologies)
+   * [References](#references)
+   * [Join us <g-emoji class="g-emoji" alias="raising_hand" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f64b.png">🙋</g-emoji>](#join-us-)
+   * [Contributors <g-emoji class="g-emoji" alias="sparkles" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2728.png">✨</g-emoji>](#contributors-)
+
+<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+<!-- Added by: runner, at: Mon Apr  4 13:56:43 UTC 2022 -->
+
 <!--te-->
 
 ## Installation
@@ -204,55 +208,40 @@ See the interactions between concepts
 
 ### Release policy
 
-The development team works on a branch named _dev_.
+The development team works on a branch named _main_.
 
 Whenever a feature needs to be implemented, a new branch must be pulled from
-_dev_ and merged to this latter once the feature is ready.
+_main_ and merged to this latter once the feature is ready.
 
-Every time a new version is about to be released, a merge from _dev_ to _master_
+Every time a new version is about to be released, a merge from your new branch to _main_
 will create a new tag and a new package in the package registry.
 
-Eventually, the new release can be manually created from the new tag.
-
-![cicd.png](src/main/resources/screenshots/cicd.png)
+![feature-branch-rebase-final.png](src/main/resources/screenshots/feature-branch-rebase-final.png)
 
 Explanations:
 
 > Before each new feature, run:
 >
 > ```bash
-> git checkout dev
+> git checkout main
 > git pull
 > ```
 >
-> Create a new branch CDY-x for the feature
+> Create a new branch feat/\<branch name\> for the feature
 >
 > ```bash
-> git checkout -b CDY-x
+> git checkout -b feat/\<branch name\>
 > ```
 >
-> Once the feature is implemented, squash and merge CDY-x to dev
+> Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your feature will be squash and merge _feat/\<branch name\>_ to _main_.
 >
-> Merge dev to master when you are done with all the features for your new version.
+>See contributing rules [here](./CONTRIBUTING.md).
 >
 > /!\ Don't forget to pull the updated pom.xml once the release job is done. /!\
 >
 > ```bash
 > git pull
 > ```
-
-### SSH Access
-
-The _release_ job in the `.gitlab-ci.yml` file uses SSH to connect to the Gitlab
-project in order to create a new tag for the release.
-
-Therefore, you must check the following variables are correct before making any
-changes to the _
-master_ branch:
-
-- `Settings > Repository > Deploy keys > ci-token` (must be the public ssh key
-  with write permissions granted)
-- `Settings > CI/CD > CI_TOKEN_PRIVATE_KEY` (must be the private ssh key)
 
 ## Technologies
 
