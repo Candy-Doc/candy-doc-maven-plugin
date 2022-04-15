@@ -8,6 +8,57 @@
     <artifactId>candy-doc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
+    <name>Candy-Doc</name>
+    <description>Candy-Doc project</description>
+    <url>https://github.com/Candy-Doc/candy-doc-maven-plugin</url>
+    <licenses>
+        <license>
+            <name>GPL-3.0 License</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.fr.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+        
+    <developers>
+        <developer>
+            <id>ecattez</id>
+            <name>Edouard CATTEZ</name>
+            <email>ecattez@ippon.fr</email>
+        </developer>
+        <developer>
+            <id>mderoullers</id>
+            <name>Maxime Deroullers</name>
+            <email>mderoullers@ippon.fr</email>
+        </developer>
+        <developer>
+            <id>Michiels96</id>
+            <name>Pierre Michiels</name>
+            <email>p.michiels@hotmail.com</email>
+        </developer>
+        <developer>
+            <id>ctacquet</id>
+            <name>Charles Tacquet</name>
+            <email>ctacquet@ippon.fr</email>
+        </developer>
+        <developer>
+            <id>Tifloz</id>
+            <name>Florian Louvet</name>
+            <email>flouvet@ippon.fr</email>
+        </developer>
+        <developer>
+            <id>M4gie</id>
+            <name>Maji</name>
+            <email>sregnault@ippon.fr</email>
+        </developer>
+    </developers>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -192,6 +243,19 @@
                 <configuration>
                     <scmCommentPrefix>[Release]</scmCommentPrefix>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.6</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
         </plugins>
