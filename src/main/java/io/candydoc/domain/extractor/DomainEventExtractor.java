@@ -4,6 +4,7 @@ import io.candydoc.domain.command.ExtractDomainEvents;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.DomainEventFound;
 import io.candydoc.domain.model.DDDConcept;
+import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ public class DomainEventExtractor implements Extractor<ExtractDomainEvents> {
   public List<DomainEvent> extract(ExtractDomainEvents command) {
     Set<DDDConcept> domainEventClasses =
         DDDConceptFinder.findDomainEvents(command.getPackageToScan());
+    DDDConceptRepository.getInstance().addDDDConcepts(domainEventClasses);
     log.info("Domain events found in {}: {}", command.getPackageToScan(), domainEventClasses);
     return domainEventClasses.stream()
         .map(

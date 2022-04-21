@@ -2,46 +2,60 @@ package io.candydoc.domain.strategy;
 
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.InteractionBetweenConceptFound;
-import java.lang.reflect.Field;
-import java.util.*;
+import io.candydoc.domain.model.DDDConcept;
+import io.candydoc.domain.model.DDDInteraction;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AggregatesInteractionStrategy implements InteractionStrategy {
-  public List<DomainEvent> checkInteractions(Class<?> concept) {
+  public List<DomainEvent> checkInteractions(DDDConcept concept) {
     return new LinkedList<>(extractDDDInteractions(concept));
   }
 
-  private Set<Class<?>> extractInteractingClasses(Class<?> currentConcept) {
-    Set<Class<?>> classesInCurrentConcept =
-        Arrays.stream(currentConcept.getDeclaredFields())
-            .map(Field::getType)
-            .collect(Collectors.toSet());
-    classesInCurrentConcept.addAll(
-        Arrays.stream(currentConcept.getDeclaredMethods())
+  private Set<DDDInteraction> extractInteractingClasses(DDDConcept currentConcept) {
+    Set<DDDInteraction> interactionsInCurrentConcept =
+        currentConcept.getFields().stream()
             .map(
-                method -> {
-                  List<Class<?>> parameterClasses =
-                      new ArrayList<>(List.of(method.getParameterTypes()));
-                  parameterClasses.add(method.getReturnType());
-                  return parameterClasses;
-                })
-            .flatMap(Collection::stream)
-            .collect(Collectors.toUnmodifiableSet()));
-    return classesInCurrentConcept;
+                dddField ->
+                    DDDInteraction.builder()
+                        .name(dddField.getName())
+                        .annotation(
+                            Arrays.stream(dddField.getType().getAnnotations())
+                                .filter(
+                                    annotation ->
+                                        DDD_ANNOTATION_CLASSES.contains(
+                                            annotation.annotationType()))
+                                .findFirst()
+                                .get()
+                                .annotationType())
+                        .build())
+            .collect(Collectors.toSet());
+    interactionsInCurrentConcept.addAll(
+        currentConcept.getMethods().stream()
+            .map(
+                dddMethod ->
+                    DDDInteraction.builder()
+                        .name(dddMethod.getName())
+                        .annotation(dddMethod.getReturnType())
+                        .build())
+            .collect(Collectors.toSet()));
+    return interactionsInCurrentConcept;
   }
 
-  public Set<InteractionBetweenConceptFound> extractDDDInteractions(Class<?> currentConcept) {
-    Set<Class<?>> classesInCurrentConcept = extractInteractingClasses(currentConcept);
+  public Set<InteractionBetweenConceptFound> extractDDDInteractions(DDDConcept currentConcept) {
+    Set<DDDInteraction> interactionsInCurrentConcept = extractInteractingClasses(currentConcept);
 
-    return classesInCurrentConcept.stream()
+    return interactionsInCurrentConcept.stream()
         .filter(
-            classInCurrentConcept ->
-                DDD_ANNOTATION_CLASSES.stream()
-                    .anyMatch(classInCurrentConcept::isAnnotationPresent))
+            interactionInCurrentConcept ->
+                DDD_ANNOTATION_CLASSES.contains(interactionInCurrentConcept.getAnnotation()))
         .map(
             interactingConcept ->
                 InteractionBetweenConceptFound.builder()
-                    .from(currentConcept.getName())
+                    .from(currentConcept.getCanonicalName())
                     .with(interactingConcept.getName())
                     .build())
         .collect(Collectors.toUnmodifiableSet());
