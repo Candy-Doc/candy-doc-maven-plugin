@@ -1,7 +1,13 @@
 package io.candydoc.domain.extractor;
 
 import io.candydoc.domain.annotations.*;
+import io.candydoc.domain.model.DDDAnnotation;
 import io.candydoc.domain.model.DDDConcept;
+import io.candydoc.domain.model.DDDField;
+import io.candydoc.domain.model.DDDMethod;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +29,10 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
                   .packageName(clazz.getPackageName())
                   .name(annotatedName)
                   .description(clazz.getAnnotation(Aggregate.class).description())
+                  .dddAnnotation(DDDAnnotation.builder().annotation(Aggregate.class).build())
+                  .fields(getDeclaredFields(clazz))
+                  .methods(getDeclaredMethods(clazz))
+                  .parent(clazz.getSuperclass())
                   .build();
             })
         .collect(Collectors.toSet());
@@ -33,13 +43,20 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
     Reflections reflections = new Reflections(packageToScan);
     return reflections.getTypesAnnotatedWith(BoundedContext.class).stream()
         .map(
-            clazz ->
-                DDDConcept.builder()
-                    .canonicalName(clazz.getCanonicalName())
-                    .packageName(clazz.getPackageName())
-                    .name(clazz.getAnnotation(BoundedContext.class).name())
-                    .description(clazz.getAnnotation(BoundedContext.class).description())
-                    .build())
+            clazz -> {
+              String annotatedName = clazz.getAnnotation(BoundedContext.class).name();
+              if (annotatedName.isBlank()) annotatedName = clazz.getSimpleName();
+              return DDDConcept.builder()
+                  .canonicalName(clazz.getCanonicalName())
+                  .packageName(clazz.getPackageName())
+                  .name(annotatedName)
+                  .description(clazz.getAnnotation(BoundedContext.class).description())
+                  .dddAnnotation(DDDAnnotation.builder().annotation(BoundedContext.class).build())
+                  .fields(getDeclaredFields(clazz))
+                  .methods(getDeclaredMethods(clazz))
+                  .parent(clazz.getSuperclass())
+                  .build();
+            })
         .collect(Collectors.toSet());
   }
 
@@ -53,10 +70,14 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
               String annotatedName = clazz.getAnnotation(CoreConcept.class).name();
               if (annotatedName.isBlank()) annotatedName = clazz.getSimpleName();
               return DDDConcept.builder()
-                  .canonicalName(clazz.getCanonicalName())
                   .packageName(clazz.getPackageName())
                   .name(annotatedName)
+                  .canonicalName(clazz.getCanonicalName())
                   .description(clazz.getAnnotation(CoreConcept.class).description())
+                  .dddAnnotation(DDDAnnotation.builder().annotation(CoreConcept.class).build())
+                  .fields(getDeclaredFields(clazz))
+                  .methods(getDeclaredMethods(clazz))
+                  .parent(clazz.getSuperclass())
                   .build();
             })
         .collect(Collectors.toSet());
@@ -73,6 +94,10 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
                     .packageName(clazz.getPackageName())
                     .name(clazz.getSimpleName())
                     .description(clazz.getAnnotation(DomainCommand.class).description())
+                    .dddAnnotation(DDDAnnotation.builder().annotation(DomainCommand.class).build())
+                    .fields(getDeclaredFields(clazz))
+                    .methods(getDeclaredMethods(clazz))
+                    .parent(clazz.getSuperclass())
                     .build())
         .collect(Collectors.toSet());
   }
@@ -88,6 +113,10 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
                     .packageName(clazz.getPackageName())
                     .name(clazz.getSimpleName())
                     .description(clazz.getAnnotation(DomainEvent.class).description())
+                    .dddAnnotation(DDDAnnotation.builder().annotation(DomainEvent.class).build())
+                    .fields(getDeclaredFields(clazz))
+                    .methods(getDeclaredMethods(clazz))
+                    .parent(clazz.getSuperclass())
                     .build())
         .collect(Collectors.toSet());
   }
@@ -104,6 +133,31 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
                     .packageName(clazz.getPackageName())
                     .name(clazz.getSimpleName())
                     .description(clazz.getAnnotation(ValueObject.class).description())
+                    .dddAnnotation(DDDAnnotation.builder().annotation(ValueObject.class).build())
+                    .fields(getDeclaredFields(clazz))
+                    .methods(getDeclaredMethods(clazz))
+                    .parent(clazz.getSuperclass())
+                    .build())
+        .collect(Collectors.toSet());
+  }
+
+  private Set<DDDField> getDeclaredFields(Class<?> currentConcept) {
+    Set<DDDField> fields = new HashSet<>();
+    fields.addAll(
+        Arrays.stream(currentConcept.getDeclaredFields())
+            .map(field -> DDDField.builder().name(field.getName()).type(field.getType()).build())
+            .collect(Collectors.toSet()));
+    return fields;
+  }
+
+  private Set<DDDMethod> getDeclaredMethods(Class<?> currentConcept) {
+    return Arrays.stream(currentConcept.getDeclaredMethods())
+        .map(
+            method ->
+                DDDMethod.builder()
+                    .name(method.getName())
+                    .parameterTypes(List.of(method.getParameterTypes()))
+                    .returnType(method.getReturnType())
                     .build())
         .collect(Collectors.toSet());
   }

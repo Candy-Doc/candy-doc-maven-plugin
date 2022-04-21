@@ -4,6 +4,7 @@ import io.candydoc.domain.command.ExtractAggregates;
 import io.candydoc.domain.events.AggregateFound;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.model.DDDConcept;
+import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ public class AggregatesExtractor implements Extractor<ExtractAggregates> {
   public List<DomainEvent> extract(ExtractAggregates command) {
     Set<DDDConcept> aggregatesClasses = DDDConceptFinder.findAggregates(command.getPackageToScan());
     log.info("Aggregates found in {}: {}", command.getPackageToScan(), aggregatesClasses);
+    DDDConceptRepository.getInstance().addDDDConcepts(aggregatesClasses);
     return aggregatesClasses.stream()
         .map(
             aggregate ->
