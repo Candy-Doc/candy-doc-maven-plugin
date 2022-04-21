@@ -5,6 +5,7 @@ import io.candydoc.domain.events.CoreConceptFound;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.NameConflictBetweenCoreConcepts;
 import io.candydoc.domain.model.DDDConcept;
+import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,6 +22,7 @@ public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
   public List<DomainEvent> extract(ExtractCoreConcepts command) {
     Set<DDDConcept> coreConceptClasses =
         DDDConceptFinder.findCoreConcepts(command.getPackageToScan());
+    DDDConceptRepository.getInstance().addDDDConcepts(coreConceptClasses);
     log.info("Core concepts found in {}: {}", command.getPackageToScan(), coreConceptClasses);
     List<CoreConceptFound> coreConcepts = findCoreConcepts(command, coreConceptClasses);
     List<DomainEvent> conflicts = checkConflictBetweenCoreConcepts(coreConcepts);
