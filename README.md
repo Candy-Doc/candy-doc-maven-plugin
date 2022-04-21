@@ -194,15 +194,15 @@ _index.html_ file from your file explorer to have access to the documentation.
 
 Navigate between the concepts of your project thanks to the left-side menu
 
-![index.png](src/main/resources/screenshots/index.png)
+![index.png](assets/screenshots/index.png)
 
 Access the content of each concept
 
-![bounded_context.png](src/main/resources/screenshots/bounded_context.png)
+![bounded_context.png](assets/screenshots/bounded_context.png)
 
 See the interactions between concepts
 
-![core_concept.png](src/main/resources/screenshots/core_concept.png)
+![core_concept.png](assets/screenshots/core_concept.png)
 
 ## [FOR DEVELOPERS ONLY] Development workflow
 
@@ -216,7 +216,7 @@ _main_ and merged to this latter once the feature is ready.
 Every time a new version is about to be released, a merge from your new branch to _main_
 will create a new tag and a new package in the package registry.
 
-![feature-branch-rebase-final.png](src/main/resources/screenshots/feature-branch-rebase-final.png)
+![feature-branch-rebase-final.png](assets/screenshots/feature-branch-rebase-final.png)
 
 Explanations:
 
