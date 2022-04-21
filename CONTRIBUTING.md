@@ -2,6 +2,51 @@
 
 Thanks for taking the time to contribute! 😻
 
+## How to set up your PGP key [*Windows*]
+
+### Requirements
+
+- [GPG4Win.exe](https://www.gpg4win.org/downloads/gpg4win.exe)
+- GitHub Account
+
+### Steps
+
+#### 1. Run the **GPG4Win.exe** program
+
+#### 2. Create a new key
+
+![img.png](src/main/resources/screenshots/homepage.png)
+
+#### 3. Add your name, email address and (optional) password
+
+![img_1.png](src/main/resources/screenshots/create_key.png)
+
+#### 4. In advanced settings, be sure to have RSA selected with a key size of 4096 bits
+
+#### 5. Click **Ok** and **Create**
+
+![img_3.png](src/main/resources/screenshots/settings.png)
+
+#### 6. Enter your password when prompted
+
+![img_4.png](src/main/resources/screenshots/password.png)
+
+#### 7. Double-click the key you just created
+
+![img_5.png](src/main/resources/screenshots/homepage2.png)
+
+#### 8. Click **Export**
+
+![img_6.png](src/main/resources/screenshots/key_details.png)
+
+#### 9. Copy the key to your clipboard
+
+![img_7.png](src/main/resources/screenshots/key_export.png)
+
+#### 10. Paste the key into your [GitHub account](https://github.com/settings/keys)
+
+Congratulations! You have successfully set up your PGP key. :)
+
 ## Fix bugs by creating PR's
 
 We appreciate every time you report a bug in the product. However, taking time to submit a PR can help us in fixing bugs quickly and ensure a healthy and stable eco-system.
