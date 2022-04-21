@@ -19,23 +19,8 @@ Domain-Driven-Design approach.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
 
-- [Installation](#installation)
-- [Contributing to Candy-Doc](#contributing-to-candy-doc)
-  - [With Maven](#with-maven)
-- [DDD Annotations](#ddd-annotations)
-  - [Aggregate](#aggregate)
-  - [Bounded Context](#bounded-context)
-  - [Core Concept](#core-concept)
-  - [Domain Command](#domain-command)
-  - [Domain Event](#domain-event)
-  - [Value Object](#value-object)
-- [HTML Documentation](#html-documentation)
-- [&#91;FOR DEVELOPERS ONLY&#93; Development workflow](#for-developers-only-development-workflow)
-  - [Release policy](#release-policy)
-- [Technologies](#technologies)
-- [References](#references)
-- [Join us 🙋](#join-us-)
-- [Contributors ✨](#contributors-)
+<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+<!-- Added by: runner, at: Thu Apr 21 09:56:03 UTC 2022 -->
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
