@@ -6,6 +6,7 @@ import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.exceptions.DocumentationGenerationFailed;
 import io.candydoc.domain.exceptions.NoBoundedContextFound;
 import io.candydoc.domain.model.DDDConcept;
+import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +36,7 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
     if (boundedContextClasses.isEmpty()) {
       throw new NoBoundedContextFound(packageToScan);
     }
+    DDDConceptRepository.getInstance().addDDDConcepts(boundedContextClasses);
     log.info("Bounded contexts found in {}: {}", packageToScan, boundedContextClasses);
     return boundedContextClasses.stream()
         .map(

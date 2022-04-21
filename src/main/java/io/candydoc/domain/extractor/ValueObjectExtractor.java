@@ -4,6 +4,7 @@ import io.candydoc.domain.command.ExtractValueObjects;
 import io.candydoc.domain.events.DomainEvent;
 import io.candydoc.domain.events.ValueObjectFound;
 import io.candydoc.domain.model.DDDConcept;
+import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ public class ValueObjectExtractor implements Extractor<ExtractValueObjects> {
   public List<DomainEvent> extract(ExtractValueObjects command) {
     Set<DDDConcept> valueObjectClasses =
         DDDConceptFinder.findValueObjects(command.getPackageToScan());
+    DDDConceptRepository.getInstance().addDDDConcepts(valueObjectClasses);
     log.info("Value objects found in {}: {}", command.getPackageToScan(), valueObjectClasses);
     return valueObjectClasses.stream()
         .map(
