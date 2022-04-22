@@ -1,21 +1,45 @@
 {
-  "branches": ["feat/add-semantic-releases"],
+  "branches": [
+    "main"
+  ],
   "plugins": [
-    "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "config": "conventional-changelog-gitmoji-config",
+        "releaseRules": [
+          {
+            "type": "build",
+            "release": "patch"
+          }
+        ]
+      }
+    ],
     "@semantic-release/github",
     [
       "@semantic-release/changelog",
       {
-        "changelogFile": "CHANGELOG.md"
+        "changelogFile": "CHANGELOG.md",
+        "changelogTitle": "# Changelog"
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "config": "conventional-changelog-gitmoji-config"
       }
     ],
     [
       "@semantic-release/git",
       {
-        "assets": ["CHANGELOG.md"],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        "assets": [
+          "CHANGELOG.md"
+        ],
+        "message": ":bookmark: chore(release): ${nextRelease.gitTag} [skip ci] \n\n${nextRelease.notes}"
       }
     ]
+  ],
+  "extends": [
+    "semantic-release-config-gitmoji"
   ]
 }
