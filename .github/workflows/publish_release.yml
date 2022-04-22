@@ -3,14 +3,14 @@ name: Publish a new release
 on:
   workflow_dispatch:
     inputs:
-      isMajor:
+      is_major:
         type: boolean
         required: false
-        description: This is a new major version
-      message:
+        description: Make a major version
+      breaking_changes:
         type: string
         required: false
-        description: Commit message
+        description: Breaking changes message
 
 jobs:
   build:

@@ -35,7 +35,7 @@
         "assets": [
           "CHANGELOG.md"
         ],
-        "message": ":bookmark: chore(release): ${nextRelease.gitTag} [skip ci] \n\n${nextRelease.notes}"
+        "message": ":bookmark: chore(release): ${nextRelease.gitTag} \n\n${nextRelease.notes}"
       }
     ]
   ],
