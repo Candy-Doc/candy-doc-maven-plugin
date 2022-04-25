@@ -1,14 +1,14 @@
 package io.candydoc.ddd.core_concept;
 
 import io.candydoc.ddd.Event;
+import io.candydoc.ddd.annotations.DomainEvent;
 import lombok.*;
 
 @Builder
 @ToString
 @Value
 @RequiredArgsConstructor
-@io.candydoc.ddd.annotations.DomainEvent(
-    description = "Emitted when a core concept is found in a bounded context")
+@DomainEvent(description = "Emitted when a core concept is found in a bounded context")
 public class CoreConceptFound implements Event {
   @NonNull String name;
   @NonNull String description;
