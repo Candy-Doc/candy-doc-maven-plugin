@@ -17,24 +17,26 @@ Domain-Driven-Design approach.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
 
 - [Installation](#installation)
-- [Contributing to Candy-Doc](#contributing-to-candy-doc)
   - [With Maven](#with-maven)
-- [DDD Annotations](#ddd-annotations)
+- [🍧 DDD Annotations](#-ddd-annotations)
   - [Aggregate](#aggregate)
   - [Bounded Context](#bounded-context)
   - [Core Concept](#core-concept)
   - [Domain Command](#domain-command)
   - [Domain Event](#domain-event)
   - [Value Object](#value-object)
-- [HTML Documentation](#html-documentation)
+- [🌐 HTML Documentation](#-html-documentation)
+- [🗺️ ROADMAP](#-roadmap)
 - [&#91;FOR DEVELOPERS ONLY&#93; Development workflow](#for-developers-only-development-workflow)
   - [Release policy](#release-policy)
 - [Technologies](#technologies)
 - [References](#references)
 - [Join us 🙋](#join-us-)
 - [Contributors ✨](#contributors-)
+- [Contributing to Candy-Doc](#contributing-to-candy-doc)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
