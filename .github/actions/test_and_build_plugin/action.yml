@@ -1,0 +1,24 @@
+name: Package the plugin ( Tests and build )
+description: |
+  This action will package the plugin for distribution.
+  It will also run the tests and build the plugin.
+runs:
+  using: composite
+  steps:
+  - name: Checkout the repository
+    uses: actions/checkout@v3
+
+  - name: Set up JDK 11
+    uses: actions/setup-java@v3
+    with:
+      java-version: '11'
+      distribution: adopt
+      cache: maven
+
+  - name: Run tests with Maven
+    shell: bash
+    run: mvn -B test --file pom.xml
+
+  - name: Build with Maven
+    shell: bash
+    run: mvn --batch-mode -DskipTests package --update-snapshots verify
