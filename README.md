@@ -15,39 +15,30 @@ Domain-Driven-Design approach.
 
 ## Table of content
 
-<!--ts-->
-* [CANDY-DOC](#candy-doc)
-  * [Table of content](#table-of-content)
-  * [Installation](#installation)
-  * [Contributing to Candy-Doc](#contributing-to-candy-doc)
-    * [With Maven](#with-maven)
-  * [DDD Annotations](#ddd-annotations)
-    * [Aggregate](#aggregate)
-    * [Bounded Context](#bounded-context)
-    * [Core Concept](#core-concept)
-    * [Domain Command](#domain-command)
-    * [Domain Event](#domain-event)
-    * [Value Object](#value-object)
-  * [HTML Documentation](#html-documentation)
-  * [[FOR DEVELOPERS ONLY] Development workflow](#for-developers-only-development-workflow)
-    * [Release policy](#release-policy)
-  * [Technologies](#technologies)
-  * [References](#references)
-  * [Join us <g-emoji class="g-emoji" alias="raising_hand" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f64b.png">🙋</g-emoji>](#join-us-)
-  * [Contributors <g-emoji class="g-emoji" alias="sparkles" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2728.png">✨</g-emoji>](#contributors-)
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
-<!-- Added by: runner, at: Tue Apr 26 13:54:16 UTC 2022 -->
+- [Installation](#installation)
+- [Contributing to Candy-Doc](#contributing-to-candy-doc)
+  - [With Maven](#with-maven)
+- [DDD Annotations](#ddd-annotations)
+  - [Aggregate](#aggregate)
+  - [Bounded Context](#bounded-context)
+  - [Core Concept](#core-concept)
+  - [Domain Command](#domain-command)
+  - [Domain Event](#domain-event)
+  - [Value Object](#value-object)
+- [HTML Documentation](#html-documentation)
+- [&#91;FOR DEVELOPERS ONLY&#93; Development workflow](#for-developers-only-development-workflow)
+  - [Release policy](#release-policy)
+- [Technologies](#technologies)
+- [References](#references)
+- [Join us 🙋](#join-us-)
+- [Contributors ✨](#contributors-)
 
-<!--te-->
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Installation
-
-<a name="Installation"></a>
-
-## Contributing to Candy-Doc
-
-* [Contributing to the project][]
 
 ### With Maven
 
@@ -107,7 +98,7 @@ replace `${candy-doc.version}` with the current version you are using):
 
 The documentation will be generated in the `target/candy-doc` directory.
 
-## DDD Annotations
+## 🍧 DDD Annotations
 
 Domain-Driven-Design concepts are identified with annotations.
 
@@ -187,7 +178,7 @@ values.
 A Core Concept can interact with one or more value objects. A Value Object only
 has primitive fields, is immutable and should be valid when instantiated.
 
-## HTML Documentation
+## 🌐 HTML Documentation
 
 If you have chosen `html` as output format, you can open the generated
 _index.html_ file from your file explorer to have access to the documentation.
@@ -203,6 +194,10 @@ Access the content of each concept
 See the interactions between concepts
 
 ![core_concept.png](assets/screenshots/core_concept.png)
+
+## 🗺️ ROADMAP
+
+To know on what the team are actually working on, you can see the different milestones [here](https://github.com/Candy-Doc/candy-doc-maven-plugin/milestones)
 
 ## [FOR DEVELOPERS ONLY] Development workflow
 
@@ -260,11 +255,11 @@ Project created with:
 
 ## References
 
-* DDD, en vrai pour le développeur (Cyrille Martraire):
+- DDD, en vrai pour le développeur (Cyrille Martraire):
   <https://www.youtube.com/watch?v=h3DLKrvp5V8>
-* DDD (Martin Fowler):
+- DDD (Martin Fowler):
   <https://martinfowler.com/tags/domain%20driven%20design.html>
-* Summary of a 4 days DDD Training (Thomas Ferro):
+- Summary of a 4 days DDD Training (Thomas Ferro):
   <https://thomasferro.medium.com/summary-of-a-four-days-ddd-training-74103a6d99a1>
 
 ## Join us 🙋
@@ -274,6 +269,10 @@ If you want to get in touch with our community there is a [Discord server](https
 ![Discord](https://img.shields.io/discord/951511594972631120?label=%20)
 
 ## Contributors ✨
+
+## Contributing to Candy-Doc
+
+- [Contributing to the project][]
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
@@ -285,7 +284,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/mderoullers"><img src="https://avatars.githubusercontent.com/u/17534552?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Maxime Deroullers</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/pulls?q=is%3Apr+reviewed-by%3Amderoullers" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://ctacquet.com"><img src="https://avatars.githubusercontent.com/u/22562938?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Charles Tacquet</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=ctacquet" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/ecattez"><img src="https://avatars.githubusercontent.com/u/10498113?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Edouard CATTEZ</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/pulls?q=is%3Apr+reviewed-by%3Aecattez" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/Tifloz"><img src="https://avatars.githubusercontent.com/u/32623039?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tiflo</b></sub></a><br /><a href="#infra-Tifloz" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=Tifloz" title="Documentation">📖</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/pulls?q=is%3Apr+reviewed-by%3ATifloz" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/Tifloz"><img src="https://avatars.githubusercontent.com/u/32623039?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tiflo</b></sub></a><br /><a href="#infra-Tifloz" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=Tifloz" title="Documentation">📖</a></td>
     <td align="center"><a href="https://maji.kiwi"><img src="https://avatars.githubusercontent.com/u/33150916?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Maji</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=M4gie" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/Michiels96"><img src="https://avatars.githubusercontent.com/u/62119206?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Pierre</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=Michiels96" title="Documentation">📖</a> <a href="#infra-Michiels96" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
   </tr>
