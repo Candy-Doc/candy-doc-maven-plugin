@@ -44,8 +44,8 @@ class SaveDocumentationAsFileTest {
                 .description("test package 1")
                 .build(),
             CoreConceptFound.builder()
-                .simpleName("core concept 1")
-                .canonicalName(
+                .name("core concept 1")
+                .className(
                     "io.candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
                 .packageName("io.candydoc.sample.bounded_context_for_core_concepts_tests")
                 .description("core concept 1")
@@ -78,8 +78,8 @@ class SaveDocumentationAsFileTest {
         .contains(
             List.of(
                 ConceptDto.builder()
-                    .simpleName("core concept 1")
-                    .canonicalName(
+                    .name("core concept 1")
+                    .className(
                         "io.candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
                     .description("core concept 1")
                     .type(ConceptType.CORE_CONCEPT)

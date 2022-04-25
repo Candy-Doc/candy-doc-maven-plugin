@@ -9,8 +9,8 @@ class DomainEventDtoTest {
     Assertions.assertThatThrownBy(
             () ->
                 ConceptDto.builder()
-                    .simpleName(
-                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1")
+                    .name(
+                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
                     .build())
         .isInstanceOf(NullPointerException.class);
   }

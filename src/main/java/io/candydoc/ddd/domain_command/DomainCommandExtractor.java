@@ -2,6 +2,8 @@ package io.candydoc.ddd.domain_command;
 
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.model.Extractor;
+import io.candydoc.domain.model.DDDConcept;
+import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,22 +18,20 @@ public class DomainCommandExtractor implements Extractor<ExtractDomainCommands> 
 
   @Override
   public List<Event> extract(ExtractDomainCommands command) {
-    String packageToScan = command.getPackageToScan();
-    Set<DomainCommand> domainCommands = DDDConceptFinder.findDomainCommands(packageToScan);
-    log.info("Domain commands found in {}: {}", packageToScan, domainCommands);
-    return domainCommands.stream()
-        .map(domainCommand -> toDomainCommandFound(packageToScan, domainCommand))
+    Set<DDDConcept> domainCommandClasses =
+        DDDConceptFinder.findDomainCommands(command.getPackageToScan());
+    DDDConceptRepository.getInstance().addDDDConcepts(domainCommandClasses);
+    log.info("Domain commands found in {}: {}", command.getPackageToScan(), domainCommandClasses);
+    return domainCommandClasses.stream()
+        .map(
+            domainCommand ->
+                DomainCommandFound.builder()
+                    .description(domainCommand.getDescription())
+                    .name(domainCommand.getName())
+                    .className(domainCommand.getCanonicalName())
+                    .packageName(domainCommand.getPackageName())
+                    .boundedContext(command.getPackageToScan())
+                    .build())
         .collect(Collectors.toUnmodifiableList());
-  }
-
-  private DomainCommandFound toDomainCommandFound(
-      String boundedContextName, DomainCommand domainCommand) {
-    return DomainCommandFound.builder()
-        .description(domainCommand.getDescription().value())
-        .simpleName(domainCommand.getSimpleName().value())
-        .canonicalName(domainCommand.getCanonicalName().value())
-        .packageName(domainCommand.getPackageName().value())
-        .boundedContext(boundedContextName)
-        .build();
   }
 }

@@ -25,14 +25,14 @@ class ValueObjectExtractorTest {
     // then
     Assertions.assertThat(occurredEvents)
         .filteredOn(ValueObjectFound.class::isInstance)
-        .extracting("simpleName")
+        .extracting("name")
         .containsOnlyOnce("EnumValueObject");
 
     Assertions.assertThat(occurredEvents)
         .contains(
             ValueObjectFound.builder()
-                .simpleName("EnumValueObject")
-                .canonicalName(
+                .name("EnumValueObject")
+                .className(
                     "io.candydoc.sample.concepts_with_deducted_annotations.sub_package.EnumValueObject")
                 .description("My enum value object description")
                 .packageName("io.candydoc.sample.concepts_with_deducted_annotations.sub_package")

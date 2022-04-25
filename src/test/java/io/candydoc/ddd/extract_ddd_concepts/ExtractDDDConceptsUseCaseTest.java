@@ -2,7 +2,6 @@ package io.candydoc.ddd.extract_ddd_concepts;
 
 import static org.mockito.Mockito.*;
 
-import io.candydoc.ddd.Command;
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.aggregate.AggregateFound;
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
@@ -20,26 +19,21 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 class ExtractDDDConceptsUseCaseTest {
 
   private ExtractDDDConceptsUseCase extractDDDConceptsUseCase;
   private SaveDocumentationPort saveDocumentationPort;
-  private DDDConceptsExtractionService dddConceptsExtractionService;
-
-  private ResultCaptor<List<Event>> extractionCaptor = new ResultCaptor<>();
+  private DDDConceptExtractor DDDConceptExtractor;
+  private DDDConceptFinder DDDConceptFinder;
 
   @BeforeEach
   public void setUp() {
     saveDocumentationPort = mock(SaveDocumentationPort.class);
-    dddConceptsExtractionService =
-        spy(new DDDConceptsExtractionService(new ReflectionsConceptFinder()));
+    DDDConceptFinder = new ReflectionsConceptFinder();
     extractDDDConceptsUseCase =
-        new ExtractDDDConceptsUseCase(dddConceptsExtractionService, saveDocumentationPort);
-
-    doAnswer(extractionCaptor).when(dddConceptsExtractionService).extract(any(Command.class));
+        new ExtractDDDConceptsUseCase(saveDocumentationPort, DDDConceptFinder);
+    DDDConceptExtractor = new DDDConceptExtractor(DDDConceptFinder);
   }
 
   @Test
@@ -99,7 +93,7 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void find_bounded_contexts_inside_given_packages() throws IOException {
+  void find_bounded_contexts_inside_given_packages() {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -107,10 +101,10 @@ class ExtractDDDConceptsUseCaseTest {
             .build();
 
     // when
-    extractDDDConceptsUseCase.execute(command);
+    List<Event> actualEvents = DDDConceptExtractor.extract(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    Assertions.assertThat(actualEvents)
         .contains(
             BoundedContextFound.builder()
                 .name("bounded_context_one")
@@ -125,7 +119,7 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void find_core_concepts_inside_bounded_contexts() throws IOException {
+  void find_core_concepts_inside_bounded_contexts() {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -133,104 +127,94 @@ class ExtractDDDConceptsUseCaseTest {
             .build();
 
     // when
-    extractDDDConceptsUseCase.execute(command);
+    List<Event> actualEvents = DDDConceptExtractor.extract(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    Assertions.assertThat(actualEvents)
         .contains(
             CoreConceptFound.builder()
-                .simpleName("name of core concept 1 of bounded context 1")
+                .name("name of core concept 1 of bounded context 1")
                 .description("description of core concept 1 of bounded context 1")
-                .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
-                .packageName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
+                .className(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build(),
             CoreConceptFound.builder()
-                .simpleName("name of core concept 2 of bounded context 1")
+                .name("name of core concept 2 of bounded context 1")
                 .description("description of core concept 2 of bounded context 1")
-                .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2")
-                .packageName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
+                .className(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
 
   @Test
-  void find_value_objects_inside_bounded_contexts() throws IOException {
+  void find_value_objects_inside_bounded_contexts() {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
             .packageToScan("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
             .build();
-
     // when
-    extractDDDConceptsUseCase.execute(command);
-
+    List<Event> actualEvents = DDDConceptExtractor.extract(command);
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    Assertions.assertThat(actualEvents)
         .contains(
             ValueObjectFound.builder()
                 .description("description of value object 1 of bounded context 1")
-                .simpleName("ValueObject1")
-                .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
-                .packageName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
+                .name("ValueObject1")
+                .className(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
 
   @Test
-  void value_object_should_only_contain_primitive_types() throws IOException {
+  void value_object_shoud_only_contain_primitive_types() {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
             .packageToScan("io.candydoc.sample.bounded_context_for_wrong_usage_of_value_objects")
             .build();
-
     // when
-    extractDDDConceptsUseCase.execute(command);
-
+    List<Event> actualEvents = DDDConceptExtractor.extract(command);
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    Assertions.assertThat(actualEvents)
         .contains(
             ConceptRuleViolated.builder()
-                .conceptName(
-                    "io.candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.sub_package.ValueObject")
+                .className(
+                    "io.candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.ValueObject")
                 .reason("Value Object should only contain primitive types")
                 .build());
   }
 
   @Test
-  void find_domain_events_inside_bounded_contexts() throws IOException {
+  void find_domain_events_inside_bounded_contexts() {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
             .packageToScan("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
             .build();
-
     // when
-    extractDDDConceptsUseCase.execute(command);
-
+    List<Event> actualEvents = DDDConceptExtractor.extract(command);
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    Assertions.assertThat(actualEvents)
         .contains(
             DomainEventFound.builder()
                 .description("domain event 1 of boundedcontext 1")
-                .simpleName("DomainEvent1")
-                .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1")
-                .packageName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
+                .name("DomainEvent1")
+                .className(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
 
   @Test
-  void find_domain_commands_inside_bounded_contexts() throws IOException {
+  void find_domain_commands_inside_bounded_contexts() {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -238,24 +222,23 @@ class ExtractDDDConceptsUseCaseTest {
             .build();
 
     // when
-    extractDDDConceptsUseCase.execute(command);
+    List<Event> actualEvents = DDDConceptExtractor.extract(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    Assertions.assertThat(actualEvents)
         .contains(
             DomainCommandFound.builder()
                 .description("Domain Command for Bounded context 1")
-                .simpleName("DomainCommand1")
-                .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainCommand1")
-                .packageName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
+                .name("DomainCommand1")
+                .className(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainCommand1")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
 
   @Test
-  void find_aggregates_inside_bounded_contexts() throws IOException {
+  void find_aggregates_inside_bounded_contexts() {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -263,24 +246,23 @@ class ExtractDDDConceptsUseCaseTest {
             .build();
 
     // when
-    extractDDDConceptsUseCase.execute(command);
+    List<Event> actualEvents = DDDConceptExtractor.extract(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    Assertions.assertThat(actualEvents)
         .contains(
             AggregateFound.builder()
-                .simpleName("aggregate 1")
+                .name("aggregate 1")
                 .description("Aggregate for Bounded context 1")
-                .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.Aggregate1")
-                .packageName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
+                .className(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.Aggregate1")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
 
   @Test
-  void find_interaction_between_two_different_concepts() throws IOException {
+  void find_interaction_between_two_different_concepts() {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -288,36 +270,14 @@ class ExtractDDDConceptsUseCaseTest {
             .build();
 
     // when
-    extractDDDConceptsUseCase.execute(command);
+    List<Event> actualEvents = DDDConceptExtractor.extract(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    Assertions.assertThat(actualEvents)
         .contains(
             InteractionBetweenConceptFound.builder()
-                .from(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
-                .with(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
-                .build(),
-            InteractionBetweenConceptFound.builder()
-                .from(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
-                .with(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2")
+                .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
+                .with("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
                 .build());
-  }
-
-  public class ResultCaptor<T> implements Answer {
-    private T result = null;
-
-    public T getResult() {
-      return result;
-    }
-
-    @Override
-    public T answer(InvocationOnMock invocationOnMock) throws Throwable {
-      result = (T) invocationOnMock.callRealMethod();
-      return result;
-    }
   }
 }

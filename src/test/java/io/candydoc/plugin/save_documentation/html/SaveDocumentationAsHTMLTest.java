@@ -35,48 +35,44 @@ class SaveDocumentationAsHTMLTest {
               .description("description of bounded context 2")
               .build(),
           CoreConceptFound.builder()
-              .simpleName("Core Concept 1")
+              .name("Core Concept 1")
               .description("Description of core concept 1")
-              .canonicalName(
-                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
+              .className(
+                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .build(),
           CoreConceptFound.builder()
-              .simpleName("Core Concept 2")
+              .name("Core Concept 2")
               .description("Description of core concept 2")
-              .canonicalName(
-                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2")
+              .className(
+                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .build(),
           ValueObjectFound.builder()
               .description("Description of value object 1")
-              .simpleName("ValueObject1")
-              .canonicalName(
-                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
+              .name("ValueObject1")
+              .className(
+                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .build(),
           DomainEventFound.builder()
               .description("Description of domain event 1")
-              .simpleName("DomainEvent1")
-              .canonicalName(
-                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1")
+              .name("DomainEvent1")
+              .className(
+                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .build(),
           InteractionBetweenConceptFound.builder()
-              .from(
-                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
-              .with(
-                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2")
+              .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
+              .with("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
               .build(),
           InteractionBetweenConceptFound.builder()
-              .from(
-                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
-              .with(
-                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
+              .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
+              .with("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
               .build());
 
   private final List<Event> emptyBoundedContext =
@@ -141,7 +137,7 @@ class SaveDocumentationAsHTMLTest {
                         "candy-doc",
                         "html",
                         "io.candydoc.sample.valid_bounded_contexts.bounded_context_one",
-                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1.html"))))
+                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1.html"))))
         .exists();
   }
 
@@ -156,7 +152,7 @@ class SaveDocumentationAsHTMLTest {
                         "candy-doc",
                         "html",
                         "io.candydoc.sample.valid_bounded_contexts.bounded_context_one",
-                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1.html"))))
+                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1.html"))))
         .exists();
   }
 
@@ -171,7 +167,7 @@ class SaveDocumentationAsHTMLTest {
                         "candy-doc",
                         "html",
                         "io.candydoc.sample.valid_bounded_contexts.bounded_context_one",
-                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1.html"))))
+                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1.html"))))
         .exists();
   }
 
@@ -234,7 +230,7 @@ class SaveDocumentationAsHTMLTest {
     Assertions.assertThat(
             getDocument(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one/"
-                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1.html")
+                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1.html")
                 .getElementsByClass("navigation"))
         .hasSize(1);
   }
@@ -245,7 +241,7 @@ class SaveDocumentationAsHTMLTest {
     Assertions.assertThat(
             getDocument(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one/"
-                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1.html")
+                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1.html")
                 .getElementsByClass("concept"))
         .hasSize(1);
   }
@@ -256,7 +252,7 @@ class SaveDocumentationAsHTMLTest {
     Assertions.assertThat(
             getDocument(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one/"
-                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1.html")
+                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1.html")
                 .getElementsByClass("navigation"))
         .hasSize(1);
   }
@@ -267,7 +263,7 @@ class SaveDocumentationAsHTMLTest {
     Assertions.assertThat(
             getDocument(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one/"
-                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1.html")
+                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1.html")
                 .getElementsByClass("concept"))
         .hasSize(1);
   }
@@ -278,7 +274,7 @@ class SaveDocumentationAsHTMLTest {
     Assertions.assertThat(
             getDocument(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one/"
-                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1.html")
+                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1.html")
                 .getElementsByClass("navigation"))
         .hasSize(1);
   }
@@ -289,7 +285,7 @@ class SaveDocumentationAsHTMLTest {
     Assertions.assertThat(
             getDocument(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one/"
-                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1.html")
+                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1.html")
                 .getElementsByClass("concept"))
         .hasSize(1);
   }
@@ -300,7 +296,7 @@ class SaveDocumentationAsHTMLTest {
     Assertions.assertThat(
             getDocument(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one/"
-                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1.html")
+                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1.html")
                 .getElementsByClass("interaction"))
         .isEmpty();
   }
@@ -311,7 +307,7 @@ class SaveDocumentationAsHTMLTest {
     Assertions.assertThat(
             getDocument(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one/"
-                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1.html")
+                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1.html")
                 .getElementsByClass("interaction"))
         .hasSize(2);
   }
@@ -329,7 +325,7 @@ class SaveDocumentationAsHTMLTest {
     Assertions.assertThat(
             getDocument(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one/"
-                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1.html")
+                        + "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1.html")
                 .getElementsByClass("interaction__title")
                 .text())
         .isEqualTo("Interactions");

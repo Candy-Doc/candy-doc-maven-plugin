@@ -1,17 +1,39 @@
-package io.candydoc.domain.extractor;
+package io.candydoc.ddd.extract_ddd_concepts;
 
-import io.candydoc.domain.command.*;
-import io.candydoc.domain.events.*;
-import io.candydoc.domain.strategy.InteractionChecker;
+import io.candydoc.ddd.Command;
+import io.candydoc.ddd.Event;
+import io.candydoc.ddd.aggregate.AggregateFound;
+import io.candydoc.ddd.aggregate.AggregatesExtractor;
+import io.candydoc.ddd.aggregate.ExtractAggregates;
+import io.candydoc.ddd.bounded_context.BoundedContextExtractor;
+import io.candydoc.ddd.bounded_context.BoundedContextFound;
+import io.candydoc.ddd.core_concept.CoreConceptExtractor;
+import io.candydoc.ddd.core_concept.CoreConceptFound;
+import io.candydoc.ddd.core_concept.ExtractCoreConcepts;
+import io.candydoc.ddd.core_concept.NameConflictBetweenCoreConcepts;
+import io.candydoc.ddd.domain_command.DomainCommandExtractor;
+import io.candydoc.ddd.domain_command.DomainCommandFound;
+import io.candydoc.ddd.domain_command.ExtractDomainCommands;
+import io.candydoc.ddd.domain_event.DomainEventExtractor;
+import io.candydoc.ddd.domain_event.DomainEventFound;
+import io.candydoc.ddd.domain_event.ExtractDomainEvents;
+import io.candydoc.ddd.interaction.CheckConceptInteractions;
+import io.candydoc.ddd.interaction.ConceptRuleViolated;
+import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
+import io.candydoc.ddd.interaction.InteractionChecker;
+import io.candydoc.ddd.model.Extractor;
+import io.candydoc.ddd.value_object.ExtractValueObjects;
+import io.candydoc.ddd.value_object.ValueObjectExtractor;
+import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.util.LinkedList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class DDDConceptExtractor
-    implements Command.Visitor, DomainEvent.Visitor, Extractor<Command> {
+public class DDDConceptExtractor implements Command.Visitor, Event.Visitor, Extractor<Command> {
 
-  private final List<DomainEvent> eventsList = new LinkedList<>();
+  private final List<Event> eventsList = new LinkedList<>();
+
   private final ValueObjectExtractor valueObjectExtractor;
   private final AggregatesExtractor aggregatesExtractor;
   private final BoundedContextExtractor boundedContextExtractor;
@@ -30,12 +52,12 @@ public class DDDConceptExtractor
   }
 
   @Override
-  public List<DomainEvent> extract(Command command) {
+  public List<Event> extract(Command command) {
     command.accept(this);
     return eventsList;
   }
 
-  private void trackAndApply(List<DomainEvent> occurredEvents) {
+  private void trackAndApply(List<Event> occurredEvents) {
     eventsList.addAll(occurredEvents);
     occurredEvents.forEach(event -> event.accept(this));
   }

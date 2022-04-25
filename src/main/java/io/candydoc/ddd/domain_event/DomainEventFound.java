@@ -1,18 +1,18 @@
 package io.candydoc.ddd.domain_event;
 
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.annotations.DomainEvent;
 import lombok.*;
 
 @Builder
 @ToString
 @Value
 @RequiredArgsConstructor
-@DomainEvent(description = "Emitted when a Domain event is found in a bounded context")
+@io.candydoc.ddd.annotations.DomainEvent(
+    description = "Emitted when a Domain event is found in a bounded context")
 public class DomainEventFound implements Event {
   @NonNull String description;
-  @NonNull String simpleName;
-  @NonNull String canonicalName;
+  @NonNull String name;
+  @NonNull String className;
   @NonNull String packageName;
   @NonNull String boundedContext;
 

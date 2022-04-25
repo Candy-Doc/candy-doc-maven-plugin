@@ -26,8 +26,8 @@ class CoreConceptExtractorTest {
     Assertions.assertThat(occurredEvents)
         .contains(
             CoreConceptFound.builder()
-                .simpleName("CoreConcept1")
-                .canonicalName(
+                .name("CoreConcept1")
+                .className(
                     "io.candydoc.sample.concepts_with_deducted_annotations.sub_package.CoreConcept1")
                 .description("")
                 .packageName("io.candydoc.sample.concepts_with_deducted_annotations.sub_package")
@@ -49,14 +49,14 @@ class CoreConceptExtractorTest {
     // then
     Assertions.assertThat(occurredEvents)
         .filteredOn(CoreConceptFound.class::isInstance)
-        .extracting("simpleName")
+        .extracting("name")
         .containsOnlyOnce("My enum core concept");
 
     Assertions.assertThat(occurredEvents)
         .contains(
             CoreConceptFound.builder()
-                .simpleName("My enum core concept")
-                .canonicalName(
+                .name("My enum core concept")
+                .className(
                     "io.candydoc.sample.concepts_with_deducted_annotations.sub_package.EnumCoreConcept")
                 .description("My enum core concept description")
                 .packageName("io.candydoc.sample.concepts_with_deducted_annotations.sub_package")

@@ -1,81 +1,63 @@
 package io.candydoc.ddd.interaction;
 
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.aggregate.Aggregate;
 import io.candydoc.ddd.aggregate.AggregatesInteractionStrategy;
-import io.candydoc.ddd.bounded_context.BoundedContext;
+import io.candydoc.ddd.annotations.*;
 import io.candydoc.ddd.bounded_context.BoundedContextInteractionStrategy;
-import io.candydoc.ddd.core_concept.CoreConcept;
 import io.candydoc.ddd.core_concept.CoreConceptInteractionStrategy;
-import io.candydoc.ddd.domain_command.DomainCommand;
 import io.candydoc.ddd.domain_command.DomainCommandInteractionStrategy;
-import io.candydoc.ddd.domain_event.DomainEvent;
 import io.candydoc.ddd.domain_event.DomainEventInteractionStrategy;
-import io.candydoc.ddd.extract_ddd_concepts.DDDConceptFinder;
-import io.candydoc.ddd.model.CanonicalName;
-import io.candydoc.ddd.model.DDDConcept;
-import io.candydoc.ddd.value_object.ValueObject;
 import io.candydoc.ddd.value_object.ValueObjectInteractionStrategy;
+import io.candydoc.domain.model.DDDAnnotation;
+import io.candydoc.domain.model.DDDConcept;
+import io.candydoc.domain.model.DDDConceptRepository;
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class InteractionChecker {
 
-  private final AggregatesInteractionStrategy aggregatesInteractionStrategy;
-  private final BoundedContextInteractionStrategy boundedContextInteractionStrategy;
-  private final DomainEventInteractionStrategy domainEventInteractionStrategy;
-  private final DomainCommandInteractionStrategy domainCommandInteractionStrategy;
-  private final ValueObjectInteractionStrategy valueObjectInteractionStrategy;
-  private final CoreConceptInteractionStrategy coreConceptInteractionStrategy;
-  private final DDDConceptFinder conceptFinder;
-
-  public InteractionChecker(DDDConceptFinder conceptFinder) {
-    this.conceptFinder = conceptFinder;
-    aggregatesInteractionStrategy = new AggregatesInteractionStrategy(conceptFinder);
-    boundedContextInteractionStrategy = new BoundedContextInteractionStrategy();
-    domainEventInteractionStrategy = new DomainEventInteractionStrategy(conceptFinder);
-    domainCommandInteractionStrategy = new DomainCommandInteractionStrategy(conceptFinder);
-    valueObjectInteractionStrategy = new ValueObjectInteractionStrategy(conceptFinder);
-    coreConceptInteractionStrategy = new CoreConceptInteractionStrategy(conceptFinder);
-  }
+  private final Map<Class<? extends Annotation>, InteractionStrategy> interactionStrategies =
+      Map.of(
+          CoreConcept.class, new CoreConceptInteractionStrategy(),
+          ValueObject.class, new ValueObjectInteractionStrategy(),
+          DomainCommand.class, new DomainCommandInteractionStrategy(),
+          DomainEvent.class, new DomainEventInteractionStrategy(),
+          BoundedContext.class, new BoundedContextInteractionStrategy(),
+          Aggregate.class, new AggregatesInteractionStrategy());
 
   @SneakyThrows
   public List<Event> check(CheckConceptInteractions command) {
-    return conceptFinder
-        .findConcept(CanonicalName.of(command.getConceptName()))
-        .apply(
-            new DDDConcept.Visitor<>() {
-              @Override
-              public List<Event> aggregate(Aggregate aggregate) {
-                return aggregatesInteractionStrategy.checkInteractions(aggregate);
-              }
+    DDDConcept concept = DDDConceptRepository.getInstance().findDDDConcept(command.getClassName());
+    DDDAnnotation dddAnnotation = conceptTypeFor(concept);
+    return strategyFor(dddAnnotation).checkInteractions(concept);
+  }
 
-              @Override
-              public List<Event> boundedContext(BoundedContext boundedContext) {
-                return boundedContextInteractionStrategy.checkInteractions(boundedContext);
-              }
+  private DDDAnnotation conceptTypeFor(DDDConcept concept) {
+    if (InteractionStrategy.DDD_ANNOTATION_CLASSES.contains(
+        concept.getDddAnnotation().getAnnotation())) {
+      return concept.getDddAnnotation();
+    } else return conceptTypeForSuperClassOf(concept);
+  }
 
-              @Override
-              public List<Event> coreConcept(CoreConcept coreConcept) {
-                return coreConceptInteractionStrategy.checkInteractions(coreConcept);
-              }
+  private DDDAnnotation conceptTypeForSuperClassOf(DDDConcept concept) {
+    Annotation annotation =
+        Arrays.stream(concept.getParent().getAnnotations())
+            .filter(InteractionChecker::dddAnnotationOnly)
+            .findFirst()
+            .orElseThrow(() -> new ConceptNotAnnotatedByDDDConcept(concept));
+    return DDDAnnotation.builder().annotation(annotation.annotationType()).build();
+  }
 
-              @Override
-              public List<Event> domainCommand(DomainCommand domainCommand) {
-                return domainCommandInteractionStrategy.checkInteractions(domainCommand);
-              }
+  private static Boolean dddAnnotationOnly(Annotation annotation) {
+    return InteractionStrategy.DDD_ANNOTATION_CLASSES.contains(annotation.annotationType());
+  }
 
-              @Override
-              public List<Event> domainEvent(DomainEvent domainEvent) {
-                return domainEventInteractionStrategy.checkInteractions(domainEvent);
-              }
-
-              @Override
-              public List<Event> valueObject(ValueObject valueObject) {
-                return valueObjectInteractionStrategy.checkInteractions(valueObject);
-              }
-            });
+  private InteractionStrategy strategyFor(DDDAnnotation annotation) {
+    return interactionStrategies.get(annotation.getAnnotation());
   }
 }

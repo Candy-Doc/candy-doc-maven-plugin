@@ -1,11 +1,7 @@
-package io.candydoc.domain;
+package io.candydoc.ddd.extract_ddd_concepts;
 
-import io.candydoc.domain.command.ExtractDDDConcepts;
-import io.candydoc.domain.events.DomainEvent;
-import io.candydoc.domain.exceptions.DocumentationGenerationFailed;
-import io.candydoc.domain.exceptions.DomainException;
-import io.candydoc.domain.extractor.DDDConceptExtractor;
-import io.candydoc.domain.extractor.DDDConceptFinder;
+import io.candydoc.ddd.Event;
+import io.candydoc.ddd.model.ExtractionException;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
-public class GenerateDocumentationUseCase {
+public class ExtractDDDConceptsUseCase {
 
   private final SaveDocumentationPort saveDocumentationPort;
   private final DDDConceptFinder DDDConceptFinder;
@@ -25,10 +21,10 @@ public class GenerateDocumentationUseCase {
     }
   }
 
-  public void execute(ExtractDDDConcepts command) throws IOException, DomainException {
+  public void execute(ExtractDDDConcepts command) throws IOException, ExtractionException {
     DDDConceptExtractor DDDConceptExtractor = new DDDConceptExtractor(DDDConceptFinder);
     checkParameters(command);
-    List<DomainEvent> domainEvents = DDDConceptExtractor.extract(command);
+    List<Event> domainEvents = DDDConceptExtractor.extract(command);
     saveDocumentationPort.save(domainEvents);
     log.info("Documentation generation has succeeded.");
   }

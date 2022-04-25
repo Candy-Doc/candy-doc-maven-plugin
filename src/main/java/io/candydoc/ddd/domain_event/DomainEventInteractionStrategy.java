@@ -1,31 +1,45 @@
 package io.candydoc.ddd.domain_event;
 
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.extract_ddd_concepts.DDDConceptFinder;
 import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionStrategy;
+import io.candydoc.domain.model.DDDConcept;
+import io.candydoc.domain.model.DDDInteraction;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-public class DomainEventInteractionStrategy implements InteractionStrategy<DomainEvent> {
+public class DomainEventInteractionStrategy implements InteractionStrategy {
 
-  @NonNull private final DDDConceptFinder conceptFinder;
-
-  public List<Event> checkInteractions(DomainEvent concept) {
-    return conceptFinder.findInteractionsWith(concept.getCanonicalName()).stream()
-        .map(interaction -> conceptFinder.findConcept(interaction.canonicalName()))
+  public List<Event> checkInteractions(DDDConcept concept) {
+    Set<DDDInteraction> interactionsInCurrentConcept =
+        concept.getFields().stream()
+            .map(
+                dddField ->
+                    DDDInteraction.builder()
+                        .name(dddField.getName())
+                        .annotation(
+                            Arrays.stream(dddField.getType().getAnnotations())
+                                .filter(
+                                    annotation ->
+                                        DDD_ANNOTATION_CLASSES.contains(
+                                            annotation.annotationType()))
+                                .findFirst()
+                                .get()
+                                .annotationType())
+                        .build())
+            .collect(Collectors.toSet());
+    return interactionsInCurrentConcept.stream()
+        .filter(
+            interactionInCurrentConcept ->
+                DDD_ANNOTATION_CLASSES.contains(interactionInCurrentConcept.getAnnotation()))
         .map(
-            anotherConcept ->
+            match ->
                 ConceptRuleViolated.builder()
-                    .conceptName(concept.getCanonicalName().value())
-                    .reason(
-                        "Wrong interaction with class "
-                            + anotherConcept.getCanonicalName().value()
-                            + ".")
+                    .className(concept.getName())
+                    .reason("Wrong interaction with concept " + match.getName() + ".")
                     .build())
-        .collect(Collectors.toUnmodifiableList());
+        .collect(Collectors.toList());
   }
 }

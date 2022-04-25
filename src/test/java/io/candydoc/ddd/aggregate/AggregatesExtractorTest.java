@@ -26,8 +26,8 @@ class AggregatesExtractorTest {
     Assertions.assertThat(occurredEvents)
         .contains(
             AggregateFound.builder()
-                .simpleName("Aggregate1")
-                .canonicalName(
+                .name("Aggregate1")
+                .className(
                     "io.candydoc.sample.concepts_with_deducted_annotations.sub_package.Aggregate1")
                 .description("")
                 .packageName("io.candydoc.sample.concepts_with_deducted_annotations.sub_package")
