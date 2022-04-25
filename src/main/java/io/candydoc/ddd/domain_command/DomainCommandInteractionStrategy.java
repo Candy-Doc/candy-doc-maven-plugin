@@ -1,44 +1,31 @@
 package io.candydoc.ddd.domain_command;
 
 import io.candydoc.ddd.Event;
+import io.candydoc.ddd.extract_ddd_concepts.DDDConceptFinder;
 import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionStrategy;
-import io.candydoc.domain.model.DDDConcept;
-import io.candydoc.domain.model.DDDInteraction;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-public class DomainCommandInteractionStrategy implements InteractionStrategy {
-  public List<Event> checkInteractions(DDDConcept concept) {
-    Set<DDDInteraction> interactionsInCurrentConcept =
-        concept.getFields().stream()
-            .map(
-                dddField ->
-                    DDDInteraction.builder()
-                        .name(dddField.getName())
-                        .annotation(
-                            Arrays.stream(dddField.getType().getAnnotations())
-                                .filter(
-                                    annotation ->
-                                        DDD_ANNOTATION_CLASSES.contains(
-                                            annotation.annotationType()))
-                                .findFirst()
-                                .get()
-                                .annotationType())
-                        .build())
-            .collect(Collectors.toSet());
-    return interactionsInCurrentConcept.stream()
-        .filter(
-            interactionInCurrentConcept ->
-                DDD_ANNOTATION_CLASSES.contains(interactionInCurrentConcept.getAnnotation()))
+@RequiredArgsConstructor
+public class DomainCommandInteractionStrategy implements InteractionStrategy<DomainCommand> {
+
+  @NonNull private final DDDConceptFinder conceptFinder;
+
+  public List<Event> checkInteractions(DomainCommand concept) {
+    return conceptFinder.findInteractionsWith(concept.getCanonicalName()).stream()
+        .map(interaction -> conceptFinder.findConcept(interaction.canonicalName()))
         .map(
-            match ->
+            anotherConcept ->
                 ConceptRuleViolated.builder()
-                    .className(concept.getName())
-                    .reason("Wrong interaction with class " + match.getName() + ".")
+                    .conceptName(concept.getCanonicalName().value())
+                    .reason(
+                        "Wrong interaction with class "
+                            + anotherConcept.getCanonicalName().value()
+                            + ".")
                     .build())
-        .collect(Collectors.toList());
+        .collect(Collectors.toUnmodifiableList());
   }
 }

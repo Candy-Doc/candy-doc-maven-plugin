@@ -2,6 +2,7 @@ package io.candydoc.ddd.extract_ddd_concepts;
 
 import static org.mockito.Mockito.*;
 
+import io.candydoc.ddd.Command;
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.aggregate.AggregateFound;
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
@@ -19,21 +20,26 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 class ExtractDDDConceptsUseCaseTest {
 
   private ExtractDDDConceptsUseCase extractDDDConceptsUseCase;
   private SaveDocumentationPort saveDocumentationPort;
-  private DDDConceptExtractor DDDConceptExtractor;
-  private DDDConceptFinder DDDConceptFinder;
+  private DDDConceptsExtractionService dddConceptsExtractionService;
+
+  private ResultCaptor<List<Event>> extractionCaptor = new ResultCaptor<>();
 
   @BeforeEach
   public void setUp() {
     saveDocumentationPort = mock(SaveDocumentationPort.class);
-    DDDConceptFinder = new ReflectionsConceptFinder();
+    dddConceptsExtractionService =
+        spy(new DDDConceptsExtractionService(new ReflectionsConceptFinder()));
     extractDDDConceptsUseCase =
-        new ExtractDDDConceptsUseCase(saveDocumentationPort, DDDConceptFinder);
-    DDDConceptExtractor = new DDDConceptExtractor(DDDConceptFinder);
+        new ExtractDDDConceptsUseCase(dddConceptsExtractionService, saveDocumentationPort);
+
+    doAnswer(extractionCaptor).when(dddConceptsExtractionService).extract(any(Command.class));
   }
 
   @Test
@@ -93,7 +99,7 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void find_bounded_contexts_inside_given_packages() {
+  void find_bounded_contexts_inside_given_packages() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -101,10 +107,10 @@ class ExtractDDDConceptsUseCaseTest {
             .build();
 
     // when
-    List<Event> actualEvents = DDDConceptExtractor.extract(command);
+    extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(actualEvents)
+    Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             BoundedContextFound.builder()
                 .name("bounded_context_one")
@@ -119,7 +125,7 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void find_core_concepts_inside_bounded_contexts() {
+  void find_core_concepts_inside_bounded_contexts() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -127,10 +133,10 @@ class ExtractDDDConceptsUseCaseTest {
             .build();
 
     // when
-    List<Event> actualEvents = DDDConceptExtractor.extract(command);
+    extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(actualEvents)
+    Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             CoreConceptFound.builder()
                 .name("name of core concept 1 of bounded context 1")
@@ -151,16 +157,18 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void find_value_objects_inside_bounded_contexts() {
+  void find_value_objects_inside_bounded_contexts() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
             .packageToScan("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
             .build();
+
     // when
-    List<Event> actualEvents = DDDConceptExtractor.extract(command);
+    extractDDDConceptsUseCase.execute(command);
+
     // then
-    Assertions.assertThat(actualEvents)
+    Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             ValueObjectFound.builder()
                 .description("description of value object 1 of bounded context 1")
@@ -173,35 +181,39 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void value_object_shoud_only_contain_primitive_types() {
+  void value_object_shoud_only_contain_primitive_types() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
             .packageToScan("io.candydoc.sample.bounded_context_for_wrong_usage_of_value_objects")
             .build();
+
     // when
-    List<Event> actualEvents = DDDConceptExtractor.extract(command);
+    extractDDDConceptsUseCase.execute(command);
+
     // then
-    Assertions.assertThat(actualEvents)
+    Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             ConceptRuleViolated.builder()
-                .className(
+                .conceptName(
                     "io.candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.ValueObject")
                 .reason("Value Object should only contain primitive types")
                 .build());
   }
 
   @Test
-  void find_domain_events_inside_bounded_contexts() {
+  void find_domain_events_inside_bounded_contexts() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
             .packageToScan("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
             .build();
+
     // when
-    List<Event> actualEvents = DDDConceptExtractor.extract(command);
+    extractDDDConceptsUseCase.execute(command);
+
     // then
-    Assertions.assertThat(actualEvents)
+    Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             DomainEventFound.builder()
                 .description("domain event 1 of boundedcontext 1")
@@ -214,7 +226,7 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void find_domain_commands_inside_bounded_contexts() {
+  void find_domain_commands_inside_bounded_contexts() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -222,10 +234,10 @@ class ExtractDDDConceptsUseCaseTest {
             .build();
 
     // when
-    List<Event> actualEvents = DDDConceptExtractor.extract(command);
+    extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(actualEvents)
+    Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             DomainCommandFound.builder()
                 .description("Domain Command for Bounded context 1")
@@ -238,7 +250,7 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void find_aggregates_inside_bounded_contexts() {
+  void find_aggregates_inside_bounded_contexts() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -246,10 +258,10 @@ class ExtractDDDConceptsUseCaseTest {
             .build();
 
     // when
-    List<Event> actualEvents = DDDConceptExtractor.extract(command);
+    extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(actualEvents)
+    Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             AggregateFound.builder()
                 .name("aggregate 1")
@@ -262,7 +274,7 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void find_interaction_between_two_different_concepts() {
+  void find_interaction_between_two_different_concepts() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -270,14 +282,28 @@ class ExtractDDDConceptsUseCaseTest {
             .build();
 
     // when
-    List<Event> actualEvents = DDDConceptExtractor.extract(command);
+    extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(actualEvents)
+    Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             InteractionBetweenConceptFound.builder()
                 .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
                 .with("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
                 .build());
+  }
+
+  public class ResultCaptor<T> implements Answer {
+    private T result = null;
+
+    public T getResult() {
+      return result;
+    }
+
+    @Override
+    public T answer(InvocationOnMock invocationOnMock) throws Throwable {
+      result = (T) invocationOnMock.callRealMethod();
+      return result;
+    }
   }
 }

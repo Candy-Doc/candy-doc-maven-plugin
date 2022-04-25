@@ -4,15 +4,20 @@ import io.candydoc.ddd.Event;
 import io.candydoc.ddd.model.ExtractionException;
 import java.io.IOException;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@RequiredArgsConstructor
 @Slf4j
 public class ExtractDDDConceptsUseCase {
 
   private final SaveDocumentationPort saveDocumentationPort;
-  private final DDDConceptFinder DDDConceptFinder;
+  private final DDDConceptsExtractionService DDDConceptsExtractionService;
+
+  public ExtractDDDConceptsUseCase(
+      DDDConceptsExtractionService dddConceptsExtractionService,
+      SaveDocumentationPort saveDocumentationPort) {
+    this.DDDConceptsExtractionService = dddConceptsExtractionService;
+    this.saveDocumentationPort = saveDocumentationPort;
+  }
 
   public void checkParameters(ExtractDDDConcepts command) throws DocumentationGenerationFailed {
     if (command.getPackagesToScan() == null || command.getPackagesToScan().isEmpty()) {
@@ -22,9 +27,8 @@ public class ExtractDDDConceptsUseCase {
   }
 
   public void execute(ExtractDDDConcepts command) throws IOException, ExtractionException {
-    DDDConceptExtractor DDDConceptExtractor = new DDDConceptExtractor(DDDConceptFinder);
     checkParameters(command);
-    List<Event> domainEvents = DDDConceptExtractor.extract(command);
+    List<Event> domainEvents = DDDConceptsExtractionService.extract(command);
     saveDocumentationPort.save(domainEvents);
     log.info("Documentation generation has succeeded.");
   }

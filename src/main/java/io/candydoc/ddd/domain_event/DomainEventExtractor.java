@@ -2,8 +2,6 @@ package io.candydoc.ddd.domain_event;
 
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.model.Extractor;
-import io.candydoc.domain.model.DDDConcept;
-import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,19 +16,18 @@ public class DomainEventExtractor implements Extractor<ExtractDomainEvents> {
 
   @Override
   public List<Event> extract(ExtractDomainEvents command) {
-    Set<DDDConcept> domainEventClasses =
-        DDDConceptFinder.findDomainEvents(command.getPackageToScan());
-    DDDConceptRepository.getInstance().addDDDConcepts(domainEventClasses);
-    log.info("Domain events found in {}: {}", command.getPackageToScan(), domainEventClasses);
+    String packageToScan = command.getPackageToScan();
+    Set<DomainEvent> domainEventClasses = DDDConceptFinder.findDomainEvents(packageToScan);
+    log.info("Domain events found in {}: {}", packageToScan, domainEventClasses);
     return domainEventClasses.stream()
         .map(
             domainEvent ->
                 DomainEventFound.builder()
-                    .description(domainEvent.getDescription())
-                    .name(domainEvent.getName())
-                    .className(domainEvent.getCanonicalName())
-                    .packageName(domainEvent.getPackageName())
-                    .boundedContext(command.getPackageToScan())
+                    .description(domainEvent.getDescription().value())
+                    .name(domainEvent.getCanonicalName().value())
+                    .className(domainEvent.getCanonicalName().value())
+                    .packageName(domainEvent.getPackageName().value())
+                    .boundedContext(packageToScan)
                     .build())
         .collect(Collectors.toUnmodifiableList());
   }

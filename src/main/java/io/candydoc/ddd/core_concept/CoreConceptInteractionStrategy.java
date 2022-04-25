@@ -1,120 +1,84 @@
 package io.candydoc.ddd.core_concept;
 
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.annotations.Aggregate;
+import io.candydoc.ddd.aggregate.Aggregate;
+import io.candydoc.ddd.bounded_context.BoundedContext;
+import io.candydoc.ddd.domain_command.DomainCommand;
+import io.candydoc.ddd.domain_event.DomainEvent;
+import io.candydoc.ddd.extract_ddd_concepts.DDDConceptFinder;
 import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
 import io.candydoc.ddd.interaction.InteractionStrategy;
-import io.candydoc.domain.model.DDDConcept;
-import io.candydoc.domain.model.DDDInteraction;
-import java.lang.annotation.Annotation;
-import java.util.*;
+import io.candydoc.ddd.model.DDDConcept;
+import io.candydoc.ddd.value_object.ValueObject;
+import java.util.List;
 import java.util.stream.Collectors;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-public class CoreConceptInteractionStrategy implements InteractionStrategy {
+@RequiredArgsConstructor
+public class CoreConceptInteractionStrategy implements InteractionStrategy<CoreConcept> {
 
-  public List<Event> checkInteractions(DDDConcept concept) {
-    List<Event> domainEvents = new LinkedList<>();
-    domainEvents.addAll(extractWrongInteractions(concept));
-    domainEvents.addAll(extractDDDInteractions(concept));
-    return domainEvents;
-  }
+  @NonNull private final DDDConceptFinder conceptFinder;
 
-  private List<Event> extractWrongInteractions(DDDConcept currentConcept) {
-    Set<DDDInteraction> interactionsInCurrentConcept =
-        currentConcept.getFields().stream()
-            .map(
-                dddField ->
-                    DDDInteraction.builder()
-                        .name(dddField.getName())
-                        .annotation(dddField.getType())
-                        .build())
-            .collect(Collectors.toSet());
-    return interactionsInCurrentConcept.stream()
-        .filter(
-            interactionInCurrentConcept ->
-                interactionInCurrentConcept.getAnnotation().equals(Aggregate.class))
+  public List<Event> checkInteractions(CoreConcept concept) {
+    return conceptFinder.findInteractionsWith(concept.getCanonicalName()).stream()
+        .map(interaction -> conceptFinder.findConcept(interaction.canonicalName()))
         .map(
-            wrongClass ->
-                ConceptRuleViolated.builder()
-                    .className(currentConcept.getCanonicalName())
-                    .reason("CoreConcept interact with Aggregates " + wrongClass.getName() + ".")
-                    .build())
-        .collect(Collectors.toList());
-  }
+            anotherConcept ->
+                anotherConcept.apply(
+                    new DDDConcept.Visitor<Event>() {
+                      @Override
+                      public Event aggregate(Aggregate forbiddenConcept) {
+                        return ConceptRuleViolated.builder()
+                            .conceptName(concept.getCanonicalName().value())
+                            .reason(
+                                "CoreConcept interact with Aggregates "
+                                    + forbiddenConcept.getCanonicalName().value()
+                                    + ".")
+                            .build();
+                      }
 
-  private Set<DDDInteraction> extractInteractingClasses(DDDConcept currentConcept) {
-    Set<DDDInteraction> interactionsInCurrentConcept =
-        currentConcept.getFields().stream()
-            .map(
-                dddField ->
-                    DDDInteraction.builder()
-                        .name(dddField.getName())
-                        .canonicalName(dddField.getType().getCanonicalName())
-                        .annotation(
-                            Arrays.stream(dddField.getType().getAnnotations())
-                                .filter(
-                                    annotation ->
-                                        DDD_ANNOTATION_CLASSES.contains(
-                                            annotation.annotationType()))
-                                .findFirst()
-                                .get()
-                                .annotationType())
-                        .build())
-            .collect(Collectors.toSet());
-    interactionsInCurrentConcept.addAll(
-        currentConcept.getMethods().stream()
-            .map(
-                method -> {
-                  List<DDDInteraction> parameterClasses = new ArrayList<>();
-                  parameterClasses.addAll(
-                      method.getParameterTypes().stream()
-                          .map(
-                              parameterType -> {
-                                List<DDDInteraction> interactions = new ArrayList<>();
-                                for (Annotation annotation : parameterType.getAnnotations()) {
-                                  if (DDD_ANNOTATION_CLASSES.contains(annotation.annotationType()))
-                                    interactions.add(
-                                        DDDInteraction.builder()
-                                            .name(parameterType.getName())
-                                            .canonicalName(parameterType.getCanonicalName())
-                                            .annotation(annotation.annotationType())
-                                            .build());
-                                }
-                                return interactions;
-                              })
-                          .flatMap(Collection::stream)
-                          .collect(Collectors.toList()));
-                  parameterClasses.add(
-                      DDDInteraction.builder()
-                          .name(method.getName())
-                          .annotation(method.getReturnType())
-                          .build());
-                  return parameterClasses;
-                })
-            .flatMap(Collection::stream)
-            .collect(Collectors.toUnmodifiableSet()));
-    return interactionsInCurrentConcept;
-  }
+                      @Override
+                      public Event boundedContext(BoundedContext boundedContext) {
+                        return InteractionBetweenConceptFound.builder()
+                            .from(concept.getCanonicalName().value())
+                            .with(anotherConcept.getCanonicalName().value())
+                            .build();
+                      }
 
-  public Set<InteractionBetweenConceptFound> extractDDDInteractions(DDDConcept currentConcept) {
-    Set<DDDInteraction> interactionsInCurrentConcept = extractInteractingClasses(currentConcept);
+                      @Override
+                      public Event coreConcept(CoreConcept coreConcept) {
+                        return InteractionBetweenConceptFound.builder()
+                            .from(concept.getCanonicalName().value())
+                            .with(anotherConcept.getCanonicalName().value())
+                            .build();
+                      }
 
-    return interactionsInCurrentConcept.stream()
-        .filter(
-            interactionInCurrentConcept ->
-                DDD_ANNOTATION_CLASSES.contains(interactionInCurrentConcept.getAnnotation()))
-        .map(
-            interactingConcept -> {
-              String interactingConceptName =
-                  interactingConcept.getCanonicalName() != null
-                      ? interactingConcept.getCanonicalName()
-                      : interactingConcept.getName();
-              return InteractionBetweenConceptFound.builder()
-                  .from(currentConcept.getCanonicalName())
-                  .with(interactingConceptName)
-                  .build();
-            })
-        .collect(Collectors.toUnmodifiableSet());
+                      @Override
+                      public Event domainCommand(DomainCommand domainCommand) {
+                        return InteractionBetweenConceptFound.builder()
+                            .from(concept.getCanonicalName().value())
+                            .with(anotherConcept.getCanonicalName().value())
+                            .build();
+                      }
+
+                      @Override
+                      public Event domainEvent(DomainEvent domainEvent) {
+                        return InteractionBetweenConceptFound.builder()
+                            .from(concept.getCanonicalName().value())
+                            .with(anotherConcept.getCanonicalName().value())
+                            .build();
+                      }
+
+                      @Override
+                      public Event valueObject(ValueObject valueObject) {
+                        return InteractionBetweenConceptFound.builder()
+                            .from(concept.getCanonicalName().value())
+                            .with(anotherConcept.getCanonicalName().value())
+                            .build();
+                      }
+                    }))
+        .collect(Collectors.toUnmodifiableList());
   }
 }

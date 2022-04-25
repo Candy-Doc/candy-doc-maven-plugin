@@ -2,8 +2,6 @@ package io.candydoc.ddd.aggregate;
 
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.model.Extractor;
-import io.candydoc.domain.model.DDDConcept;
-import io.candydoc.domain.model.DDDConceptRepository;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,24 +16,20 @@ public class AggregatesExtractor implements Extractor<ExtractAggregates> {
 
   @Override
   public List<Event> extract(ExtractAggregates command) {
-    Set<DDDConcept> aggregatesClasses = DDDConceptFinder.findAggregates(command.getPackageToScan());
+    Set<Aggregate> aggregatesClasses = DDDConceptFinder.findAggregates(command.getPackageToScan());
     log.info("Aggregates found in {}: {}", command.getPackageToScan(), aggregatesClasses);
-    DDDConceptRepository.getInstance().addDDDConcepts(aggregatesClasses);
     return aggregatesClasses.stream()
-        .map(
-            aggregate ->
-                AggregateFound.builder()
-                    .name(getSimpleName(aggregate))
-                    .description(aggregate.getDescription())
-                    .className(aggregate.getCanonicalName())
-                    .packageName(aggregate.getPackageName())
-                    .boundedContext(command.getPackageToScan())
-                    .build())
+        .map(aggregate -> toAggregateFound(command, aggregate))
         .collect(Collectors.toUnmodifiableList());
   }
 
-  private String getSimpleName(DDDConcept aggregate) {
-    String annotatedName = aggregate.getName();
-    return annotatedName.isBlank() ? aggregate.getCanonicalName() : annotatedName;
+  private AggregateFound toAggregateFound(ExtractAggregates command, Aggregate aggregate) {
+    return AggregateFound.builder()
+        .className(aggregate.getCanonicalName().value())
+        .name(aggregate.getSimpleName().value())
+        .description(aggregate.getDescription().value())
+        .packageName(aggregate.getPackageName().value())
+        .boundedContext(command.getPackageToScan())
+        .build();
   }
 }
