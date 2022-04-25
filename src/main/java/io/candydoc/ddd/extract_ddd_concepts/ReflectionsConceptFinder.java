@@ -12,6 +12,8 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import lombok.extern.slf4j.Slf4j;
 import org.reflections8.Reflections;
 
@@ -31,7 +33,8 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
                   ReflectionsConceptFinder::toDomainEvent,
               io.candydoc.ddd.annotations.DomainCommand.class,
                   ReflectionsConceptFinder::toDomainCommand,
-              io.candydoc.ddd.annotations.Aggregate.class, ReflectionsConceptFinder::toAggregate);
+              io.candydoc.ddd.annotations.Aggregate.class,
+                  ReflectionsConceptFinder::toAggregate);
 
   @Override
   public Set<Aggregate> findAggregates(String packageToScan) {
@@ -105,26 +108,21 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
   private Set<DDDConcept> findDDDConcepts() {
     Reflections reflections = new Reflections();
 
-    return Set.of(
+    return Stream.of(
             io.candydoc.ddd.annotations.BoundedContext.class,
             io.candydoc.ddd.annotations.CoreConcept.class,
             io.candydoc.ddd.annotations.ValueObject.class,
             io.candydoc.ddd.annotations.DomainEvent.class,
             io.candydoc.ddd.annotations.DomainCommand.class,
             io.candydoc.ddd.annotations.Aggregate.class)
-        .stream()
-        .map(reflections::getTypesAnnotatedWith)
-        .flatMap(Collection::stream)
-        .map(ReflectionsConceptFinder::toDDDConcept)
-        .collect(Collectors.toUnmodifiableSet());
-  }
+        .flatMap(annotation -> {
+          Function<Class<?>, DDDConcept> processor = ANNOTATION_PROCESSORS.get(annotation);
 
-  private static DDDConcept toDDDConcept(Class<?> clazz) {
-    return DDD_ANNOTATION_CLASSES.stream()
-        .map(ANNOTATION_PROCESSORS::get)
-        .findFirst()
-        .map(processor -> processor.apply(clazz))
-        .orElseThrow(); // todo tester cas d'erreur ?
+          return reflections.getTypesAnnotatedWith(annotation).stream()
+              .filter(clazz -> !clazz.isAnonymousClass())
+              .map(processor);
+        })
+        .collect(Collectors.toUnmodifiableSet());
   }
 
   private static Aggregate toAggregate(Class<?> clazz) {
@@ -220,7 +218,7 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
       Class<?> clazz = Class.forName(conceptName.value());
       Set<Class<?>> interactions = new HashSet<>();
 
-      Arrays.stream(clazz.getDeclaredFields()).map(Field::getClass).forEach(interactions::add);
+      Arrays.stream(clazz.getDeclaredFields()).map(Field::getType).forEach(interactions::add);
 
       Arrays.stream(clazz.getDeclaredMethods())
           .forEach(
@@ -231,7 +229,7 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
 
       return Set.copyOf(interactions);
     } catch (ClassNotFoundException e) {
-      throw new RuntimeException(e);
+      throw new ExtractionException(e.getMessage());
     }
   }
 }

@@ -14,8 +14,7 @@ public class ValueObjectExtractor implements Extractor<ExtractValueObjects> {
   private final io.candydoc.ddd.extract_ddd_concepts.DDDConceptFinder DDDConceptFinder;
 
   public List<Event> extract(ExtractValueObjects command) {
-    Set<ValueObject> valueObjectClasses =
-        DDDConceptFinder.findValueObjects(command.getPackageToScan());
+    Set<ValueObject> valueObjectClasses = DDDConceptFinder.findValueObjects(command.getPackageToScan());
     log.info("Value objects found in {}: {}", command.getPackageToScan(), valueObjectClasses);
     return valueObjectClasses.stream()
         .map(
