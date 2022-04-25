@@ -15,7 +15,7 @@ Domain-Driven-Design approach.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
+## Table of Contents
 
 - [Installation](#installation)
   - [With Maven](#with-maven)
@@ -270,9 +270,7 @@ If you want to get in touch with our community there is a [Discord server](https
 
 ## Contributors ✨
 
-## Contributing to Candy-Doc
-
-- [Contributing to the project][]
+- [Contribute to the project](./CONTRIBUTING.md)
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
