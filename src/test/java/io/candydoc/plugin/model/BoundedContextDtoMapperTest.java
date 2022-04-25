@@ -257,7 +257,7 @@ class BoundedContextDtoMapperTest {
                 .boundedContext("bounded.context")
                 .build(),
             NameConflictBetweenCoreConcepts.builder()
-                .coreConceptClassNames(
+                .coreConcepts(
                     List.of(
                         "io.candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1",
                         "io.candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept2"))
@@ -286,7 +286,7 @@ class BoundedContextDtoMapperTest {
                 .boundedContext("bounded.context")
                 .build(),
             ConceptRuleViolated.builder()
-                .className(
+                .conceptName(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
                 .reason("Warning: Value Object should only contain primitive type")
                 .build()));
@@ -314,7 +314,7 @@ class BoundedContextDtoMapperTest {
                 .boundedContext("bounded.context")
                 .build(),
             ConceptRuleViolated.builder()
-                .className(
+                .conceptName(
                     "io.candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
                 .reason(
                     "CoreConcept interact with"

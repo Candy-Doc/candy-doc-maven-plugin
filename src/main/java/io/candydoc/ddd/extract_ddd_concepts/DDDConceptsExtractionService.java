@@ -30,7 +30,8 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class DDDConceptExtractor implements Command.Visitor, Event.Visitor, Extractor<Command> {
+public class DDDConceptsExtractionService
+    implements Command.Visitor, Event.Visitor, Extractor<Command> {
 
   private final List<Event> eventsList = new LinkedList<>();
 
@@ -40,15 +41,16 @@ public class DDDConceptExtractor implements Command.Visitor, Event.Visitor, Extr
   private final CoreConceptExtractor coreConceptExtractor;
   private final DomainEventExtractor domainEventExtractor;
   private final DomainCommandExtractor domainCommandExtractor;
-  private final InteractionChecker interactionChecker = new InteractionChecker();
+  private final InteractionChecker interactionChecker;
 
-  public DDDConceptExtractor(DDDConceptFinder DDDConceptFinder) {
-    this.valueObjectExtractor = new ValueObjectExtractor(DDDConceptFinder);
-    this.aggregatesExtractor = new AggregatesExtractor(DDDConceptFinder);
-    this.boundedContextExtractor = new BoundedContextExtractor(DDDConceptFinder);
-    this.coreConceptExtractor = new CoreConceptExtractor(DDDConceptFinder);
-    this.domainEventExtractor = new DomainEventExtractor(DDDConceptFinder);
-    this.domainCommandExtractor = new DomainCommandExtractor(DDDConceptFinder);
+  public DDDConceptsExtractionService(DDDConceptFinder conceptFinder) {
+    this.valueObjectExtractor = new ValueObjectExtractor(conceptFinder);
+    this.aggregatesExtractor = new AggregatesExtractor(conceptFinder);
+    this.boundedContextExtractor = new BoundedContextExtractor(conceptFinder);
+    this.coreConceptExtractor = new CoreConceptExtractor(conceptFinder);
+    this.domainEventExtractor = new DomainEventExtractor(conceptFinder);
+    this.domainCommandExtractor = new DomainCommandExtractor(conceptFinder);
+    this.interactionChecker = new InteractionChecker(conceptFinder);
   }
 
   @Override
@@ -88,7 +90,7 @@ public class DDDConceptExtractor implements Command.Visitor, Event.Visitor, Extr
   }
 
   public void handle(CheckConceptInteractions command) {
-    log.info("Check concept interactions from {}", command.getClassName());
+    log.info("Check concept interactions from {}", command.getConceptName());
     trackAndApply(interactionChecker.check(command));
   }
 
@@ -106,25 +108,25 @@ public class DDDConceptExtractor implements Command.Visitor, Event.Visitor, Extr
   }
 
   public void apply(CoreConceptFound event) {
-    this.handle(CheckConceptInteractions.builder().className(event.getClassName()).build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getClassName()).build());
   }
 
   public void apply(InteractionBetweenConceptFound event) {}
 
   public void apply(ValueObjectFound event) {
-    this.handle(CheckConceptInteractions.builder().className(event.getClassName()).build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getClassName()).build());
   }
 
   public void apply(DomainEventFound event) {
-    this.handle(CheckConceptInteractions.builder().className(event.getClassName()).build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getClassName()).build());
   }
 
   public void apply(DomainCommandFound event) {
-    this.handle(CheckConceptInteractions.builder().className(event.getClassName()).build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getClassName()).build());
   }
 
   public void apply(AggregateFound event) {
-    this.handle(CheckConceptInteractions.builder().className(event.getClassName()).build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getClassName()).build());
   }
 
   public void apply(NameConflictBetweenCoreConcepts event) {}

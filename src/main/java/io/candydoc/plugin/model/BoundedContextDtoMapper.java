@@ -66,7 +66,7 @@ public class BoundedContextDtoMapper {
 
     public void apply(NameConflictBetweenCoreConcepts event) {
       event
-          .getCoreConceptClassNames()
+          .getCoreConcepts()
           .forEach(
               conflictingClass ->
                   concepts.values().stream()
@@ -80,7 +80,7 @@ public class BoundedContextDtoMapper {
     }
 
     public void apply(ConceptRuleViolated event) {
-      conceptFromClassName(event.getClassName())
+      conceptFromClassName(event.getConceptName())
           .ifPresent(conceptDto -> conceptDto.addError(event.getReason()));
     }
 

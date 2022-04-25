@@ -10,7 +10,7 @@ import lombok.Value;
 @Value
 @ToString
 public class CheckConceptInteractions implements Command {
-  @NonNull String className;
+  @NonNull String conceptName;
 
   public void accept(Visitor visitor) {
     visitor.handle(this);

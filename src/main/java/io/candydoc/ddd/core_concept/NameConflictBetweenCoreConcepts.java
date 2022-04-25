@@ -15,7 +15,7 @@ import lombok.Value;
 @io.candydoc.ddd.annotations.DomainEvent(
     description = "Emitted when two core concept share the same name")
 public class NameConflictBetweenCoreConcepts implements Event {
-  @NonNull List<String> coreConceptClassNames;
+  @NonNull List<String> coreConcepts;
 
   public void accept(Visitor v) {
     v.apply(this);
