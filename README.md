@@ -13,8 +13,6 @@ Domain-Driven-Design approach.
 > of the processes and rules of a domain."_ - Martin Fowler
 > [See more](#References)
 
-## Table of content
-
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
