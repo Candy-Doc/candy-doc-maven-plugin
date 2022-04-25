@@ -36,6 +36,8 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
               io.candydoc.ddd.annotations.Aggregate.class,
                   ReflectionsConceptFinder::toAggregate);
 
+  private static Set<DDDConcept> foundConcepts;
+
   @Override
   public Set<Aggregate> findAggregates(String packageToScan) {
     return findDDDConcepts().stream()
@@ -103,26 +105,6 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
         .filter(concept -> concept.getCanonicalName().equals(conceptName))
         .findFirst()
         .orElseThrow();
-  }
-
-  private Set<DDDConcept> findDDDConcepts() {
-    Reflections reflections = new Reflections();
-
-    return Stream.of(
-            io.candydoc.ddd.annotations.BoundedContext.class,
-            io.candydoc.ddd.annotations.CoreConcept.class,
-            io.candydoc.ddd.annotations.ValueObject.class,
-            io.candydoc.ddd.annotations.DomainEvent.class,
-            io.candydoc.ddd.annotations.DomainCommand.class,
-            io.candydoc.ddd.annotations.Aggregate.class)
-        .flatMap(annotation -> {
-          Function<Class<?>, DDDConcept> processor = ANNOTATION_PROCESSORS.get(annotation);
-
-          return reflections.getTypesAnnotatedWith(annotation).stream()
-              .filter(clazz -> !clazz.isAnonymousClass())
-              .map(processor);
-        })
-        .collect(Collectors.toUnmodifiableSet());
   }
 
   private static Aggregate toAggregate(Class<?> clazz) {
@@ -231,5 +213,31 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
     } catch (ClassNotFoundException e) {
       throw new ExtractionException(e.getMessage());
     }
+  }
+
+  private Set<DDDConcept> findDDDConcepts() {
+    if (foundConcepts != null) {
+      return foundConcepts;
+    }
+
+    Reflections reflections = new Reflections();
+
+    foundConcepts = Stream.of(
+            io.candydoc.ddd.annotations.BoundedContext.class,
+            io.candydoc.ddd.annotations.CoreConcept.class,
+            io.candydoc.ddd.annotations.ValueObject.class,
+            io.candydoc.ddd.annotations.DomainEvent.class,
+            io.candydoc.ddd.annotations.DomainCommand.class,
+            io.candydoc.ddd.annotations.Aggregate.class)
+        .flatMap(annotation -> {
+          Function<Class<?>, DDDConcept> processor = ANNOTATION_PROCESSORS.get(annotation);
+
+          return reflections.getTypesAnnotatedWith(annotation).stream()
+              .filter(clazz -> !clazz.isAnonymousClass())
+              .map(processor);
+        })
+        .collect(Collectors.toUnmodifiableSet());
+
+    return foundConcepts;
   }
 }
