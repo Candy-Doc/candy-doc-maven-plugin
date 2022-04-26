@@ -115,9 +115,9 @@ public abstract class DDDConceptFinder {
         clazz.getAnnotation(io.candydoc.ddd.annotations.Aggregate.class).description();
 
     return Aggregate.builder()
-        .canonicalName(CanonicalName.of(clazz.getCanonicalName()))
+        .canonicalName(toCanonicalName(clazz))
         .simpleName(SimpleName.of(simpleName))
-        .packageName(PackageName.of(clazz.getPackageName()))
+        .packageName(toPackageName(clazz))
         .description(Description.of(description))
         .build();
   }
@@ -133,9 +133,9 @@ public abstract class DDDConceptFinder {
         clazz.getAnnotation(io.candydoc.ddd.annotations.BoundedContext.class).description();
 
     return BoundedContext.builder()
-        .canonicalName(CanonicalName.of(clazz.getCanonicalName()))
+        .canonicalName(toCanonicalName(clazz))
         .simpleName(SimpleName.of(simpleName))
-        .packageName(PackageName.of(clazz.getPackageName()))
+        .packageName(toPackageName(clazz))
         .description(Description.of(description))
         .build();
   }
@@ -150,9 +150,9 @@ public abstract class DDDConceptFinder {
         clazz.getAnnotation(io.candydoc.ddd.annotations.CoreConcept.class).description();
 
     return CoreConcept.builder()
-        .canonicalName(CanonicalName.of(clazz.getCanonicalName()))
+        .canonicalName(toCanonicalName(clazz))
         .simpleName(SimpleName.of(simpleName))
-        .packageName(PackageName.of(clazz.getPackageName()))
+        .packageName(toPackageName(clazz))
         .description(Description.of(description))
         .build();
   }
@@ -162,9 +162,9 @@ public abstract class DDDConceptFinder {
         clazz.getAnnotation(io.candydoc.ddd.annotations.DomainCommand.class).description();
 
     return DomainCommand.builder()
-        .canonicalName(CanonicalName.of(clazz.getCanonicalName()))
+        .canonicalName(toCanonicalName(clazz))
         .simpleName(SimpleName.of(clazz.getSimpleName()))
-        .packageName(PackageName.of(clazz.getPackageName()))
+        .packageName(toPackageName(clazz))
         .description(Description.of(description))
         .build();
   }
@@ -174,9 +174,9 @@ public abstract class DDDConceptFinder {
         clazz.getAnnotation(io.candydoc.ddd.annotations.DomainEvent.class).description();
 
     return DomainEvent.builder()
-        .canonicalName(CanonicalName.of(clazz.getCanonicalName()))
+        .canonicalName(toCanonicalName(clazz))
         .simpleName(SimpleName.of(clazz.getSimpleName()))
-        .packageName(PackageName.of(clazz.getPackageName()))
+        .packageName(toPackageName(clazz))
         .description(Description.of(description))
         .build();
   }
@@ -186,11 +186,19 @@ public abstract class DDDConceptFinder {
         clazz.getAnnotation(io.candydoc.ddd.annotations.ValueObject.class).description();
 
     return ValueObject.builder()
-        .canonicalName(CanonicalName.of(clazz.getCanonicalName()))
+        .canonicalName(toCanonicalName(clazz))
         .simpleName(SimpleName.of(clazz.getSimpleName()))
-        .packageName(PackageName.of(clazz.getPackageName()))
+        .packageName(toPackageName(clazz))
         .description(Description.of(description))
         .build();
+  }
+
+  private static CanonicalName toCanonicalName(Class<?> clazz) {
+    return CanonicalName.of(clazz.getCanonicalName());
+  }
+
+  private static PackageName toPackageName(Class<?> clazz) {
+    return PackageName.of(clazz.getPackageName());
   }
 
   private static Set<CanonicalName> conceptsInteractingWith(CanonicalName conceptName) {
@@ -209,7 +217,7 @@ public abstract class DDDConceptFinder {
 
       return interactions.stream()
           .filter(DDDConceptFinder::isDDDAnnotated)
-          .map(interaction -> CanonicalName.of(interaction.getCanonicalName()))
+          .map(DDDConceptFinder::toCanonicalName)
           .collect(Collectors.toUnmodifiableSet());
     } catch (ClassNotFoundException e) {
       throw new ExtractionException(e.getMessage());
