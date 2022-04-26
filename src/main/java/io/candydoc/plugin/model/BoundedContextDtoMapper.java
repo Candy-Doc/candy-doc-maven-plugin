@@ -131,8 +131,8 @@ public class BoundedContextDtoMapper {
       ConceptDto aggregateDto =
           ConceptDto.builder()
               .description(event.getDescription())
-              .simpleName(event.getName())
-              .canonicalName(event.getClassName())
+              .simpleName(event.getSimpleName())
+              .canonicalName(event.getCanonicalName())
               .type(ConceptType.AGGREGATE)
               .build();
 
