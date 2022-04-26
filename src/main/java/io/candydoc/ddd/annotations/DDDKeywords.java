@@ -5,14 +5,16 @@ import java.util.Set;
 
 public class DDDKeywords {
 
-  public static final Set<Class<? extends Annotation>> KEYWORDS =
-      Set.of(
-          BoundedContext.class,
-          CoreConcept.class,
-          ValueObject.class,
-          DomainEvent.class,
-          DomainCommand.class,
-          Aggregate.class);
+    public static final Set<Class<? extends Annotation>> KEYWORDS = Set.of(
+        BoundedContext.class,
+        CoreConcept.class,
+        ValueObject.class,
+        DomainEvent.class,
+        DomainCommand.class,
+        Aggregate.class
+    );
 
-  private DDDKeywords() {}
+    private DDDKeywords() {
+    }
+
 }
