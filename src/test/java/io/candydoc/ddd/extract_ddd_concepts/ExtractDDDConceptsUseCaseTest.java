@@ -181,7 +181,7 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void value_object_shoud_only_contain_primitive_types() throws IOException {
+  void value_object_should_only_contain_primitive_types() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
