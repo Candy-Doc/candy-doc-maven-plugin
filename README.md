@@ -17,27 +17,27 @@ Domain-Driven-Design approach.
 
 <!--ts-->
 * [CANDY-DOC](#candy-doc)
-  * [Table of content](#table-of-content)
-  * [Installation](#installation)
-  * [Contributing to Candy-Doc](#contributing-to-candy-doc)
-    * [With Maven](#with-maven)
-  * [DDD Annotations](#ddd-annotations)
-    * [Aggregate](#aggregate)
-    * [Bounded Context](#bounded-context)
-    * [Core Concept](#core-concept)
-    * [Domain Command](#domain-command)
-    * [Domain Event](#domain-event)
-    * [Value Object](#value-object)
-  * [HTML Documentation](#html-documentation)
-  * [[FOR DEVELOPERS ONLY] Development workflow](#for-developers-only-development-workflow)
-    * [Release policy](#release-policy)
-  * [Technologies](#technologies)
-  * [References](#references)
-  * [Join us <g-emoji class="g-emoji" alias="raising_hand" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f64b.png">🙋</g-emoji>](#join-us-)
-  * [Contributors <g-emoji class="g-emoji" alias="sparkles" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2728.png">✨</g-emoji>](#contributors-)
+   * [Table of content](#table-of-content)
+   * [Installation](#installation)
+   * [Contributing to Candy-Doc](#contributing-to-candy-doc)
+      * [With Maven](#with-maven)
+   * [DDD Annotations](#ddd-annotations)
+      * [Aggregate](#aggregate)
+      * [Bounded Context](#bounded-context)
+      * [Core Concept](#core-concept)
+      * [Domain Command](#domain-command)
+      * [Domain Event](#domain-event)
+      * [Value Object](#value-object)
+   * [HTML Documentation](#html-documentation)
+   * [[FOR DEVELOPERS ONLY] Development workflow](#for-developers-only-development-workflow)
+      * [Release policy](#release-policy)
+   * [Technologies](#technologies)
+   * [References](#references)
+   * [Join us <g-emoji class="g-emoji" alias="raising_hand" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f64b.png">🙋</g-emoji>](#join-us-)
+   * [Contributors <g-emoji class="g-emoji" alias="sparkles" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2728.png">✨</g-emoji>](#contributors-)
 
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
-<!-- Added by: runner, at: Tue Apr 26 09:16:36 UTC 2022 -->
+<!-- Added by: runner, at: Tue Apr 26 13:13:23 UTC 2022 -->
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
