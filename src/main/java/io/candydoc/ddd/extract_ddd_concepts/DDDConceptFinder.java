@@ -1,12 +1,20 @@
 package io.candydoc.ddd.extract_ddd_concepts;
 
 import io.candydoc.ddd.aggregate.Aggregate;
+import io.candydoc.ddd.annotations.DDDKeywords;
 import io.candydoc.ddd.bounded_context.BoundedContext;
 import io.candydoc.ddd.core_concept.CoreConcept;
 import io.candydoc.ddd.domain_command.DomainCommand;
 import io.candydoc.ddd.domain_event.DomainEvent;
-import io.candydoc.ddd.model.*;
+import io.candydoc.ddd.model.CanonicalName;
+import io.candydoc.ddd.model.DDDConcept;
+import io.candydoc.ddd.model.Description;
+import io.candydoc.ddd.model.ExtractionException;
+import io.candydoc.ddd.model.Interaction;
+import io.candydoc.ddd.model.PackageName;
+import io.candydoc.ddd.model.SimpleName;
 import io.candydoc.ddd.value_object.ValueObject;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -199,21 +207,18 @@ public abstract class DDDConceptFinder {
                 interactions.addAll(Set.of(method.getParameterTypes()));
               });
 
-      return Set.copyOf(
-          interactions.stream()
-              .filter(
-                  interaction -> {
-                    for (Annotation annotation : interaction.getAnnotations()) {
-                      if (ANNOTATION_PROCESSORS.keySet().contains(annotation.annotationType())) {
-                        return true;
-                      }
-                    }
-                    return false;
-                  })
-              .map(interaction -> CanonicalName.of(interaction.getCanonicalName()))
-              .collect(Collectors.toUnmodifiableSet()));
+      return interactions.stream()
+          .filter(DDDConceptFinder::isDDDAnnotated)
+          .map(interaction -> CanonicalName.of(interaction.getCanonicalName()))
+          .collect(Collectors.toUnmodifiableSet());
     } catch (ClassNotFoundException e) {
       throw new ExtractionException(e.getMessage());
     }
+  }
+
+  private static boolean isDDDAnnotated(Class<?> clazz) {
+    Set<Annotation> annotations = Set.of(clazz.getAnnotations());
+    return annotations.stream()
+        .anyMatch(annotation -> DDDKeywords.KEYWORDS.contains(annotation.annotationType()));
   }
 }
