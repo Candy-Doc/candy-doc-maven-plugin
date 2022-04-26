@@ -202,7 +202,8 @@ public abstract class DDDConceptFinder {
 
   private static Set<CanonicalName> conceptsInteractingWith(CanonicalName conceptName) {
     try {
-      Class<?> clazz = Class.forName(conceptName.value());
+      Class<?> clazz =
+          Class.forName(conceptName.value(), false, Thread.currentThread().getContextClassLoader());
       Set<Class<?>> interactions = new HashSet<>();
 
       Arrays.stream(clazz.getDeclaredFields()).map(Field::getType).forEach(interactions::add);
