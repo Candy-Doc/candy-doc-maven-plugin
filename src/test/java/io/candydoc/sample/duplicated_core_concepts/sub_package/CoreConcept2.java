@@ -1,4 +1,4 @@
-package io.candydoc.sample.duplicated_core_concepts;
+package io.candydoc.sample.duplicated_core_concepts.sub_package;
 
 import io.candydoc.ddd.annotations.CoreConcept;
 

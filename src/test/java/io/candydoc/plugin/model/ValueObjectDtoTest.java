@@ -10,7 +10,7 @@ class ValueObjectDtoTest {
             () ->
                 ConceptDto.builder()
                     .simpleName(
-                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
                     .build())
         .isInstanceOf(NullPointerException.class);
   }

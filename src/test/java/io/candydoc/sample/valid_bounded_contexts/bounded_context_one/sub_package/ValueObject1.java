@@ -1,4 +1,4 @@
-package io.candydoc.sample.valid_bounded_contexts.bounded_context_one;
+package io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package;
 
 import io.candydoc.ddd.annotations.ValueObject;
 

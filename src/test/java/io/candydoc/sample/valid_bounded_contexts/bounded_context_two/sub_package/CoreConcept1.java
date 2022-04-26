@@ -1,4 +1,4 @@
-package io.candydoc.sample.valid_bounded_contexts.bounded_context_two;
+package io.candydoc.sample.valid_bounded_contexts.bounded_context_two.sub_package;
 
 import io.candydoc.ddd.annotations.CoreConcept;
 
