@@ -142,16 +142,18 @@ class ExtractDDDConceptsUseCaseTest {
                 .simpleName("name of core concept 1 of bounded context 1")
                 .description("description of core concept 1 of bounded context 1")
                 .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
-                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
+                .packageName(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build(),
             CoreConceptFound.builder()
                 .simpleName("name of core concept 2 of bounded context 1")
                 .description("description of core concept 2 of bounded context 1")
                 .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
-                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2")
+                .packageName(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
@@ -174,8 +176,9 @@ class ExtractDDDConceptsUseCaseTest {
                 .description("description of value object 1 of bounded context 1")
                 .simpleName("ValueObject1")
                 .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
-                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
+                .packageName(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
@@ -196,7 +199,7 @@ class ExtractDDDConceptsUseCaseTest {
         .contains(
             ConceptRuleViolated.builder()
                 .conceptName(
-                    "io.candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.ValueObject")
+                    "io.candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.sub_package.ValueObject")
                 .reason("Value Object should only contain primitive types")
                 .build());
   }
@@ -219,8 +222,9 @@ class ExtractDDDConceptsUseCaseTest {
                 .description("domain event 1 of boundedcontext 1")
                 .simpleName("DomainEvent1")
                 .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
-                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1")
+                .packageName(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
@@ -243,8 +247,9 @@ class ExtractDDDConceptsUseCaseTest {
                 .description("Domain Command for Bounded context 1")
                 .simpleName("DomainCommand1")
                 .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainCommand1")
-                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainCommand1")
+                .packageName(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
@@ -267,8 +272,9 @@ class ExtractDDDConceptsUseCaseTest {
                 .simpleName("aggregate 1")
                 .description("Aggregate for Bounded context 1")
                 .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.Aggregate1")
-                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.Aggregate1")
+                .packageName(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
@@ -288,8 +294,10 @@ class ExtractDDDConceptsUseCaseTest {
     Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             InteractionBetweenConceptFound.builder()
-                .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
-                .with("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                .from(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
+                .with(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
                 .build());
   }
 

@@ -131,7 +131,7 @@ class BoundedContextDtoMapperTest {
             .description("domain command description")
             .simpleName("DomainCommand1")
             .canonicalName(
-                "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainCommand1")
+                "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainCommand1")
             .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
             .boundedContext("bounded.context")
             .build());
@@ -145,7 +145,7 @@ class BoundedContextDtoMapperTest {
             ConceptDto.builder()
                 .description("domain command description")
                 .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainCommand1")
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainCommand1")
                 .type(ConceptType.DOMAIN_COMMAND)
                 .simpleName("DomainCommand1")
                 .build());
@@ -159,7 +159,7 @@ class BoundedContextDtoMapperTest {
             .description("domain event description")
             .simpleName("DomainEvent1")
             .canonicalName(
-                "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
+                "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1")
             .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
             .boundedContext("bounded.context")
             .build());
@@ -175,7 +175,7 @@ class BoundedContextDtoMapperTest {
                 .simpleName("DomainEvent1")
                 .type(ConceptType.DOMAIN_EVENT)
                 .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1")
                 .build());
   }
 
@@ -187,7 +187,7 @@ class BoundedContextDtoMapperTest {
             .description("Value Object description")
             .simpleName("ValueObject1")
             .canonicalName(
-                "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
             .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
             .boundedContext("bounded.context")
             .build());
@@ -202,7 +202,7 @@ class BoundedContextDtoMapperTest {
                 .description("Value Object description")
                 .simpleName("ValueObject1")
                 .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
                 .type(ConceptType.VALUE_OBJECT)
                 .errors(List.of())
                 .build());
@@ -216,7 +216,7 @@ class BoundedContextDtoMapperTest {
             .simpleName("aggregate 1")
             .description("Aggregate for Bounded context 1")
             .canonicalName(
-                "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.Aggregate1")
+                "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.Aggregate1")
             .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
             .boundedContext("bounded.context")
             .build());
@@ -233,7 +233,7 @@ class BoundedContextDtoMapperTest {
                 .errors(List.of())
                 .type(ConceptType.AGGREGATE)
                 .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.Aggregate1")
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.Aggregate1")
                 .interactsWith(Set.of())
                 .build());
   }
@@ -284,13 +284,13 @@ class BoundedContextDtoMapperTest {
                 .description("value object description")
                 .simpleName("ValueObject1")
                 .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("bounded.context")
                 .build(),
             ConceptRuleViolated.builder()
                 .conceptName(
-                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
                 .reason("Warning: Value Object should only contain primitive type")
                 .build()));
     // when
