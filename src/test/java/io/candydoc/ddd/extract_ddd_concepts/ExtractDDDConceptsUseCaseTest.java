@@ -139,17 +139,17 @@ class ExtractDDDConceptsUseCaseTest {
     Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             CoreConceptFound.builder()
-                .name("name of core concept 1 of bounded context 1")
+                .simpleName("name of core concept 1 of bounded context 1")
                 .description("description of core concept 1 of bounded context 1")
-                .className(
+                .canonicalName(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build(),
             CoreConceptFound.builder()
-                .name("name of core concept 2 of bounded context 1")
+                .simpleName("name of core concept 2 of bounded context 1")
                 .description("description of core concept 2 of bounded context 1")
-                .className(
+                .canonicalName(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
@@ -172,8 +172,8 @@ class ExtractDDDConceptsUseCaseTest {
         .contains(
             ValueObjectFound.builder()
                 .description("description of value object 1 of bounded context 1")
-                .name("ValueObject1")
-                .className(
+                .simpleName("ValueObject1")
+                .canonicalName(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
@@ -217,8 +217,8 @@ class ExtractDDDConceptsUseCaseTest {
         .contains(
             DomainEventFound.builder()
                 .description("domain event 1 of boundedcontext 1")
-                .name("DomainEvent1")
-                .className(
+                .simpleName("DomainEvent1")
+                .canonicalName(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
@@ -241,8 +241,8 @@ class ExtractDDDConceptsUseCaseTest {
         .contains(
             DomainCommandFound.builder()
                 .description("Domain Command for Bounded context 1")
-                .name("DomainCommand1")
-                .className(
+                .simpleName("DomainCommand1")
+                .canonicalName(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainCommand1")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")

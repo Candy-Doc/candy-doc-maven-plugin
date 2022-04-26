@@ -11,8 +11,8 @@ import lombok.*;
 @DomainEvent(description = "Emitted when a value object is found in a bounded context")
 public class ValueObjectFound implements Event {
   @NonNull String description;
-  @NonNull String name;
-  @NonNull String className;
+  @NonNull String simpleName;
+  @NonNull String canonicalName;
   @NonNull String packageName;
   @NonNull String boundedContext;
 

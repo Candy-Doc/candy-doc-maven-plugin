@@ -35,33 +35,33 @@ class SaveDocumentationAsHTMLTest {
               .description("description of bounded context 2")
               .build(),
           CoreConceptFound.builder()
-              .name("Core Concept 1")
+              .simpleName("Core Concept 1")
               .description("Description of core concept 1")
-              .className(
+              .canonicalName(
                   "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept1")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .build(),
           CoreConceptFound.builder()
-              .name("Core Concept 2")
+              .simpleName("Core Concept 2")
               .description("Description of core concept 2")
-              .className(
+              .canonicalName(
                   "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.CoreConcept2")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .build(),
           ValueObjectFound.builder()
               .description("Description of value object 1")
-              .name("ValueObject1")
-              .className(
+              .simpleName("ValueObject1")
+              .canonicalName(
                   "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.ValueObject1")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .build(),
           DomainEventFound.builder()
               .description("Description of domain event 1")
-              .name("DomainEvent1")
-              .className(
+              .simpleName("DomainEvent1")
+              .canonicalName(
                   "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.DomainEvent1")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")

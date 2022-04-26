@@ -59,9 +59,9 @@ public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
 
   private CoreConceptFound toCoreConceptFound(String boundedContextName, CoreConcept coreConcept) {
     return CoreConceptFound.builder()
-        .name(coreConcept.getSimpleName().value())
+        .simpleName(coreConcept.getSimpleName().value())
         .description(coreConcept.getDescription().value())
-        .className(coreConcept.getCanonicalName().value())
+        .canonicalName(coreConcept.getCanonicalName().value())
         .packageName(coreConcept.getPackageName().value())
         .boundedContext(boundedContextName)
         .build();

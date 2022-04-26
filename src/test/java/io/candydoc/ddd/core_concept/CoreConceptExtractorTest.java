@@ -26,8 +26,8 @@ class CoreConceptExtractorTest {
     Assertions.assertThat(occurredEvents)
         .contains(
             CoreConceptFound.builder()
-                .name("CoreConcept1")
-                .className(
+                .simpleName("CoreConcept1")
+                .canonicalName(
                     "io.candydoc.sample.concepts_with_deducted_annotations.sub_package.CoreConcept1")
                 .description("")
                 .packageName("io.candydoc.sample.concepts_with_deducted_annotations.sub_package")
@@ -55,8 +55,8 @@ class CoreConceptExtractorTest {
     Assertions.assertThat(occurredEvents)
         .contains(
             CoreConceptFound.builder()
-                .name("My enum core concept")
-                .className(
+                .simpleName("My enum core concept")
+                .canonicalName(
                     "io.candydoc.sample.concepts_with_deducted_annotations.sub_package.EnumCoreConcept")
                 .description("My enum core concept description")
                 .packageName("io.candydoc.sample.concepts_with_deducted_annotations.sub_package")
