@@ -126,7 +126,7 @@ public class DDDConceptsExtractionService
   }
 
   public void apply(AggregateFound event) {
-    this.handle(CheckConceptInteractions.builder().conceptName(event.getClassName()).build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
   }
 
   public void apply(NameConflictBetweenCoreConcepts event) {}

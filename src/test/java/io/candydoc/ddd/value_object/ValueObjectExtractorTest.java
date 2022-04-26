@@ -25,7 +25,7 @@ class ValueObjectExtractorTest {
     // then
     Assertions.assertThat(occurredEvents)
         .filteredOn(ValueObjectFound.class::isInstance)
-        .extracting("name")
+        .extracting("simpleName")
         .containsOnlyOnce("EnumValueObject");
 
     Assertions.assertThat(occurredEvents)

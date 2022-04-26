@@ -25,8 +25,8 @@ public class AggregatesExtractor implements Extractor<ExtractAggregates> {
 
   private AggregateFound toAggregateFound(ExtractAggregates command, Aggregate aggregate) {
     return AggregateFound.builder()
-        .className(aggregate.getCanonicalName().value())
-        .name(aggregate.getSimpleName().value())
+        .canonicalName(aggregate.getCanonicalName().value())
+        .simpleName(aggregate.getSimpleName().value())
         .description(aggregate.getDescription().value())
         .packageName(aggregate.getPackageName().value())
         .boundedContext(command.getPackageToScan())

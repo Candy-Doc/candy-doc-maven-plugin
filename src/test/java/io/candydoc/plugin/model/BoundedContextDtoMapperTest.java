@@ -213,9 +213,10 @@ class BoundedContextDtoMapperTest {
     // given
     eventList.add(
         AggregateFound.builder()
-            .name("aggregate 1")
+            .simpleName("aggregate 1")
             .description("Aggregate for Bounded context 1")
-            .className("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.Aggregate1")
+            .canonicalName(
+                "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.Aggregate1")
             .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
             .boundedContext("bounded.context")
             .build());

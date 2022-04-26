@@ -49,7 +49,7 @@ class CoreConceptExtractorTest {
     // then
     Assertions.assertThat(occurredEvents)
         .filteredOn(CoreConceptFound.class::isInstance)
-        .extracting("name")
+        .extracting("simpleName")
         .containsOnlyOnce("My enum core concept");
 
     Assertions.assertThat(occurredEvents)

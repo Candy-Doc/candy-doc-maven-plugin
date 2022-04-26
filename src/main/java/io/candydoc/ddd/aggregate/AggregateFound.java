@@ -10,9 +10,9 @@ import lombok.*;
 @RequiredArgsConstructor
 @DomainEvent(description = "Emitted when an aggregate is found in a bounded context")
 public class AggregateFound implements Event {
-  @NonNull String name;
+  @NonNull String simpleName;
   @NonNull String description;
-  @NonNull String className;
+  @NonNull String canonicalName;
   @NonNull String packageName;
   @NonNull String boundedContext;
 
