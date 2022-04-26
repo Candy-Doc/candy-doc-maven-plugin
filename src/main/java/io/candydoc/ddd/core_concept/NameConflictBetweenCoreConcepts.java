@@ -1,9 +1,8 @@
 package io.candydoc.ddd.core_concept;
 
 import io.candydoc.ddd.Event;
-import java.util.List;
-
 import io.candydoc.ddd.annotations.DomainEvent;
+import java.util.List;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

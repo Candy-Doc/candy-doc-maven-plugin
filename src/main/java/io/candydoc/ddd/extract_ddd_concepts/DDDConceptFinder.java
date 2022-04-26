@@ -26,19 +26,19 @@ public abstract class DDDConceptFinder {
 
   public static final Map<Class<? extends Annotation>, Function<Class<?>, DDDConcept>>
       ANNOTATION_PROCESSORS =
-      Map.of(
-          io.candydoc.ddd.annotations.BoundedContext.class,
-          DDDConceptFinder::toBoundedContext,
-          io.candydoc.ddd.annotations.CoreConcept.class,
-          DDDConceptFinder::toCoreConcept,
-          io.candydoc.ddd.annotations.ValueObject.class,
-          DDDConceptFinder::toValueObject,
-          io.candydoc.ddd.annotations.DomainEvent.class,
-          DDDConceptFinder::toDomainEvent,
-          io.candydoc.ddd.annotations.DomainCommand.class,
-          DDDConceptFinder::toDomainCommand,
-          io.candydoc.ddd.annotations.Aggregate.class,
-          DDDConceptFinder::toAggregate);
+          Map.of(
+              io.candydoc.ddd.annotations.BoundedContext.class,
+              DDDConceptFinder::toBoundedContext,
+              io.candydoc.ddd.annotations.CoreConcept.class,
+              DDDConceptFinder::toCoreConcept,
+              io.candydoc.ddd.annotations.ValueObject.class,
+              DDDConceptFinder::toValueObject,
+              io.candydoc.ddd.annotations.DomainEvent.class,
+              DDDConceptFinder::toDomainEvent,
+              io.candydoc.ddd.annotations.DomainCommand.class,
+              DDDConceptFinder::toDomainCommand,
+              io.candydoc.ddd.annotations.Aggregate.class,
+              DDDConceptFinder::toAggregate);
 
   public abstract Set<DDDConcept> findDDDConcepts();
 
@@ -210,5 +210,4 @@ public abstract class DDDConceptFinder {
       throw new ExtractionException(e.getMessage());
     }
   }
-
 }

@@ -28,7 +28,7 @@ public class DomainCommandExtractor implements Extractor<ExtractDomainCommands> 
       String boundedContextName, DomainCommand domainCommand) {
     return DomainCommandFound.builder()
         .description(domainCommand.getDescription().value())
-        .name(domainCommand.getCanonicalName().value())
+        .name(domainCommand.getSimpleName().value())
         .className(domainCommand.getCanonicalName().value())
         .packageName(domainCommand.getPackageName().value())
         .boundedContext(boundedContextName)

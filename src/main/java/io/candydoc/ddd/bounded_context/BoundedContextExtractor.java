@@ -42,7 +42,7 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
 
   private BoundedContextFound toBoundedContextFound(BoundedContext boundedContext) {
     return BoundedContextFound.builder()
-        .name(boundedContext.getCanonicalName().value())
+        .name(boundedContext.getSimpleName().value())
         .packageName(boundedContext.getPackageName().value())
         .description(boundedContext.getDescription().value())
         .build();
