@@ -3,5 +3,7 @@ package io.candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.sub_
 @io.candydoc.ddd.annotations.ValueObject(
     description = "value object interacting withFullName something it shouldn't")
 public class ValueObject {
-  void fakeFunction(CoreConcept wrongInteraction) {}
+
+  private String notADDDField;
+  void fakeFunction(CoreConcept wrongInteraction, boolean notADDDParam) {}
 }
