@@ -5,13 +5,7 @@ import io.candydoc.ddd.bounded_context.BoundedContext;
 import io.candydoc.ddd.core_concept.CoreConcept;
 import io.candydoc.ddd.domain_command.DomainCommand;
 import io.candydoc.ddd.domain_event.DomainEvent;
-import io.candydoc.ddd.model.CanonicalName;
-import io.candydoc.ddd.model.DDDConcept;
-import io.candydoc.ddd.model.Description;
-import io.candydoc.ddd.model.ExtractionException;
-import io.candydoc.ddd.model.Interaction;
-import io.candydoc.ddd.model.PackageName;
-import io.candydoc.ddd.model.SimpleName;
+import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.value_object.ValueObject;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -91,8 +85,8 @@ public abstract class DDDConceptFinder {
   }
 
   public Set<Interaction> findInteractionsWith(CanonicalName conceptName) {
-    return classesInteractingWith(conceptName).stream()
-        .map(interaction -> Interaction.with(interaction.getCanonicalName()))
+    return conceptsInteractingWith(conceptName).stream()
+        .map(canonicalName -> Interaction.with(canonicalName.value()))
         .collect(Collectors.toUnmodifiableSet());
   }
 
@@ -191,7 +185,7 @@ public abstract class DDDConceptFinder {
         .build();
   }
 
-  private static Set<Class<?>> classesInteractingWith(CanonicalName conceptName) {
+  private static Set<CanonicalName> conceptsInteractingWith(CanonicalName conceptName) {
     try {
       Class<?> clazz = Class.forName(conceptName.value());
       Set<Class<?>> interactions = new HashSet<>();
@@ -205,7 +199,19 @@ public abstract class DDDConceptFinder {
                 interactions.addAll(Set.of(method.getParameterTypes()));
               });
 
-      return Set.copyOf(interactions);
+      return Set.copyOf(
+          interactions.stream()
+              .filter(
+                  interaction -> {
+                    for (Annotation annotation : interaction.getAnnotations()) {
+                      if (ANNOTATION_PROCESSORS.keySet().contains(annotation.annotationType())) {
+                        return true;
+                      }
+                    }
+                    return false;
+                  })
+              .map(interaction -> CanonicalName.of(interaction.getCanonicalName()))
+              .collect(Collectors.toUnmodifiableSet()));
     } catch (ClassNotFoundException e) {
       throw new ExtractionException(e.getMessage());
     }
