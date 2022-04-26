@@ -298,6 +298,12 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
                 .with(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
+                .build(),
+            InteractionBetweenConceptFound.builder()
+                .from(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
+                .with(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2")
                 .build());
   }
 
