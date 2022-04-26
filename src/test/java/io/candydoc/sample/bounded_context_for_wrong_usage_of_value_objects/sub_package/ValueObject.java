@@ -5,5 +5,6 @@ package io.candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.sub_
 public class ValueObject {
 
   private String notADDDField;
+
   void fakeFunction(CoreConcept wrongInteraction, boolean notADDDParam) {}
 }
