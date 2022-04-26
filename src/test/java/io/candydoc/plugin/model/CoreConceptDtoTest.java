@@ -12,7 +12,7 @@ class CoreConceptDtoTest {
 
   @Test
   void throws_an_exception_when_description_is_null() {
-    Assertions.assertThatThrownBy(() -> ConceptDto.builder().name("name").build())
+    Assertions.assertThatThrownBy(() -> ConceptDto.builder().simpleName("name").build())
         .isInstanceOf(NullPointerException.class);
   }
 }

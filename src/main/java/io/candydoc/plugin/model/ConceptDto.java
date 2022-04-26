@@ -14,8 +14,8 @@ import lombok.experimental.SuperBuilder;
 public class ConceptDto {
 
   @NonNull String description;
-  @NonNull String name;
-  @NonNull String className;
+  @NonNull String simpleName;
+  @NonNull String canonicalName;
   @NonNull ConceptType type;
   @Builder.Default Set<InteractionDto> interactsWith = new LinkedHashSet<>();
   @Builder.Default List<String> errors = new LinkedList<>();

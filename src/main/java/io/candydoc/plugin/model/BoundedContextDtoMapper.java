@@ -45,7 +45,7 @@ public class BoundedContextDtoMapper {
 
     private Optional<ConceptDto> conceptFromClassName(String className) {
       return allConcepts().stream()
-          .filter(conceptDto -> conceptDto.getClassName().equals(className))
+          .filter(conceptDto -> conceptDto.getCanonicalName().equals(className))
           .findFirst();
     }
 
@@ -72,7 +72,8 @@ public class BoundedContextDtoMapper {
                   concepts.values().stream()
                       .flatMap(Collection::stream)
                       .filter(
-                          coreConceptDto -> coreConceptDto.getClassName().equals(conflictingClass))
+                          coreConceptDto ->
+                              coreConceptDto.getCanonicalName().equals(conflictingClass))
                       .forEach(
                           coreConceptDto ->
                               coreConceptDto.addError(
@@ -88,8 +89,8 @@ public class BoundedContextDtoMapper {
       ConceptDto commandDto =
           ConceptDto.builder()
               .description(event.getDescription())
-              .name(event.getName())
-              .className(event.getClassName())
+              .simpleName(event.getSimpleName())
+              .canonicalName(event.getCanonicalName())
               .type(ConceptType.DOMAIN_COMMAND)
               .build();
 
@@ -105,9 +106,9 @@ public class BoundedContextDtoMapper {
     public void apply(CoreConceptFound event) {
       ConceptDto coreConceptDto =
           ConceptDto.builder()
-              .name(event.getName())
+              .simpleName(event.getSimpleName())
               .description(event.getDescription())
-              .className(event.getClassName())
+              .canonicalName(event.getCanonicalName())
               .type(ConceptType.CORE_CONCEPT)
               .build();
 
@@ -118,8 +119,8 @@ public class BoundedContextDtoMapper {
       ConceptDto domainEventDto =
           ConceptDto.builder()
               .description(event.getDescription())
-              .name(event.getName())
-              .className(event.getClassName())
+              .simpleName(event.getSimpleName())
+              .canonicalName(event.getCanonicalName())
               .type(ConceptType.DOMAIN_EVENT)
               .build();
 
@@ -130,8 +131,8 @@ public class BoundedContextDtoMapper {
       ConceptDto aggregateDto =
           ConceptDto.builder()
               .description(event.getDescription())
-              .name(event.getName())
-              .className(event.getClassName())
+              .simpleName(event.getName())
+              .canonicalName(event.getClassName())
               .type(ConceptType.AGGREGATE)
               .build();
 
@@ -146,8 +147,8 @@ public class BoundedContextDtoMapper {
       ConceptDto valueObjectDto =
           ConceptDto.builder()
               .description(event.getDescription())
-              .name(event.getName())
-              .className(event.getClassName())
+              .simpleName(event.getSimpleName())
+              .canonicalName(event.getCanonicalName())
               .type(ConceptType.VALUE_OBJECT)
               .build();
 
@@ -166,14 +167,14 @@ public class BoundedContextDtoMapper {
 
               fromConcept.addInteractsWith(
                   InteractionDto.builder()
-                      .name(withConcept.getName())
-                      .className(withConcept.getClassName())
+                      .simpleName(withConcept.getSimpleName())
+                      .canonicalName(withConcept.getCanonicalName())
                       .build());
 
               withConcept.addInteractsWith(
                   InteractionDto.builder()
-                      .name(fromConcept.getName())
-                      .className(fromConcept.getClassName())
+                      .simpleName(fromConcept.getSimpleName())
+                      .canonicalName(fromConcept.getCanonicalName())
                       .build());
             }
           });

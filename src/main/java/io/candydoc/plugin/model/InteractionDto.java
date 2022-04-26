@@ -7,6 +7,6 @@ import lombok.*;
 @Getter
 @EqualsAndHashCode
 public class InteractionDto {
-  @NonNull String name;
-  @NonNull String className;
+  @NonNull String simpleName;
+  @NonNull String canonicalName;
 }

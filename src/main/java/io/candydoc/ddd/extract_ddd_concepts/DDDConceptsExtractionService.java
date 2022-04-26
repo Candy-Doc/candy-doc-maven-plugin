@@ -108,21 +108,21 @@ public class DDDConceptsExtractionService
   }
 
   public void apply(CoreConceptFound event) {
-    this.handle(CheckConceptInteractions.builder().conceptName(event.getClassName()).build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
   }
 
   public void apply(InteractionBetweenConceptFound event) {}
 
   public void apply(ValueObjectFound event) {
-    this.handle(CheckConceptInteractions.builder().conceptName(event.getClassName()).build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
   }
 
   public void apply(DomainEventFound event) {
-    this.handle(CheckConceptInteractions.builder().conceptName(event.getClassName()).build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
   }
 
   public void apply(DomainCommandFound event) {
-    this.handle(CheckConceptInteractions.builder().conceptName(event.getClassName()).build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
   }
 
   public void apply(AggregateFound event) {

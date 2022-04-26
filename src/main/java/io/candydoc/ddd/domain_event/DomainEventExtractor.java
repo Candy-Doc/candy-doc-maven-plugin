@@ -24,8 +24,8 @@ public class DomainEventExtractor implements Extractor<ExtractDomainEvents> {
             domainEvent ->
                 DomainEventFound.builder()
                     .description(domainEvent.getDescription().value())
-                    .name(domainEvent.getSimpleName().value())
-                    .className(domainEvent.getCanonicalName().value())
+                    .simpleName(domainEvent.getSimpleName().value())
+                    .canonicalName(domainEvent.getCanonicalName().value())
                     .packageName(domainEvent.getPackageName().value())
                     .boundedContext(packageToScan)
                     .build())
