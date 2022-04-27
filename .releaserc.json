@@ -1,48 +1,46 @@
 {
-  "branches": [
-    "feat/add-semantic-maven-plugin"
-  ],
-  "plugins": [
-    [
-      "@semantic-release/commit-analyzer",
-      {
-        "config": "conventional-changelog-gitmoji-config",
-        "releaseRules": [
-          {
-            "type": "build",
-            "release": "patch"
-          }
-        ]
-      }
+    "branches": [
+      "main"
     ],
-    "@semantic-release/github",
-    [
-      "@semantic-release/changelog",
-      {
-        "changelogFile": "CHANGELOG.md",
-        "changelogTitle": "# Changelog"
-      }
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "config": "conventional-changelog-gitmoji-config",
+          "releaseRules": [
+            {
+              "type": "build",
+              "release": "patch"
+            }
+          ]
+        }
+      ],
+      "@semantic-release/github",
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md",
+          "changelogTitle": "# Changelog"
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "config": "conventional-changelog-gitmoji-config"
+        }
+      ],
+      "@conveyal/maven-semantic-release",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md","pom.xml"
+          ],
+          "message": ":bookmark: chore(release): ${nextRelease.gitTag} \n\n${nextRelease.notes}"
+        }
+      ]
     ],
-    [
-      "@semantic-release/release-notes-generator",
-      {
-        "config": "conventional-changelog-gitmoji-config"
-      }
-    ],
-    [
-      "@semantic-release/git",
-      {
-        "assets": [
-          "CHANGELOG.md"
-        ],
-        "message": ":bookmark: chore(release): ${nextRelease.gitTag} [skip ci] \n\n${nextRelease.notes}"
-      }
-    ],
-    [
-      "semantic-release-maven"
+    "extends": [
+      "semantic-release-config-gitmoji"
     ]
-  ],
-  "extends": [
-    "semantic-release-config-gitmoji"
-  ]
-}
+  }
