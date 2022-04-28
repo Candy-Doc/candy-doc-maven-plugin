@@ -12,6 +12,9 @@ on:
         required: false
         description: Breaking changes message
         default: No breaking changes.
+  push:
+    branches:
+    - main
 
 jobs:
   prepare-major:
@@ -57,8 +60,6 @@ jobs:
       with:
         gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
         passphrase: ${{ secrets.GPG_PASSPHRASE }}
-
-
 
     - name: Semantic Release
       uses: cycjimmy/semantic-release-action@v3
