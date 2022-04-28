@@ -11,6 +11,7 @@ on:
         type: string
         required: false
         description: Breaking changes message
+        default: No breaking changes.
 
 jobs:
   build:
@@ -29,7 +30,6 @@ jobs:
 
     - name: Build with Maven
       run: mvn --batch-mode -DskipTests package --update-snapshots verify
-
 
   prepare-major:
     name: Prepare for a new major version
