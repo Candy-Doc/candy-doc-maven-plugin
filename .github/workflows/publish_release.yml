@@ -11,9 +11,9 @@ on:
         type: string
         required: false
         description: Breaking changes message
+        default: No breaking changes.
 
 jobs:
-
   prepare-major:
     name: Prepare for a new major version
     runs-on: ubuntu-latest
