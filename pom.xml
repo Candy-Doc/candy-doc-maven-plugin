@@ -23,8 +23,38 @@
     
     <developers>
         <developer>
+            <name>Edouard Cattez</name>
+            <email>ecattez@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Maxime Deroullers</name>
+            <email>mderoullers@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
             <name>Pierre Michiels</name>
             <email>p.michiels@hotmail.com</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Florian Louvet</name>
+            <email>flouvet@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Steeven Regnault</name>
+            <email>sregnault@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Charles Tacquet</name>
+            <email>ctacquet@ippon.fr</email>
             <organization>Ippon</organization>
             <organizationUrl>https://fr.ippon.tech/</organizationUrl>
         </developer>
