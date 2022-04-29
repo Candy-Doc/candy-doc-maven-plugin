@@ -15,29 +15,31 @@ Domain-Driven-Design approach.
 
 ## Table of content
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
+<!--ts-->
+* [CANDY-DOC](#candy-doc)
+  * [Table of content](#table-of-content)
+  * [Installation](#installation)
+  * [Contributing to Candy-Doc](#contributing-to-candy-doc)
+    * [With Maven](#with-maven)
+  * [DDD Annotations](#ddd-annotations)
+    * [Aggregate](#aggregate)
+    * [Bounded Context](#bounded-context)
+    * [Core Concept](#core-concept)
+    * [Domain Command](#domain-command)
+    * [Domain Event](#domain-event)
+    * [Value Object](#value-object)
+  * [HTML Documentation](#html-documentation)
+  * [[FOR DEVELOPERS ONLY] Development workflow](#for-developers-only-development-workflow)
+    * [Release policy](#release-policy)
+  * [Technologies](#technologies)
+  * [References](#references)
+  * [Join us <g-emoji class="g-emoji" alias="raising_hand" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f64b.png">🙋</g-emoji>](#join-us-)
+  * [Contributors <g-emoji class="g-emoji" alias="sparkles" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2728.png">✨</g-emoji>](#contributors-)
 
-- [Installation](#installation)
-- [Contributing to Candy-Doc](#contributing-to-candy-doc)
-  - [With Maven](#with-maven)
-- [DDD Annotations](#ddd-annotations)
-  - [Aggregate](#aggregate)
-  - [Bounded Context](#bounded-context)
-  - [Core Concept](#core-concept)
-  - [Domain Command](#domain-command)
-  - [Domain Event](#domain-event)
-  - [Value Object](#value-object)
-- [HTML Documentation](#html-documentation)
-- [&#91;FOR DEVELOPERS ONLY&#93; Development workflow](#for-developers-only-development-workflow)
-  - [Release policy](#release-policy)
-- [Technologies](#technologies)
-- [References](#references)
-- [Join us 🙋](#join-us-)
-- [Contributors ✨](#contributors-)
+<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+<!-- Added by: runner, at: Tue Apr 26 13:54:16 UTC 2022 -->
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<!--te-->
 
 ## Installation
 
@@ -45,7 +47,7 @@ Domain-Driven-Design approach.
 
 ## Contributing to Candy-Doc
 
-- [Contributing to the project][]
+* [Contributing to the project][]
 
 ### With Maven
 
@@ -258,11 +260,11 @@ Project created with:
 
 ## References
 
-- DDD, en vrai pour le développeur (Cyrille Martraire):
+* DDD, en vrai pour le développeur (Cyrille Martraire):
   <https://www.youtube.com/watch?v=h3DLKrvp5V8>
-- DDD (Martin Fowler):
+* DDD (Martin Fowler):
   <https://martinfowler.com/tags/domain%20driven%20design.html>
-- Summary of a 4 days DDD Training (Thomas Ferro):
+* Summary of a 4 days DDD Training (Thomas Ferro):
   <https://thomasferro.medium.com/summary-of-a-four-days-ddd-training-74103a6d99a1>
 
 ## Join us 🙋

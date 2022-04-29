@@ -11,8 +11,8 @@
 <main>
     <article class="concept">
         <section class="concept__information">
-            <h1 class="concept__name">${concept.name}</h1>
-            <span class="concept__class-name">${concept.className}</span>
+            <h1 class="concept__name">${concept.simpleName}</h1>
+            <span class="concept__class-name">${concept.canonicalName}</span>
             <p class="concept__description">${concept.description}</p>
         </section>
         <#if concept.interactsWith?has_content>
@@ -20,8 +20,8 @@
                 <div class="interactions-box">
                     <h2 class="interaction__title">${i18n.getString("INTERACTION")}</h2>
                     <#list concept.interactsWith as interaction>
-                        <a href="${boundedContext.name}/${interaction.className}.html"
-                           class="interaction">${interaction.name}</a>
+                        <a href="${boundedContext.name}/${interaction.canonicalName}.html"
+                           class="interaction">${interaction.simpleName}</a>
                     </#list>
                 </div>
             </section>

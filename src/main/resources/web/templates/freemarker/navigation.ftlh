@@ -15,7 +15,7 @@
                                     <ul class="concepts">
                                         <#list boundedContext.getConcepts(conceptType) as concept>
                                             <li class="concepts__item">
-                                                <a href="${boundedContext.name}/${concept.className}.html">${concept.name}</a>
+                                                <a href="${boundedContext.name}/${concept.canonicalName}.html">${concept.simpleName}</a>
                                             </li>
                                         </#list>
                                     </ul>
