@@ -5,8 +5,12 @@ on:
     paths: [README.md]
 
 jobs:
-  generateTOC:
-    name: TOC Generator
+  generate:
+    name: Generate table of content
     runs-on: ubuntu-latest
     steps:
     - uses: technote-space/toc-generator@v4
+      with:
+        TOC_TITLE: '## Table of Contents'
+        COMMIT_NAME: Auto ToC Bot
+        COMMIT_EMAIL: bot@github.com
