@@ -34,7 +34,6 @@ Domain-Driven-Design approach.
 - [References](#references)
 - [Join us 🙋](#join-us-)
 - [Contributors ✨](#contributors-)
-- [Contributing to Candy-Doc](#contributing-to-candy-doc)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
