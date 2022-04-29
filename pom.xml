@@ -58,6 +58,24 @@
             <organization>Ippon</organization>
             <organizationUrl>https://fr.ippon.tech/</organizationUrl>
         </developer>
+        <developer>
+            <name>Alexandre Ginesy</name>
+            <email>aginesy@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Aymeric Vernholles</name>
+            <email>avernholles@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Nathan Sens</name>
+            <email>nsens@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
     </developers>
 
     <distributionManagement>

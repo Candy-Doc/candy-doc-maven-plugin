@@ -72,6 +72,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         MVN_CENTRAL_LOGIN: ${{ secrets.MVN_CENTRAL_LOGIN }}
-        MVN_CENTRAL_PASS: ${{ secrets.MVN_CENTRAL_PASS }}
+        MVN_CENTRAL_PASS: ${{ secrets.MVN_CENTRAL_PWD }}
         GPG_KEY_NAME: ${{ secrets.GPG_KEY_NAME }}
         GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
