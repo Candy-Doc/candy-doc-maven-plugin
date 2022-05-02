@@ -13,6 +13,7 @@ import io.candydoc.ddd.domain_event.DomainEventFound;
 import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
 import io.candydoc.ddd.model.ExtractionException;
+import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.io.IOException;
 import java.util.List;
@@ -51,7 +52,7 @@ class ExtractDDDConceptsUseCaseTest {
 
     // when then
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
-        .isInstanceOf(DocumentationGenerationFailed.class)
+        .isInstanceOf(PluginArgumentsException.class)
         .hasMessage("Missing parameters for 'packageToScan'. Check your pom configuration.");
   }
 
@@ -62,7 +63,7 @@ class ExtractDDDConceptsUseCaseTest {
 
     // when then
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
-        .isInstanceOf(DocumentationGenerationFailed.class)
+        .isInstanceOf(PluginArgumentsException.class)
         .hasMessage("Empty parameters for 'packagesToScan'. Check your pom configuration");
   }
 
@@ -304,6 +305,51 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
                 .with(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2")
+                .build());
+  }
+
+  @Test
+  void find_shared_kernel_inside_given_packages() throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.valid_bounded_contexts")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            SharedKernelFound.builder()
+                .name("shared_kernel_one")
+                .description("description of shared kernel")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
+                .build());
+  }
+
+  @Test
+  void find_core_concepts_inside_shared_kernel() throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            CoreConceptFound.builder()
+                .simpleName("name of core concept 1 of shared kernel 1")
+                .description("description of core concept 1 of shared kernel 1")
+                .canonicalName(
+                    "io.candydoc.sample.valid_bounded_contexts.shared_kernel.sub_package.CoreConcept1")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.shared_kernel.sub_package")
+                .boundedContext("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
                 .build());
   }
 

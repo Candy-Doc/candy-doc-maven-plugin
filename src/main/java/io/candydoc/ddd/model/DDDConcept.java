@@ -5,6 +5,7 @@ import io.candydoc.ddd.bounded_context.BoundedContext;
 import io.candydoc.ddd.core_concept.CoreConcept;
 import io.candydoc.ddd.domain_command.DomainCommand;
 import io.candydoc.ddd.domain_event.DomainEvent;
+import io.candydoc.ddd.shared_kernel.SharedKernel;
 import io.candydoc.ddd.value_object.ValueObject;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,8 @@ public abstract class DDDConcept {
     T domainCommand(DomainCommand domainCommand);
 
     T domainEvent(DomainEvent domainEvent);
+
+    T sharedKernel(SharedKernel sharedKernel);
 
     T valueObject(ValueObject valueObject);
   }

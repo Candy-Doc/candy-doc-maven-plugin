@@ -7,6 +7,7 @@ import io.candydoc.ddd.core_concept.CoreConcept;
 import io.candydoc.ddd.domain_command.DomainCommand;
 import io.candydoc.ddd.domain_event.DomainEvent;
 import io.candydoc.ddd.model.*;
+import io.candydoc.ddd.shared_kernel.SharedKernel;
 import io.candydoc.ddd.value_object.ValueObject;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -25,18 +26,20 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
   public static final Map<Class<? extends Annotation>, Function<Class<?>, DDDConcept>>
       ANNOTATION_PROCESSORS =
           Map.of(
+              io.candydoc.ddd.annotations.Aggregate.class,
+              ReflectionsConceptFinder::toAggregate,
               io.candydoc.ddd.annotations.BoundedContext.class,
               ReflectionsConceptFinder::toBoundedContext,
               io.candydoc.ddd.annotations.CoreConcept.class,
               ReflectionsConceptFinder::toCoreConcept,
-              io.candydoc.ddd.annotations.ValueObject.class,
-              ReflectionsConceptFinder::toValueObject,
-              io.candydoc.ddd.annotations.DomainEvent.class,
-              ReflectionsConceptFinder::toDomainEvent,
               io.candydoc.ddd.annotations.DomainCommand.class,
               ReflectionsConceptFinder::toDomainCommand,
-              io.candydoc.ddd.annotations.Aggregate.class,
-              ReflectionsConceptFinder::toAggregate);
+              io.candydoc.ddd.annotations.DomainEvent.class,
+              ReflectionsConceptFinder::toDomainEvent,
+              io.candydoc.ddd.annotations.SharedKernel.class,
+              ReflectionsConceptFinder::toSharedKernel,
+              io.candydoc.ddd.annotations.ValueObject.class,
+              ReflectionsConceptFinder::toValueObject);
 
   private static Set<DDDConcept> foundConcepts;
 
@@ -76,7 +79,7 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
         .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(BoundedContext.class))
         .map(BoundedContext.class::cast)
-        .collect(Collectors.toUnmodifiableSet());
+        .collect(Collectors.toSet());
   }
 
   @Override
@@ -104,6 +107,15 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(DomainEvent.class))
         .map(DomainEvent.class::cast)
         .collect(Collectors.toUnmodifiableSet());
+  }
+
+  @Override
+  public Set<SharedKernel> findSharedKernels(String packageToScan) {
+    return findDDDConcepts().stream()
+        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan))
+        .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(SharedKernel.class))
+        .map(SharedKernel.class::cast)
+        .collect(Collectors.toSet());
   }
 
   @Override
@@ -201,6 +213,23 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
     return DomainEvent.builder()
         .canonicalName(toCanonicalName(clazz))
         .simpleName(SimpleName.of(clazz.getSimpleName()))
+        .packageName(toPackageName(clazz))
+        .description(Description.of(description))
+        .build();
+  }
+
+  private static DDDConcept toSharedKernel(Class<?> clazz) {
+    String simpleName = clazz.getAnnotation(io.candydoc.ddd.annotations.SharedKernel.class).name();
+    if (simpleName.isBlank()) {
+      simpleName = clazz.getSimpleName();
+    }
+
+    String description =
+        clazz.getAnnotation(io.candydoc.ddd.annotations.SharedKernel.class).description();
+
+    return SharedKernel.builder()
+        .canonicalName(toCanonicalName(clazz))
+        .simpleName(SimpleName.of(simpleName))
         .packageName(toPackageName(clazz))
         .description(Description.of(description))
         .build();

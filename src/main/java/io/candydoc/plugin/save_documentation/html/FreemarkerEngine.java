@@ -3,7 +3,7 @@ package io.candydoc.plugin.save_documentation.html;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import io.candydoc.ddd.extract_ddd_concepts.DocumentationGenerationFailed;
+import io.candydoc.ddd.extract_ddd_concepts.PluginArgumentsException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -31,7 +31,7 @@ public class FreemarkerEngine implements TemplateEngine {
       template.process(modelWithI18n(model), writer);
       writer.close();
     } catch (IOException | TemplateException e) {
-      throw new DocumentationGenerationFailed(e.getMessage());
+      throw new PluginArgumentsException(e.getMessage());
     }
   }
 
@@ -43,7 +43,7 @@ public class FreemarkerEngine implements TemplateEngine {
       template.process(null, writer);
       writer.close();
     } catch (IOException | TemplateException e) {
-      throw new DocumentationGenerationFailed(e.getMessage());
+      throw new PluginArgumentsException(e.getMessage());
     }
   }
 

@@ -10,6 +10,7 @@ import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
 import io.candydoc.ddd.interaction.InteractionStrategy;
 import io.candydoc.ddd.model.DDDConcept;
+import io.candydoc.ddd.shared_kernel.SharedKernel;
 import io.candydoc.ddd.value_object.ValueObject;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,6 +66,14 @@ public class CoreConceptInteractionStrategy implements InteractionStrategy<CoreC
 
                       @Override
                       public Event domainEvent(DomainEvent domainEvent) {
+                        return InteractionBetweenConceptFound.builder()
+                            .from(concept.getCanonicalName().value())
+                            .with(anotherConcept.getCanonicalName().value())
+                            .build();
+                      }
+
+                      @Override
+                      public Event sharedKernel(SharedKernel sharedKernel) {
                         return InteractionBetweenConceptFound.builder()
                             .from(concept.getCanonicalName().value())
                             .with(anotherConcept.getCanonicalName().value())

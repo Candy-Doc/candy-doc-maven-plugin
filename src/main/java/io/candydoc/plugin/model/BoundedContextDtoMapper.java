@@ -9,6 +9,7 @@ import io.candydoc.ddd.domain_command.DomainCommandFound;
 import io.candydoc.ddd.domain_event.DomainEventFound;
 import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
+import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,10 +24,15 @@ public class BoundedContextDtoMapper {
   private static final class DomainEventsToBoundedContextDtos implements Event.Visitor {
     private final Map<String, List<ConceptDto>> concepts = new HashMap<>();
     private final List<BoundedContextFound> boundedContextFounds = new LinkedList<>();
+    private final List<SharedKernelFound> sharedKernelFounds = new LinkedList<>();
     private final List<InteractionBetweenConceptFound> returningInteractions = new LinkedList<>();
 
     private void addBoundedContext(String boundedContext) {
       concepts.put(boundedContext, new LinkedList<>());
+    }
+
+    private void addSharedKernel(String sharedKernel) {
+      concepts.put(sharedKernel, new LinkedList<>());
     }
 
     private void addConcept(String boundedContext, ConceptDto conceptDto) {
@@ -85,16 +91,16 @@ public class BoundedContextDtoMapper {
           .ifPresent(conceptDto -> conceptDto.addError(event.getReason()));
     }
 
-    public void apply(DomainCommandFound event) {
-      ConceptDto commandDto =
+    public void apply(AggregateFound event) {
+      ConceptDto aggregateDto =
           ConceptDto.builder()
               .description(event.getDescription())
               .simpleName(event.getSimpleName())
               .canonicalName(event.getCanonicalName())
-              .type(ConceptType.DOMAIN_COMMAND)
+              .type(ConceptType.AGGREGATE)
               .build();
 
-      addConcept(event.getBoundedContext(), commandDto);
+      addConcept(event.getBoundedContext(), aggregateDto);
     }
 
     public void apply(BoundedContextFound event) {
@@ -115,6 +121,18 @@ public class BoundedContextDtoMapper {
       addConcept(event.getBoundedContext(), coreConceptDto);
     }
 
+    public void apply(DomainCommandFound event) {
+      ConceptDto commandDto =
+          ConceptDto.builder()
+              .description(event.getDescription())
+              .simpleName(event.getSimpleName())
+              .canonicalName(event.getCanonicalName())
+              .type(ConceptType.DOMAIN_COMMAND)
+              .build();
+
+      addConcept(event.getBoundedContext(), commandDto);
+    }
+
     public void apply(DomainEventFound event) {
       ConceptDto domainEventDto =
           ConceptDto.builder()
@@ -127,20 +145,10 @@ public class BoundedContextDtoMapper {
       addConcept(event.getBoundedContext(), domainEventDto);
     }
 
-    public void apply(AggregateFound event) {
-      ConceptDto aggregateDto =
-          ConceptDto.builder()
-              .description(event.getDescription())
-              .simpleName(event.getSimpleName())
-              .canonicalName(event.getCanonicalName())
-              .type(ConceptType.AGGREGATE)
-              .build();
+    public void apply(SharedKernelFound event) {
+      sharedKernelFounds.add(event);
 
-      addConcept(event.getBoundedContext(), aggregateDto);
-    }
-
-    public void apply(InteractionBetweenConceptFound event) {
-      returningInteractions.add(event);
+      addSharedKernel(event.getPackageName());
     }
 
     public void apply(ValueObjectFound event) {
@@ -153,6 +161,10 @@ public class BoundedContextDtoMapper {
               .build();
 
       addConcept(event.getBoundedContext(), valueObjectDto);
+    }
+
+    public void apply(InteractionBetweenConceptFound event) {
+      returningInteractions.add(event);
     }
 
     public void applyInteraction() {

@@ -14,6 +14,8 @@ import io.candydoc.ddd.domain_event.DomainEventInteractionStrategy;
 import io.candydoc.ddd.extract_ddd_concepts.DDDConceptFinder;
 import io.candydoc.ddd.model.CanonicalName;
 import io.candydoc.ddd.model.DDDConcept;
+import io.candydoc.ddd.shared_kernel.SharedKernel;
+import io.candydoc.ddd.shared_kernel.SharedKernelInteractionStrategy;
 import io.candydoc.ddd.value_object.ValueObject;
 import io.candydoc.ddd.value_object.ValueObjectInteractionStrategy;
 import java.util.List;
@@ -25,20 +27,22 @@ public class InteractionChecker {
 
   private final AggregatesInteractionStrategy aggregatesInteractionStrategy;
   private final BoundedContextInteractionStrategy boundedContextInteractionStrategy;
-  private final DomainEventInteractionStrategy domainEventInteractionStrategy;
-  private final DomainCommandInteractionStrategy domainCommandInteractionStrategy;
-  private final ValueObjectInteractionStrategy valueObjectInteractionStrategy;
   private final CoreConceptInteractionStrategy coreConceptInteractionStrategy;
+  private final DomainCommandInteractionStrategy domainCommandInteractionStrategy;
+  private final DomainEventInteractionStrategy domainEventInteractionStrategy;
+  private final SharedKernelInteractionStrategy sharedKernelInteractionStrategy;
+  private final ValueObjectInteractionStrategy valueObjectInteractionStrategy;
   private final DDDConceptFinder conceptFinder;
 
   public InteractionChecker(DDDConceptFinder conceptFinder) {
     this.conceptFinder = conceptFinder;
     aggregatesInteractionStrategy = new AggregatesInteractionStrategy(conceptFinder);
     boundedContextInteractionStrategy = new BoundedContextInteractionStrategy();
-    domainEventInteractionStrategy = new DomainEventInteractionStrategy(conceptFinder);
-    domainCommandInteractionStrategy = new DomainCommandInteractionStrategy(conceptFinder);
-    valueObjectInteractionStrategy = new ValueObjectInteractionStrategy(conceptFinder);
     coreConceptInteractionStrategy = new CoreConceptInteractionStrategy(conceptFinder);
+    domainCommandInteractionStrategy = new DomainCommandInteractionStrategy(conceptFinder);
+    domainEventInteractionStrategy = new DomainEventInteractionStrategy(conceptFinder);
+    sharedKernelInteractionStrategy = new SharedKernelInteractionStrategy();
+    valueObjectInteractionStrategy = new ValueObjectInteractionStrategy(conceptFinder);
   }
 
   @SneakyThrows
@@ -70,6 +74,11 @@ public class InteractionChecker {
               @Override
               public List<Event> domainEvent(DomainEvent domainEvent) {
                 return domainEventInteractionStrategy.checkInteractions(domainEvent);
+              }
+
+              @Override
+              public List<Event> sharedKernel(SharedKernel sharedKernel) {
+                return sharedKernelInteractionStrategy.checkInteractions(sharedKernel);
               }
 
               @Override

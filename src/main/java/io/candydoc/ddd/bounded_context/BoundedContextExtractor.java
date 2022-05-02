@@ -1,8 +1,8 @@
 package io.candydoc.ddd.bounded_context;
 
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.extract_ddd_concepts.DocumentationGenerationFailed;
 import io.candydoc.ddd.extract_ddd_concepts.ExtractDDDConcepts;
+import io.candydoc.ddd.extract_ddd_concepts.PluginArgumentsException;
 import io.candydoc.ddd.model.Extractor;
 import java.util.Collection;
 import java.util.List;
@@ -26,11 +26,11 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
 
   public List<Event> extractBoundedContexts(String packageToScan) {
     if (packageToScan.isBlank()) {
-      // Todo: Manque une exception plus précise
-      throw new DocumentationGenerationFailed(
+      throw new PluginArgumentsException(
           "Empty parameters for 'packagesToScan'. Check your pom configuration");
     }
     Set<BoundedContext> boundedContextClasses = DDDConceptFinder.findBoundedContexts(packageToScan);
+    boundedContextClasses.addAll(DDDConceptFinder.findSharedKernels(packageToScan));
     if (boundedContextClasses.isEmpty()) {
       throw new NoBoundedContextFound(packageToScan);
     }

@@ -1,7 +1,7 @@
 package io.candydoc.plugin.save_documentation.html;
 
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.extract_ddd_concepts.DocumentationGenerationFailed;
+import io.candydoc.ddd.extract_ddd_concepts.PluginArgumentsException;
 import io.candydoc.ddd.extract_ddd_concepts.SaveDocumentationPort;
 import io.candydoc.plugin.model.BoundedContextDto;
 import io.candydoc.plugin.model.BoundedContextDtoMapper;
@@ -45,7 +45,7 @@ public class SaveDocumentationAsHTML implements SaveDocumentationPort {
           try {
             generateBoundedContextPage(boundedContext, boundedContexts);
           } catch (IOException e) {
-            throw new DocumentationGenerationFailed(e.getMessage());
+            throw new PluginArgumentsException(e.getMessage());
           }
         });
   }

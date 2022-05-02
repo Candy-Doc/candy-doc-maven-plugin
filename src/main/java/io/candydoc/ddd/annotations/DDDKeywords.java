@@ -7,12 +7,13 @@ public class DDDKeywords {
 
   public static final Set<Class<? extends Annotation>> KEYWORDS =
       Set.of(
+          Aggregate.class,
           BoundedContext.class,
           CoreConcept.class,
-          ValueObject.class,
           DomainEvent.class,
           DomainCommand.class,
-          Aggregate.class);
+          SharedKernel.class,
+          ValueObject.class);
 
   private DDDKeywords() {}
 }

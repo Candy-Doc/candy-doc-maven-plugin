@@ -19,9 +19,9 @@ public class ExtractDDDConceptsUseCase {
     this.saveDocumentationPort = saveDocumentationPort;
   }
 
-  public void checkParameters(ExtractDDDConcepts command) throws DocumentationGenerationFailed {
+  public void checkParameters(ExtractDDDConcepts command) throws PluginArgumentsException {
     if (command.getPackagesToScan() == null || command.getPackagesToScan().isEmpty()) {
-      throw new DocumentationGenerationFailed(
+      throw new PluginArgumentsException(
           "Missing parameters for 'packageToScan'. Check your pom configuration.");
     }
   }
