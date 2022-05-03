@@ -1,4 +1,4 @@
-package io.candydoc.ddd.bounded_context;
+package io.candydoc.ddd.extract_ddd_concepts;
 
 import io.candydoc.ddd.model.ExtractionException;
 import java.util.List;

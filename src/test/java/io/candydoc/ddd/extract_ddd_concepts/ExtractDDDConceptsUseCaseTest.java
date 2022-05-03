@@ -6,7 +6,6 @@ import io.candydoc.ddd.Command;
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.aggregate.AggregateFound;
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
-import io.candydoc.ddd.bounded_context.NoBoundedContextOrSharedKernelFound;
 import io.candydoc.ddd.core_concept.CoreConceptFound;
 import io.candydoc.ddd.domain_command.DomainCommandFound;
 import io.candydoc.ddd.domain_event.DomainEventFound;
@@ -17,6 +16,7 @@ import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.io.IOException;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +24,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+@Slf4j
 class ExtractDDDConceptsUseCaseTest {
 
   private ExtractDDDConceptsUseCase extractDDDConceptsUseCase;
@@ -352,6 +353,29 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.shared_kernel.sub_package.CoreConcept1")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.shared_kernel.sub_package")
                 .boundedContext("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
+                .build());
+  }
+
+  @Test
+  void check_shared_kernel_inside_shared_kernel() throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.wrong_bounded_context")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    log.error(extractionCaptor.getResult().toString());
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            SharedKernelFound.builder()
+                .name("shared_kernel_two")
+                .description("description of shared kernel 2")
+                .packageName("io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package")
                 .build());
   }
 

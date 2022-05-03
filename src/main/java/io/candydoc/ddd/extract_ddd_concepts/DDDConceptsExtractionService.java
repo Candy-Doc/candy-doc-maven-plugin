@@ -7,7 +7,6 @@ import io.candydoc.ddd.aggregate.AggregatesExtractor;
 import io.candydoc.ddd.aggregate.ExtractAggregates;
 import io.candydoc.ddd.bounded_context.BoundedContextExtractor;
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
-import io.candydoc.ddd.bounded_context.NoBoundedContextOrSharedKernelFound;
 import io.candydoc.ddd.core_concept.CoreConceptExtractor;
 import io.candydoc.ddd.core_concept.CoreConceptFound;
 import io.candydoc.ddd.core_concept.ExtractCoreConcepts;

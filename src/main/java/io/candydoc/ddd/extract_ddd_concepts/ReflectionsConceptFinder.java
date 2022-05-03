@@ -79,7 +79,7 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
         .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(BoundedContext.class))
         .map(BoundedContext.class::cast)
-        .collect(Collectors.toSet());
+        .collect(Collectors.toUnmodifiableSet());
   }
 
   @Override
@@ -115,7 +115,7 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
         .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(SharedKernel.class))
         .map(SharedKernel.class::cast)
-        .collect(Collectors.toSet());
+        .collect(Collectors.toUnmodifiableSet());
   }
 
   @Override
