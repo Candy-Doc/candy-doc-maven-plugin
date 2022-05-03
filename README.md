@@ -1,4 +1,4 @@
-# CANDY-DOC
+# 🍬 Candy Doc
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -64,7 +64,7 @@ To run this plugin, import the following:
 </executions>
 <configuration>
   <packagesToScan>
-    <packagesToScan>com.foo.bar</packagesToScan>
+    <packageToScan>com.foo.bar</packageToScan>
   </packagesToScan>
   <outputFormat>html</outputFormat>
 </configuration>
@@ -80,9 +80,9 @@ Example:
 ```xml
 
 <packagesToScan>
-  <packagesToScan>com.foo.bar.baz</packagesToScan>
-  <packagesToScan>com.foo.qux</packagesToScan>
-  <packagesToScan>
+  <packageToScan>com.foo.bar.baz</packageToScan>
+  <packageToScan>com.foo.qux</packageToScan>
+</packagesToScan>
 ```
 
 **outputFormat:** The output format in which the documentation is generated.
