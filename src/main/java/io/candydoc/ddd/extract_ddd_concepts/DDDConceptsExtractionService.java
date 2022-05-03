@@ -7,6 +7,7 @@ import io.candydoc.ddd.aggregate.AggregatesExtractor;
 import io.candydoc.ddd.aggregate.ExtractAggregates;
 import io.candydoc.ddd.bounded_context.BoundedContextExtractor;
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
+import io.candydoc.ddd.bounded_context.NoBoundedContextOrSharedKernelFound;
 import io.candydoc.ddd.core_concept.CoreConceptExtractor;
 import io.candydoc.ddd.core_concept.CoreConceptFound;
 import io.candydoc.ddd.core_concept.ExtractCoreConcepts;
@@ -70,8 +71,13 @@ public class DDDConceptsExtractionService
 
   public void handle(ExtractDDDConcepts command) {
     log.info("Extract ddd concepts from {}", command.getPackagesToScan());
-    trackAndApply(boundedContextExtractor.extract(command));
-    trackAndApply(sharedKernelExtractor.extract(command));
+    List<Event> boundedContextEvents = boundedContextExtractor.extract(command);
+    List<Event> sharedKernelEvents = sharedKernelExtractor.extract(command);
+    if (boundedContextEvents.isEmpty() && sharedKernelEvents.isEmpty()) {
+      throw new NoBoundedContextOrSharedKernelFound(command.getPackagesToScan());
+    }
+    trackAndApply(boundedContextEvents);
+    trackAndApply(sharedKernelEvents);
   }
 
   public void handle(ExtractAggregates command) {

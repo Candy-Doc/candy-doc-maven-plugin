@@ -30,10 +30,6 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
           "Empty parameters for 'packagesToScan'. Check your pom configuration");
     }
     Set<BoundedContext> boundedContextClasses = DDDConceptFinder.findBoundedContexts(packageToScan);
-    boundedContextClasses.addAll(DDDConceptFinder.findSharedKernels(packageToScan));
-    if (boundedContextClasses.isEmpty()) {
-      throw new NoBoundedContextFound(packageToScan);
-    }
     log.info("Bounded contexts found in {}: {}", packageToScan, boundedContextClasses);
     return boundedContextClasses.stream()
         .map(this::toBoundedContextFound)

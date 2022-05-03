@@ -6,7 +6,7 @@ import io.candydoc.ddd.Command;
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.aggregate.AggregateFound;
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
-import io.candydoc.ddd.bounded_context.NoBoundedContextFound;
+import io.candydoc.ddd.bounded_context.NoBoundedContextOrSharedKernelFound;
 import io.candydoc.ddd.core_concept.CoreConceptFound;
 import io.candydoc.ddd.domain_command.DomainCommandFound;
 import io.candydoc.ddd.domain_event.DomainEventFound;
@@ -95,8 +95,10 @@ class ExtractDDDConceptsUseCaseTest {
 
     // then
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
-        .isInstanceOf(NoBoundedContextFound.class)
-        .hasMessage("No bounded context has been found in the package : 'wrong.package.to.scan'.");
+        .isInstanceOf(NoBoundedContextOrSharedKernelFound.class)
+        .hasMessage(
+            "No bounded context or shared kernel has been found in this packages :"
+                + " '[wrong.package.to.scan]'.");
   }
 
   @Test
