@@ -66,6 +66,15 @@
         "doc",
         "infra"
       ]
+    },
+    {
+      "login": "fdelbrayelle",
+      "name": "François Delbrayelle",
+      "avatar_url": "https://avatars.githubusercontent.com/u/296836?v=4",
+      "profile": "http://www.francois-delbrayelle.fr",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
