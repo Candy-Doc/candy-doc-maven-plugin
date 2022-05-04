@@ -53,7 +53,7 @@ class ExtractDDDConceptsUseCaseTest {
 
     // when then
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
-        .isInstanceOf(PluginArgumentsException.class)
+        .isInstanceOf(PackageToScanMissing.class)
         .hasMessage("Missing parameters for 'packageToScan'. Check your pom configuration.");
   }
 
@@ -64,7 +64,7 @@ class ExtractDDDConceptsUseCaseTest {
 
     // when then
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
-        .isInstanceOf(PluginArgumentsException.class)
+        .isInstanceOf(PackageToScanMissing.class)
         .hasMessage("Empty parameters for 'packagesToScan'. Check your pom configuration");
   }
 
@@ -96,7 +96,7 @@ class ExtractDDDConceptsUseCaseTest {
 
     // then
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
-        .isInstanceOf(NoBoundedContextOrSharedKernelFound.class)
+        .isInstanceOf(NoBoundedContextNorSharedKernelFound.class)
         .hasMessage(
             "No bounded context or shared kernel has been found in this packages :"
                 + " '[wrong.package.to.scan]'.");
@@ -357,7 +357,32 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void check_shared_kernel_inside_shared_kernel() throws IOException {
+  void inner_bounded_context_are_forbidden() throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.wrong_bounded_context")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            ConceptRuleViolated.builder()
+                .conceptName(
+                    "io.candydoc.sample.wrong_bounded_context.sub_package.bounded_context_two")
+                .reason(
+                    "Inner bounded context are forbidden :"
+                        + " io.candydoc.sample.wrong_bounded_context.sub_package.bounded_context_two"
+                        + " is inside"
+                        + " io.candydoc.sample.wrong_bounded_context.bounded_context_one.")
+                .build());
+  }
+
+  @Test
+  void inner_shared_kernel_are_forbidden() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()

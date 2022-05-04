@@ -73,7 +73,7 @@ public class DDDConceptsExtractionService
     List<Event> boundedContextEvents = boundedContextExtractor.extract(command);
     List<Event> sharedKernelEvents = sharedKernelExtractor.extract(command);
     if (boundedContextEvents.isEmpty() && sharedKernelEvents.isEmpty()) {
-      throw new NoBoundedContextOrSharedKernelFound(command.getPackagesToScan());
+      throw new NoBoundedContextNorSharedKernelFound(command.getPackagesToScan());
     }
     trackAndApply(boundedContextEvents);
     trackAndApply(sharedKernelEvents);
@@ -136,9 +136,6 @@ public class DDDConceptsExtractionService
   public void apply(SharedKernelFound event) {
     this.handle(ExtractCoreConcepts.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractValueObjects.builder().packageToScan(event.getPackageName()).build());
-    this.handle(ExtractDomainEvents.builder().packageToScan(event.getPackageName()).build());
-    this.handle(ExtractDomainCommands.builder().packageToScan(event.getPackageName()).build());
-    this.handle(ExtractAggregates.builder().packageToScan(event.getPackageName()).build());
   }
 
   public void apply(ValueObjectFound event) {
