@@ -8,6 +8,94 @@
     <artifactId>candy-doc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
+    <name>Candy Doc</name>
+    <description>Candy doc plugin</description>
+    <url>https://github.com/Candy-Doc/candy-doc-maven-plugin</url>
+
+    <licenses>
+        <license>
+            <name>GPL-3.0 License</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.en.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+        
+    
+    <developers>
+        <developer>
+            <name>Edouard Cattez</name>
+            <email>ecattez@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Maxime Deroullers</name>
+            <email>mderoullers@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Pierre Michiels</name>
+            <email>p.michiels@hotmail.com</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Florian Louvet</name>
+            <email>flouvet@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Steeven Regnault</name>
+            <email>sregnault@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Charles Tacquet</name>
+            <email>ctacquet@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Alexandre Ginesy</name>
+            <email>aginesy@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Aymeric Vernholles</name>
+            <email>avernholles@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Nathan Sens</name>
+            <email>nsens@ippon.fr</email>
+            <organization>Ippon</organization>
+            <organizationUrl>https://fr.ippon.tech/</organizationUrl>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+    <scm>
+        <developerConnection>scm:git:https://github.com/CANDY-DOC/candy-doc</developerConnection>
+        <url>https://github.com/Candy-Doc/candy-doc-maven-plugin</url>
+        <tag>v1.0</tag>
+    </scm>
+
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -90,6 +178,7 @@
             <scope>compile</scope>
         </dependency>
 
+
         <!-- Maven plugin dependencies -->
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
@@ -155,13 +244,59 @@
         </dependency>
     </dependencies>
 
-    <scm>
-        <developerConnection>scm:git:https://github.com/CANDY-DOC/candy-doc</developerConnection>
-      <tag>v1.0</tag>
-    </scm>
-
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                    <id>attach-sources</id>
+                    <goals>
+                        <goal>jar-no-fork</goal>
+                    </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                    <id>sign-artifacts</id>
+                    <phase>verify</phase>
+                    <goals>
+                        <goal>sign</goal>
+                    </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                    <id>attach-javadocs</id>
+                    <goals>
+                        <goal>jar</goal>
+                    </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
