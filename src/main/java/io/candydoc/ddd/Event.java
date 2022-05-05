@@ -30,10 +30,10 @@ public interface Event {
 
     void apply(SharedKernelFound event);
 
+    void apply(ConceptRuleViolated event);
+
     void apply(InteractionBetweenConceptFound event);
 
     void apply(NameConflictBetweenCoreConcepts event);
-
-    void apply(ConceptRuleViolated event);
   }
 }

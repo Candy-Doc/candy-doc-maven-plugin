@@ -16,7 +16,6 @@ import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.io.IOException;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-@Slf4j
 class ExtractDDDConceptsUseCaseTest {
 
   private ExtractDDDConceptsUseCase extractDDDConceptsUseCase;
@@ -391,8 +389,6 @@ class ExtractDDDConceptsUseCaseTest {
 
     // when
     extractDDDConceptsUseCase.execute(command);
-
-    log.error(extractionCaptor.getResult().toString());
 
     // then
     Assertions.assertThat(extractionCaptor.getResult())

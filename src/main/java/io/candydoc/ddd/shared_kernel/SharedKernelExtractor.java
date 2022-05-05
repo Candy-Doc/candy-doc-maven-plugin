@@ -25,6 +25,11 @@ public class SharedKernelExtractor implements Extractor<ExtractDDDConcepts> {
         .collect(Collectors.toUnmodifiableList());
   }
 
+  public List<Event> extract(ExtractSharedKernels command) {
+    return extractSharedKernel(command.getPackageToScan()).stream()
+        .collect(Collectors.toUnmodifiableList());
+  }
+
   public List<Event> extractSharedKernel(String packageToScan) {
     if (packageToScan.isBlank()) {
       throw new PackageToScanMissing(

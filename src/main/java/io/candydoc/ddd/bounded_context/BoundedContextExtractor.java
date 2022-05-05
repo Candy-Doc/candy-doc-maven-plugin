@@ -24,6 +24,11 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
         .collect(Collectors.toUnmodifiableList());
   }
 
+  public List<Event> extract(ExtractBoundedContexts command) {
+    return extractBoundedContexts(command.getPackageToScan()).stream()
+        .collect(Collectors.toUnmodifiableList());
+  }
+
   public List<Event> extractBoundedContexts(String packageToScan) {
     if (packageToScan.isBlank()) {
       throw new PackageToScanMissing(
