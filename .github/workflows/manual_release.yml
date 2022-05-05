@@ -1,0 +1,74 @@
+name: Publish a new release
+
+on:
+  workflow_dispatch:
+    inputs:
+      is_major:
+        type: boolean
+        required: false
+        description: Make a major version
+      breaking_changes:
+        type: string
+        required: false
+        description: Breaking changes message
+        default: No breaking changes.
+
+jobs:
+  prepare-major:
+    name: Prepare for a new major version
+    runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.get-last-commit-ref.outputs.ref }}
+    if: ${{ github.event.inputs.isMajor == 'true' }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+
+    - name: Get last commit message
+      id: last-commit-message
+      run: |
+        echo "::set-output name=msg::$(git log -1 --pretty=%s)"
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "${{ steps.last-commit-message.outputs.msg }}\n BREAKING CHANGE ${{ github.event.inputs.message }}"
+        commit_options: --amend --allow-empty
+        skip_dirty_check: true
+        push_options: --force
+
+    - id: get-last-commit-ref
+      run: |
+        echo "::set-output name=ref::$(git rev-parse HEAD)"
+
+  release:
+    name: Semantic-Release
+    runs-on: ubuntu-latest
+    needs: prepare-major
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ needs.prepare-major.outputs.output1 }}
+
+    - name: Import GPG key
+      id: import_gpg
+      uses: crazy-max/ghaction-import-gpg@v4
+      with:
+        gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+        passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+    - name: Semantic Release
+      uses: cycjimmy/semantic-release-action@v3
+      with:
+        extra_plugins: |
+          "semantic-release-config-gitmoji"
+          "semantic-release-maven --legacy-peer-deps"
+          "@conveyal/maven-semantic-release"
+        extends: semantic-release-config-gitmoji
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        MVN_CENTRAL_LOGIN: ${{ secrets.MVN_CENTRAL_LOGIN }}
+        MVN_CENTRAL_PASS: ${{ secrets.MVN_CENTRAL_PWD }}
+        GPG_KEY_NAME: ${{ secrets.GPG_KEY_NAME }}
+        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
