@@ -73,9 +73,7 @@ public class DDDConceptsExtractionService
   public void handle(ExtractDDDConcepts command) {
     log.info("Extract ddd concepts from {}", command.getPackagesToScan());
     List<Event> boundedContextEvents = boundedContextExtractor.extract(command);
-    log.error(boundedContextEvents.toString());
     List<Event> sharedKernelEvents = sharedKernelExtractor.extract(command);
-    log.error(sharedKernelEvents.toString());
     if (boundedContextEvents.isEmpty() && sharedKernelEvents.isEmpty()) {
       throw new NoBoundedContextNorSharedKernelFound(command.getPackagesToScan());
     }
@@ -127,6 +125,7 @@ public class DDDConceptsExtractionService
 
   public void apply(BoundedContextFound event) {
     this.handle(ExtractAggregates.builder().packageToScan(event.getPackageName()).build());
+    this.handle(ExtractBoundedContexts.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractCoreConcepts.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractDomainCommands.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractDomainEvents.builder().packageToScan(event.getPackageName()).build());
@@ -148,6 +147,7 @@ public class DDDConceptsExtractionService
   public void apply(SharedKernelFound event) {
     this.handle(ExtractCoreConcepts.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractValueObjects.builder().packageToScan(event.getPackageName()).build());
+    this.handle(ExtractSharedKernels.builder().packageToScan(event.getPackageName()).build());
   }
 
   public void apply(ValueObjectFound event) {
@@ -161,28 +161,32 @@ public class DDDConceptsExtractionService
   public void apply(NameConflictBetweenCoreConcepts event) {}
 
   private void checkNoInnerBoundedContextNorSharedKernelInside(List<Event> events) {
-    log.error("checkNoInnerBoundedContextNorSharedKernelInside: " + events);
     events.stream()
         .filter(event -> event instanceof BoundedContextFound || event instanceof SharedKernelFound)
         .forEach(
             forbiddenEvent -> {
-              log.error("forbiddenEvent: " + forbiddenEvent);
               if (forbiddenEvent instanceof BoundedContextFound) {
                 eventsList.add(
                     ConceptRuleViolated.builder()
-                        .conceptName(((BoundedContextFound) forbiddenEvent).getName())
+                        .conceptName(
+                            ((BoundedContextFound) forbiddenEvent).getPackageName()
+                                + "."
+                                + ((BoundedContextFound) forbiddenEvent).getName())
                         .reason(
-                            "There shouldn't be bounded context in another bounded context/shared"
-                                + " kernel.")
+                            ((BoundedContextFound) forbiddenEvent).getName()
+                                + " shouldn't be in another bounded context/shared kernel.")
                         .build());
               }
               if (forbiddenEvent instanceof SharedKernelFound) {
                 eventsList.add(
                     ConceptRuleViolated.builder()
-                        .conceptName(((SharedKernelFound) forbiddenEvent).getName())
+                        .conceptName(
+                            ((SharedKernelFound) forbiddenEvent).getPackageName()
+                                + "."
+                                + ((SharedKernelFound) forbiddenEvent).getName())
                         .reason(
-                            "There shouldn't be shared kernel in another bounded context/shared"
-                                + " kernel.")
+                            ((SharedKernelFound) forbiddenEvent).getName()
+                                + " shouldn't be in another bounded context/shared kernel.")
                         .build());
               }
             });

@@ -370,12 +370,10 @@ class ExtractDDDConceptsUseCaseTest {
         .contains(
             ConceptRuleViolated.builder()
                 .conceptName(
-                    "io.candydoc.sample.wrong_bounded_context.sub_package.bounded_context_two")
+                    "io.candydoc.sample.wrong_bounded_contexts.bounded_context.sub_package.bounded_context_two")
                 .reason(
-                    "Inner bounded context are forbidden :"
-                        + " io.candydoc.sample.wrong_bounded_context.sub_package.bounded_context_two"
-                        + " is inside"
-                        + " io.candydoc.sample.wrong_bounded_context.bounded_context_one.")
+                    "bounded_context_two"
+                        + " shouldn't be in another bounded context/shared kernel.")
                 .build());
   }
 
@@ -384,7 +382,7 @@ class ExtractDDDConceptsUseCaseTest {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
-            .packageToScan("io.candydoc.sample.wrong_bounded_context")
+            .packageToScan("io.candydoc.sample.wrong_bounded_contexts")
             .build();
 
     // when

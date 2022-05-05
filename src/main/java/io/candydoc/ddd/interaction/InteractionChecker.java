@@ -37,11 +37,11 @@ public class InteractionChecker {
   public InteractionChecker(DDDConceptFinder conceptFinder) {
     this.conceptFinder = conceptFinder;
     aggregatesInteractionStrategy = new AggregatesInteractionStrategy(conceptFinder);
-    boundedContextInteractionStrategy = new BoundedContextInteractionStrategy(conceptFinder);
+    boundedContextInteractionStrategy = new BoundedContextInteractionStrategy();
     coreConceptInteractionStrategy = new CoreConceptInteractionStrategy(conceptFinder);
     domainCommandInteractionStrategy = new DomainCommandInteractionStrategy(conceptFinder);
     domainEventInteractionStrategy = new DomainEventInteractionStrategy(conceptFinder);
-    sharedKernelInteractionStrategy = new SharedKernelInteractionStrategy(conceptFinder);
+    sharedKernelInteractionStrategy = new SharedKernelInteractionStrategy();
     valueObjectInteractionStrategy = new ValueObjectInteractionStrategy(conceptFinder);
   }
 
