@@ -31,10 +31,10 @@ public class SharedKernelInteractionStrategy implements InteractionStrategy<Shar
                 anotherConcept.apply(
                     new DDDConcept.Visitor<Event>() {
                       @Override
-                      public Event aggregate(Aggregate forbiddenConcept) {
-                        return InteractionBetweenConceptFound.builder()
-                            .from(concept.getCanonicalName().value())
-                            .with(anotherConcept.getCanonicalName().value())
+                      public Event aggregate(Aggregate aggregate) {
+                        return ConceptRuleViolated.builder()
+                            .conceptName(aggregate.getCanonicalName().value())
+                            .reason("Shared kernel can not have aggregate.")
                             .build();
                       }
 
@@ -59,17 +59,17 @@ public class SharedKernelInteractionStrategy implements InteractionStrategy<Shar
 
                       @Override
                       public Event domainCommand(DomainCommand domainCommand) {
-                        return InteractionBetweenConceptFound.builder()
-                            .from(concept.getCanonicalName().value())
-                            .with(anotherConcept.getCanonicalName().value())
+                        return ConceptRuleViolated.builder()
+                            .conceptName(domainCommand.getCanonicalName().value())
+                            .reason("Shared kernel can not have domain command.")
                             .build();
                       }
 
                       @Override
                       public Event domainEvent(DomainEvent domainEvent) {
-                        return InteractionBetweenConceptFound.builder()
-                            .from(concept.getCanonicalName().value())
-                            .with(anotherConcept.getCanonicalName().value())
+                        return ConceptRuleViolated.builder()
+                            .conceptName(domainEvent.getCanonicalName().value())
+                            .reason("Shared kernel can not have domain event.")
                             .build();
                       }
 

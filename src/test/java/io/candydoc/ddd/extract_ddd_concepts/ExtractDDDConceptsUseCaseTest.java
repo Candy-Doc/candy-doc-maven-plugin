@@ -16,9 +16,13 @@ import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -450,19 +454,40 @@ class ExtractDDDConceptsUseCaseTest {
                 .build());
   }
 
-  /*
-  Todo: ParameterizedTest to check all rules related to BoundedContext
-
   @ParameterizedTest
-  @MethodSource("forbidden_concepts_for_shared_kernel_examples")
-  void toto(String param1, int param2) {
-    assert(true);
+  @MethodSource("forbidden_concepts_in_shared_kernel_examples")
+  void forbidden_concepts_in_shared_kernel(String conceptName, String ruleViolatedReason)
+      throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.wrong_bounded_context")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            ConceptRuleViolated.builder()
+                .conceptName(conceptName)
+                .reason(ruleViolatedReason)
+                .build());
   }
 
-  public static Stream<Arguments> forbidden_concepts_for_shared_kernel_examples() {
-    return Stream.of(Arguments.of("test", 2), Arguments.of("test2", 3)); //Canonical name of concept
+  public static Stream<Arguments> forbidden_concepts_in_shared_kernel_examples() {
+    return Stream.of(
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.Aggregate1",
+            "Shared kernel can not have aggregate."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.DomainCommand1",
+            "Shared kernel can not have domain command."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.DomainEvent1",
+            "Shared kernel can not have domain event."));
   }
-   */
 
   public class ResultCaptor<T> implements Answer {
     private T result = null;
