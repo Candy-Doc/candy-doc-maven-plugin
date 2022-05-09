@@ -135,6 +135,27 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
   }
 
   @Override
+  public Set<Interaction> findInnerBoundedContextOrSharedKernel(PackageName packageName) {
+    Set<Interaction> innerDDDObjects =
+        findBoundedContexts(packageName.value()).stream()
+            .filter(
+                boundedContext ->
+                    boundedContext.getCanonicalName().value()
+                        != packageName.value() + ".package-info")
+            .map(boundedContext -> Interaction.with(boundedContext.getCanonicalName().value()))
+            .collect(Collectors.toSet());
+    innerDDDObjects.addAll(
+        findSharedKernels(packageName.value()).stream()
+            .filter(
+                sharedKernel ->
+                    sharedKernel.getCanonicalName().value()
+                        != packageName.value() + ".package-info")
+            .map(sharedKernel -> Interaction.with(sharedKernel.getCanonicalName().value()))
+            .collect(Collectors.toUnmodifiableSet()));
+    return innerDDDObjects;
+  }
+
+  @Override
   public DDDConcept findConcept(CanonicalName conceptName) {
     return findDDDConcepts().stream()
         .filter(concept -> concept.getCanonicalName().equals(conceptName))

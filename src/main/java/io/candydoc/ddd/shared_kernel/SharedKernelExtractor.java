@@ -44,7 +44,7 @@ public class SharedKernelExtractor implements Extractor<ExtractDDDConcepts> {
 
   private SharedKernelFound toSharedKernelFound(SharedKernel sharedKernel) {
     return SharedKernelFound.builder()
-        .name(sharedKernel.getSimpleName().value())
+        .simpleName(sharedKernel.getSimpleName().value())
         .packageName(sharedKernel.getPackageName().value())
         .description(sharedKernel.getDescription().value())
         .build();

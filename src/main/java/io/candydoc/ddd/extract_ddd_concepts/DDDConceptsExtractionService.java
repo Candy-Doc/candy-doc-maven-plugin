@@ -86,9 +86,7 @@ public class DDDConceptsExtractionService
     trackAndApply(aggregatesExtractor.extract(command));
   }
 
-  public void handle(ExtractBoundedContexts command) {
-    checkNoInnerBoundedContextNorSharedKernelInside(boundedContextExtractor.extract(command));
-  }
+  public void handle(ExtractBoundedContexts command) {}
 
   public void handle(ExtractCoreConcepts command) {
     log.info("Extract core concepts from {}", command.getPackageToScan());
@@ -105,9 +103,7 @@ public class DDDConceptsExtractionService
     trackAndApply(domainEventExtractor.extract(command));
   }
 
-  public void handle(ExtractSharedKernels command) {
-    checkNoInnerBoundedContextNorSharedKernelInside(sharedKernelExtractor.extract(command));
-  }
+  public void handle(ExtractSharedKernels command) {}
 
   public void handle(ExtractValueObjects command) {
     log.info("Extract value objects from {}", command.getPackageToScan());
@@ -125,11 +121,14 @@ public class DDDConceptsExtractionService
 
   public void apply(BoundedContextFound event) {
     this.handle(ExtractAggregates.builder().packageToScan(event.getPackageName()).build());
-    this.handle(ExtractBoundedContexts.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractCoreConcepts.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractDomainCommands.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractDomainEvents.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractValueObjects.builder().packageToScan(event.getPackageName()).build());
+    this.handle(
+        CheckConceptInteractions.builder()
+            .conceptName(event.getPackageName() + ".package-info")
+            .build());
   }
 
   public void apply(CoreConceptFound event) {
@@ -147,7 +146,10 @@ public class DDDConceptsExtractionService
   public void apply(SharedKernelFound event) {
     this.handle(ExtractCoreConcepts.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractValueObjects.builder().packageToScan(event.getPackageName()).build());
-    this.handle(ExtractSharedKernels.builder().packageToScan(event.getPackageName()).build());
+    this.handle(
+        CheckConceptInteractions.builder()
+            .conceptName(event.getPackageName() + ".package-info")
+            .build());
   }
 
   public void apply(ValueObjectFound event) {
@@ -159,36 +161,4 @@ public class DDDConceptsExtractionService
   public void apply(InteractionBetweenConceptFound event) {}
 
   public void apply(NameConflictBetweenCoreConcepts event) {}
-
-  private void checkNoInnerBoundedContextNorSharedKernelInside(List<Event> events) {
-    events.stream()
-        .filter(event -> event instanceof BoundedContextFound || event instanceof SharedKernelFound)
-        .forEach(
-            forbiddenEvent -> {
-              if (forbiddenEvent instanceof BoundedContextFound) {
-                eventsList.add(
-                    ConceptRuleViolated.builder()
-                        .conceptName(
-                            ((BoundedContextFound) forbiddenEvent).getPackageName()
-                                + "."
-                                + ((BoundedContextFound) forbiddenEvent).getName())
-                        .reason(
-                            ((BoundedContextFound) forbiddenEvent).getName()
-                                + " shouldn't be in another bounded context/shared kernel.")
-                        .build());
-              }
-              if (forbiddenEvent instanceof SharedKernelFound) {
-                eventsList.add(
-                    ConceptRuleViolated.builder()
-                        .conceptName(
-                            ((SharedKernelFound) forbiddenEvent).getPackageName()
-                                + "."
-                                + ((SharedKernelFound) forbiddenEvent).getName())
-                        .reason(
-                            ((SharedKernelFound) forbiddenEvent).getName()
-                                + " shouldn't be in another bounded context/shared kernel.")
-                        .build());
-              }
-            });
-  }
 }

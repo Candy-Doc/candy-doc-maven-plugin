@@ -8,6 +8,7 @@ import io.candydoc.ddd.domain_event.DomainEvent;
 import io.candydoc.ddd.model.CanonicalName;
 import io.candydoc.ddd.model.DDDConcept;
 import io.candydoc.ddd.model.Interaction;
+import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.shared_kernel.SharedKernel;
 import io.candydoc.ddd.value_object.ValueObject;
 import java.util.Set;
@@ -31,6 +32,8 @@ public interface DDDConceptFinder {
   Set<ValueObject> findValueObjects(String packageToScan);
 
   Set<Interaction> findInteractionsWith(CanonicalName conceptName);
+
+  Set<Interaction> findInnerBoundedContextOrSharedKernel(PackageName packageName);
 
   DDDConcept findConcept(CanonicalName conceptName);
 }

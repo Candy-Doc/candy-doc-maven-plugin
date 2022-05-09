@@ -64,7 +64,7 @@ public class BoundedContextDtoMapper {
                   BoundedContextDto.builder()
                       .packageName(event.getPackageName())
                       .concepts(conceptsInBoundedContext(event.getPackageName()))
-                      .name(event.getName())
+                      .name(event.getSimpleName())
                       .description(event.getDescription())
                       .build())
           .collect(Collectors.toUnmodifiableList());

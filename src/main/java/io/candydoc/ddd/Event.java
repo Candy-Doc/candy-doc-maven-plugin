@@ -26,9 +26,9 @@ public interface Event {
 
     void apply(DomainEventFound event);
 
-    void apply(ValueObjectFound event);
-
     void apply(SharedKernelFound event);
+
+    void apply(ValueObjectFound event);
 
     void apply(ConceptRuleViolated event);
 

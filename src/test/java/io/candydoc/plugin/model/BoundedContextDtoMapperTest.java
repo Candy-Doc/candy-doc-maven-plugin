@@ -27,7 +27,7 @@ class BoundedContextDtoMapperTest {
     // given
     eventList.add(
         BoundedContextFound.builder()
-            .name(BOUNDED_CONTEXT_NAME)
+            .simpleName(BOUNDED_CONTEXT_NAME)
             .packageName("bounded.context")
             .description("description")
             .build());
@@ -38,7 +38,7 @@ class BoundedContextDtoMapperTest {
     // given
     eventList.add(
         BoundedContextFound.builder()
-            .name("bounded context 2")
+            .simpleName("bounded context 2")
             .packageName("bounded.context2")
             .description("description 2")
             .build());

@@ -40,7 +40,7 @@ class SaveDocumentationAdapterFactoryImplTest {
     SaveDocumentationPort saveDocumentationPort = adapterFactory.getAdapter("json", "target");
     BoundedContextFound newBoundedContextEvent =
         BoundedContextFound.builder()
-            .name("io.candydoc.sample.bounded_context_one")
+            .simpleName("io.candydoc.sample.bounded_context_one")
             .packageName("io.candydoc.sample.bounded_context_one")
             .description("test package 1")
             .build();
@@ -56,7 +56,7 @@ class SaveDocumentationAdapterFactoryImplTest {
     SaveDocumentationPort saveDocumentationPort = adapterFactory.getAdapter("yml", "target");
     BoundedContextFound newBoundedContextEvent =
         BoundedContextFound.builder()
-            .name("io.candydoc.sample.bounded_context_one")
+            .simpleName("io.candydoc.sample.bounded_context_one")
             .packageName("io.candydoc.sample.bounded_context_one")
             .description("test package 1")
             .build();

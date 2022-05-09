@@ -115,14 +115,14 @@ class ExtractDDDConceptsUseCaseTest {
     Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             BoundedContextFound.builder()
-                .name("bounded_context_one")
+                .simpleName("bounded_context_one")
                 .description("description of bounded context 1")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build(),
             BoundedContextFound.builder()
-                .name("bounded_context_two")
-                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_two")
+                .simpleName("bounded_context_two")
                 .description("description of bounded context 2")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_two")
                 .build());
   }
 
@@ -324,7 +324,7 @@ class ExtractDDDConceptsUseCaseTest {
     Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             SharedKernelFound.builder()
-                .name("shared_kernel_one")
+                .simpleName("shared_kernel_one")
                 .description("description of shared kernel")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
                 .build());
@@ -355,7 +355,7 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void inner_bounded_context_are_forbidden() throws IOException {
+  void bounded_context_are_forbidden_inside_bounded_context() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -370,19 +370,20 @@ class ExtractDDDConceptsUseCaseTest {
         .contains(
             ConceptRuleViolated.builder()
                 .conceptName(
-                    "io.candydoc.sample.wrong_bounded_contexts.bounded_context.sub_package.bounded_context_two")
+                    "io.candydoc.sample.wrong_bounded_contexts.bounded_context.inner_bounded_context")
                 .reason(
-                    "bounded_context_two"
-                        + " shouldn't be in another bounded context/shared kernel.")
+                    "Bounded context "
+                        + "bounded_context_two"
+                        + " shouldn't be in another bounded context.")
                 .build());
   }
 
   @Test
-  void inner_shared_kernel_are_forbidden() throws IOException {
+  void shared_kernel_are_forbidden_inside_bounded_context() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
-            .packageToScan("io.candydoc.sample.wrong_bounded_contexts")
+            .packageToScan("io.candydoc.sample.wrong_bounded_context")
             .build();
 
     // when
@@ -391,12 +392,77 @@ class ExtractDDDConceptsUseCaseTest {
     // then
     Assertions.assertThat(extractionCaptor.getResult())
         .contains(
-            SharedKernelFound.builder()
-                .name("shared_kernel_two")
-                .description("description of shared kernel 2")
-                .packageName("io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package")
+            ConceptRuleViolated.builder()
+                .conceptName(
+                    "io.candydoc.sample.wrong_bounded_contexts.bounded_context.inner_shared_kernel")
+                .reason(
+                    "Shared kernel "
+                        + "shared_kernel_three"
+                        + " shouldn't be in a bounded context.")
                 .build());
   }
+
+  @Test
+  void shared_kernel_are_forbidden_inside_shared_kernel() throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.wrong_bounded_context")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            ConceptRuleViolated.builder()
+                .conceptName(
+                    "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.inner_shared_kernel")
+                .reason(
+                    "Shared kernel "
+                        + "shared_kernel_two"
+                        + " shouldn't be in another shared kernel.")
+                .build());
+  }
+
+  @Test
+  void bounded_context_are_forbidden_inside_shared_kernel() throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.wrong_bounded_context")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            ConceptRuleViolated.builder()
+                .conceptName(
+                    "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.inner_bounded_context")
+                .reason(
+                    "Bounded context "
+                        + "bounded_context_three"
+                        + " shouldn't be in a shared kernel.")
+                .build());
+  }
+
+  /*
+  Todo: ParameterizedTest to check all rules related to BoundedContext
+
+  @ParameterizedTest
+  @MethodSource("forbidden_concepts_for_shared_kernel_examples")
+  void toto(String param1, int param2) {
+    assert(true);
+  }
+
+  public static Stream<Arguments> forbidden_concepts_for_shared_kernel_examples() {
+    return Stream.of(Arguments.of("test", 2), Arguments.of("test2", 3)); //Canonical name of concept
+  }
+   */
 
   public class ResultCaptor<T> implements Answer {
     private T result = null;

@@ -39,7 +39,7 @@ class SaveDocumentationAsFileTest {
     List<Event> occurredExtractionEvents =
         List.of(
             BoundedContextFound.builder()
-                .name("io.candydoc.sample.bounded_context_for_core_concepts_tests")
+                .simpleName("io.candydoc.sample.bounded_context_for_core_concepts_tests")
                 .packageName("io.candydoc.sample.bounded_context_for_core_concepts_tests")
                 .description("test package 1")
                 .build(),

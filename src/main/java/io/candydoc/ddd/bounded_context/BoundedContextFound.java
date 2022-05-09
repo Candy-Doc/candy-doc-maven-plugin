@@ -10,7 +10,7 @@ import lombok.*;
 @RequiredArgsConstructor
 @DomainEvent(description = "Emitted when a bounded context is found in a package")
 public class BoundedContextFound implements Event {
-  @NonNull String name;
+  @NonNull String simpleName;
   @NonNull String description;
   @NonNull String packageName;
 
