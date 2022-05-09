@@ -1,5 +1,4 @@
 # 🍬 Candy Doc
-
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -229,6 +228,17 @@ will create a new tag and a new package in the package registry.
 
 ![feature-branch-rebase-final.png](assets/screenshots/feature-branch-rebase-final.png)
 
+```mermaid
+graph TD;
+    1 --> 2;
+    2 --> 1bis;
+    1bis --> 2bis;
+    2bis --> 3bis;
+    2 --> 3;
+    3 --> 4;
+    4 --> 5;
+```
+
 Explanations:
 
 > Before each new feature, run:
@@ -244,8 +254,7 @@ Explanations:
 > git checkout -b feat/\<branch name\>
 > ```
 >
-> Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your
-> feature will be squash and merge _feat/\<branch name\>_ to _main_.
+> Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your feature will be squash and merge _feat/\<branch name\>_ to _main_.
 >
 >See contributing rules [here](./CONTRIBUTING.md).
 >
