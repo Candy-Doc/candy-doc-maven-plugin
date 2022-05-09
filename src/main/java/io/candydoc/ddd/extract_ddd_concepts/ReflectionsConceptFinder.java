@@ -65,6 +65,22 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
   }
 
   @Override
+  public Set<DDDConcept> findDDDConcepts(PackageName packageName) {
+    Reflections reflections = new Reflections(packageName.value());
+
+    return DDDKeywords.KEYWORDS.stream()
+        .flatMap(
+            annotation -> {
+              Function<Class<?>, DDDConcept> processor = ANNOTATION_PROCESSORS.get(annotation);
+
+              return reflections.getTypesAnnotatedWith(annotation).stream()
+                  .filter(clazz -> !clazz.isAnonymousClass())
+                  .map(processor);
+            })
+        .collect(Collectors.toUnmodifiableSet());
+  }
+
+  @Override
   public Set<Aggregate> findAggregates(String packageToScan) {
     return findDDDConcepts().stream()
         .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan))
@@ -132,27 +148,6 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
     return conceptsInteractingWith(conceptName).stream()
         .map(canonicalName -> Interaction.with(canonicalName.value()))
         .collect(Collectors.toUnmodifiableSet());
-  }
-
-  @Override
-  public Set<Interaction> findInnerBoundedContextOrSharedKernel(PackageName packageName) {
-    Set<Interaction> innerDDDObjects =
-        findBoundedContexts(packageName.value()).stream()
-            .filter(
-                boundedContext ->
-                    boundedContext.getCanonicalName().value()
-                        != packageName.value() + ".package-info")
-            .map(boundedContext -> Interaction.with(boundedContext.getCanonicalName().value()))
-            .collect(Collectors.toSet());
-    innerDDDObjects.addAll(
-        findSharedKernels(packageName.value()).stream()
-            .filter(
-                sharedKernel ->
-                    sharedKernel.getCanonicalName().value()
-                        != packageName.value() + ".package-info")
-            .map(sharedKernel -> Interaction.with(sharedKernel.getCanonicalName().value()))
-            .collect(Collectors.toUnmodifiableSet()));
-    return innerDDDObjects;
   }
 
   @Override

@@ -17,6 +17,8 @@ public interface DDDConceptFinder {
 
   Set<DDDConcept> findDDDConcepts();
 
+  Set<DDDConcept> findDDDConcepts(PackageName packageName);
+
   Set<Aggregate> findAggregates(String packageToScan);
 
   Set<BoundedContext> findBoundedContexts(String packageToScan);
@@ -32,8 +34,6 @@ public interface DDDConceptFinder {
   Set<ValueObject> findValueObjects(String packageToScan);
 
   Set<Interaction> findInteractionsWith(CanonicalName conceptName);
-
-  Set<Interaction> findInnerBoundedContextOrSharedKernel(PackageName packageName);
 
   DDDConcept findConcept(CanonicalName conceptName);
 }

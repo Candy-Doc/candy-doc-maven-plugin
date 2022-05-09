@@ -7,6 +7,7 @@ import io.candydoc.ddd.domain_command.DomainCommand;
 import io.candydoc.ddd.domain_event.DomainEvent;
 import io.candydoc.ddd.extract_ddd_concepts.DDDConceptFinder;
 import io.candydoc.ddd.interaction.ConceptRuleViolated;
+import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
 import io.candydoc.ddd.interaction.InteractionStrategy;
 import io.candydoc.ddd.model.DDDConcept;
 import io.candydoc.ddd.shared_kernel.SharedKernel;
@@ -24,15 +25,19 @@ public class BoundedContextInteractionStrategy implements InteractionStrategy<Bo
   @NonNull private final DDDConceptFinder conceptFinder;
 
   public List<Event> checkInteractions(BoundedContext concept) {
-    return conceptFinder.findInnerBoundedContextOrSharedKernel(concept.getPackageName()).stream()
-        .map(interaction -> conceptFinder.findConcept(interaction.canonicalName()))
+    return conceptFinder.findDDDConcepts(concept.getPackageName()).stream()
+        .filter(
+            anotherConcept -> !anotherConcept.getCanonicalName().equals(concept.getCanonicalName()))
         .map(
             anotherConcept ->
                 anotherConcept.apply(
                     new DDDConcept.Visitor<Event>() {
                       @Override
                       public Event aggregate(Aggregate forbiddenConcept) {
-                        return null;
+                        return InteractionBetweenConceptFound.builder()
+                            .from(concept.getCanonicalName().value())
+                            .with(anotherConcept.getCanonicalName().value())
+                            .build();
                       }
 
                       @Override
@@ -48,17 +53,26 @@ public class BoundedContextInteractionStrategy implements InteractionStrategy<Bo
 
                       @Override
                       public Event coreConcept(CoreConcept coreConcept) {
-                        return null;
+                        return InteractionBetweenConceptFound.builder()
+                            .from(concept.getCanonicalName().value())
+                            .with(anotherConcept.getCanonicalName().value())
+                            .build();
                       }
 
                       @Override
                       public Event domainCommand(DomainCommand domainCommand) {
-                        return null;
+                        return InteractionBetweenConceptFound.builder()
+                            .from(concept.getCanonicalName().value())
+                            .with(anotherConcept.getCanonicalName().value())
+                            .build();
                       }
 
                       @Override
                       public Event domainEvent(DomainEvent domainEvent) {
-                        return null;
+                        return InteractionBetweenConceptFound.builder()
+                            .from(concept.getCanonicalName().value())
+                            .with(anotherConcept.getCanonicalName().value())
+                            .build();
                       }
 
                       @Override
@@ -74,7 +88,10 @@ public class BoundedContextInteractionStrategy implements InteractionStrategy<Bo
 
                       @Override
                       public Event valueObject(ValueObject valueObject) {
-                        return null;
+                        return InteractionBetweenConceptFound.builder()
+                            .from(concept.getCanonicalName().value())
+                            .with(anotherConcept.getCanonicalName().value())
+                            .build();
                       }
                     }))
         .collect(Collectors.toUnmodifiableList());
