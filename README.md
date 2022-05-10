@@ -220,11 +220,8 @@ milestones [here](https://github.com/Candy-Doc/candy-doc-maven-plugin/milestones
 
 The development team works on a branch named _main_.
 
-Whenever a feature needs to be implemented, a new branch must be pulled from
-_main_ and merged to this latter once the feature is ready.
-
-Every time a new version is about to be released, a merge from your new branch to _main_
-will create a new tag and a new package in the package registry.
+Whenever a feature needs to be implemented, a new branch (feat/<new_branch>) must be pulled from
+_main_ and rebased to this latter once the feature is ready.
 
 ```mermaid
 graph TD
@@ -237,7 +234,8 @@ graph TD
     3bis --> 4bis
 ```
 
-Then
+Then, every time a new version is about to be released, a rebase from your new branch (feat/<new_branch>) to _main_
+will create a new tag and a new package in the package registry.
 
 ```mermaid
 graph TD
