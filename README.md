@@ -226,17 +226,29 @@ _main_ and merged to this latter once the feature is ready.
 Every time a new version is about to be released, a merge from your new branch to _main_
 will create a new tag and a new package in the package registry.
 
-![feature-branch-rebase-final.png](assets/screenshots/feature-branch-rebase-final.png)
 
 ```mermaid
-graph TD;
-    1 --> 2;
-    2 --> 1bis;
-    1bis --> 2bis;
-    2bis --> 3bis;
-    2 --> 3;
-    3 --> 4;
-    4 --> 5;
+graph TD
+    .. --main--> 1
+    1 --> 2
+    2 --> 3
+    3 --> 4
+    1 --feat/my-feature--> 2bis
+    2bis --> 3bis
+    3bis --> 4bis
+```
+
+Then
+
+```mermaid
+graph TD
+    .. --feat/my-feature--> 1
+    1 --> 2
+    2 --> 3
+    3 --> 4
+    4 --> 2bis
+    2bis --> 3bis
+    3bis --> 4bis
 ```
 
 Explanations:
