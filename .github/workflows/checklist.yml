@@ -5,6 +5,7 @@ on:
 
 jobs:
   task-check:
+    if: ${{ github.actor != 'dependabot[bot]'  && github.actor != 'allcontributors[bot]' }}
     runs-on: ubuntu-latest
     steps:
     - uses: kentaro-m/task-completed-checker-action@v0.1.0
