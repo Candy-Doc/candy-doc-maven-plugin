@@ -226,7 +226,6 @@ _main_ and merged to this latter once the feature is ready.
 Every time a new version is about to be released, a merge from your new branch to _main_
 will create a new tag and a new package in the package registry.
 
-
 ```mermaid
 graph TD
     .. --main--> 1
@@ -263,7 +262,7 @@ Explanations:
 > Create a new branch feat/\<branch name\> for the feature
 >
 > ```bash
-> git checkout -b feat/\<branch name\>
+> git checkout -b feat/<branch name>
 > ```
 >
 > Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your feature will be squash and merge _feat/\<branch name\>_ to _main_.
