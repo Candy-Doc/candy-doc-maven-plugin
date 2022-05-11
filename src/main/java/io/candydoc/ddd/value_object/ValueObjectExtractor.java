@@ -2,6 +2,7 @@ package io.candydoc.ddd.value_object;
 
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.model.Extractor;
+import io.candydoc.ddd.model.PackageName;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,7 +16,7 @@ public class ValueObjectExtractor implements Extractor<ExtractValueObjects> {
 
   public List<Event> extract(ExtractValueObjects command) {
     Set<ValueObject> valueObjectClasses =
-        DDDConceptFinder.findValueObjects(command.getPackageToScan());
+        DDDConceptFinder.findValueObjects(PackageName.of(command.getPackageToScan()));
     log.info("Value objects found in {}: {}", command.getPackageToScan(), valueObjectClasses);
     return valueObjectClasses.stream()
         .map(

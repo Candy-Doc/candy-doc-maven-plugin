@@ -17,21 +17,21 @@ public interface DDDConceptFinder {
 
   Set<DDDConcept> findDDDConcepts();
 
-  Set<DDDConcept> findDDDConcepts(PackageName packageName);
+  Set<DDDConcept> findDDDConcepts(PackageName packageToScan);
 
-  Set<Aggregate> findAggregates(String packageToScan);
+  Set<Aggregate> findAggregates(PackageName packageToScan);
 
-  Set<BoundedContext> findBoundedContexts(String packageToScan);
+  Set<BoundedContext> findBoundedContexts(PackageName packageToScan);
 
-  Set<CoreConcept> findCoreConcepts(String packageToScan);
+  Set<CoreConcept> findCoreConcepts(PackageName packageToScan);
 
-  Set<DomainCommand> findDomainCommands(String packageToScan);
+  Set<DomainCommand> findDomainCommands(PackageName packageToScan);
 
-  Set<DomainEvent> findDomainEvents(String packageToScan);
+  Set<DomainEvent> findDomainEvents(PackageName packageToScan);
 
-  Set<SharedKernel> findSharedKernels(String packageToScan);
+  Set<SharedKernel> findSharedKernels(PackageName packageToScan);
 
-  Set<ValueObject> findValueObjects(String packageToScan);
+  Set<ValueObject> findValueObjects(PackageName packageToScan);
 
   Set<Interaction> findInteractionsWith(CanonicalName conceptName);
 

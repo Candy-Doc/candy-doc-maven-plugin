@@ -33,7 +33,7 @@ public class BoundedContextInteractionStrategy implements InteractionStrategy<Bo
                 anotherConcept.apply(
                     new DDDConcept.Visitor<Event>() {
                       @Override
-                      public Event aggregate(Aggregate forbiddenConcept) {
+                      public Event aggregate(Aggregate aggregate) {
                         return InteractionBetweenConceptFound.builder()
                             .from(concept.getCanonicalName().value())
                             .with(anotherConcept.getCanonicalName().value())
@@ -41,13 +41,13 @@ public class BoundedContextInteractionStrategy implements InteractionStrategy<Bo
                       }
 
                       @Override
-                      public Event boundedContext(BoundedContext boundedContext) {
+                      public Event boundedContext(BoundedContext forbiddenBoundedContext) {
                         return ConceptRuleViolated.builder()
-                            .conceptName(boundedContext.getPackageName().value())
+                            .conceptName(forbiddenBoundedContext.getPackageName().value())
                             .reason(
                                 "Bounded context "
-                                    + boundedContext.getSimpleName().value()
-                                    + " shouldn't be in another bounded context.")
+                                    + forbiddenBoundedContext.getSimpleName().value()
+                                    + " is not allowed in another bounded context.")
                             .build();
                       }
 
@@ -76,13 +76,13 @@ public class BoundedContextInteractionStrategy implements InteractionStrategy<Bo
                       }
 
                       @Override
-                      public Event sharedKernel(SharedKernel sharedKernel) {
+                      public Event sharedKernel(SharedKernel forbiddenSharedKernel) {
                         return ConceptRuleViolated.builder()
-                            .conceptName(sharedKernel.getPackageName().value())
+                            .conceptName(forbiddenSharedKernel.getPackageName().value())
                             .reason(
                                 "Shared kernel "
-                                    + sharedKernel.getSimpleName().value()
-                                    + " shouldn't be in a bounded context.")
+                                    + forbiddenSharedKernel.getSimpleName().value()
+                                    + " is not allowed in a bounded context.")
                             .build();
                       }
 

@@ -3,6 +3,7 @@ package io.candydoc.ddd.core_concept;
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.model.CanonicalName;
 import io.candydoc.ddd.model.Extractor;
+import io.candydoc.ddd.model.PackageName;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +21,8 @@ public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
   @Override
   public List<Event> extract(ExtractCoreConcepts command) {
     String packageToScan = command.getPackageToScan();
-    Set<CoreConcept> coreConcepts = DDDConceptFinder.findCoreConcepts(packageToScan);
+    Set<CoreConcept> coreConcepts =
+        DDDConceptFinder.findCoreConcepts(PackageName.of(packageToScan));
     log.info("Core concepts found in {}: {}", packageToScan, coreConcepts);
     List<CoreConceptFound> coreConceptsFound = findCoreConcepts(packageToScan, coreConcepts);
     List<Event> conflicts = checkConflictBetweenCoreConcepts(coreConcepts);

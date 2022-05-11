@@ -20,7 +20,7 @@
                 <div class="interactions-box">
                     <h2 class="interaction__title">${i18n.getString("INTERACTION")}</h2>
                     <#list concept.interactsWith as interaction>
-                        <a href="${boundedContext.name}/${interaction.canonicalName}.html"
+                        <a href="${boundedContext.simpleName}/${interaction.canonicalName}.html"
                            class="interaction">${interaction.simpleName}</a>
                     </#list>
                 </div>

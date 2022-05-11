@@ -11,6 +11,7 @@ import lombok.*;
 @DomainEvent(description = "Emitted when a bounded context is found in a package")
 public class BoundedContextFound implements Event {
   @NonNull String simpleName;
+  @NonNull String canonicalName;
   @NonNull String description;
   @NonNull String packageName;
 

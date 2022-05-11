@@ -4,6 +4,7 @@ import io.candydoc.ddd.Event;
 import io.candydoc.ddd.extract_ddd_concepts.ExtractDDDConcepts;
 import io.candydoc.ddd.extract_ddd_concepts.PackageToScanMissing;
 import io.candydoc.ddd.model.Extractor;
+import io.candydoc.ddd.model.PackageName;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -34,7 +35,8 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
       throw new PackageToScanMissing(
           "Empty parameters for 'packagesToScan'. Check your pom configuration");
     }
-    Set<BoundedContext> boundedContextClasses = DDDConceptFinder.findBoundedContexts(packageToScan);
+    Set<BoundedContext> boundedContextClasses =
+        DDDConceptFinder.findBoundedContexts(PackageName.of(packageToScan));
     log.info("Bounded contexts found in {}: {}", packageToScan, boundedContextClasses);
     return boundedContextClasses.stream()
         .map(this::toBoundedContextFound)
@@ -44,6 +46,7 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
   private BoundedContextFound toBoundedContextFound(BoundedContext boundedContext) {
     return BoundedContextFound.builder()
         .simpleName(boundedContext.getSimpleName().value())
+        .canonicalName(boundedContext.getCanonicalName().value())
         .packageName(boundedContext.getPackageName().value())
         .description(boundedContext.getDescription().value())
         .build();

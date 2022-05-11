@@ -120,11 +120,15 @@ class ExtractDDDConceptsUseCaseTest {
         .contains(
             BoundedContextFound.builder()
                 .simpleName("bounded_context_one")
+                .canonicalName(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
                 .description("description of bounded context 1")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build(),
             BoundedContextFound.builder()
                 .simpleName("bounded_context_two")
+                .canonicalName(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_two.package-info")
                 .description("description of bounded context 2")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_two")
                 .build());
@@ -329,6 +333,8 @@ class ExtractDDDConceptsUseCaseTest {
         .contains(
             SharedKernelFound.builder()
                 .simpleName("shared_kernel_one")
+                .canonicalName(
+                    "io.candydoc.sample.valid_bounded_contexts.shared_kernel.package-info")
                 .description("description of shared kernel")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
                 .build());
@@ -378,7 +384,7 @@ class ExtractDDDConceptsUseCaseTest {
                 .reason(
                     "Bounded context "
                         + "bounded_context_two"
-                        + " shouldn't be in another bounded context.")
+                        + " is not allowed in another bounded context.")
                 .build());
   }
 
@@ -402,7 +408,7 @@ class ExtractDDDConceptsUseCaseTest {
                 .reason(
                     "Shared kernel "
                         + "shared_kernel_three"
-                        + " shouldn't be in a bounded context.")
+                        + " is not allowed in a bounded context.")
                 .build());
   }
 
@@ -426,7 +432,7 @@ class ExtractDDDConceptsUseCaseTest {
                 .reason(
                     "Shared kernel "
                         + "shared_kernel_two"
-                        + " shouldn't be in another shared kernel.")
+                        + " is not allowed in another shared kernel.")
                 .build());
   }
 
@@ -450,7 +456,7 @@ class ExtractDDDConceptsUseCaseTest {
                 .reason(
                     "Bounded context "
                         + "bounded_context_three"
-                        + " shouldn't be in a shared kernel.")
+                        + " is not allowed in a shared kernel.")
                 .build());
   }
 

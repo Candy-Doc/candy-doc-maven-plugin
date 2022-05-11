@@ -2,7 +2,7 @@ package io.candydoc.plugin.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 import lombok.*;
 
@@ -12,7 +12,8 @@ import lombok.*;
 @EqualsAndHashCode
 public class BoundedContextDto {
 
-  @NonNull String name;
+  @NonNull String simpleName;
+  @NonNull String canonicalName;
   @NonNull String description;
   @NonNull String packageName;
   @JsonIgnore @Builder.Default List<ConceptDto> concepts = List.of();

@@ -25,12 +25,16 @@ class SaveDocumentationAsHTMLTest {
   private final List<Event> boundedContextsForHTMLGenerationTests =
       List.of(
           BoundedContextFound.builder()
-              .simpleName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+              .simpleName("bounded_context_one")
+              .canonicalName(
+                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .description("description of bounded context 1")
               .build(),
           BoundedContextFound.builder()
               .simpleName("io.candydoc.sample.valid_bounded_contexts.bounded_context_two")
+              .canonicalName(
+                  "io.candydoc.sample.valid_bounded_contexts.bounded_context_two.package-info")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_two")
               .description("description of bounded context 2")
               .build(),
@@ -82,7 +86,8 @@ class SaveDocumentationAsHTMLTest {
   private final List<Event> emptyBoundedContext =
       List.of(
           BoundedContextFound.builder()
-              .simpleName("io.emptyBoundedContext")
+              .simpleName("emptyBoundedContext")
+              .canonicalName("io.emptyBoundedContext.package-info")
               .description("description of empty bounded context")
               .packageName("io.emptyBoundedContext")
               .build());

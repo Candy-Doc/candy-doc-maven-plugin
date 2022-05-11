@@ -20,14 +20,14 @@ import org.junit.jupiter.api.Test;
 class BoundedContextDtoMapperTest {
 
   private final List<Event> eventList = new LinkedList<>();
-  private final String BOUNDED_CONTEXT_NAME = "bounded context";
 
   @BeforeEach
   public void setUp() {
     // given
     eventList.add(
         BoundedContextFound.builder()
-            .simpleName(BOUNDED_CONTEXT_NAME)
+            .simpleName("bounded context")
+            .canonicalName("bounded.context.package-info")
             .packageName("bounded.context")
             .description("description")
             .build());
@@ -39,6 +39,7 @@ class BoundedContextDtoMapperTest {
     eventList.add(
         BoundedContextFound.builder()
             .simpleName("bounded context 2")
+            .canonicalName("bounded.context2.package-info")
             .packageName("bounded.context2")
             .description("description 2")
             .build());
@@ -50,12 +51,14 @@ class BoundedContextDtoMapperTest {
     Assertions.assertThat(boundedContextDtos)
         .containsExactlyInAnyOrder(
             BoundedContextDto.builder()
-                .name(BOUNDED_CONTEXT_NAME)
+                .simpleName("bounded context")
+                .canonicalName("bounded.context.package-info")
                 .packageName("bounded.context")
                 .description("description")
                 .build(),
             BoundedContextDto.builder()
-                .name("bounded context 2")
+                .simpleName("bounded context 2")
+                .canonicalName("bounded.context2.package-info")
                 .packageName("bounded.context2")
                 .description("description 2")
                 .build());
@@ -90,7 +93,8 @@ class BoundedContextDtoMapperTest {
     List<BoundedContextDto> boundedContextDtos = BoundedContextDtoMapper.map(eventList);
     // then
     Assertions.assertThat(boundedContextDtos)
-        .filteredOn(boundedContextDto -> boundedContextDto.getName().equals(BOUNDED_CONTEXT_NAME))
+        .filteredOn(
+            boundedContextDto -> boundedContextDto.getSimpleName().equals("bounded context"))
         .flatMap(boundedContextDto -> boundedContextDto.getConcepts(ConceptType.CORE_CONCEPT))
         .containsExactlyInAnyOrder(
             ConceptDto.builder()
@@ -139,7 +143,8 @@ class BoundedContextDtoMapperTest {
     List<BoundedContextDto> boundedContextDtos = BoundedContextDtoMapper.map(eventList);
     // then
     Assertions.assertThat(boundedContextDtos)
-        .filteredOn(boundedContextDto -> boundedContextDto.getName().equals(BOUNDED_CONTEXT_NAME))
+        .filteredOn(
+            boundedContextDto -> boundedContextDto.getSimpleName().equals("bounded context"))
         .flatMap(boundedContextDto -> boundedContextDto.getConcepts(ConceptType.DOMAIN_COMMAND))
         .contains(
             ConceptDto.builder()
@@ -167,7 +172,8 @@ class BoundedContextDtoMapperTest {
     List<BoundedContextDto> boundedContextDtos = BoundedContextDtoMapper.map(eventList);
     // then
     Assertions.assertThat(boundedContextDtos)
-        .filteredOn(boundedContextDto -> boundedContextDto.getName().equals(BOUNDED_CONTEXT_NAME))
+        .filteredOn(
+            boundedContextDto -> boundedContextDto.getSimpleName().equals("bounded context"))
         .flatMap(boundedContextDto -> boundedContextDto.getConcepts(ConceptType.DOMAIN_EVENT))
         .contains(
             ConceptDto.builder()
@@ -195,7 +201,8 @@ class BoundedContextDtoMapperTest {
     List<BoundedContextDto> boundedContextDtos = BoundedContextDtoMapper.map(eventList);
     // then
     Assertions.assertThat(boundedContextDtos)
-        .filteredOn(boundedContextDto -> boundedContextDto.getName().equals(BOUNDED_CONTEXT_NAME))
+        .filteredOn(
+            boundedContextDto -> boundedContextDto.getSimpleName().equals("bounded context"))
         .flatMap(boundedContextDto -> boundedContextDto.getConcepts(ConceptType.VALUE_OBJECT))
         .contains(
             ConceptDto.builder()
@@ -224,7 +231,8 @@ class BoundedContextDtoMapperTest {
     List<BoundedContextDto> boundedContextDtos = BoundedContextDtoMapper.map(eventList);
     // then
     Assertions.assertThat(boundedContextDtos)
-        .filteredOn(boundedContextDto -> boundedContextDto.getName().equals(BOUNDED_CONTEXT_NAME))
+        .filteredOn(
+            boundedContextDto -> boundedContextDto.getSimpleName().equals("bounded context"))
         .flatMap(boundedContextDto -> boundedContextDto.getConcepts(ConceptType.AGGREGATE))
         .contains(
             ConceptDto.builder()
@@ -269,7 +277,8 @@ class BoundedContextDtoMapperTest {
     List<BoundedContextDto> boundedContextDtos = BoundedContextDtoMapper.map(eventList);
     // then
     Assertions.assertThat(boundedContextDtos)
-        .filteredOn(boundedContextDto -> boundedContextDto.getName().equals(BOUNDED_CONTEXT_NAME))
+        .filteredOn(
+            boundedContextDto -> boundedContextDto.getSimpleName().equals("bounded context"))
         .flatMap(boundedContextDto -> boundedContextDto.getConcepts(ConceptType.CORE_CONCEPT))
         .flatMap(ConceptDto::getErrors)
         .contains("Share same name with another core concept");
@@ -297,7 +306,8 @@ class BoundedContextDtoMapperTest {
     List<BoundedContextDto> boundedContextDtos = BoundedContextDtoMapper.map(eventList);
     // then
     Assertions.assertThat(boundedContextDtos)
-        .filteredOn(boundedContextDto -> boundedContextDto.getName().equals(BOUNDED_CONTEXT_NAME))
+        .filteredOn(
+            boundedContextDto -> boundedContextDto.getSimpleName().equals("bounded context"))
         .flatMap(boundedContextDto -> boundedContextDto.getConcepts(ConceptType.VALUE_OBJECT))
         .flatMap(ConceptDto::getErrors)
         .contains("Warning: Value Object should only contain primitive type");
@@ -328,7 +338,8 @@ class BoundedContextDtoMapperTest {
     List<BoundedContextDto> boundedContextDtos = BoundedContextDtoMapper.map(eventList);
     // then
     Assertions.assertThat(boundedContextDtos)
-        .filteredOn(boundedContextDto -> boundedContextDto.getName().equals(BOUNDED_CONTEXT_NAME))
+        .filteredOn(
+            boundedContextDto -> boundedContextDto.getSimpleName().equals("bounded context"))
         .flatMap(boundedContextDto -> boundedContextDto.getConcepts(ConceptType.CORE_CONCEPT))
         .flatMap(ConceptDto::getErrors)
         .contains(

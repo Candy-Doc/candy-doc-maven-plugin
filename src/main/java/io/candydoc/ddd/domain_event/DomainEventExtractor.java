@@ -2,6 +2,7 @@ package io.candydoc.ddd.domain_event;
 
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.model.Extractor;
+import io.candydoc.ddd.model.PackageName;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,7 +18,8 @@ public class DomainEventExtractor implements Extractor<ExtractDomainEvents> {
   @Override
   public List<Event> extract(ExtractDomainEvents command) {
     String packageToScan = command.getPackageToScan();
-    Set<DomainEvent> domainEventClasses = DDDConceptFinder.findDomainEvents(packageToScan);
+    Set<DomainEvent> domainEventClasses =
+        DDDConceptFinder.findDomainEvents(PackageName.of(packageToScan));
     log.info("Domain events found in {}: {}", packageToScan, domainEventClasses);
     return domainEventClasses.stream()
         .map(

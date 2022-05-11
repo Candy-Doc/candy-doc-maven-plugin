@@ -8,7 +8,9 @@ import io.candydoc.plugin.save_documentation.html.SaveDocumentationAsHTML;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class SaveDocumentationAdapterFactoryImpl implements SaveDocumentationAdapterFactory {
 
   @Override

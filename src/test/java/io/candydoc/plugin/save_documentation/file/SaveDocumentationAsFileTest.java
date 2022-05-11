@@ -40,6 +40,8 @@ class SaveDocumentationAsFileTest {
         List.of(
             BoundedContextFound.builder()
                 .simpleName("io.candydoc.sample.bounded_context_for_core_concepts_tests")
+                .canonicalName(
+                    "io.candydoc.sample.bounded_context_for_core_concepts_tests.package-info")
                 .packageName("io.candydoc.sample.bounded_context_for_core_concepts_tests")
                 .description("test package 1")
                 .build(),
@@ -60,7 +62,7 @@ class SaveDocumentationAsFileTest {
   @Test
   void serialization_get_correct_bounded_context_name() {
     Assertions.assertThat(boundedContextsCaptor.getValue())
-        .extracting("name")
+        .extracting("simpleName")
         .containsExactlyInAnyOrder("io.candydoc.sample.bounded_context_for_core_concepts_tests");
   }
 

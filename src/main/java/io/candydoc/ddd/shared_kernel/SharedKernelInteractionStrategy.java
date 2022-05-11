@@ -45,7 +45,7 @@ public class SharedKernelInteractionStrategy implements InteractionStrategy<Shar
                             .reason(
                                 "Bounded context "
                                     + boundedContext.getSimpleName().value()
-                                    + " shouldn't be in a shared kernel.")
+                                    + " is not allowed in a shared kernel.")
                             .build();
                       }
 
@@ -80,7 +80,7 @@ public class SharedKernelInteractionStrategy implements InteractionStrategy<Shar
                             .reason(
                                 "Shared kernel "
                                     + sharedKernel.getSimpleName().value()
-                                    + " shouldn't be in another shared kernel.")
+                                    + " is not allowed in another shared kernel.")
                             .build();
                       }
 

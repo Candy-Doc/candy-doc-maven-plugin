@@ -5,6 +5,7 @@ import io.candydoc.ddd.extract_ddd_concepts.DDDConceptFinder;
 import io.candydoc.ddd.extract_ddd_concepts.ExtractDDDConcepts;
 import io.candydoc.ddd.extract_ddd_concepts.PackageToScanMissing;
 import io.candydoc.ddd.model.Extractor;
+import io.candydoc.ddd.model.PackageName;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -35,7 +36,8 @@ public class SharedKernelExtractor implements Extractor<ExtractDDDConcepts> {
       throw new PackageToScanMissing(
           "Empty parameters for 'packagesToScan'. Check your pom configuration");
     }
-    Set<SharedKernel> sharedKernels = DDDConceptFinder.findSharedKernels(packageToScan);
+    Set<SharedKernel> sharedKernels =
+        DDDConceptFinder.findSharedKernels(PackageName.of(packageToScan));
     log.info("Shared kernels found in {}: {}", packageToScan, sharedKernels);
     return sharedKernels.stream()
         .map(this::toSharedKernelFound)
@@ -45,6 +47,7 @@ public class SharedKernelExtractor implements Extractor<ExtractDDDConcepts> {
   private SharedKernelFound toSharedKernelFound(SharedKernel sharedKernel) {
     return SharedKernelFound.builder()
         .simpleName(sharedKernel.getSimpleName().value())
+        .canonicalName(sharedKernel.getCanonicalName().value())
         .packageName(sharedKernel.getPackageName().value())
         .description(sharedKernel.getDescription().value())
         .build();

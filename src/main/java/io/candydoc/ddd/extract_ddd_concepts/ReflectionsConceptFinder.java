@@ -81,63 +81,63 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
   }
 
   @Override
-  public Set<Aggregate> findAggregates(String packageToScan) {
+  public Set<Aggregate> findAggregates(PackageName packageToScan) {
     return findDDDConcepts().stream()
-        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan))
+        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(Aggregate.class))
         .map(Aggregate.class::cast)
         .collect(Collectors.toUnmodifiableSet());
   }
 
   @Override
-  public Set<BoundedContext> findBoundedContexts(String packageToScan) {
+  public Set<BoundedContext> findBoundedContexts(PackageName packageToScan) {
     return findDDDConcepts().stream()
-        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan))
+        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(BoundedContext.class))
         .map(BoundedContext.class::cast)
         .collect(Collectors.toUnmodifiableSet());
   }
 
   @Override
-  public Set<CoreConcept> findCoreConcepts(String packageToScan) {
+  public Set<CoreConcept> findCoreConcepts(PackageName packageToScan) {
     return findDDDConcepts().stream()
-        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan))
+        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(CoreConcept.class))
         .map(CoreConcept.class::cast)
         .collect(Collectors.toUnmodifiableSet());
   }
 
   @Override
-  public Set<DomainCommand> findDomainCommands(String packageToScan) {
+  public Set<DomainCommand> findDomainCommands(PackageName packageToScan) {
     return findDDDConcepts().stream()
-        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan))
+        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(DomainCommand.class))
         .map(DomainCommand.class::cast)
         .collect(Collectors.toUnmodifiableSet());
   }
 
   @Override
-  public Set<DomainEvent> findDomainEvents(String packageToScan) {
+  public Set<DomainEvent> findDomainEvents(PackageName packageToScan) {
     return findDDDConcepts().stream()
-        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan))
+        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(DomainEvent.class))
         .map(DomainEvent.class::cast)
         .collect(Collectors.toUnmodifiableSet());
   }
 
   @Override
-  public Set<SharedKernel> findSharedKernels(String packageToScan) {
+  public Set<SharedKernel> findSharedKernels(PackageName packageToScan) {
     return findDDDConcepts().stream()
-        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan))
+        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(SharedKernel.class))
         .map(SharedKernel.class::cast)
         .collect(Collectors.toUnmodifiableSet());
   }
 
   @Override
-  public Set<ValueObject> findValueObjects(String packageToScan) {
+  public Set<ValueObject> findValueObjects(PackageName packageToScan) {
     return findDDDConcepts().stream()
-        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan))
+        .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(ValueObject.class))
         .map(ValueObject.class::cast)
         .collect(Collectors.toUnmodifiableSet());

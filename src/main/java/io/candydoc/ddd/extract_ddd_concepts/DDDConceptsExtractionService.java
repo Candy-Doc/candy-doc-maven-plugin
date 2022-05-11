@@ -125,10 +125,7 @@ public class DDDConceptsExtractionService
     this.handle(ExtractDomainCommands.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractDomainEvents.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractValueObjects.builder().packageToScan(event.getPackageName()).build());
-    this.handle(
-        CheckConceptInteractions.builder()
-            .conceptName(event.getPackageName() + ".package-info")
-            .build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
   }
 
   public void apply(CoreConceptFound event) {
@@ -146,10 +143,7 @@ public class DDDConceptsExtractionService
   public void apply(SharedKernelFound event) {
     this.handle(ExtractCoreConcepts.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractValueObjects.builder().packageToScan(event.getPackageName()).build());
-    this.handle(
-        CheckConceptInteractions.builder()
-            .conceptName(event.getPackageName() + ".package-info")
-            .build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
   }
 
   public void apply(ValueObjectFound event) {
