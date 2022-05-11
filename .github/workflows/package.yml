@@ -23,6 +23,7 @@ jobs:
       with:
         java-version: 11
         cache: maven
+        distribution: adopt
     - name: Run tests with Maven
       run: mvn -B test --file pom.xml
   build:
