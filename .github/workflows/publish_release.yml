@@ -24,12 +24,13 @@ jobs:
       uses: cycjimmy/semantic-release-action@v3
       with:
         extra_plugins: |
+          "date-format"
           "semantic-release-gitmoji"
           "semantic-release-maven --legacy-peer-deps"
           "@conveyal/maven-semantic-release"
         extends: semantic-release-config-gitmoji
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         MVN_CENTRAL_LOGIN: ${{ secrets.MVN_CENTRAL_LOGIN }}
         MVN_CENTRAL_PASS: ${{ secrets.MVN_CENTRAL_PWD }}
         GPG_KEY_NAME: ${{ secrets.GPG_KEY_NAME }}
