@@ -23,15 +23,16 @@ Example : ✨(infra): create a new orm interface
   More examples [here](https://github.com/arvinxx/gitmoji-commit-workflow/tree/master/packages/commitlint-config)
 - Limit the first line to 72 characters or less
 - Consider starting the commit message with an applicable emoji:
-  - ✨ - `:sparkles:` - Introduce new features.  
-  - ⚡️ - `:zap:` - Improve performance.  
+  - ✨ - `:sparkles:` - Introduce new features.
+  - 💥 - `:boom:` - Introduce breaking changes.
+  - ⚡  - `:zap:` - Improve performance.  
   - 🔥 - `:fire:` - Remove code or files.  
   - 🐛 - `:bug:` - Fix a bug.  
   - 📝 - `:memo:` - Add or update documentation.  
   - 💄 - `:lipstick:` - Add or update the UI and style files.  
   - 🚨 - `:rotating_light:` - Fix compiler / linter warnings.  
   - 💚 - `:green_heart:` - Fix CI Build.  
-  - ⬇️ - `:arrow_down:` - Downgrade dependencies.  
+  - ⬇️- `:arrow_down:` - Downgrade dependencies.  
   - ⬆️ - `:arrow_up:` - Upgrade dependencies.  
   - 👷 - `:construction_worker:` - Add or update CI build system.  
   - ♻️ - `:recycle:` - Refactor code.  

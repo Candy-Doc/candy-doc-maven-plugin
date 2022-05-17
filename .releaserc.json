@@ -1,46 +1,57 @@
 {
-    "branches": [
-      "main"
-    ],
-    "plugins": [
-      [
-        "@semantic-release/commit-analyzer",
-        {
-          "config": "conventional-changelog-gitmoji-config",
-          "releaseRules": [
-            {
-              "type": "build",
-              "release": "patch"
-            }
+  "branches": [
+    "main"
+  ],
+  "plugins": [
+    [
+      "semantic-release-gitmoji",
+      {
+        "releaseRules": {
+          "major": [
+            ":boom:"
+          ],
+          "minor": [
+            ":sparkles:",
+            ":zap:",
+            ":lipstick:",
+            ":recycle:"
+          ],
+          "patch": [
+            ":bug:",
+            ":arrow_down:",
+            ":arrow_up:",
+            ":rotating_light:"
           ]
         }
-      ],
-      "@semantic-release/github",
-      [
-        "@semantic-release/changelog",
-        {
-          "changelogFile": "CHANGELOG.md",
-          "changelogTitle": "# Changelog"
-        }
-      ],
-      [
-        "@semantic-release/release-notes-generator",
-        {
-          "config": "conventional-changelog-gitmoji-config"
-        }
-      ],
-      "@conveyal/maven-semantic-release",
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "CHANGELOG.md","pom.xml"
-          ],
-          "message": ":bookmark: chore(release): ${nextRelease.gitTag} \n\n${nextRelease.notes}"
-        }
-      ]
+      }
     ],
-    "extends": [
-      "semantic-release-config-gitmoji"
+    "@semantic-release/github",
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md",
+        "changelogTitle": "# Changelog"
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "config": "conventional-changelog-gitmoji-config"
+      }
+    ],
+    "@conveyal/maven-semantic-release",
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "CHANGELOG.md",
+          "pom.xml"
+        ],
+        "message": ":bookmark: chore(release): ${nextRelease.gitTag} \n\n${nextRelease.notes}"
+      }
     ]
-  }
+  ],
+  "extends": [
+    "semantic-release-config-gitmoji"
+  ]
+}

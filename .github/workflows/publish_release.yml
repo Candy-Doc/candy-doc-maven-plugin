@@ -24,7 +24,7 @@ jobs:
       uses: cycjimmy/semantic-release-action@v3
       with:
         extra_plugins: |
-          "semantic-release-config-gitmoji"
+          "semantic-release-gitmoji"
           "semantic-release-maven --legacy-peer-deps"
           "@conveyal/maven-semantic-release"
         extends: semantic-release-config-gitmoji
