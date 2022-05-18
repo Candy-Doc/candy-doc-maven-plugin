@@ -17,14 +17,15 @@ Go through the following points, before creating a new PR.
 
 ## Git Commit Messages
 
-Example : ✨(infra): create a new orm interface
+Example : ✨ feat(infra): create a new orm interface
 
 - Use this format `<gitmoji><type>(optional scope): <description>`\
   More examples [here](https://github.com/arvinxx/gitmoji-commit-workflow/tree/master/packages/commitlint-config)
 - Limit the first line to 72 characters or less
 - Consider starting the commit message with an applicable emoji:
-  - ✨ - `:sparkles:` - Introduce new features.
+  - ✨ - `:sparkles:` - Introduce new minor features.
   - 💥 - `:boom:` - Introduce breaking changes.
+  - 🍬 - `:candy:` - Major feature.
   - ⚡  - `:zap:` - Improve performance.  
   - 🔥 - `:fire:` - Remove code or files.  
   - 🐛 - `:bug:` - Fix a bug.  
