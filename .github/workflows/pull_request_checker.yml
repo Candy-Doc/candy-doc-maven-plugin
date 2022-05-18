@@ -18,7 +18,7 @@ jobs:
           ${{ runner.os }}-node-
     - name: Install Dependencies
       run: |
-        npm install commitlint-config-gitmoji commitlint 
+        npm install commitlint-config-gitmoji commitlint node-emoji
         echo "module.exports = {extends: ['gitmoji']};" > ./commitlint.config.js
     - name: Run PR name linter
       uses: JulienKode/pull-request-name-linter-action@v0.5.0
