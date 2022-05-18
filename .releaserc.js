@@ -1,5 +1,5 @@
 const {promisify} = require('util')
-const dateFormat = require('dateformat')
+const dateFormat = import('dateformat')
 const path = require("path");
 const readFileAsync = promisify(require('fs').readFile)
 const TEMPLATE_DIR = path.join('.github/', 'templates/')
