@@ -29,6 +29,9 @@ public class ExtractDDDConceptsUseCase {
   public void execute(ExtractDDDConcepts command) throws IOException, ExtractionException {
     checkParameters(command);
     List<Event> domainEvents = DDDConceptsExtractionService.extract(command);
+    if (domainEvents.isEmpty()) {
+      throw new NoBoundedContextNorSharedKernelFound(command.getPackagesToScan());
+    }
     saveDocumentationPort.save(domainEvents);
     log.info("Documentation generation has succeeded.");
   }

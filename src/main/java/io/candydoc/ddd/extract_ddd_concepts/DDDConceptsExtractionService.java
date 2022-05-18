@@ -72,13 +72,10 @@ public class DDDConceptsExtractionService
 
   public void handle(ExtractDDDConcepts command) {
     log.info("Extract ddd concepts from {}", command.getPackagesToScan());
-    List<Event> boundedContextEvents = boundedContextExtractor.extract(command);
-    List<Event> sharedKernelEvents = sharedKernelExtractor.extract(command);
-    if (boundedContextEvents.isEmpty() && sharedKernelEvents.isEmpty()) {
-      throw new NoBoundedContextNorSharedKernelFound(command.getPackagesToScan());
+    for (String packageToScan : command.getPackagesToScan()) {
+      this.handle(ExtractBoundedContexts.builder().packageToScan(packageToScan).build());
+      this.handle(ExtractSharedKernels.builder().packageToScan(packageToScan).build());
     }
-    trackAndApply(boundedContextEvents);
-    trackAndApply(sharedKernelEvents);
   }
 
   public void handle(ExtractAggregates command) {
@@ -86,7 +83,10 @@ public class DDDConceptsExtractionService
     trackAndApply(aggregatesExtractor.extract(command));
   }
 
-  public void handle(ExtractBoundedContexts command) {}
+  public void handle(ExtractBoundedContexts command) {
+    log.info("Extract bounded concepts from {}", command.getPackageToScan());
+    trackAndApply(boundedContextExtractor.extract(command));
+  }
 
   public void handle(ExtractCoreConcepts command) {
     log.info("Extract core concepts from {}", command.getPackageToScan());
@@ -103,7 +103,10 @@ public class DDDConceptsExtractionService
     trackAndApply(domainEventExtractor.extract(command));
   }
 
-  public void handle(ExtractSharedKernels command) {}
+  public void handle(ExtractSharedKernels command) {
+    log.info("Extract shared kernels from {}", command.getPackageToScan());
+    trackAndApply(sharedKernelExtractor.extract(command));
+  }
 
   public void handle(ExtractValueObjects command) {
     log.info("Extract value objects from {}", command.getPackageToScan());
