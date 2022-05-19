@@ -16,7 +16,6 @@ Domain-Driven-Design approach.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 ## Table of Contents
 
 - [Installation](#installation)
@@ -27,6 +26,7 @@ Domain-Driven-Design approach.
   - [Core Concept](#core-concept)
   - [Domain Command](#domain-command)
   - [Domain Event](#domain-event)
+  - [Shared Kernel](#shared-kernel)
   - [Value Object](#value-object)
 - [🌐 HTML Documentation](#-html-documentation)
 - [🗺️ ROADMAP](#-roadmap)
