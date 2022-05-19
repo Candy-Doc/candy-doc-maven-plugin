@@ -101,7 +101,15 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/86226889?v=4",
       "profile": "https://github.com/AVernholles",
       "contributions": [
-        "doc"
+        "doc",
+        "code",
+        "bug",
+        "test",
+        "ideas",
+        "review",
+        "example",
+        "design",
+        "content"
       ]
     }
   ],
