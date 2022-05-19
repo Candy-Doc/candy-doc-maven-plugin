@@ -20,9 +20,13 @@ public class ExtractDDDConceptsUseCase {
   }
 
   public void checkParameters(ExtractDDDConcepts command) throws ExtractionException {
-    if (command.getPackagesToScan() == null || command.getPackagesToScan().isEmpty()) {
+    if (command.getPackagesToScan().isEmpty()) {
       throw new PackageToScanMissing(
           "Missing parameters for 'packageToScan'. Check your pom configuration.");
+    }
+    if (command.getPackagesToScan().stream().anyMatch(String::isBlank)) {
+      throw new PackageToScanMissing(
+          "Blank packageToScan not allowed for 'packagesToScan'. Check your pom configuration");
     }
   }
 

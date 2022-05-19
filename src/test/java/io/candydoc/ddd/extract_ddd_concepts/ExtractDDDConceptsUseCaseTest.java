@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -49,9 +50,7 @@ class ExtractDDDConceptsUseCaseTest {
   @Test
   void package_to_scan_is_not_provided() {
     // given
-    List<String> givenPackages = List.of();
-
-    ExtractDDDConcepts command = ExtractDDDConcepts.builder().packagesToScan(givenPackages).build();
+    ExtractDDDConcepts command = ExtractDDDConcepts.builder().packagesToScan(List.of()).build();
 
     // when then
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
@@ -59,16 +58,17 @@ class ExtractDDDConceptsUseCaseTest {
         .hasMessage("Missing parameters for 'packageToScan'. Check your pom configuration.");
   }
 
-  @Test
-  void package_to_scan_report_empty_string() {
+  @ParameterizedTest
+  @ValueSource(strings = {"", "    ", "  \t  "})
+  void blank_package_to_scan_is_not_allowed(String packageToScan) {
     // given
-    ExtractDDDConcepts command = ExtractDDDConcepts.builder().packageToScan("").build();
+    ExtractDDDConcepts command = ExtractDDDConcepts.builder().packageToScan(packageToScan).build();
 
     // when then
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
         .isInstanceOf(PackageToScanMissing.class)
         .hasMessage(
-            "Empty packageToScan (\"\") for 'packagesToScan'. Check your pom configuration");
+            "Blank packageToScan not allowed for 'packagesToScan'. Check your pom configuration");
   }
 
   @Test

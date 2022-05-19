@@ -3,7 +3,6 @@ package io.candydoc.ddd.shared_kernel;
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.extract_ddd_concepts.DDDConceptFinder;
 import io.candydoc.ddd.extract_ddd_concepts.ExtractDDDConcepts;
-import io.candydoc.ddd.extract_ddd_concepts.PackageToScanMissing;
 import io.candydoc.ddd.model.Extractor;
 import io.candydoc.ddd.model.PackageName;
 import java.util.Collection;
@@ -32,10 +31,6 @@ public class SharedKernelExtractor implements Extractor<ExtractDDDConcepts> {
   }
 
   public List<Event> extractSharedKernel(String packageToScan) {
-    if (packageToScan.isBlank()) {
-      throw new PackageToScanMissing(
-          "Empty packageToScan (\"\") for 'packagesToScan'. Check your pom configuration");
-    }
     Set<SharedKernel> sharedKernels =
         DDDConceptFinder.findSharedKernels(PackageName.of(packageToScan));
     log.info("Shared kernels found in {}: {}", packageToScan, sharedKernels);
