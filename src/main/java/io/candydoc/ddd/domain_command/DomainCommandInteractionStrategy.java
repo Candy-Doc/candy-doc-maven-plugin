@@ -22,9 +22,9 @@ public class DomainCommandInteractionStrategy implements InteractionStrategy<Dom
                 ConceptRuleViolated.builder()
                     .conceptName(concept.getCanonicalName().value())
                     .reason(
-                        "Wrong interaction with class "
-                            + anotherConcept.getCanonicalName().value()
-                            + ".")
+                        String.format(
+                            "Wrong interaction with class %s.",
+                            anotherConcept.getCanonicalName().value()))
                     .build())
         .collect(Collectors.toUnmodifiableList());
   }

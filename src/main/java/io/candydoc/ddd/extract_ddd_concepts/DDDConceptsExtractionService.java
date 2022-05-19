@@ -7,6 +7,7 @@ import io.candydoc.ddd.aggregate.AggregatesExtractor;
 import io.candydoc.ddd.aggregate.ExtractAggregates;
 import io.candydoc.ddd.bounded_context.BoundedContextExtractor;
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
+import io.candydoc.ddd.bounded_context.ExtractBoundedContexts;
 import io.candydoc.ddd.core_concept.CoreConceptExtractor;
 import io.candydoc.ddd.core_concept.CoreConceptFound;
 import io.candydoc.ddd.core_concept.ExtractCoreConcepts;
@@ -22,6 +23,9 @@ import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
 import io.candydoc.ddd.interaction.InteractionChecker;
 import io.candydoc.ddd.model.Extractor;
+import io.candydoc.ddd.shared_kernel.ExtractSharedKernels;
+import io.candydoc.ddd.shared_kernel.SharedKernelExtractor;
+import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ExtractValueObjects;
 import io.candydoc.ddd.value_object.ValueObjectExtractor;
 import io.candydoc.ddd.value_object.ValueObjectFound;
@@ -35,21 +39,23 @@ public class DDDConceptsExtractionService
 
   private final List<Event> eventsList = new LinkedList<>();
 
-  private final ValueObjectExtractor valueObjectExtractor;
   private final AggregatesExtractor aggregatesExtractor;
   private final BoundedContextExtractor boundedContextExtractor;
   private final CoreConceptExtractor coreConceptExtractor;
   private final DomainEventExtractor domainEventExtractor;
   private final DomainCommandExtractor domainCommandExtractor;
+  private final SharedKernelExtractor sharedKernelExtractor;
+  private final ValueObjectExtractor valueObjectExtractor;
   private final InteractionChecker interactionChecker;
 
   public DDDConceptsExtractionService(DDDConceptFinder conceptFinder) {
-    this.valueObjectExtractor = new ValueObjectExtractor(conceptFinder);
     this.aggregatesExtractor = new AggregatesExtractor(conceptFinder);
     this.boundedContextExtractor = new BoundedContextExtractor(conceptFinder);
     this.coreConceptExtractor = new CoreConceptExtractor(conceptFinder);
     this.domainEventExtractor = new DomainEventExtractor(conceptFinder);
     this.domainCommandExtractor = new DomainCommandExtractor(conceptFinder);
+    this.sharedKernelExtractor = new SharedKernelExtractor(conceptFinder);
+    this.valueObjectExtractor = new ValueObjectExtractor(conceptFinder);
     this.interactionChecker = new InteractionChecker(conceptFinder);
   }
 
@@ -64,13 +70,23 @@ public class DDDConceptsExtractionService
     occurredEvents.forEach(event -> event.accept(this));
   }
 
-  public void handle(ExtractValueObjects command) {
-    log.info("Extract value objects from {}", command.getPackageToScan());
-    trackAndApply(valueObjectExtractor.extract(command));
-  }
-
   public void handle(ExtractDDDConcepts command) {
     log.info("Extract ddd concepts from {}", command.getPackagesToScan());
+    command.getPackagesToScan().stream()
+        .forEach(
+            packageToScan -> {
+              this.handle(ExtractBoundedContexts.builder().packageToScan(packageToScan).build());
+              this.handle(ExtractSharedKernels.builder().packageToScan(packageToScan).build());
+            });
+  }
+
+  public void handle(ExtractAggregates command) {
+    log.info("Extract aggregates from {}", command.getPackageToScan());
+    trackAndApply(aggregatesExtractor.extract(command));
+  }
+
+  public void handle(ExtractBoundedContexts command) {
+    log.info("Extract bounded concepts from {}", command.getPackageToScan());
     trackAndApply(boundedContextExtractor.extract(command));
   }
 
@@ -79,14 +95,24 @@ public class DDDConceptsExtractionService
     trackAndApply(coreConceptExtractor.extract(command));
   }
 
+  public void handle(ExtractDomainCommands command) {
+    log.info("Extract domain commands from {}", command.getPackageToScan());
+    trackAndApply(domainCommandExtractor.extract(command));
+  }
+
   public void handle(ExtractDomainEvents command) {
     log.info("Extract domain events from {}", command.getPackageToScan());
     trackAndApply(domainEventExtractor.extract(command));
   }
 
-  public void handle(ExtractDomainCommands command) {
-    log.info("Extract domain commands from {}", command.getPackageToScan());
-    trackAndApply(domainCommandExtractor.extract(command));
+  public void handle(ExtractSharedKernels command) {
+    log.info("Extract shared kernels from {}", command.getPackageToScan());
+    trackAndApply(sharedKernelExtractor.extract(command));
+  }
+
+  public void handle(ExtractValueObjects command) {
+    log.info("Extract value objects from {}", command.getPackageToScan());
+    trackAndApply(valueObjectExtractor.extract(command));
   }
 
   public void handle(CheckConceptInteractions command) {
@@ -94,30 +120,20 @@ public class DDDConceptsExtractionService
     trackAndApply(interactionChecker.check(command));
   }
 
-  public void handle(ExtractAggregates command) {
-    log.info("Extract aggregates from {}", command.getPackageToScan());
-    trackAndApply(aggregatesExtractor.extract(command));
+  public void apply(AggregateFound event) {
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
   }
 
   public void apply(BoundedContextFound event) {
-    this.handle(ExtractCoreConcepts.builder().packageToScan(event.getPackageName()).build());
-    this.handle(ExtractValueObjects.builder().packageToScan(event.getPackageName()).build());
-    this.handle(ExtractDomainEvents.builder().packageToScan(event.getPackageName()).build());
-    this.handle(ExtractDomainCommands.builder().packageToScan(event.getPackageName()).build());
     this.handle(ExtractAggregates.builder().packageToScan(event.getPackageName()).build());
+    this.handle(ExtractCoreConcepts.builder().packageToScan(event.getPackageName()).build());
+    this.handle(ExtractDomainCommands.builder().packageToScan(event.getPackageName()).build());
+    this.handle(ExtractDomainEvents.builder().packageToScan(event.getPackageName()).build());
+    this.handle(ExtractValueObjects.builder().packageToScan(event.getPackageName()).build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
   }
 
   public void apply(CoreConceptFound event) {
-    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
-  }
-
-  public void apply(InteractionBetweenConceptFound event) {}
-
-  public void apply(ValueObjectFound event) {
-    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
-  }
-
-  public void apply(DomainEventFound event) {
     this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
   }
 
@@ -125,11 +141,23 @@ public class DDDConceptsExtractionService
     this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
   }
 
-  public void apply(AggregateFound event) {
+  public void apply(DomainEventFound event) {
     this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
   }
 
-  public void apply(NameConflictBetweenCoreConcepts event) {}
+  public void apply(SharedKernelFound event) {
+    this.handle(ExtractCoreConcepts.builder().packageToScan(event.getPackageName()).build());
+    this.handle(ExtractValueObjects.builder().packageToScan(event.getPackageName()).build());
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
+  }
+
+  public void apply(ValueObjectFound event) {
+    this.handle(CheckConceptInteractions.builder().conceptName(event.getCanonicalName()).build());
+  }
 
   public void apply(ConceptRuleViolated event) {}
+
+  public void apply(InteractionBetweenConceptFound event) {}
+
+  public void apply(NameConflictBetweenCoreConcepts event) {}
 }

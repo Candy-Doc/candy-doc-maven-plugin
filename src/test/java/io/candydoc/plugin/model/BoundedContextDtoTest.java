@@ -14,7 +14,7 @@ class BoundedContextDtoTest {
 
   @Test
   void throws_an_exception_when_description_is_null() {
-    Assertions.assertThatThrownBy(() -> BoundedContextDto.builder().name("name").build())
+    Assertions.assertThatThrownBy(() -> BoundedContextDto.builder().simpleName("name").build())
         .isInstanceOf(NullPointerException.class);
   }
 }

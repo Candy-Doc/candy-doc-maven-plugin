@@ -1,9 +1,9 @@
 package io.candydoc.ddd.bounded_context;
 
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.extract_ddd_concepts.DocumentationGenerationFailed;
 import io.candydoc.ddd.extract_ddd_concepts.ExtractDDDConcepts;
 import io.candydoc.ddd.model.Extractor;
+import io.candydoc.ddd.model.PackageName;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -24,16 +24,14 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
         .collect(Collectors.toUnmodifiableList());
   }
 
+  public List<Event> extract(ExtractBoundedContexts command) {
+    return extractBoundedContexts(command.getPackageToScan()).stream()
+        .collect(Collectors.toUnmodifiableList());
+  }
+
   public List<Event> extractBoundedContexts(String packageToScan) {
-    if (packageToScan.isBlank()) {
-      // Todo: Manque une exception plus précise
-      throw new DocumentationGenerationFailed(
-          "Empty parameters for 'packagesToScan'. Check your pom configuration");
-    }
-    Set<BoundedContext> boundedContextClasses = DDDConceptFinder.findBoundedContexts(packageToScan);
-    if (boundedContextClasses.isEmpty()) {
-      throw new NoBoundedContextFound(packageToScan);
-    }
+    Set<BoundedContext> boundedContextClasses =
+        DDDConceptFinder.findBoundedContexts(PackageName.of(packageToScan));
     log.info("Bounded contexts found in {}: {}", packageToScan, boundedContextClasses);
     return boundedContextClasses.stream()
         .map(this::toBoundedContextFound)
@@ -42,7 +40,8 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
 
   private BoundedContextFound toBoundedContextFound(BoundedContext boundedContext) {
     return BoundedContextFound.builder()
-        .name(boundedContext.getSimpleName().value())
+        .simpleName(boundedContext.getSimpleName().value())
+        .canonicalName(boundedContext.getCanonicalName().value())
         .packageName(boundedContext.getPackageName().value())
         .description(boundedContext.getDescription().value())
         .build();

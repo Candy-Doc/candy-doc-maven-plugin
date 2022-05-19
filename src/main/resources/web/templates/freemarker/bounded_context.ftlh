@@ -11,7 +11,7 @@
 <main>
     <article class="concept">
         <section class="concept__information">
-            <h1 class="concept__name">${boundedContext.name}</h1>
+            <h1 class="concept__name">${boundedContext.simpleName}</h1>
             <label class="concept__class-name">${boundedContext.packageName}</label>
             <p class="concept__description">${boundedContext.description}</p>
         </section>
@@ -22,7 +22,8 @@
                         <div class="interactions-box">
                             <h2 class="interaction__title">${i18n.getString(conceptType.name())}</h2>
                             <#list boundedContext.getConcepts(conceptType) as concept>
-                                <a href="${boundedContext.name}/${concept.canonicalName}.html" class="interaction">
+                                <a href="${boundedContext.simpleName}/${concept.canonicalName}.html"
+                                   class="interaction">
                                     ${concept.simpleName}
                                 </a>
                             </#list>

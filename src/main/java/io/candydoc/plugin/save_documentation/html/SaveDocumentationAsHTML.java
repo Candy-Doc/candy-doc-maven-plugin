@@ -11,11 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 
@@ -53,13 +49,14 @@ public class SaveDocumentationAsHTML implements SaveDocumentationPort {
   private void generateBoundedContextPage(
       BoundedContextDto boundedContext, List<BoundedContextDto> boundedContexts)
       throws IOException {
-    Path boundedContextDirectory = HTML_DESTINATION_FOLDER.resolve(boundedContext.getName());
+    Path boundedContextDirectory = HTML_DESTINATION_FOLDER.resolve(boundedContext.getPackageName());
     Files.createDirectories(boundedContextDirectory);
     Map<String, Object> model = new HashMap<>();
     model.put("boundedContext", boundedContext);
     model.put("boundedContexts", boundedContexts);
     model.put("baseFolder", HTML_BASE_FOLDER);
-    Path fileDestination = boundedContextDirectory.resolve(boundedContext.getName() + ".html");
+    Path fileDestination =
+        boundedContextDirectory.resolve(boundedContext.getPackageName() + ".html");
     templateEngine.generatePage("bounded_context", fileDestination, model);
     Arrays.stream(ConceptType.values())
         .map(boundedContext::getConcepts)

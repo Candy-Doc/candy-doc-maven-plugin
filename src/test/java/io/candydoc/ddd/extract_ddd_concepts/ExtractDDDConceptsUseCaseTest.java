@@ -6,19 +6,24 @@ import io.candydoc.ddd.Command;
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.aggregate.AggregateFound;
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
-import io.candydoc.ddd.bounded_context.NoBoundedContextFound;
 import io.candydoc.ddd.core_concept.CoreConceptFound;
 import io.candydoc.ddd.domain_command.DomainCommandFound;
 import io.candydoc.ddd.domain_event.DomainEventFound;
 import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
 import io.candydoc.ddd.model.ExtractionException;
+import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -45,25 +50,25 @@ class ExtractDDDConceptsUseCaseTest {
   @Test
   void package_to_scan_is_not_provided() {
     // given
-    List<String> givenPackages = List.of();
-
-    ExtractDDDConcepts command = ExtractDDDConcepts.builder().packagesToScan(givenPackages).build();
+    ExtractDDDConcepts command = ExtractDDDConcepts.builder().packagesToScan(List.of()).build();
 
     // when then
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
-        .isInstanceOf(DocumentationGenerationFailed.class)
+        .isInstanceOf(PackageToScanMissing.class)
         .hasMessage("Missing parameters for 'packageToScan'. Check your pom configuration.");
   }
 
-  @Test
-  void package_to_scan_report_empty_string() {
+  @ParameterizedTest
+  @ValueSource(strings = {"", "    ", "  \t  "})
+  void blank_package_to_scan_is_not_allowed(String packageToScan) {
     // given
-    ExtractDDDConcepts command = ExtractDDDConcepts.builder().packageToScan("").build();
+    ExtractDDDConcepts command = ExtractDDDConcepts.builder().packageToScan(packageToScan).build();
 
     // when then
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
-        .isInstanceOf(DocumentationGenerationFailed.class)
-        .hasMessage("Empty parameters for 'packagesToScan'. Check your pom configuration");
+        .isInstanceOf(PackageToScanMissing.class)
+        .hasMessage(
+            "Blank packageToScan not allowed for 'packagesToScan'. Check your pom configuration");
   }
 
   @Test
@@ -87,15 +92,17 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void package_to_scan_is_not_following_ddd() {
+  void no_bounded_context_nor_shared_kernel_in_the_package_to_scan() {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder().packageToScan("wrong.package.to.scan").build();
 
     // then
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
-        .isInstanceOf(NoBoundedContextFound.class)
-        .hasMessage("No bounded context has been found in the package : 'wrong.package.to.scan'.");
+        .isInstanceOf(NoBoundedContextNorSharedKernelFound.class)
+        .hasMessage(
+            "No bounded context nor shared kernel has been found in this packages :"
+                + " '[wrong.package.to.scan]'.");
   }
 
   @Test
@@ -113,14 +120,18 @@ class ExtractDDDConceptsUseCaseTest {
     Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             BoundedContextFound.builder()
-                .name("bounded_context_one")
+                .simpleName("bounded_context_one")
+                .canonicalName(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
                 .description("description of bounded context 1")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build(),
             BoundedContextFound.builder()
-                .name("bounded_context_two")
-                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_two")
+                .simpleName("bounded_context_two")
+                .canonicalName(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_two.package-info")
                 .description("description of bounded context 2")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_two")
                 .build());
   }
 
@@ -305,6 +316,201 @@ class ExtractDDDConceptsUseCaseTest {
                 .with(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2")
                 .build());
+  }
+
+  @Test
+  void find_shared_kernel_inside_given_packages() throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.valid_bounded_contexts")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            SharedKernelFound.builder()
+                .simpleName("shared_kernel_one")
+                .canonicalName(
+                    "io.candydoc.sample.valid_bounded_contexts.shared_kernel.package-info")
+                .description("description of shared kernel")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
+                .build());
+  }
+
+  @Test
+  void find_core_concepts_inside_shared_kernel() throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            CoreConceptFound.builder()
+                .simpleName("name of core concept 1 of shared kernel 1")
+                .description("description of core concept 1 of shared kernel 1")
+                .canonicalName(
+                    "io.candydoc.sample.valid_bounded_contexts.shared_kernel.sub_package.CoreConcept1")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.shared_kernel.sub_package")
+                .boundedContext("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
+                .build());
+  }
+
+  @ParameterizedTest
+  @MethodSource("forbidden_concepts_in_bounded_context_examples")
+  void forbidden_concepts_in_bounded_context(String conceptName, String ruleViolatedReason)
+      throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.wrong_bounded_contexts")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            ConceptRuleViolated.builder()
+                .conceptName(conceptName)
+                .reason(ruleViolatedReason)
+                .build());
+  }
+
+  public static Stream<Arguments> forbidden_concepts_in_bounded_context_examples() {
+    return Stream.of(
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.Aggregate1",
+            "Shared kernel can not have aggregate."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.DomainCommand1",
+            "Shared kernel can not have domain command."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.DomainEvent1",
+            "Shared kernel can not have domain event."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.bounded_context.inner_shared_kernel",
+            "Shared kernel shared_kernel_three is not allowed in a bounded context."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.bounded_context.inner_bounded_context",
+            "Bounded context bounded_context_two is not allowed in another bounded context."));
+  }
+
+  @ParameterizedTest
+  @MethodSource("forbidden_concepts_in_shared_kernel_examples")
+  void forbidden_concepts_in_shared_kernel(String conceptName, String ruleViolatedReason)
+      throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.wrong_bounded_contexts")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            ConceptRuleViolated.builder()
+                .conceptName(conceptName)
+                .reason(ruleViolatedReason)
+                .build());
+  }
+
+  public static Stream<Arguments> forbidden_concepts_in_shared_kernel_examples() {
+    return Stream.of(
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.Aggregate1",
+            "Shared kernel can not have aggregate."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.DomainCommand1",
+            "Shared kernel can not have domain command."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.DomainEvent1",
+            "Shared kernel can not have domain event."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.inner_bounded_context",
+            "Bounded context bounded_context_three is not allowed in a shared kernel."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.inner_shared_kernel",
+            "Shared kernel shared_kernel_two is not allowed in another shared kernel."));
+  }
+
+  @ParameterizedTest
+  @MethodSource("allowed_interactions_with_bounded_context_examples")
+  void find_interactions_with_bounded_context(String conceptName) throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.valid_bounded_contexts")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            InteractionBetweenConceptFound.builder()
+                .with(conceptName)
+                .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
+                .build());
+  }
+
+  public static Stream<Arguments> allowed_interactions_with_bounded_context_examples() {
+    return Stream.of(
+        Arguments.of(
+            "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.Aggregate1"),
+        Arguments.of(
+            "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1"),
+        Arguments.of(
+            "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2"),
+        Arguments.of(
+            "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainCommand1"),
+        Arguments.of(
+            "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1"),
+        Arguments.of(
+            "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1"));
+  }
+
+  @ParameterizedTest
+  @MethodSource("allowed_interactions_with_shared_kernel_examples")
+  void find_interactions_with_shared_kernel(String conceptName) throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.valid_bounded_contexts")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            InteractionBetweenConceptFound.builder()
+                .with(conceptName)
+                .from("io.candydoc.sample.valid_bounded_contexts.shared_kernel.package-info")
+                .build());
+  }
+
+  public static Stream<Arguments> allowed_interactions_with_shared_kernel_examples() {
+    return Stream.of(
+        Arguments.of(
+            "io.candydoc.sample.valid_bounded_contexts.shared_kernel.sub_package.CoreConcept1"),
+        Arguments.of(
+            "io.candydoc.sample.valid_bounded_contexts.shared_kernel.sub_package.ValueObject1"));
   }
 
   public class ResultCaptor<T> implements Answer {

@@ -19,8 +19,8 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-        
-    
+
+
     <developers>
         <developer>
             <name>Edouard Cattez</name>
@@ -96,7 +96,6 @@
     </scm>
 
 
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.version>3.8.1</maven.compiler.version>
@@ -114,7 +113,7 @@
         <reflections.version>0.11.7</reflections.version>
         <freemarker.version>2.3.31</freemarker.version>
         <commons-io.version>2.11.0</commons-io.version>
-        <jackson.version>2.13.1</jackson.version>
+        <jackson.version>2.13.2</jackson.version>
         <junit.version>5.8.2</junit.version>
         <assertj.version>3.22.0</assertj.version>
         <jsoup.version>1.14.3</jsoup.version>
@@ -225,6 +224,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
@@ -263,10 +268,10 @@
                 <version>2.2.1</version>
                 <executions>
                     <execution>
-                    <id>attach-sources</id>
-                    <goals>
-                        <goal>jar-no-fork</goal>
-                    </goals>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -276,11 +281,11 @@
                 <version>1.5</version>
                 <executions>
                     <execution>
-                    <id>sign-artifacts</id>
-                    <phase>verify</phase>
-                    <goals>
-                        <goal>sign</goal>
-                    </goals>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -290,10 +295,10 @@
                 <version>2.9.1</version>
                 <executions>
                     <execution>
-                    <id>attach-javadocs</id>
-                    <goals>
-                        <goal>jar</goal>
-                    </goals>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

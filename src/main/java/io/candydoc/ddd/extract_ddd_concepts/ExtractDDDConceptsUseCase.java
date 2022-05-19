@@ -19,16 +19,23 @@ public class ExtractDDDConceptsUseCase {
     this.saveDocumentationPort = saveDocumentationPort;
   }
 
-  public void checkParameters(ExtractDDDConcepts command) throws DocumentationGenerationFailed {
-    if (command.getPackagesToScan() == null || command.getPackagesToScan().isEmpty()) {
-      throw new DocumentationGenerationFailed(
+  public void checkParameters(ExtractDDDConcepts command) throws ExtractionException {
+    if (command.getPackagesToScan().isEmpty()) {
+      throw new PackageToScanMissing(
           "Missing parameters for 'packageToScan'. Check your pom configuration.");
+    }
+    if (command.getPackagesToScan().stream().anyMatch(String::isBlank)) {
+      throw new PackageToScanMissing(
+          "Blank packageToScan not allowed for 'packagesToScan'. Check your pom configuration");
     }
   }
 
   public void execute(ExtractDDDConcepts command) throws IOException, ExtractionException {
     checkParameters(command);
     List<Event> domainEvents = DDDConceptsExtractionService.extract(command);
+    if (domainEvents.isEmpty()) {
+      throw new NoBoundedContextNorSharedKernelFound(command.getPackagesToScan());
+    }
     saveDocumentationPort.save(domainEvents);
     log.info("Documentation generation has succeeded.");
   }
