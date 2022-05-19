@@ -25,7 +25,16 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/22562938?v=4",
       "profile": "https://ctacquet.com",
       "contributions": [
-        "doc"
+        "doc",
+        "bug",
+        "code",
+        "data",
+        "design",
+        "example",
+        "ideas",
+        "question",
+        "review",
+        "test"
       ]
     },
     {
@@ -46,7 +55,12 @@
         "infra",
         "doc",
         "review",
-        "tutorial"
+        "tutorial",
+        "bug",
+        "ideas",
+        "maintenance",
+        "question",
+        "platform"
       ]
     },
     {
@@ -55,7 +69,9 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/33150916?v=4",
       "profile": "https://maji.kiwi",
       "contributions": [
-        "doc"
+        "doc",
+        "ideas",
+        "review"
       ]
     },
     {
@@ -66,7 +82,8 @@
       "contributions": [
         "doc",
         "infra",
-        "review"
+        "review",
+        "platform"
       ]
     },
     {
