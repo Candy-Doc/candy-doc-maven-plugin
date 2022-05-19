@@ -111,6 +111,23 @@
         "design",
         "content"
       ]
+    },
+    {
+      "login": "aginesy",
+      "name": "aginesy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56438555?v=4",
+      "profile": "https://github.com/aginesy",
+      "contributions": [
+        "doc",
+        "code",
+        "bug",
+        "test",
+        "ideas",
+        "review",
+        "example",
+        "design",
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
