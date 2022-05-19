@@ -28,7 +28,13 @@
         "doc",
         "bug",
         "code",
-        "data"
+        "data",
+        "design",
+        "example",
+        "ideas",
+        "question",
+        "review",
+        "test"
       ]
     },
     {
