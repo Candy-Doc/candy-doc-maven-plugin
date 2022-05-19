@@ -34,9 +34,9 @@ public class CoreConceptInteractionStrategy implements InteractionStrategy<CoreC
                         return ConceptRuleViolated.builder()
                             .conceptName(concept.getCanonicalName().value())
                             .reason(
-                                "CoreConcept interact with Aggregates "
-                                    + forbiddenConcept.getCanonicalName().value()
-                                    + ".")
+                                String.format(
+                                    "CoreConcept interact with Aggregates %s.",
+                                    forbiddenConcept.getCanonicalName().value()))
                             .build();
                       }
 

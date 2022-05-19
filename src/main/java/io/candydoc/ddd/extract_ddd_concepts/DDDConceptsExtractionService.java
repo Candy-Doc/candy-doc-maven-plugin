@@ -72,10 +72,12 @@ public class DDDConceptsExtractionService
 
   public void handle(ExtractDDDConcepts command) {
     log.info("Extract ddd concepts from {}", command.getPackagesToScan());
-    for (String packageToScan : command.getPackagesToScan()) {
-      this.handle(ExtractBoundedContexts.builder().packageToScan(packageToScan).build());
-      this.handle(ExtractSharedKernels.builder().packageToScan(packageToScan).build());
-    }
+    command.getPackagesToScan().stream()
+        .forEach(
+            packageToScan -> {
+              this.handle(ExtractBoundedContexts.builder().packageToScan(packageToScan).build());
+              this.handle(ExtractSharedKernels.builder().packageToScan(packageToScan).build());
+            });
   }
 
   public void handle(ExtractAggregates command) {

@@ -6,8 +6,8 @@ import java.util.List;
 public class NoBoundedContextNorSharedKernelFound extends ExtractionException {
   public NoBoundedContextNorSharedKernelFound(List<String> packageToScans) {
     super(
-        "No bounded context or shared kernel has been found in this packages : '"
-            + packageToScans
-            + "'.");
+        String.format(
+            "No bounded context or shared kernel has been found in this packages : '%s'.",
+            packageToScans));
   }
 }

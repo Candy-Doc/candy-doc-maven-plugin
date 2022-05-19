@@ -87,9 +87,9 @@ class SaveDocumentationAsHTMLTest {
       List.of(
           BoundedContextFound.builder()
               .simpleName("emptyBoundedContext")
-              .canonicalName("io.emptyBoundedContext.package-info")
+              .canonicalName("io.empty_bounded_context.package-info")
               .description("description of empty bounded context")
-              .packageName("io.emptyBoundedContext")
+              .packageName("io.empty_bounded_context")
               .build());
 
   @AfterEach

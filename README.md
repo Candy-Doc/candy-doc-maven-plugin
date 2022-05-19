@@ -1,4 +1,5 @@
 # 🍬 Candy Doc
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -15,6 +16,7 @@ Domain-Driven-Design approach.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -46,9 +48,9 @@ To run this plugin, import the following:
 ```xml
 
 <dependency>
-  <groupId>io.candy-doc</groupId>
-  <artifactId>candy-doc</artifactId>
-  <version>${candy-doc.version}</version>
+    <groupId>io.candy-doc</groupId>
+    <artifactId>candy-doc</artifactId>
+    <version>${candy-doc.version}</version>
 </dependency>
 
 <plugin>
@@ -56,17 +58,17 @@ To run this plugin, import the following:
 <artifactId>candy-doc</artifactId>
 <version>${candy-doc.version}</version>
 <executions>
-  <execution>
-    <goals>
-      <goal>candy-doc</goal>
-    </goals>
-  </execution>
+    <execution>
+        <goals>
+            <goal>candy-doc</goal>
+        </goals>
+    </execution>
 </executions>
 <configuration>
-  <packagesToScan>
-    <packageToScan>com.foo.bar</packageToScan>
-  </packagesToScan>
-  <outputFormat>html</outputFormat>
+    <packagesToScan>
+        <packageToScan>com.foo.bar</packageToScan>
+    </packagesToScan>
+    <outputFormat>html</outputFormat>
 </configuration>
 </plugin>
 ```
@@ -80,8 +82,8 @@ Example:
 ```xml
 
 <packagesToScan>
-  <packageToScan>com.foo.bar.baz</packageToScan>
-  <packageToScan>com.foo.qux</packageToScan>
+    <packageToScan>com.foo.bar.baz</packageToScan>
+    <packageToScan>com.foo.qux</packageToScan>
 </packagesToScan>
 ```
 
@@ -165,6 +167,20 @@ An event should always stay dumb and only carry static information.
 Moreover, domain events cannot use strong domain concepts as domain logic should
 never be used outside the domain.
 
+### Shared Kernel
+
+```java
+@SharedKernel(name = "", description = "")
+```
+
+Set of elements (classes, services, etc) containing only what is needed in a
+specific context.
+
+Only `package-info.java` files can be annotated with `@SharedKernel`.
+They work like bounded context do.
+A shared kernel is the intersection of two bounded contexts (same DDD concepts used in each one).
+It is often used to describe the relationship between two (or more) teams that share a small but common model.
+
 ### Value Object
 
 ```java
@@ -196,7 +212,8 @@ See the interactions between concepts
 
 ## 🗺️ ROADMAP
 
-To know on what the team are actually working on, you can see the different milestones [here](https://github.com/Candy-Doc/candy-doc-maven-plugin/milestones)
+To know on what the team are actually working on, you can see the different
+milestones [here](https://github.com/Candy-Doc/candy-doc-maven-plugin/milestones)
 
 ## [FOR DEVELOPERS ONLY] Development workflow
 
@@ -227,7 +244,8 @@ Explanations:
 > git checkout -b feat/\<branch name\>
 > ```
 >
-> Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your feature will be squash and merge _feat/\<branch name\>_ to _main_.
+> Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your
+> feature will be squash and merge _feat/\<branch name\>_ to _main_.
 >
 >See contributing rules [here](./CONTRIBUTING.md).
 >
@@ -293,6 +311,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
+Contributions of any kind welcome!
 
 [Contributing to the project]: CONTRIBUTING.md

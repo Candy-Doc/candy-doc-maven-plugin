@@ -33,7 +33,7 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
   public List<Event> extractBoundedContexts(String packageToScan) {
     if (packageToScan.isBlank()) {
       throw new PackageToScanMissing(
-          "Empty parameters for 'packagesToScan'. Check your pom configuration");
+          "Empty packageToScan (\"\") for 'packagesToScan'. Check your pom configuration");
     }
     Set<BoundedContext> boundedContextClasses =
         DDDConceptFinder.findBoundedContexts(PackageName.of(packageToScan));

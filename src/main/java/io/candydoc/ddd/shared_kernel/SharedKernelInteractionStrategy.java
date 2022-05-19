@@ -43,9 +43,9 @@ public class SharedKernelInteractionStrategy implements InteractionStrategy<Shar
                         return ConceptRuleViolated.builder()
                             .conceptName(boundedContext.getPackageName().value())
                             .reason(
-                                "Bounded context "
-                                    + boundedContext.getSimpleName().value()
-                                    + " is not allowed in a shared kernel.")
+                                String.format(
+                                    "Bounded context %s is not allowed in a shared kernel.",
+                                    boundedContext.getSimpleName().value()))
                             .build();
                       }
 
@@ -78,9 +78,9 @@ public class SharedKernelInteractionStrategy implements InteractionStrategy<Shar
                         return ConceptRuleViolated.builder()
                             .conceptName(sharedKernel.getPackageName().value())
                             .reason(
-                                "Shared kernel "
-                                    + sharedKernel.getSimpleName().value()
-                                    + " is not allowed in another shared kernel.")
+                                String.format(
+                                    "Shared kernel %s is not allowed in another shared kernel.",
+                                    sharedKernel.getSimpleName().value()))
                             .build();
                       }
 

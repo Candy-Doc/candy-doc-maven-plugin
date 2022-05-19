@@ -45,9 +45,9 @@ public class BoundedContextInteractionStrategy implements InteractionStrategy<Bo
                         return ConceptRuleViolated.builder()
                             .conceptName(forbiddenBoundedContext.getPackageName().value())
                             .reason(
-                                "Bounded context "
-                                    + forbiddenBoundedContext.getSimpleName().value()
-                                    + " is not allowed in another bounded context.")
+                                String.format(
+                                    "Bounded context %s is not allowed in another bounded context.",
+                                    forbiddenBoundedContext.getSimpleName().value()))
                             .build();
                       }
 
@@ -80,9 +80,9 @@ public class BoundedContextInteractionStrategy implements InteractionStrategy<Bo
                         return ConceptRuleViolated.builder()
                             .conceptName(forbiddenSharedKernel.getPackageName().value())
                             .reason(
-                                "Shared kernel "
-                                    + forbiddenSharedKernel.getSimpleName().value()
-                                    + " is not allowed in a bounded context.")
+                                String.format(
+                                    "Shared kernel %s is not allowed in a bounded context.",
+                                    forbiddenSharedKernel.getSimpleName().value()))
                             .build();
                       }
 

@@ -67,7 +67,8 @@ class ExtractDDDConceptsUseCaseTest {
     // when then
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
         .isInstanceOf(PackageToScanMissing.class)
-        .hasMessage("Empty parameters for 'packagesToScan'. Check your pom configuration");
+        .hasMessage(
+            "Empty packageToScan (\"\") for 'packagesToScan'. Check your pom configuration");
   }
 
   @Test
@@ -91,7 +92,7 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void package_to_scan_is_not_following_ddd() {
+  void no_bounded_context_nor_shared_kernel_in_the_package_to_scan() {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder().packageToScan("wrong.package.to.scan").build();
@@ -364,8 +365,10 @@ class ExtractDDDConceptsUseCaseTest {
                 .build());
   }
 
-  @Test
-  void bounded_context_are_forbidden_inside_bounded_context() throws IOException {
+  @ParameterizedTest
+  @MethodSource("forbidden_concepts_in_bounded_context_examples")
+  void forbidden_concepts_in_bounded_context(String conceptName, String ruleViolatedReason)
+      throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -379,85 +382,28 @@ class ExtractDDDConceptsUseCaseTest {
     Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             ConceptRuleViolated.builder()
-                .conceptName(
-                    "io.candydoc.sample.wrong_bounded_contexts.bounded_context.inner_bounded_context")
-                .reason(
-                    "Bounded context "
-                        + "bounded_context_two"
-                        + " is not allowed in another bounded context.")
+                .conceptName(conceptName)
+                .reason(ruleViolatedReason)
                 .build());
   }
 
-  @Test
-  void shared_kernel_are_forbidden_inside_bounded_context() throws IOException {
-    // given
-    ExtractDDDConcepts command =
-        ExtractDDDConcepts.builder()
-            .packageToScan("io.candydoc.sample.wrong_bounded_contexts")
-            .build();
-
-    // when
-    extractDDDConceptsUseCase.execute(command);
-
-    // then
-    Assertions.assertThat(extractionCaptor.getResult())
-        .contains(
-            ConceptRuleViolated.builder()
-                .conceptName(
-                    "io.candydoc.sample.wrong_bounded_contexts.bounded_context.inner_shared_kernel")
-                .reason(
-                    "Shared kernel "
-                        + "shared_kernel_three"
-                        + " is not allowed in a bounded context.")
-                .build());
-  }
-
-  @Test
-  void shared_kernel_are_forbidden_inside_shared_kernel() throws IOException {
-    // given
-    ExtractDDDConcepts command =
-        ExtractDDDConcepts.builder()
-            .packageToScan("io.candydoc.sample.wrong_bounded_contexts")
-            .build();
-
-    // when
-    extractDDDConceptsUseCase.execute(command);
-
-    // then
-    Assertions.assertThat(extractionCaptor.getResult())
-        .contains(
-            ConceptRuleViolated.builder()
-                .conceptName(
-                    "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.inner_shared_kernel")
-                .reason(
-                    "Shared kernel "
-                        + "shared_kernel_two"
-                        + " is not allowed in another shared kernel.")
-                .build());
-  }
-
-  @Test
-  void bounded_context_are_forbidden_inside_shared_kernel() throws IOException {
-    // given
-    ExtractDDDConcepts command =
-        ExtractDDDConcepts.builder()
-            .packageToScan("io.candydoc.sample.wrong_bounded_contexts")
-            .build();
-
-    // when
-    extractDDDConceptsUseCase.execute(command);
-
-    // then
-    Assertions.assertThat(extractionCaptor.getResult())
-        .contains(
-            ConceptRuleViolated.builder()
-                .conceptName(
-                    "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.inner_bounded_context")
-                .reason(
-                    "Bounded context "
-                        + "bounded_context_three"
-                        + " is not allowed in a shared kernel.")
-                .build());
+  public static Stream<Arguments> forbidden_concepts_in_bounded_context_examples() {
+    return Stream.of(
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.Aggregate1",
+            "Shared kernel can not have aggregate."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.DomainCommand1",
+            "Shared kernel can not have domain command."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.DomainEvent1",
+            "Shared kernel can not have domain event."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.bounded_context.inner_shared_kernel",
+            "Shared kernel shared_kernel_three is not allowed in a bounded context."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.bounded_context.inner_bounded_context",
+            "Bounded context bounded_context_two is not allowed in another bounded context."));
   }
 
   @ParameterizedTest
@@ -492,7 +438,13 @@ class ExtractDDDConceptsUseCaseTest {
             "Shared kernel can not have domain command."),
         Arguments.of(
             "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.sub_package.DomainEvent1",
-            "Shared kernel can not have domain event."));
+            "Shared kernel can not have domain event."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.inner_bounded_context",
+            "Bounded context bounded_context_three is not allowed in a shared kernel."),
+        Arguments.of(
+            "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.inner_shared_kernel",
+            "Shared kernel shared_kernel_two is not allowed in another shared kernel."));
   }
 
   @ParameterizedTest
