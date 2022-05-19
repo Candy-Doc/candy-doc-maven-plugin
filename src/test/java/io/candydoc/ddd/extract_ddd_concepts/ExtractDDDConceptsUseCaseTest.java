@@ -101,7 +101,7 @@ class ExtractDDDConceptsUseCaseTest {
     Assertions.assertThatThrownBy(() -> extractDDDConceptsUseCase.execute(command))
         .isInstanceOf(NoBoundedContextNorSharedKernelFound.class)
         .hasMessage(
-            "No bounded context or shared kernel has been found in this packages :"
+            "No bounded context nor shared kernel has been found in this packages :"
                 + " '[wrong.package.to.scan]'.");
   }
 

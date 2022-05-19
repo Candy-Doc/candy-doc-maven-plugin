@@ -16,6 +16,7 @@ Domain-Driven-Design approach.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -173,13 +174,13 @@ never be used outside the domain.
 @SharedKernel(name = "", description = "")
 ```
 
-Set of elements (classes, services, etc) containing only what is needed in a
-specific context.
+Set of elements (classes, services, etc) containing only what is needed in a specific context.
+A shared kernel is the intersection of two bounded contexts (same DDD concepts used in each one).
+It is often used to describe the relationship between two (or more) teams that share a small but common model.
+It can only contains value objects and core concepts.
 
 Only `package-info.java` files can be annotated with `@SharedKernel`.
 They work like bounded context do.
-A shared kernel is the intersection of two bounded contexts (same DDD concepts used in each one).
-It is often used to describe the relationship between two (or more) teams that share a small but common model.
 
 ### Value Object
 
