@@ -55,7 +55,11 @@
         "infra",
         "doc",
         "review",
-        "tutorial"
+        "tutorial",
+        "bug",
+        "ideas",
+        "maintenance",
+        "question"
       ]
     },
     {
