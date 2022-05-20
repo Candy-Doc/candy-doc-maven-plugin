@@ -23,7 +23,7 @@ jobs:
 
     - name: Run PR name linter
       env:
-        GITMOJI_PATH: ./.gitmojis.json
+        GITMOJI_PATH: ./.github/.gitmojis.json
       uses: JulienKode/pull-request-name-linter-action@v0.5.0
 
   run_precommit_hooks:
