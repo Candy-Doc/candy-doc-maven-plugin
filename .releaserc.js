@@ -1,5 +1,4 @@
 const {promisify} = require('util')
-const dateFormat = import('dateformat')
 const path = require("path");
 const readFileAsync = promisify(require('fs').readFile)
 const TEMPLATE_DIR = path.join('.github/', 'templates/')
@@ -38,11 +37,6 @@ module.exports = {
       releaseNotes: {
         template,
         partials: {commitTemplate},
-        helpers: {
-          datetime: function (format = 'UTC:yyyy-mm-dd') {
-            return dateFormat(new Date(), format)
-          }
-        },
         issueResolution: {
           template: '{baseUrl}/{owner}/{repo}/issues/{ref}',
           baseUrl: 'https://github.com',

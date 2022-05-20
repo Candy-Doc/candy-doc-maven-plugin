@@ -6,74 +6,74 @@
 
 {{#with commits}}
 
-  {{#if boom}}
-    ## 💥 Breaking Changes
-    {{#each boom}}
-      - {{> commitTemplate}}
-    {{/each}}
-  {{/if}}
+{{#if boom}}
+## 💥 Breaking Changes
+{{#each boom}}
+- {{> commitTemplate}}
+{{/each}}
+{{/if}}
 
-  {{#if candy}}
-    ## 🍬 Major Features
-    {{#each candy}}
-      - {{> commitTemplate}}
-    {{/each}}
-  {{/if}}
+{{#if candy}}
+## 🍬 Major Features
+{{#each candy}}
+- {{> commitTemplate}}
+{{/each}}
+{{/if}}
 
-  {{#if sparkles}}
-    ## ✨ New minor Features
-    {{#each sparkles}}
-      - {{> commitTemplate}}
-    {{/each}}
-  {{/if}}
+{{#if sparkles}}
+## ✨ New minor Features
+{{#each sparkles}}
+- {{> commitTemplate}}
+{{/each}}
+{{/if}}
 
-  {{#if zap}}
-    ## ⚡ Performance Improvements
-    {{#each zap}}
-      - {{> commitTemplate}}
-    {{/each}}
-  {{/if}}
+{{#if zap}}
+## ⚡ Performance Improvements
+{{#each zap}}
+- {{> commitTemplate}}
+{{/each}}
+{{/if}}
 
-  {{#if lipstick}}
-    ## 💄 UI and style files added or updated
-    {{#each lipstick}}
-      - {{> commitTemplate}}
-    {{/each}}
-  {{/if}}
+{{#if lipstick}}
+## 💄 UI and style files added or updated
+{{#each lipstick}}
+- {{> commitTemplate}}
+{{/each}}
+{{/if}}
 
-  {{#if recycle}}
-    ## ♻ Code refactored
-    {{#each recycle}}
-      - {{> commitTemplate}}
-    {{/each}}
-  {{/if}}
+{{#if recycle}}
+## ♻ Code refactored
+{{#each recycle}}
+- {{> commitTemplate}}
+{{/each}}
+{{/if}}
 
-  {{#if bug}}
-    ## 🐛 Bug Fixes
-    {{#each bug}}
-      - {{> commitTemplate}}
-    {{/each}}
-  {{/if}}
+{{#if bug}}
+## 🐛 Bug Fixes
+{{#each bug}}
+- {{> commitTemplate}}
+{{/each}}
+{{/if}}
 
-  {{#if rotating_light}}
-    ## 🚨 Compiler / linter warnings fixed
-    {{#each rotating_light}}
-      - {{> commitTemplate}}
-    {{/each}}
-  {{/if}}
+{{#if rotating_light}}
+## 🚨 Compiler / linter warnings fixed
+{{#each rotating_light}}
+- {{> commitTemplate}}
+{{/each}}
+{{/if}}
 
-  {{#if arrow_down}}
-    ## ⬇ Dependencies downgraded
-    {{#each arrow_down}}
-      - {{> commitTemplate}}
-    {{/each}}
-  {{/if}}
+{{#if arrow_down}}
+## ⬇ Dependencies downgraded
+{{#each arrow_down}}
+- {{> commitTemplate}}
+{{/each}}
+{{/if}}
 
-  {{#if arrow_up}}
-    ## ⬆ Dependencies upgraded
-    {{#each arrow_up}}
-      - {{> commitTemplate}}
-    {{/each}}
-  {{/if}}
+{{#if arrow_up}}
+## ⬆ Dependencies upgraded
+{{#each arrow_up}}
+- {{> commitTemplate}}
+{{/each}}
+{{/if}}
 
 {{/with}}
