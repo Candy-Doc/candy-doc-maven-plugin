@@ -3,7 +3,7 @@ name: Publish a new release
 on:
   push:
     branches:
-    - main
+    - fix/maven-central
 
 jobs:
   release:
