@@ -20,7 +20,10 @@ jobs:
       run: |
         npm install commitlint-config-gitmoji commitlint 
         echo "module.exports = {extends: ['gitmoji']};" > ./commitlint.config.js
+
     - name: Run PR name linter
+      env:
+        GITMOJI_PATH: ./.github/.gitmojis.json
       uses: JulienKode/pull-request-name-linter-action@v0.5.0
 
   run_precommit_hooks:

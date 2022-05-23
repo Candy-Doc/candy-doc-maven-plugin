@@ -1,0 +1,132 @@
+{
+  "gitmojis": [
+    {
+      "emoji": "💥",
+      "entity": "&#x1f4a5;",
+      "code": ":boom:",
+      "description": "Introduce breaking changes.",
+      "name": "boom",
+      "semver": "major"
+    },
+    {
+      "emoji": "🍬",
+      "entity": "&#x1F36C;",
+      "code": ":candy:",
+      "description": "Major feature.",
+      "name": "candy",
+      "semver": "major"
+    },
+    {
+      "emoji": "✨",
+      "entity": "&#x2728;",
+      "code": ":sparkles:",
+      "description": "Introduce new features.",
+      "name": "sparkles",
+      "semver": "minor"
+    },
+    {
+      "emoji": "⚡️",
+      "entity": "&#x26a1;",
+      "code": ":zap:",
+      "description": "Improve performance.",
+      "name": "zap",
+      "semver": "minor"
+    },
+    {
+      "emoji": "💄",
+      "entity": "&#ff99cc;",
+      "code": ":lipstick:",
+      "description": "Add or update the UI and style files.",
+      "name": "lipstick",
+      "semver": "minor"
+    },
+    {
+      "emoji": "♻️",
+      "entity": "&#x2672;",
+      "code": ":recycle:",
+      "description": "Refactor code.",
+      "name": "recycle",
+      "semver": "minor"
+    },
+    {
+      "emoji": "🐛",
+      "entity": "&#x1f41b;",
+      "code": ":bug:",
+      "description": "Fix a bug.",
+      "name": "bug",
+      "semver": "patch"
+    },
+    {
+      "emoji": "⬇️",
+      "entity": "⬇️",
+      "code": ":arrow_down:",
+      "description": "Downgrade dependencies.",
+      "name": "arrow-down",
+      "semver": "patch"
+    },
+    {
+      "emoji": "⬆️",
+      "entity": "⬆️",
+      "code": ":arrow_up:",
+      "description": "Upgrade dependencies.",
+      "name": "arrow-up",
+      "semver": "patch"
+    },
+    {
+      "emoji": "🚨",
+      "entity": "&#x1f6a8;",
+      "code": ":rotating_light:",
+      "description": "Fix compiler / linter warnings.",
+      "name": "rotating-light",
+      "semver": "patch"
+    },
+    {
+      "emoji": "🔥",
+      "entity": "&#x1f525;",
+      "code": ":fire:",
+      "description": "Remove code or files.",
+      "name": "fire",
+      "semver": null
+    },
+    {
+      "emoji": "📝",
+      "entity": "&#x1f4dd;",
+      "code": ":memo:",
+      "description": "Add or update documentation.",
+      "name": "memo",
+      "semver": null
+    },
+    {
+      "emoji": "💚",
+      "entity": "&#x1f49a;",
+      "code": ":green_heart:",
+      "description": "Fix CI Build.",
+      "name": "green-heart",
+      "semver": null
+    },
+    {
+      "emoji": "👷",
+      "entity": "&#x1f477;",
+      "code": ":construction_worker:",
+      "description": "Add or update CI build system.",
+      "name": "construction-worker",
+      "semver": null
+    },
+    {
+      "emoji": "✏️",
+      "entity": "&#59161;",
+      "code": ":pencil2:",
+      "description": "Fix typos.",
+      "name": "pencil2",
+      "semver": null
+    },
+    {
+      "emoji": "🧪",
+      "entity": "&#x1F9EA;",
+      "code": ":test_tube:",
+      "description": "Add a failing test.",
+      "name": "test-tube",
+      "semver": null
+    }
+  ]
+}
