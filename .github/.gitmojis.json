@@ -1,28 +1,20 @@
 {
   "gitmojis": [
     {
-      "emoji": "⚡️",
-      "entity": "&#x26a1;",
-      "code": ":zap:",
-      "description": "Improve performance.",
-      "name": "zap",
-      "semver": "patch"
+      "emoji": "💥",
+      "entity": "&#x1f4a5;",
+      "code": ":boom:",
+      "description": "Introduce breaking changes.",
+      "name": "boom",
+      "semver": "major"
     },
     {
-      "emoji": "🔥",
-      "entity": "&#x1f525;",
-      "code": ":fire:",
-      "description": "Remove code or files.",
-      "name": "fire",
-      "semver": null
-    },
-    {
-      "emoji": "🐛",
-      "entity": "&#x1f41b;",
-      "code": ":bug:",
-      "description": "Fix a bug.",
-      "name": "bug",
-      "semver": "patch"
+      "emoji": "🍬",
+      "entity": "&#x1F36C;",
+      "code": ":candy:",
+      "description": "Major feature.",
+      "name": "candy",
+      "semver": "major"
     },
     {
       "emoji": "✨",
@@ -33,28 +25,36 @@
       "semver": "minor"
     },
     {
-      "emoji": "📝",
-      "entity": "&#x1f4dd;",
-      "code": ":memo:",
-      "description": "Add or update documentation.",
-      "name": "memo",
-      "semver": null
+      "emoji": "⚡️",
+      "entity": "&#x26a1;",
+      "code": ":zap:",
+      "description": "Improve performance.",
+      "name": "zap",
+      "semver": "minor"
     },
     {
-      "emoji": "🚨",
-      "entity": "&#x1f6a8;",
-      "code": ":rotating_light:",
-      "description": "Fix compiler / linter warnings.",
-      "name": "rotating-light",
-      "semver": null
+      "emoji": "💄",
+      "entity": "&#ff99cc;",
+      "code": ":lipstick:",
+      "description": "Add or update the UI and style files.",
+      "name": "lipstick",
+      "semver": "minor"
     },
     {
-      "emoji": "💚",
-      "entity": "&#x1f49a;",
-      "code": ":green_heart:",
-      "description": "Fix CI Build.",
-      "name": "green-heart",
-      "semver": null
+      "emoji": "♻️",
+      "entity": "&#x2672;",
+      "code": ":recycle:",
+      "description": "Refactor code.",
+      "name": "recycle",
+      "semver": "minor"
+    },
+    {
+      "emoji": "🐛",
+      "entity": "&#x1f41b;",
+      "code": ":bug:",
+      "description": "Fix a bug.",
+      "name": "bug",
+      "semver": "patch"
     },
     {
       "emoji": "⬇️",
@@ -73,6 +73,38 @@
       "semver": "patch"
     },
     {
+      "emoji": "🚨",
+      "entity": "&#x1f6a8;",
+      "code": ":rotating_light:",
+      "description": "Fix compiler / linter warnings.",
+      "name": "rotating-light",
+      "semver": "patch"
+    },
+    {
+      "emoji": "🔥",
+      "entity": "&#x1f525;",
+      "code": ":fire:",
+      "description": "Remove code or files.",
+      "name": "fire",
+      "semver": null
+    },
+    {
+      "emoji": "📝",
+      "entity": "&#x1f4dd;",
+      "code": ":memo:",
+      "description": "Add or update documentation.",
+      "name": "memo",
+      "semver": null
+    },
+    {
+      "emoji": "💚",
+      "entity": "&#x1f49a;",
+      "code": ":green_heart:",
+      "description": "Fix CI Build.",
+      "name": "green-heart",
+      "semver": null
+    },
+    {
       "emoji": "👷",
       "entity": "&#x1f477;",
       "code": ":construction_worker:",
@@ -81,36 +113,12 @@
       "semver": null
     },
     {
-      "emoji": "♻️",
-      "entity": "&#x2672;",
-      "code": ":recycle:",
-      "description": "Refactor code.",
-      "name": "recycle",
-      "semver": null
-    },
-    {
       "emoji": "✏️",
       "entity": "&#59161;",
       "code": ":pencil2:",
       "description": "Fix typos.",
       "name": "pencil2",
-      "semver": "patch"
-    },
-    {
-      "emoji": "💥",
-      "entity": "&#x1f4a5;",
-      "code": ":boom:",
-      "description": "Introduce breaking changes.",
-      "name": "boom",
-      "semver": "major"
-    },
-    {
-      "emoji": "🚩",
-      "entity": "&#x1F6A9;",
-      "code": ":triangular_flag_on_post:",
-      "description": "Add, update, or remove feature flags.",
-      "name": "triangular-flag-on-post",
-      "semver": "patch"
+      "semver": null
     },
     {
       "emoji": "🧪",
@@ -118,14 +126,6 @@
       "code": ":test_tube:",
       "description": "Add a failing test.",
       "name": "test-tube",
-      "semver": null
-    },
-    {
-      "emoji": "🍬",
-      "entity": "&#x1F36C;",
-      "code": ":candy:",
-      "description": "Major feature.",
-      "name": "candy",
       "semver": null
     }
   ]
