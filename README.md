@@ -236,9 +236,8 @@ graph TD
 
 Then, we will approve your changes and we will push these changes to main.
 
-Depending on which improvements you will bring to the plugin, 
+Depending on which improvements you will bring to the plugin,
 you will have to choose the right gitmoji in your PR name in order to publish a new version.
-
 
 ```mermaid
 graph TD
