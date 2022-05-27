@@ -221,7 +221,7 @@ milestones [here](https://github.com/Candy-Doc/candy-doc-maven-plugin/milestones
 The development team works on a branch named _main_.
 
 Whenever a feature needs to be implemented, a new branch (feat/<new_branch>) must be pulled from
-_main_ and rebased to this latter once the feature is ready.
+_main_ and rebased to this later once the feature is ready.
 
 ```mermaid
 graph TD
@@ -234,8 +234,11 @@ graph TD
     3bis --> 4bis
 ```
 
-Then, every time a new version is about to be released, a rebase from your new branch (feat/<new_branch>) to _main_
-will create a new tag and a new package in the package registry.
+Then, we will approve your changes and we will push these changes to main.
+
+Depending on which improvements you will bring to the plugin, 
+you will have to choose the right gitmoji in your PR name in order to publish a new version.
+
 
 ```mermaid
 graph TD
