@@ -1,5 +1,4 @@
 # 🍬 Candy Doc
-
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -221,13 +220,35 @@ milestones [here](https://github.com/Candy-Doc/candy-doc-maven-plugin/milestones
 
 The development team works on a branch named _main_.
 
-Whenever a feature needs to be implemented, a new branch must be pulled from
-_main_ and merged to this latter once the feature is ready.
+Whenever a feature needs to be implemented, a new branch (feat/<new_branch>) must be pulled from
+_main_ and rebased to this later once the feature is ready.
 
-Every time a new version is about to be released, a merge from your new branch to _main_
-will create a new tag and a new package in the package registry.
+```mermaid
+graph TD
+    .. --main--> 1
+    1 --> 2
+    2 --> 3
+    3 --> 4
+    1 --feat/my-feature--> 2bis
+    2bis --> 3bis
+    3bis --> 4bis
+```
 
-![feature-branch-rebase-final.png](assets/screenshots/feature-branch-rebase-final.png)
+Then, we will approve your changes and we will push these changes to main.
+
+Depending on which improvements you will bring to the plugin,
+you will have to choose the right gitmoji in your PR name in order to publish a new version.
+
+```mermaid
+graph TD
+    .. --feat/my-feature--> 1
+    1 --> 2
+    2 --> 3
+    3 --> 4
+    4 --> 2bis
+    2bis --> 3bis
+    3bis --> 4bis
+```
 
 Explanations:
 
@@ -241,11 +262,10 @@ Explanations:
 > Create a new branch feat/\<branch name\> for the feature
 >
 > ```bash
-> git checkout -b feat/\<branch name\>
+> git checkout -b feat/<branch name>
 > ```
 >
-> Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your
-> feature will be squash and merge _feat/\<branch name\>_ to _main_.
+> Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your feature will be squash and merge _feat/\<branch name\>_ to _main_.
 >
 >See contributing rules [here](./CONTRIBUTING.md).
 >
