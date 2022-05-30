@@ -12,5 +12,6 @@ jobs:
     - uses: technote-space/toc-generator@v4
       with:
         TOC_TITLE: '## Table of Contents'
+        COMMIT_MESSAGE: ':memo: docs: Update table of contents'
         COMMIT_NAME: Auto ToC Bot
         COMMIT_EMAIL: bot@github.com
