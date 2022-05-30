@@ -1,11 +1,25 @@
-# 🍬 Candy Doc
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" width="242" height="90" alt="CandyDoc logo" srcset="https://user-images.githubusercontent.com/22562938/170952295-d5634b7d-54bf-4beb-a105-50123b29a15b.png">
+    <source media="(prefers-color-scheme: light)"width="242" height="90" alt="CandyDoc logo" srcset="https://user-images.githubusercontent.com/22562938/170952293-a3d745d2-c61d-4094-82dd-0e04ea3e0efb.png">
+    <img alt="CandyDoc" width="400" src="https://user-images.githubusercontent.com/22562938/170954304-420d51b3-f499-4201-945a-df2dd105e8f6.png">
+  </picture>
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
-![Discord](https://img.shields.io/discord/951511594972631120?logo=discord)
+  # Candy Doc Maven plugin
+  <p align="center">
+    <a href="https://mvnrepository.com/artifact/io.candy-doc/candy-doc">
+      <img src="https://flat.badgen.net/maven/v/maven-central/io.candy-doc/candy-doc" alt="Maven central release">
+    </a>
+    <a href="https://github.com/Candy-Doc/candy-doc-components-library/blob/main/LICENSE" alt="License">
+      <img src="https://flat.badgen.net/badge/license/GPL3/blue" alt="License">
+    </a>
+    <a href="https://discord.com/invite/CxwdeKjtcT" alt="Discord link">
+      <img src="https://flat.badgen.net/discord/online-members/CxwdeKjtcT" alt="Discord members">
+    </a>
+  </p>
+</div>
 
-Candy-Doc is a documentation generator plugin for projects built with the
+Candy Doc is a documentation generator plugin for projects built with the
 Domain-Driven-Design approach.
 
 > _"Domain-Driven Design is an approach to software development that centers
@@ -20,7 +34,7 @@ Domain-Driven-Design approach.
 
 - [Installation](#installation)
   - [With Maven](#with-maven)
-- [🍧 DDD Annotations](#-ddd-annotations)
+- [DDD Annotations](#ddd-annotations)
   - [Aggregate](#aggregate)
   - [Bounded Context](#bounded-context)
   - [Core Concept](#core-concept)
@@ -28,9 +42,9 @@ Domain-Driven-Design approach.
   - [Domain Event](#domain-event)
   - [Shared Kernel](#shared-kernel)
   - [Value Object](#value-object)
-- [🌐 HTML Documentation](#-html-documentation)
-- [🗺️ ROADMAP](#-roadmap)
-- [&#91;FOR DEVELOPERS ONLY&#93; Development workflow](#for-developers-only-development-workflow)
+- [HTML Documentation 🌐](#html-documentation-)
+- [ROADMAP 🗺️](#roadmap-)
+- [&#91;FOR DEV&#93; Development workflow](#for-dev-development-workflow)
   - [Release policy](#release-policy)
 - [Technologies](#technologies)
 - [References](#references)
@@ -99,7 +113,7 @@ replace `${candy-doc.version}` with the current version you are using):
 
 The documentation will be generated in the `target/candy-doc` directory.
 
-## 🍧 DDD Annotations
+## DDD Annotations
 
 Domain-Driven-Design concepts are identified with annotations.
 
@@ -193,7 +207,7 @@ values.
 A Core Concept can interact with one or more value objects. A Value Object only
 has primitive fields, is immutable and should be valid when instantiated.
 
-## 🌐 HTML Documentation
+## HTML Documentation 🌐
 
 If you have chosen `html` as output format, you can open the generated
 _index.html_ file from your file explorer to have access to the documentation.
@@ -210,24 +224,46 @@ See the interactions between concepts
 
 ![core_concept.png](assets/screenshots/core_concept.png)
 
-## 🗺️ ROADMAP
+## ROADMAP 🗺️
 
 To know on what the team are actually working on, you can see the different
 milestones [here](https://github.com/Candy-Doc/candy-doc-maven-plugin/milestones)
 
-## [FOR DEVELOPERS ONLY] Development workflow
+## [FOR DEV] Development workflow
 
 ### Release policy
 
 The development team works on a branch named _main_.
 
-Whenever a feature needs to be implemented, a new branch must be pulled from
-_main_ and merged to this latter once the feature is ready.
+Whenever a feature needs to be implemented, a new branch (feat/<new_branch>) must be pulled from
+_main_ and rebased to this later once the feature is ready.
 
-Every time a new version is about to be released, a merge from your new branch to _main_
-will create a new tag and a new package in the package registry.
+```mermaid
+graph TD
+    .. --main--> 1
+    1 --> 2
+    2 --> 3
+    3 --> 4
+    1 --feat/my-feature--> 2bis
+    2bis --> 3bis
+    3bis --> 4bis
+```
 
-![feature-branch-rebase-final.png](assets/screenshots/feature-branch-rebase-final.png)
+Then, we will approve your changes and we will push these changes to main.
+
+Depending on which improvements you will bring to the plugin,
+you will have to choose the right gitmoji in your PR name in order to publish a new version.
+
+```mermaid
+graph TD
+    .. --feat/my-feature--> 1
+    1 --> 2
+    2 --> 3
+    3 --> 4
+    4 --> 2bis
+    2bis --> 3bis
+    3bis --> 4bis
+```
 
 Explanations:
 
@@ -241,11 +277,10 @@ Explanations:
 > Create a new branch feat/\<branch name\> for the feature
 >
 > ```bash
-> git checkout -b feat/\<branch name\>
+> git checkout -b feat/<branch name>
 > ```
 >
-> Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your
-> feature will be squash and merge _feat/\<branch name\>_ to _main_.
+> Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your feature will be squash and merge _feat/\<branch name\>_ to _main_.
 >
 >See contributing rules [here](./CONTRIBUTING.md).
 >
