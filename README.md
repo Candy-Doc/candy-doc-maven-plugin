@@ -43,7 +43,7 @@ Domain-Driven-Design approach.
   - [Shared Kernel](#shared-kernel)
   - [Value Object](#value-object)
 - [HTML Documentation 🌐](#html-documentation-)
-- [ROADMAP 🗺️](#roadmap-%EF%B8%8F)
+- [ROADMAP 🗺️](#roadmap-)
 - [&#91;FOR DEV&#93; Development workflow](#for-dev-development-workflow)
   - [Release policy](#release-policy)
 - [Technologies](#technologies)
