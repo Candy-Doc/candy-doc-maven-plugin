@@ -2,6 +2,7 @@ package io.candydoc.plugin.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.candydoc.ddd.SubdomainType;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.*;
@@ -16,6 +17,7 @@ public class BoundedContextDto {
   @NonNull String canonicalName;
   @NonNull String description;
   @NonNull String packageName;
+  @NonNull SubdomainType subdomainType;
   @JsonIgnore @Builder.Default List<ConceptDto> concepts = List.of();
 
   @JsonIgnore

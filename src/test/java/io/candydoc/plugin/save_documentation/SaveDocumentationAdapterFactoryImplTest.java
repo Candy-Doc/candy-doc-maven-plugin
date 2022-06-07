@@ -1,5 +1,6 @@
 package io.candydoc.plugin.save_documentation;
 
+import io.candydoc.ddd.SubdomainType;
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
 import io.candydoc.ddd.extract_ddd_concepts.SaveDocumentationPort;
 import io.candydoc.plugin.save_documentation.file.SaveDocumentationAsFile;
@@ -44,6 +45,7 @@ class SaveDocumentationAdapterFactoryImplTest {
             .canonicalName("io.candydoc.sample.bounded_context_one.package-info")
             .packageName("io.candydoc.sample.bounded_context_one")
             .description("test package 1")
+            .subdomainType(SubdomainType.CoreDomain)
             .build();
     saveDocumentationPort.save(new LinkedList<>(Collections.singleton(newBoundedContextEvent)));
     Path expectedPath = Paths.get("target", "candy-doc", "bounded_contexts.json");
@@ -61,6 +63,7 @@ class SaveDocumentationAdapterFactoryImplTest {
             .canonicalName("io.candydoc.sample.bounded_context_one.package-info")
             .packageName("io.candydoc.sample.bounded_context_one")
             .description("test package 1")
+            .subdomainType(SubdomainType.CoreDomain)
             .build();
     saveDocumentationPort.save(new LinkedList<>(Collections.singleton(newBoundedContextEvent)));
     Path expectedPath = Paths.get("target", "candy-doc", "bounded_contexts.yml");

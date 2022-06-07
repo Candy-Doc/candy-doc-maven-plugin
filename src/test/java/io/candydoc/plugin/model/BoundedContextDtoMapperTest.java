@@ -1,6 +1,7 @@
 package io.candydoc.plugin.model;
 
 import io.candydoc.ddd.Event;
+import io.candydoc.ddd.SubdomainType;
 import io.candydoc.ddd.aggregate.AggregateFound;
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
 import io.candydoc.ddd.core_concept.CoreConceptFound;
@@ -30,6 +31,7 @@ class BoundedContextDtoMapperTest {
             .canonicalName("bounded.context.package-info")
             .packageName("bounded.context")
             .description("description")
+            .subdomainType(SubdomainType.GenericSubdomain)
             .build());
   }
 
@@ -42,6 +44,7 @@ class BoundedContextDtoMapperTest {
             .canonicalName("bounded.context2.package-info")
             .packageName("bounded.context2")
             .description("description 2")
+            .subdomainType(SubdomainType.GenericSubdomain)
             .build());
 
     // when
@@ -55,12 +58,14 @@ class BoundedContextDtoMapperTest {
                 .canonicalName("bounded.context.package-info")
                 .packageName("bounded.context")
                 .description("description")
+                .subdomainType(SubdomainType.GenericSubdomain)
                 .build(),
             BoundedContextDto.builder()
                 .simpleName("bounded context 2")
                 .canonicalName("bounded.context2.package-info")
                 .packageName("bounded.context2")
                 .description("description 2")
+                .subdomainType(SubdomainType.GenericSubdomain)
                 .build());
   }
 
