@@ -14,11 +14,18 @@ import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
 import io.candydoc.ddd.model.ExtractionException;
 import io.candydoc.ddd.value_object.ValueObjectFound;
+import io.candydoc.plugin.MainProcessor;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import javax.tools.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -31,15 +38,47 @@ class ExtractDDDConceptsUseCaseTest {
 
   private ResultCaptor<List<Event>> extractionCaptor = new ResultCaptor<>();
 
+  @TempDir Path tempDir;
+
   @BeforeEach
   public void setUp() {
     saveDocumentationPort = mock(SaveDocumentationPort.class);
     dddConceptsExtractionService =
-        spy(new DDDConceptsExtractionService(new ReflectionsConceptFinder()));
+        spy(new DDDConceptsExtractionService(new AnnotationProcessorConceptFinder()));
     extractDDDConceptsUseCase =
         new ExtractDDDConceptsUseCase(dddConceptsExtractionService, saveDocumentationPort);
 
     doAnswer(extractionCaptor).when(dddConceptsExtractionService).extract(any(Command.class));
+  }
+
+  @Test
+  void main_processor_is_working_as_intended() throws IOException {
+    // Given
+    JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+
+    DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
+
+    StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, null, null);
+    fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Arrays.asList(tempDir.toFile()));
+    fileManager.setLocation(StandardLocation.SOURCE_OUTPUT, Arrays.asList(tempDir.toFile()));
+
+    File file =
+        new File(
+            "src/test/java/io/candydoc/plugin/save_documentation/AnnotationProcessorTestBean.java");
+    Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjects(file);
+
+    JavaCompiler.CompilationTask task =
+        compiler.getTask(null, fileManager, diagnostics, null, null, compilationUnits);
+    task.setProcessors(Collections.singletonList(new MainProcessor()));
+
+    // When
+    boolean success = task.call();
+
+    // Then
+    for (Diagnostic<? extends JavaFileObject> diagnostic : diagnostics.getDiagnostics()) {
+      System.err.println(diagnostic);
+    }
+    Assertions.assertThat(success).isTrue();
   }
 
   @Test

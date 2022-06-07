@@ -1,18 +1,16 @@
-package io.candydoc.domain.processors;
+package io.candydoc.plugin;
 
 import com.google.auto.service.AutoService;
-import io.candydoc.domain.GenerateDocumentationUseCase;
-import io.candydoc.domain.SaveDocumentationAdapterFactory;
-import io.candydoc.domain.SaveDocumentationPort;
-import io.candydoc.domain.annotations.*;
-import io.candydoc.domain.command.ExtractDDDConcepts;
-import io.candydoc.domain.repository.ClassesFinder;
-import io.candydoc.domain.repository.ProcessorUtils;
-import io.candydoc.infra.SaveDocumentationAdapterFactoryImpl;
+import io.candydoc.ddd.extract_ddd_concepts.*;
+import io.candydoc.ddd.repository.ClassesFinder;
+import io.candydoc.ddd.repository.ProcessorUtils;
+import io.candydoc.plugin.save_documentation.SaveDocumentationAdapterFactory;
+import io.candydoc.plugin.save_documentation.SaveDocumentationAdapterFactoryImpl;
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
@@ -22,7 +20,9 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @SupportedSourceVersion(SourceVersion.RELEASE_11)
 @AutoService(Processor.class)
 public class MainProcessor extends AbstractProcessor {
@@ -33,15 +33,6 @@ public class MainProcessor extends AbstractProcessor {
 
   private List<String> packagesToScan;
   private String outputFormat;
-
-  private static final Set<Class<? extends Annotation>> DDD_ANNOTATION_CLASSES =
-      Set.of(
-          io.candydoc.domain.annotations.BoundedContext.class,
-          io.candydoc.domain.annotations.CoreConcept.class,
-          io.candydoc.domain.annotations.ValueObject.class,
-          io.candydoc.domain.annotations.DomainEvent.class,
-          io.candydoc.domain.annotations.DomainCommand.class,
-          io.candydoc.domain.annotations.Aggregate.class);
 
   @Override
   public synchronized void init(ProcessingEnvironment processingEnv) {
@@ -58,22 +49,14 @@ public class MainProcessor extends AbstractProcessor {
 
   @Override
   public Set<String> getSupportedAnnotationTypes() {
-    Set<String> annotations = new LinkedHashSet<>();
-    annotations.add(Aggregate.class.getCanonicalName());
-    annotations.add(BoundedContext.class.getCanonicalName());
-    annotations.add(CoreConcept.class.getCanonicalName());
-    annotations.add(DomainCommand.class.getCanonicalName());
-    annotations.add(DomainEvent.class.getCanonicalName());
-    annotations.add(ValueObject.class.getCanonicalName());
-    return annotations;
+    return AnnotationProcessorConceptFinder.ANNOTATION_PROCESSORS.keySet().stream()
+        .map(Class::getCanonicalName)
+        .collect(Collectors.toUnmodifiableSet());
   }
 
   @Override
   public Set<String> getSupportedOptions() {
-    Set<String> options = new LinkedHashSet<>();
-    options.add("packagesToScan");
-    options.add("outputFormat");
-    return options;
+    return Set.of("packagesToScan", "outputFormat");
   }
 
   @Override
@@ -102,12 +85,18 @@ public class MainProcessor extends AbstractProcessor {
       messager.printMessage(Diagnostic.Kind.NOTE, "CandyDoc is processing...");
 
       ClassesFinder.getInstance()
-          .addElements((Set<Element>) roundEnv.getElementsAnnotatedWithAny(DDD_ANNOTATION_CLASSES));
+          .addElements(
+              (Set<Element>)
+                  roundEnv.getElementsAnnotatedWithAny(
+                      AnnotationProcessorConceptFinder.ANNOTATION_PROCESSORS.keySet()));
 
-      messager.printMessage(Diagnostic.Kind.NOTE, "All classes found were added to ClassesFinder.");
+      messager.printMessage(
+          Diagnostic.Kind.NOTE,
+          "Classes found : " + ClassesFinder.getInstance().getElements().toString());
 
       FileObject output =
-          filer.createResource(StandardLocation.SOURCE_OUTPUT, "", "candydoc/boundedContexts.json");
+          filer.createResource(
+              StandardLocation.SOURCE_OUTPUT, "", "candydoc/boundedContexts." + outputFormat);
       File file = new File(output.toUri());
       String outputDirectory = file.getParentFile().getAbsolutePath();
       messager.printMessage(
@@ -115,12 +104,16 @@ public class MainProcessor extends AbstractProcessor {
       SaveDocumentationAdapterFactory adapterFactory = new SaveDocumentationAdapterFactoryImpl();
       SaveDocumentationPort saveDocumentationPort =
           adapterFactory.getAdapter(outputFormat, outputDirectory);
-      GenerateDocumentationUseCase generateDocumentationUseCase =
-          new GenerateDocumentationUseCase(saveDocumentationPort);
-      messager.printMessage(Diagnostic.Kind.NOTE, "GenerateDocumentationUseCase created");
-      generateDocumentationUseCase.execute(
+      DDDConceptFinder DDDConceptFinder = new AnnotationProcessorConceptFinder();
+      DDDConceptsExtractionService dddConceptsExtractionService =
+          new DDDConceptsExtractionService(DDDConceptFinder);
+
+      ExtractDDDConceptsUseCase extractDDDConceptsUseCase =
+          new ExtractDDDConceptsUseCase(dddConceptsExtractionService, saveDocumentationPort);
+
+      extractDDDConceptsUseCase.execute(
           ExtractDDDConcepts.builder().packagesToScan(packagesToScan).build());
-      messager.printMessage(Diagnostic.Kind.NOTE, "GenerateDocumentationUseCase executed");
+      messager.printMessage(Diagnostic.Kind.NOTE, "CandyDoc documentation done.");
 
       return true;
     } catch (ProcessingException e) {

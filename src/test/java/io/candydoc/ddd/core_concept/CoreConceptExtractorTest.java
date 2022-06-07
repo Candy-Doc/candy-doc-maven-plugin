@@ -1,7 +1,7 @@
 package io.candydoc.ddd.core_concept;
 
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.extract_ddd_concepts.ReflectionsConceptFinder;
+import io.candydoc.ddd.extract_ddd_concepts.AnnotationProcessorConceptFinder;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class CoreConceptExtractorTest {
 
   private final CoreConceptExtractor coreConceptExtractor =
-      new CoreConceptExtractor(new ReflectionsConceptFinder());
+      new CoreConceptExtractor(new AnnotationProcessorConceptFinder());
 
   @Test
   public void use_simple_class_name_when_name_is_empty() {

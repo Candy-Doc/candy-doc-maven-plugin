@@ -1,7 +1,7 @@
 package io.candydoc.ddd.value_object;
 
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.extract_ddd_concepts.ReflectionsConceptFinder;
+import io.candydoc.ddd.extract_ddd_concepts.AnnotationProcessorConceptFinder;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class ValueObjectExtractorTest {
 
   private final ValueObjectExtractor valueObjectExtractor =
-      new ValueObjectExtractor(new ReflectionsConceptFinder());
+      new ValueObjectExtractor(new AnnotationProcessorConceptFinder());
 
   @Test
   public void anonymous_value_object_are_skipped() {

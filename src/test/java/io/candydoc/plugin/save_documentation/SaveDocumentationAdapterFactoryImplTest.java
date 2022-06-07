@@ -32,7 +32,7 @@ class SaveDocumentationAdapterFactoryImplTest {
     String outputDirectory = "wrongOutputDirectory";
     Assertions.assertThatThrownBy(() -> adapterFactory.getAdapter(outputFormat, outputDirectory))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("Output directory does not exist.");
+        .hasMessage("Output directory does not exist and can't be created.");
   }
 
   @Test

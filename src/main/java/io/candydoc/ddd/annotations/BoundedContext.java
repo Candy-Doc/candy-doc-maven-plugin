@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 @Target({ElementType.PACKAGE})
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 public @interface BoundedContext {
   String name() default "";
 

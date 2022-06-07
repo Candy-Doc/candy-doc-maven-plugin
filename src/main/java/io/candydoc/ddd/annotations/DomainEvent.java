@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 @Documented
 @Inherited
 @Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 public @interface DomainEvent {
   String description() default "";
 }

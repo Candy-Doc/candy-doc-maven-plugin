@@ -1,7 +1,7 @@
 package io.candydoc.ddd.aggregate;
 
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.extract_ddd_concepts.ReflectionsConceptFinder;
+import io.candydoc.ddd.extract_ddd_concepts.AnnotationProcessorConceptFinder;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class AggregatesExtractorTest {
 
   private final AggregatesExtractor aggregatesExtractor =
-      new AggregatesExtractor(new ReflectionsConceptFinder());
+      new AggregatesExtractor(new AnnotationProcessorConceptFinder());
 
   @Test
   public void use_simple_class_name_when_name_is_empty() {

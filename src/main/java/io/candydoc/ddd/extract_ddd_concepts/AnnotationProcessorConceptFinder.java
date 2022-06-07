@@ -7,53 +7,49 @@ import io.candydoc.ddd.core_concept.CoreConcept;
 import io.candydoc.ddd.domain_command.DomainCommand;
 import io.candydoc.ddd.domain_event.DomainEvent;
 import io.candydoc.ddd.model.*;
+import io.candydoc.ddd.repository.ClassesFinder;
+import io.candydoc.ddd.repository.ProcessorUtils;
 import io.candydoc.ddd.value_object.ValueObject;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import lombok.extern.slf4j.Slf4j;
-import org.reflections8.Reflections;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.VariableElement;
 
-@Slf4j
-public class ReflectionsConceptFinder implements DDDConceptFinder {
+public class AnnotationProcessorConceptFinder implements DDDConceptFinder {
 
-  public static final Map<Class<? extends Annotation>, Function<Class<?>, DDDConcept>>
+  public static final Map<Class<? extends Annotation>, Function<Element, DDDConcept>>
       ANNOTATION_PROCESSORS =
           Map.of(
               io.candydoc.ddd.annotations.BoundedContext.class,
-              ReflectionsConceptFinder::toBoundedContext,
+              AnnotationProcessorConceptFinder::toBoundedContext,
               io.candydoc.ddd.annotations.CoreConcept.class,
-              ReflectionsConceptFinder::toCoreConcept,
+              AnnotationProcessorConceptFinder::toCoreConcept,
               io.candydoc.ddd.annotations.ValueObject.class,
-              ReflectionsConceptFinder::toValueObject,
+              AnnotationProcessorConceptFinder::toValueObject,
               io.candydoc.ddd.annotations.DomainEvent.class,
-              ReflectionsConceptFinder::toDomainEvent,
+              AnnotationProcessorConceptFinder::toDomainEvent,
               io.candydoc.ddd.annotations.DomainCommand.class,
-              ReflectionsConceptFinder::toDomainCommand,
+              AnnotationProcessorConceptFinder::toDomainCommand,
               io.candydoc.ddd.annotations.Aggregate.class,
-              ReflectionsConceptFinder::toAggregate);
+              AnnotationProcessorConceptFinder::toAggregate);
 
   private static Set<DDDConcept> foundConcepts;
 
   @Override
   public Set<DDDConcept> findDDDConcepts() {
     if (foundConcepts == null) {
-      Reflections reflections = new Reflections();
-
       foundConcepts =
           DDDKeywords.KEYWORDS.stream()
               .flatMap(
                   annotation -> {
-                    Function<Class<?>, DDDConcept> processor =
-                        ANNOTATION_PROCESSORS.get(annotation);
+                    Function<Element, DDDConcept> processor = ANNOTATION_PROCESSORS.get(annotation);
 
-                    return reflections.getTypesAnnotatedWith(annotation).stream()
-                        .filter(clazz -> !clazz.isAnonymousClass())
+                    return ClassesFinder.getInstance().getElementsAnnotatedBy(annotation).stream()
                         .map(processor);
                   })
               .collect(Collectors.toUnmodifiableSet());
@@ -130,129 +126,145 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
         .orElseThrow();
   }
 
-  private static Aggregate toAggregate(Class<?> clazz) {
-    String simpleName = clazz.getAnnotation(io.candydoc.ddd.annotations.Aggregate.class).name();
+  private static Aggregate toAggregate(Element element) {
+    String simpleName = element.getAnnotation(io.candydoc.ddd.annotations.Aggregate.class).name();
     if (simpleName.isBlank()) {
-      simpleName = clazz.getSimpleName();
+      simpleName = element.getSimpleName().toString();
     }
 
     String description =
-        clazz.getAnnotation(io.candydoc.ddd.annotations.Aggregate.class).description();
+        element.getAnnotation(io.candydoc.ddd.annotations.Aggregate.class).description();
 
     return Aggregate.builder()
-        .canonicalName(toCanonicalName(clazz))
-        .simpleName(SimpleName.of(simpleName))
-        .packageName(toPackageName(clazz))
+        .canonicalName(toCanonicalName(element))
+        .simpleName(toSimpleName(simpleName))
+        .packageName(toPackageName(element))
         .description(Description.of(description))
         .build();
   }
 
-  private static BoundedContext toBoundedContext(Class<?> clazz) {
+  private static BoundedContext toBoundedContext(Element element) {
     String simpleName =
-        clazz.getAnnotation(io.candydoc.ddd.annotations.BoundedContext.class).name();
+        element.getAnnotation(io.candydoc.ddd.annotations.BoundedContext.class).name();
     if (simpleName.isBlank()) {
-      simpleName = clazz.getSimpleName();
+      simpleName = element.getSimpleName().toString();
     }
 
     String description =
-        clazz.getAnnotation(io.candydoc.ddd.annotations.BoundedContext.class).description();
+        element.getAnnotation(io.candydoc.ddd.annotations.BoundedContext.class).description();
 
     return BoundedContext.builder()
-        .canonicalName(toCanonicalName(clazz))
-        .simpleName(SimpleName.of(simpleName))
-        .packageName(toPackageName(clazz))
+        .canonicalName(toCanonicalName(element))
+        .simpleName(toSimpleName(simpleName))
+        .packageName(toPackageName(element))
         .description(Description.of(description))
         .build();
   }
 
-  private static CoreConcept toCoreConcept(Class<?> clazz) {
-    String simpleName = clazz.getAnnotation(io.candydoc.ddd.annotations.CoreConcept.class).name();
+  private static CoreConcept toCoreConcept(Element element) {
+    String simpleName = element.getAnnotation(io.candydoc.ddd.annotations.CoreConcept.class).name();
     if (simpleName.isBlank()) {
-      simpleName = clazz.getSimpleName();
+      simpleName = element.getSimpleName().toString();
     }
 
     String description =
-        clazz.getAnnotation(io.candydoc.ddd.annotations.CoreConcept.class).description();
+        element.getAnnotation(io.candydoc.ddd.annotations.CoreConcept.class).description();
 
     return CoreConcept.builder()
-        .canonicalName(toCanonicalName(clazz))
-        .simpleName(SimpleName.of(simpleName))
-        .packageName(toPackageName(clazz))
+        .canonicalName(toCanonicalName(element))
+        .simpleName(toSimpleName(simpleName))
+        .packageName(toPackageName(element))
         .description(Description.of(description))
         .build();
   }
 
-  private static DomainCommand toDomainCommand(Class<?> clazz) {
+  private static DomainCommand toDomainCommand(Element element) {
     String description =
-        clazz.getAnnotation(io.candydoc.ddd.annotations.DomainCommand.class).description();
+        element.getAnnotation(io.candydoc.ddd.annotations.DomainCommand.class).description();
 
     return DomainCommand.builder()
-        .canonicalName(toCanonicalName(clazz))
-        .simpleName(SimpleName.of(clazz.getSimpleName()))
-        .packageName(toPackageName(clazz))
+        .canonicalName(toCanonicalName(element))
+        .simpleName(toSimpleName(element))
+        .packageName(toPackageName(element))
         .description(Description.of(description))
         .build();
   }
 
-  private static DomainEvent toDomainEvent(Class<?> clazz) {
+  private static DomainEvent toDomainEvent(Element element) {
     String description =
-        clazz.getAnnotation(io.candydoc.ddd.annotations.DomainEvent.class).description();
+        element.getAnnotation(io.candydoc.ddd.annotations.DomainEvent.class).description();
 
     return DomainEvent.builder()
-        .canonicalName(toCanonicalName(clazz))
-        .simpleName(SimpleName.of(clazz.getSimpleName()))
-        .packageName(toPackageName(clazz))
+        .canonicalName(toCanonicalName(element))
+        .simpleName(toSimpleName(element))
+        .packageName(toPackageName(element))
         .description(Description.of(description))
         .build();
   }
 
-  private static ValueObject toValueObject(Class<?> clazz) {
+  private static ValueObject toValueObject(Element element) {
     String description =
-        clazz.getAnnotation(io.candydoc.ddd.annotations.ValueObject.class).description();
+        element.getAnnotation(io.candydoc.ddd.annotations.ValueObject.class).description();
 
     return ValueObject.builder()
-        .canonicalName(toCanonicalName(clazz))
-        .simpleName(SimpleName.of(clazz.getSimpleName()))
-        .packageName(toPackageName(clazz))
+        .canonicalName(toCanonicalName(element))
+        .simpleName(toSimpleName(element))
+        .packageName(toPackageName(element))
         .description(Description.of(description))
         .build();
   }
 
-  private static CanonicalName toCanonicalName(Class<?> clazz) {
-    return CanonicalName.of(clazz.getCanonicalName());
+  private static CanonicalName toCanonicalName(Element element) {
+    return CanonicalName.of(element.asType().toString());
   }
 
-  private static PackageName toPackageName(Class<?> clazz) {
-    return PackageName.of(clazz.getPackageName());
+  private static SimpleName toSimpleName(Element element) {
+    return SimpleName.of(element.getSimpleName().toString());
   }
 
-  private static Set<CanonicalName> conceptsInteractingWith(CanonicalName conceptName) {
-    try {
-      Class<?> clazz =
-          Class.forName(conceptName.value(), false, Thread.currentThread().getContextClassLoader());
-      Set<Class<?>> interactions = new HashSet<>();
-
-      Arrays.stream(clazz.getDeclaredFields()).map(Field::getType).forEach(interactions::add);
-
-      Arrays.stream(clazz.getDeclaredMethods())
-          .forEach(
-              method -> {
-                interactions.add(method.getReturnType());
-                interactions.addAll(Set.of(method.getParameterTypes()));
-              });
-
-      return interactions.stream()
-          .filter(ReflectionsConceptFinder::isDDDAnnotated)
-          .map(ReflectionsConceptFinder::toCanonicalName)
-          .collect(Collectors.toUnmodifiableSet());
-    } catch (ClassNotFoundException e) {
-      throw new ExtractionException(e.getMessage());
-    }
+  private static SimpleName toSimpleName(String simpleName) {
+    return SimpleName.of(simpleName);
   }
 
-  private static boolean isDDDAnnotated(Class<?> clazz) {
-    Set<Annotation> annotations = Set.of(clazz.getAnnotations());
-    return annotations.stream()
-        .anyMatch(annotation -> DDDKeywords.KEYWORDS.contains(annotation.annotationType()));
+  private static PackageName toPackageName(Element element) {
+    return PackageName.of(
+        ProcessorUtils.getInstance()
+            .getElementUtils()
+            .getPackageOf(element)
+            .getSimpleName()
+            .toString());
+  }
+
+  private static Set<CanonicalName> conceptsInteractingWith(CanonicalName canonicalName) {
+    Element element = ClassesFinder.getInstance().forName(canonicalName);
+    Set<Element> interactions = new HashSet<>();
+
+    element.getEnclosedElements().stream()
+        .filter(enclosedElement -> enclosedElement instanceof VariableElement)
+        .forEach(interactions::add);
+
+    element.getEnclosedElements().stream()
+        .filter(enclosedElement -> enclosedElement instanceof ExecutableElement)
+        .forEach(
+            method -> {
+              interactions.add(
+                  ProcessorUtils.getInstance()
+                      .getTypesUtils()
+                      .asElement(((ExecutableElement) method).getReturnType()));
+              interactions.addAll(
+                  ((ExecutableElement) method)
+                      .getTypeParameters().stream().collect(Collectors.toSet()));
+            });
+
+    return interactions.stream()
+        .filter(AnnotationProcessorConceptFinder::isDDDAnnotated)
+        .map(AnnotationProcessorConceptFinder::toCanonicalName)
+        .collect(Collectors.toUnmodifiableSet());
+  }
+
+  private static boolean isDDDAnnotated(Element element) {
+    return element.getAnnotationMirrors().stream()
+        .anyMatch(
+            annotation -> DDDKeywords.KEYWORDS.contains(annotation.getAnnotationType().toString()));
   }
 }

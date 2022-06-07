@@ -1,4 +1,4 @@
-package io.candydoc.domain.processors;
+package io.candydoc.plugin;
 
 import javax.lang.model.element.Element;
 

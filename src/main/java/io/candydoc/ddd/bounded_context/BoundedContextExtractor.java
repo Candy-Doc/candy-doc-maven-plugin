@@ -1,6 +1,7 @@
 package io.candydoc.ddd.bounded_context;
 
 import io.candydoc.ddd.Event;
+import io.candydoc.ddd.extract_ddd_concepts.DDDConceptFinder;
 import io.candydoc.ddd.extract_ddd_concepts.DocumentationGenerationFailed;
 import io.candydoc.ddd.extract_ddd_concepts.ExtractDDDConcepts;
 import io.candydoc.ddd.model.Extractor;
@@ -14,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
-  private final io.candydoc.ddd.extract_ddd_concepts.DDDConceptFinder DDDConceptFinder;
+  private final DDDConceptFinder DDDConceptFinder;
 
   @Override
   public List<Event> extract(ExtractDDDConcepts command) {

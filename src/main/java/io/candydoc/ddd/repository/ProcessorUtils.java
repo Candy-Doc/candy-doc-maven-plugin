@@ -1,4 +1,4 @@
-package io.candydoc.domain.repository;
+package io.candydoc.ddd.repository;
 
 import javax.annotation.processing.Messager;
 import javax.lang.model.util.Elements;

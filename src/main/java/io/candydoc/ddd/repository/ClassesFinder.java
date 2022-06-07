@@ -1,5 +1,6 @@
-package io.candydoc.domain.repository;
+package io.candydoc.ddd.repository;
 
+import io.candydoc.ddd.model.CanonicalName;
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,11 +13,18 @@ public class ClassesFinder {
 
   public ClassesFinder() {}
 
-  public Set<Element> getClasses() {
+  public Element forName(CanonicalName canonicalName) {
+    return elements.stream()
+        .filter(element -> element.asType().toString().equals(canonicalName.value()))
+        .findFirst()
+        .orElseThrow();
+  }
+
+  public Set<Element> getElements() {
     return elements;
   }
 
-  public Set<Element> getClassesAnnotatedBy(Class<? extends Annotation> annotation) {
+  public Set<Element> getElementsAnnotatedBy(Class<? extends Annotation> annotation) {
     return elements.stream()
         .filter(typeElement -> typeElement.getAnnotation(annotation) != null)
         .collect(Collectors.toSet());
@@ -26,11 +34,12 @@ public class ClassesFinder {
     return this.elements.addAll(elements);
   }
 
-  public boolean addElement(Element element) {
-    return elements.add(element);
-  }
-
   public static ClassesFinder getInstance() {
     return INSTANCE;
+  }
+
+  @Override
+  public String toString() {
+    return super.toString() + elements.toString();
   }
 }
