@@ -16,6 +16,7 @@ import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -338,6 +339,37 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.shared_kernel.package-info")
                 .description("description of shared kernel")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
+                .relations(
+                    Set.of(
+                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info",
+                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_two.package-info"))
+                .build());
+  }
+
+  @Test
+  void shared_kernel_must_have_relations() throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.valid_bounded_contexts")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            SharedKernelFound.builder()
+                .simpleName("shared_kernel_one")
+                .canonicalName(
+                    "io.candydoc.sample.valid_bounded_contexts.shared_kernel.package-info")
+                .description("description of shared kernel")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
+                .relations(
+                    Set.of(
+                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info",
+                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_two.package-info"))
                 .build());
   }
 

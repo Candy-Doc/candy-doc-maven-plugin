@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,6 +26,19 @@ public class SharedKernelExtractor implements Extractor<ExtractDDDConcepts> {
         .collect(Collectors.toUnmodifiableList());
   }
 
+  private List<Event> checkMinimumRequiredRelationsForSharedKernel(
+      Set<SharedKernel> sharedKernels) {
+    return sharedKernels.stream()
+        .filter(sharedKernel -> sharedKernel.getRelations().size() < 2)
+        .map(this::toMinimumRelationsRequiredForSharedKernel)
+        .collect(Collectors.toUnmodifiableList());
+  }
+
+  private MinimumRelationsRequiredForSharedKernel toMinimumRelationsRequiredForSharedKernel(
+      SharedKernel badSharedKernel) {
+    return MinimumRelationsRequiredForSharedKernel.builder().sharedKernel(badSharedKernel).build();
+  }
+
   public List<Event> extract(ExtractSharedKernels command) {
     return extractSharedKernel(command.getPackageToScan()).stream()
         .collect(Collectors.toUnmodifiableList());
@@ -34,8 +48,13 @@ public class SharedKernelExtractor implements Extractor<ExtractDDDConcepts> {
     Set<SharedKernel> sharedKernels =
         DDDConceptFinder.findSharedKernels(PackageName.of(packageToScan));
     log.info("Shared kernels found in {}: {}", packageToScan, sharedKernels);
-    return sharedKernels.stream()
-        .map(this::toSharedKernelFound)
+    List<SharedKernelFound> sharedKernelsFound =
+        sharedKernels.stream()
+            .map(this::toSharedKernelFound)
+            .collect(Collectors.toUnmodifiableList());
+    List<Event> errors = checkMinimumRequiredRelationsForSharedKernel(sharedKernels);
+    return Stream.of(sharedKernelsFound, errors)
+        .flatMap(Collection::stream)
         .collect(Collectors.toUnmodifiableList());
   }
 
@@ -45,6 +64,7 @@ public class SharedKernelExtractor implements Extractor<ExtractDDDConcepts> {
         .canonicalName(sharedKernel.getCanonicalName().value())
         .packageName(sharedKernel.getPackageName().value())
         .description(sharedKernel.getDescription().value())
+        .relations(sharedKernel.getRelations())
         .build();
   }
 }

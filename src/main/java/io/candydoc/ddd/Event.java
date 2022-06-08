@@ -8,6 +8,7 @@ import io.candydoc.ddd.domain_command.DomainCommandFound;
 import io.candydoc.ddd.domain_event.DomainEventFound;
 import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
+import io.candydoc.ddd.shared_kernel.MinimumRelationsRequiredForSharedKernel;
 import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 
@@ -35,5 +36,7 @@ public interface Event {
     void apply(InteractionBetweenConceptFound event);
 
     void apply(NameConflictBetweenCoreConcepts event);
+
+    void apply(MinimumRelationsRequiredForSharedKernel minimumRelationsRequiredForSharedKernel);
   }
 }

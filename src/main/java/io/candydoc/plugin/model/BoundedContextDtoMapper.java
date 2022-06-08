@@ -9,6 +9,8 @@ import io.candydoc.ddd.domain_command.DomainCommandFound;
 import io.candydoc.ddd.domain_event.DomainEventFound;
 import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
+import io.candydoc.ddd.shared_kernel.MinimumRelationsRequiredForSharedKernel;
+import io.candydoc.ddd.shared_kernel.SharedKernel;
 import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.util.*;
@@ -85,6 +87,18 @@ public class BoundedContextDtoMapper {
                           coreConceptDto ->
                               coreConceptDto.addError(
                                   "Share same name with another core concept")));
+    }
+
+    public void apply(MinimumRelationsRequiredForSharedKernel event) {
+      SharedKernel sharedKernelToTransform = event.getSharedKernel();
+      // Todo: Shared Kernel DTO with error
+      SharedKernelDto.builder()
+          .simpleName(sharedKernelToTransform.getSimpleName().value())
+          .description(sharedKernelToTransform.getDescription().value())
+          .canonicalName(sharedKernelToTransform.getCanonicalName().value())
+          .packageName(sharedKernelToTransform.getPackageName().value())
+          .relations(sharedKernelToTransform.getRelations())
+          .build();
     }
 
     public void apply(ConceptRuleViolated event) {
