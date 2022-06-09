@@ -44,7 +44,7 @@ public class BoundedContextExtractor implements Extractor<ExtractDDDConcepts> {
         .canonicalName(boundedContext.getCanonicalName().value())
         .packageName(boundedContext.getPackageName().value())
         .description(boundedContext.getDescription().value())
-        .subdomainType(boundedContext.getSubdomainType())
+        .subdomainType(boundedContext.getSubdomainType().name())
         .build();
   }
 }

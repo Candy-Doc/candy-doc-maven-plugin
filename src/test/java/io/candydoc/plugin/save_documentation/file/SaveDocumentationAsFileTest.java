@@ -4,7 +4,6 @@ import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.SubdomainType;
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
 import io.candydoc.ddd.core_concept.CoreConceptFound;
 import io.candydoc.plugin.model.BoundedContextDto;
@@ -45,7 +44,7 @@ class SaveDocumentationAsFileTest {
                     "io.candydoc.sample.bounded_context_for_core_concepts_tests.package-info")
                 .packageName("io.candydoc.sample.bounded_context_for_core_concepts_tests")
                 .description("test package 1")
-                .subdomainType(SubdomainType.GenericSubdomain)
+                .subdomainType("GenericSubdomain")
                 .build(),
             CoreConceptFound.builder()
                 .simpleName("core concept 1")

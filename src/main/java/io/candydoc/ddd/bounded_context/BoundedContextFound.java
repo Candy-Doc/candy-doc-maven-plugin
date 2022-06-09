@@ -1,7 +1,6 @@
 package io.candydoc.ddd.bounded_context;
 
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.SubdomainType;
 import io.candydoc.ddd.annotations.DomainEvent;
 import lombok.*;
 
@@ -15,7 +14,7 @@ public class BoundedContextFound implements Event {
   @NonNull String canonicalName;
   @NonNull String description;
   @NonNull String packageName;
-  @NonNull SubdomainType subdomainType;
+  @NonNull String subdomainType;
 
   public void accept(Visitor v) {
     v.apply(this);

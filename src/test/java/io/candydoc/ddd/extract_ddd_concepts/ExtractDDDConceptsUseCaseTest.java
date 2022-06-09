@@ -4,7 +4,6 @@ import static org.mockito.Mockito.*;
 
 import io.candydoc.ddd.Command;
 import io.candydoc.ddd.Event;
-import io.candydoc.ddd.SubdomainType;
 import io.candydoc.ddd.aggregate.AggregateFound;
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
 import io.candydoc.ddd.core_concept.CoreConceptFound;
@@ -126,7 +125,7 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
                 .description("description of bounded context 1")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
-                .subdomainType(SubdomainType.CoreDomain)
+                .subdomainType("CoreDomain")
                 .build(),
             BoundedContextFound.builder()
                 .simpleName("bounded_context_two")
@@ -134,7 +133,7 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_two.package-info")
                 .description("description of bounded context 2")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_two")
-                .subdomainType(SubdomainType.SupportingSubdomain)
+                .subdomainType("SupportingSubdomain")
                 .build());
   }
 
@@ -550,19 +549,12 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
                 .description("description of bounded context 1")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
-                .subdomainType(SubdomainType.CoreDomain)
+                .subdomainType("CoreDomain")
                 .build());
   }
 
-  @ParameterizedTest
-  @MethodSource("valid_bounded_contexts_types")
-  void check_bounded_context_types(
-      String simpleName,
-      String canonicalName,
-      String description,
-      String packageName,
-      SubdomainType type)
-      throws IOException {
+  @Test
+  void bounded_context_type_is_supporting_subdomain() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
@@ -576,27 +568,35 @@ class ExtractDDDConceptsUseCaseTest {
     Assertions.assertThat(extractionCaptor.getResult())
         .contains(
             BoundedContextFound.builder()
-                .simpleName(simpleName)
-                .canonicalName(canonicalName)
-                .description(description)
-                .packageName(packageName)
-                .subdomainType(type)
+                .simpleName("bounded_context_two")
+                .canonicalName(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_two.package-info")
+                .description("description of bounded context 2")
+                .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_two")
+                .subdomainType("SupportingSubdomain")
                 .build());
   }
 
-  public static Stream<Arguments> valid_bounded_contexts_types() {
-    return Stream.of(
-        Arguments.of(
-            "bounded_context_one",
-            "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info",
-            "description of bounded context 1",
-            "io.candydoc.sample.valid_bounded_contexts.bounded_context_one",
-            SubdomainType.CoreDomain),
-        Arguments.of(
-            "bounded_context_two",
-            "io.candydoc.sample.valid_bounded_contexts.bounded_context_two.package-info",
-            "description of bounded context 2",
-            "io.candydoc.sample.valid_bounded_contexts.bounded_context_two",
-            SubdomainType.SupportingSubdomain));
+  @Test
+  void bounded_context_type_is_default() throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.second_valid_bounded_contexts")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            BoundedContextFound.builder()
+                .simpleName("second valid bounded context")
+                .canonicalName("io.candydoc.sample.second_valid_bounded_contexts.package-info")
+                .description("second valid bounded contexts")
+                .packageName("io.candydoc.sample.second_valid_bounded_contexts")
+                .subdomainType("GenericSubdomain")
+                .build());
   }
 }
