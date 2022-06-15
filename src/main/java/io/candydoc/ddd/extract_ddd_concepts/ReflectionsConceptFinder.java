@@ -44,9 +44,9 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
   private static Set<DDDConcept> foundConcepts;
 
   @Override
-  public Set<DDDConcept> findDDDConcepts() {
+  public Set<DDDConcept> findDDDConcepts(PackageName packageToScan) {
     if (foundConcepts == null) {
-      Reflections reflections = new Reflections();
+      Reflections reflections = new Reflections("");
 
       foundConcepts =
           DDDKeywords.KEYWORDS.stream()
@@ -65,24 +65,8 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
   }
 
   @Override
-  public Set<DDDConcept> findDDDConcepts(PackageName packageName) {
-    Reflections reflections = new Reflections(packageName.value());
-
-    return DDDKeywords.KEYWORDS.stream()
-        .flatMap(
-            annotation -> {
-              Function<Class<?>, DDDConcept> processor = ANNOTATION_PROCESSORS.get(annotation);
-
-              return reflections.getTypesAnnotatedWith(annotation).stream()
-                  .filter(clazz -> !clazz.isAnonymousClass())
-                  .map(processor);
-            })
-        .collect(Collectors.toUnmodifiableSet());
-  }
-
-  @Override
   public Set<Aggregate> findAggregates(PackageName packageToScan) {
-    return findDDDConcepts().stream()
+    return findDDDConcepts(packageToScan).stream()
         .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(Aggregate.class))
         .map(Aggregate.class::cast)
@@ -91,7 +75,7 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
 
   @Override
   public Set<BoundedContext> findBoundedContexts(PackageName packageToScan) {
-    return findDDDConcepts().stream()
+    return findDDDConcepts(packageToScan).stream()
         .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(BoundedContext.class))
         .map(BoundedContext.class::cast)
@@ -100,7 +84,7 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
 
   @Override
   public Set<CoreConcept> findCoreConcepts(PackageName packageToScan) {
-    return findDDDConcepts().stream()
+    return findDDDConcepts(packageToScan).stream()
         .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(CoreConcept.class))
         .map(CoreConcept.class::cast)
@@ -109,7 +93,7 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
 
   @Override
   public Set<DomainCommand> findDomainCommands(PackageName packageToScan) {
-    return findDDDConcepts().stream()
+    return findDDDConcepts(packageToScan).stream()
         .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(DomainCommand.class))
         .map(DomainCommand.class::cast)
@@ -118,7 +102,7 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
 
   @Override
   public Set<DomainEvent> findDomainEvents(PackageName packageToScan) {
-    return findDDDConcepts().stream()
+    return findDDDConcepts(packageToScan).stream()
         .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(DomainEvent.class))
         .map(DomainEvent.class::cast)
@@ -127,7 +111,7 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
 
   @Override
   public Set<SharedKernel> findSharedKernels(PackageName packageToScan) {
-    return findDDDConcepts().stream()
+    return findDDDConcepts(packageToScan).stream()
         .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(SharedKernel.class))
         .map(SharedKernel.class::cast)
@@ -136,7 +120,7 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
 
   @Override
   public Set<ValueObject> findValueObjects(PackageName packageToScan) {
-    return findDDDConcepts().stream()
+    return findDDDConcepts(packageToScan).stream()
         .filter(dddConcept -> dddConcept.getPackageName().startsWith(packageToScan.value()))
         .filter(dddConcept -> dddConcept.getClass().isAssignableFrom(ValueObject.class))
         .map(ValueObject.class::cast)
@@ -152,7 +136,7 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
 
   @Override
   public DDDConcept findConcept(CanonicalName conceptName) {
-    return findDDDConcepts().stream()
+    return foundConcepts.stream()
         .filter(concept -> concept.getCanonicalName().equals(conceptName))
         .findFirst()
         .orElseThrow();

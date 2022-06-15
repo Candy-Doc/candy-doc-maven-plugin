@@ -15,8 +15,6 @@ import java.util.Set;
 
 public interface DDDConceptFinder {
 
-  Set<DDDConcept> findDDDConcepts();
-
   Set<DDDConcept> findDDDConcepts(PackageName packageToScan);
 
   Set<Aggregate> findAggregates(PackageName packageToScan);
