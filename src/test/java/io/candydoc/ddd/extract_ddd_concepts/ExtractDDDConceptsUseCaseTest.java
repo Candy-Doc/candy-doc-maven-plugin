@@ -1,5 +1,6 @@
 package io.candydoc.ddd.extract_ddd_concepts;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import io.candydoc.ddd.Command;
@@ -40,7 +41,7 @@ class ExtractDDDConceptsUseCaseTest {
   public void setUp() {
     saveDocumentationPort = mock(SaveDocumentationPort.class);
     dddConceptsExtractionService =
-        spy(new DDDConceptsExtractionService(new ReflectionsConceptFinder()));
+        spy(new DDDConceptsExtractionService(new ReflectionsConceptFinder(List.of("io.candydoc"))));
     extractDDDConceptsUseCase =
         new ExtractDDDConceptsUseCase(dddConceptsExtractionService, saveDocumentationPort);
 
@@ -88,7 +89,7 @@ class ExtractDDDConceptsUseCaseTest {
 
     List<Event> occurredGenerationEvents = resultCaptor.getValue();
 
-    Assertions.assertThat(occurredGenerationEvents).isNotEmpty();
+    assertThat(occurredGenerationEvents).isNotEmpty();
   }
 
   @Test
@@ -117,7 +118,7 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    assertThat(extractionCaptor.getResult())
         .contains(
             BoundedContextFound.builder()
                 .simpleName("bounded_context_one")
@@ -147,8 +148,9 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
-        .contains(
+    assertThat(extractionCaptor.getResult())
+        .filteredOn(CoreConceptFound.class::isInstance)
+        .containsExactlyInAnyOrder(
             CoreConceptFound.builder()
                 .simpleName("name of core concept 1 of bounded context 1")
                 .description("description of core concept 1 of bounded context 1")
@@ -181,8 +183,9 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
-        .contains(
+    assertThat(extractionCaptor.getResult())
+        .filteredOn(ValueObjectFound.class::isInstance)
+        .containsExactlyInAnyOrder(
             ValueObjectFound.builder()
                 .description("description of value object 1 of bounded context 1")
                 .simpleName("ValueObject1")
@@ -206,8 +209,9 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
-        .contains(
+    assertThat(extractionCaptor.getResult())
+        .filteredOn(ConceptRuleViolated.class::isInstance)
+        .containsExactlyInAnyOrder(
             ConceptRuleViolated.builder()
                 .conceptName(
                     "io.candydoc.sample.bounded_context_for_wrong_usage_of_value_objects.sub_package.ValueObject")
@@ -227,8 +231,9 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
-        .contains(
+    assertThat(extractionCaptor.getResult())
+        .filteredOn(DomainEventFound.class::isInstance)
+        .containsExactlyInAnyOrder(
             DomainEventFound.builder()
                 .description("domain event 1 of boundedcontext 1")
                 .simpleName("DomainEvent1")
@@ -252,8 +257,9 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
-        .contains(
+    assertThat(extractionCaptor.getResult())
+        .filteredOn(DomainCommandFound.class::isInstance)
+        .containsExactlyInAnyOrder(
             DomainCommandFound.builder()
                 .description("Domain Command for Bounded context 1")
                 .simpleName("DomainCommand1")
@@ -277,8 +283,9 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
-        .contains(
+    assertThat(extractionCaptor.getResult())
+        .filteredOn(AggregateFound.class::isInstance)
+        .containsExactlyInAnyOrder(
             AggregateFound.builder()
                 .simpleName("aggregate 1")
                 .description("Aggregate for Bounded context 1")
@@ -302,8 +309,9 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
-        .contains(
+    assertThat(extractionCaptor.getResult())
+        .filteredOn(InteractionBetweenConceptFound.class::isInstance)
+        .containsExactlyInAnyOrder(
             InteractionBetweenConceptFound.builder()
                 .from(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
@@ -315,6 +323,51 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
                 .with(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2")
+                .build(),
+            InteractionBetweenConceptFound.builder()
+                .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
+                .with(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1")
+                .build(),
+            InteractionBetweenConceptFound.builder()
+                .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
+                .with(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
+                .build(),
+            InteractionBetweenConceptFound.builder()
+                .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
+                .with(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.Aggregate1")
+                .build(),
+            InteractionBetweenConceptFound.builder()
+                .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
+                .with(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2")
+                .build(),
+            InteractionBetweenConceptFound.builder()
+                .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
+                .with(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainCommand1")
+                .build(),
+            InteractionBetweenConceptFound.builder()
+                .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
+                .with(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
+                .build(),
+            InteractionBetweenConceptFound.builder()
+                .from("io.candydoc.sample.valid_bounded_contexts.bounded_context_two.package-info")
+                .with(
+                    "io.candydoc.sample.valid_bounded_contexts.bounded_context_two.sub_package.CoreConcept1")
+                .build(),
+            InteractionBetweenConceptFound.builder()
+                .from("io.candydoc.sample.valid_bounded_contexts.shared_kernel.package-info")
+                .with(
+                    "io.candydoc.sample.valid_bounded_contexts.shared_kernel.sub_package.ValueObject1")
+                .build(),
+            InteractionBetweenConceptFound.builder()
+                .from("io.candydoc.sample.valid_bounded_contexts.shared_kernel.package-info")
+                .with(
+                    "io.candydoc.sample.valid_bounded_contexts.shared_kernel.sub_package.CoreConcept1")
                 .build());
   }
 
@@ -330,7 +383,7 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    assertThat(extractionCaptor.getResult())
         .contains(
             SharedKernelFound.builder()
                 .simpleName("shared_kernel_one")
@@ -353,8 +406,9 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
-        .contains(
+    assertThat(extractionCaptor.getResult())
+        .filteredOn(CoreConceptFound.class::isInstance)
+        .containsExactlyInAnyOrder(
             CoreConceptFound.builder()
                 .simpleName("name of core concept 1 of shared kernel 1")
                 .description("description of core concept 1 of shared kernel 1")
@@ -379,7 +433,7 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    assertThat(extractionCaptor.getResult())
         .contains(
             ConceptRuleViolated.builder()
                 .conceptName(conceptName)
@@ -420,7 +474,7 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    assertThat(extractionCaptor.getResult())
         .contains(
             ConceptRuleViolated.builder()
                 .conceptName(conceptName)
@@ -460,7 +514,7 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    assertThat(extractionCaptor.getResult())
         .contains(
             InteractionBetweenConceptFound.builder()
                 .with(conceptName)
@@ -497,7 +551,7 @@ class ExtractDDDConceptsUseCaseTest {
     extractDDDConceptsUseCase.execute(command);
 
     // then
-    Assertions.assertThat(extractionCaptor.getResult())
+    assertThat(extractionCaptor.getResult())
         .contains(
             InteractionBetweenConceptFound.builder()
                 .with(conceptName)

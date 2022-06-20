@@ -10,11 +10,7 @@ import java.util.List;
 import lombok.SneakyThrows;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.InstantiationStrategy;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
 
 @Mojo(
@@ -43,7 +39,7 @@ public class CandyDocMojo extends AbstractMojo {
     SaveDocumentationAdapterFactory adapterFactory = new SaveDocumentationAdapterFactoryImpl();
     SaveDocumentationPort saveDocumentationPort =
         adapterFactory.getAdapter(outputFormat, outputDirectory);
-    DDDConceptFinder DDDConceptFinder = new ReflectionsConceptFinder();
+    DDDConceptFinder DDDConceptFinder = new ReflectionsConceptFinder(packagesToScan);
     DDDConceptsExtractionService dddConceptsExtractionService =
         new DDDConceptsExtractionService(DDDConceptFinder);
 

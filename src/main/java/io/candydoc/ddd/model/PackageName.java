@@ -19,7 +19,7 @@ public class PackageName {
     return new PackageName(value);
   }
 
-  public boolean startsWith(String packageToScan) {
-    return this.value.startsWith(packageToScan);
+  public boolean startsWith(PackageName packageToScan) {
+    return this.value.startsWith(packageToScan.value());
   }
 }

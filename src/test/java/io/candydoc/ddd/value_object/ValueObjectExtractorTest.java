@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class ValueObjectExtractorTest {
 
   private final ValueObjectExtractor valueObjectExtractor =
-      new ValueObjectExtractor(new ReflectionsConceptFinder());
+      new ValueObjectExtractor(new ReflectionsConceptFinder(List.of("io.candydoc")));
 
   @Test
   public void anonymous_value_object_are_skipped() {
