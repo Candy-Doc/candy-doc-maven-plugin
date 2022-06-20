@@ -38,5 +38,7 @@ public abstract class DDDConcept {
     T sharedKernel(SharedKernel sharedKernel);
 
     T valueObject(ValueObject valueObject);
+
+    T domainContext(DomainContext domainContext);
   }
 }
