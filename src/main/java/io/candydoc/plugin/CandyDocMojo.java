@@ -19,7 +19,7 @@ import org.apache.maven.project.MavenProject;
 
 @Mojo(
     name = "candy-doc",
-    defaultPhase = LifecyclePhase.PROCESS_SOURCES,
+    defaultPhase = LifecyclePhase.COMPILE,
     requiresDependencyResolution = ResolutionScope.RUNTIME_PLUS_SYSTEM,
     requiresDependencyCollection = ResolutionScope.RUNTIME_PLUS_SYSTEM,
     instantiationStrategy = InstantiationStrategy.SINGLETON,
