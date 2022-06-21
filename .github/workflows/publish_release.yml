@@ -29,7 +29,6 @@ jobs:
           "semantic-release-gitmoji"
           "semantic-release-maven --legacy-peer-deps"
           "@conveyal/maven-semantic-release"
-        extends: semantic-release-config-gitmoji
       env:
         GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         MVN_CENTRAL_LOGIN: ${{ secrets.MVN_CENTRAL_LOGIN }}

@@ -60,8 +60,5 @@ module.exports = {
       ],
       message: ':bookmark: chore(release): ${nextRelease.gitTag} \n\n${nextRelease.notes}'
     }
-  ],
-  extends: [
-    'semantic-release-config-gitmoji'
   ]
 }
