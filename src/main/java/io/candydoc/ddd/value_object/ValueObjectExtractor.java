@@ -26,7 +26,7 @@ public class ValueObjectExtractor implements Extractor<ExtractValueObjects> {
                     .simpleName(valueObject.getSimpleName().value())
                     .canonicalName(valueObject.getCanonicalName().value())
                     .packageName(valueObject.getPackageName().value())
-                    .boundedContext(command.getPackageToScan())
+                    .domainContext(command.getPackageToScan())
                     .build())
         .collect(Collectors.toUnmodifiableList());
   }

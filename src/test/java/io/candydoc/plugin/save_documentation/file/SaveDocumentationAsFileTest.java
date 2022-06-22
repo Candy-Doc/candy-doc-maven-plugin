@@ -51,7 +51,7 @@ class SaveDocumentationAsFileTest {
                     "io.candydoc.sample.bounded_context_for_core_concepts_tests.CoreConcept1")
                 .packageName("io.candydoc.sample.bounded_context_for_core_concepts_tests")
                 .description("core concept 1")
-                .boundedContext("io.candydoc.sample.bounded_context_for_core_concepts_tests")
+                .domainContext("io.candydoc.sample.bounded_context_for_core_concepts_tests")
                 .build());
 
     saveDocumentationAsFile.save(occurredExtractionEvents);

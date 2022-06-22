@@ -14,7 +14,7 @@ public class ValueObjectFound implements Event {
   @NonNull String simpleName;
   @NonNull String canonicalName;
   @NonNull String packageName;
-  @NonNull String boundedContext;
+  @NonNull String domainContext;
 
   public void accept(Visitor visitor) {
     visitor.apply(this);

@@ -13,9 +13,9 @@ public class DomainCommandFound implements Event {
 
   @NonNull String simpleName;
   @NonNull String description;
-  @NonNull String boundedContext;
   @NonNull String canonicalName;
   @NonNull String packageName;
+  @NonNull String domainContext;
 
   public void accept(Visitor v) {
     v.apply(this);

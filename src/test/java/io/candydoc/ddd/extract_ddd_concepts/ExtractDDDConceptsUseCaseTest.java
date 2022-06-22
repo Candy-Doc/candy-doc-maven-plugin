@@ -158,7 +158,7 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
                 .packageName(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
-                .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                .domainContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build(),
             CoreConceptFound.builder()
                 .simpleName("name of core concept 2 of bounded context 1")
@@ -167,7 +167,7 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2")
                 .packageName(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
-                .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                .domainContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
 
@@ -193,7 +193,7 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
                 .packageName(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
-                .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                .domainContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
 
@@ -241,7 +241,7 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1")
                 .packageName(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
-                .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                .domainContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
 
@@ -267,7 +267,7 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainCommand1")
                 .packageName(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
-                .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                .domainContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
 
@@ -293,7 +293,7 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.Aggregate1")
                 .packageName(
                     "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package")
-                .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+                .domainContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
                 .build());
   }
 
@@ -415,7 +415,7 @@ class ExtractDDDConceptsUseCaseTest {
                 .canonicalName(
                     "io.candydoc.sample.valid_bounded_contexts.shared_kernel.sub_package.CoreConcept1")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.shared_kernel.sub_package")
-                .boundedContext("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
+                .domainContext("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
                 .build());
   }
 
@@ -558,6 +558,9 @@ class ExtractDDDConceptsUseCaseTest {
                 .from("io.candydoc.sample.valid_bounded_contexts.shared_kernel.package-info")
                 .build());
   }
+
+  @Test
+  void find_domain_context_inside_given_packages() throws IOException {}
 
   public static Stream<Arguments> allowed_interactions_with_shared_kernel_examples() {
     return Stream.of(

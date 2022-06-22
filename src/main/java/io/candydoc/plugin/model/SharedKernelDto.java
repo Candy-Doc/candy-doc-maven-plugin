@@ -9,4 +9,4 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class BoundedContextDto extends DomainContextDto {}
+public class SharedKernelDto extends DomainContextDto {}

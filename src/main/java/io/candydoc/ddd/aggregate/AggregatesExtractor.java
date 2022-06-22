@@ -31,7 +31,7 @@ public class AggregatesExtractor implements Extractor<ExtractAggregates> {
         .simpleName(aggregate.getSimpleName().value())
         .description(aggregate.getDescription().value())
         .packageName(aggregate.getPackageName().value())
-        .boundedContext(command.getPackageToScan())
+        .domainContext(command.getPackageToScan())
         .build();
   }
 }

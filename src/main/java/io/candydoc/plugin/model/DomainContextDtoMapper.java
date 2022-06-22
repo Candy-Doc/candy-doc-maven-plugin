@@ -13,15 +13,16 @@ import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class BoundedContextDtoMapper {
+public class DomainContextDtoMapper {
 
-  public static List<BoundedContextDto> map(List<Event> domainEvents) {
-    DomainEventsToBoundedContextDtos visitor = new DomainEventsToBoundedContextDtos();
+  public static List<DomainContextDto> map(List<Event> domainEvents) {
+    DomainEventsToDomainContextDtos visitor = new DomainEventsToDomainContextDtos();
     return visitor.map(domainEvents);
   }
 
-  private static final class DomainEventsToBoundedContextDtos implements Event.Visitor {
+  private static final class DomainEventsToDomainContextDtos implements Event.Visitor {
     private final Map<String, List<ConceptDto>> concepts = new HashMap<>();
     private final List<BoundedContextFound> boundedContextFounds = new LinkedList<>();
     private final List<SharedKernelFound> sharedKernelFounds = new LinkedList<>();
@@ -35,12 +36,12 @@ public class BoundedContextDtoMapper {
       concepts.put(sharedKernel, new LinkedList<>());
     }
 
-    private void addConcept(String boundedContext, ConceptDto conceptDto) {
-      concepts.computeIfAbsent(boundedContext, (key) -> new LinkedList<>()).add(conceptDto);
+    private void addConcept(String domainContext, ConceptDto conceptDto) {
+      concepts.computeIfAbsent(domainContext, (key) -> new LinkedList<>()).add(conceptDto);
     }
 
-    private List<ConceptDto> conceptsInBoundedContext(String boundedContext) {
-      return concepts.get(boundedContext);
+    private List<ConceptDto> conceptsInDomainContext(String domainContext) {
+      return concepts.get(domainContext);
     }
 
     private List<ConceptDto> allConcepts() {
@@ -55,19 +56,33 @@ public class BoundedContextDtoMapper {
           .findFirst();
     }
 
-    public List<BoundedContextDto> map(List<Event> events) {
+    public List<DomainContextDto> map(List<Event> events) {
       events.forEach(domainEvent -> domainEvent.accept(this));
       applyInteraction();
-      return boundedContextFounds.stream()
-          .map(
-              event ->
-                  BoundedContextDto.builder()
-                      .packageName(event.getPackageName())
-                      .concepts(conceptsInBoundedContext(event.getPackageName()))
-                      .simpleName(event.getSimpleName())
-                      .canonicalName(event.getCanonicalName())
-                      .description(event.getDescription())
-                      .build())
+      return Stream.of(
+              boundedContextFounds.stream()
+                  .map(
+                      event ->
+                          BoundedContextDto.builder()
+                              .packageName(event.getPackageName())
+                              .concepts(conceptsInDomainContext(event.getPackageName()))
+                              .simpleName(event.getSimpleName())
+                              .canonicalName(event.getCanonicalName())
+                              .description(event.getDescription())
+                              .build())
+                  .collect(Collectors.toList()),
+              sharedKernelFounds.stream()
+                  .map(
+                      event ->
+                          SharedKernelDto.builder()
+                              .packageName(event.getPackageName())
+                              .concepts(conceptsInDomainContext(event.getPackageName()))
+                              .simpleName(event.getSimpleName())
+                              .canonicalName(event.getCanonicalName())
+                              .description(event.getDescription())
+                              .build())
+                  .collect(Collectors.toList()))
+          .flatMap(Collection::stream)
           .collect(Collectors.toUnmodifiableList());
     }
 
@@ -101,7 +116,7 @@ public class BoundedContextDtoMapper {
               .type(ConceptType.AGGREGATE)
               .build();
 
-      addConcept(event.getBoundedContext(), aggregateDto);
+      addConcept(event.getDomainContext(), aggregateDto);
     }
 
     public void apply(BoundedContextFound event) {
@@ -119,7 +134,7 @@ public class BoundedContextDtoMapper {
               .type(ConceptType.CORE_CONCEPT)
               .build();
 
-      addConcept(event.getBoundedContext(), coreConceptDto);
+      addConcept(event.getDomainContext(), coreConceptDto);
     }
 
     public void apply(DomainCommandFound event) {
@@ -131,7 +146,7 @@ public class BoundedContextDtoMapper {
               .type(ConceptType.DOMAIN_COMMAND)
               .build();
 
-      addConcept(event.getBoundedContext(), commandDto);
+      addConcept(event.getDomainContext(), commandDto);
     }
 
     public void apply(DomainEventFound event) {
@@ -143,7 +158,7 @@ public class BoundedContextDtoMapper {
               .type(ConceptType.DOMAIN_EVENT)
               .build();
 
-      addConcept(event.getBoundedContext(), domainEventDto);
+      addConcept(event.getDomainContext(), domainEventDto);
     }
 
     public void apply(SharedKernelFound event) {
@@ -161,7 +176,7 @@ public class BoundedContextDtoMapper {
               .type(ConceptType.VALUE_OBJECT)
               .build();
 
-      addConcept(event.getBoundedContext(), valueObjectDto);
+      addConcept(event.getDomainContext(), valueObjectDto);
     }
 
     public void apply(InteractionBetweenConceptFound event) {

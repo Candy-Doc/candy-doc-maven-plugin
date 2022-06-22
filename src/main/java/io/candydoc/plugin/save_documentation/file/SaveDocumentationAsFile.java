@@ -3,7 +3,7 @@ package io.candydoc.plugin.save_documentation.file;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.extract_ddd_concepts.SaveDocumentationPort;
-import io.candydoc.plugin.model.BoundedContextDtoMapper;
+import io.candydoc.plugin.model.DomainContextDtoMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,6 +19,6 @@ public abstract class SaveDocumentationAsFile implements SaveDocumentationPort {
   @Override
   public void save(List<Event> domainEvents) throws IOException {
     Files.createDirectories(fileToSave.getParent());
-    serializer.writeValue(fileToSave.toFile(), BoundedContextDtoMapper.map(domainEvents));
+    serializer.writeValue(fileToSave.toFile(), DomainContextDtoMapper.map(domainEvents));
   }
 }

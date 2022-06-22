@@ -31,7 +31,7 @@ class AggregatesExtractorTest {
                     "io.candydoc.sample.concepts_with_deducted_annotations.sub_package.Aggregate1")
                 .description("")
                 .packageName("io.candydoc.sample.concepts_with_deducted_annotations.sub_package")
-                .boundedContext("io.candydoc.sample.concepts_with_deducted_annotations")
+                .domainContext("io.candydoc.sample.concepts_with_deducted_annotations")
                 .build());
   }
 }

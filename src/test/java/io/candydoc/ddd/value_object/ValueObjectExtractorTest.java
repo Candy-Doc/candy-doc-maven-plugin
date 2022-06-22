@@ -36,7 +36,7 @@ class ValueObjectExtractorTest {
                     "io.candydoc.sample.concepts_with_deducted_annotations.sub_package.EnumValueObject")
                 .description("My enum value object description")
                 .packageName("io.candydoc.sample.concepts_with_deducted_annotations.sub_package")
-                .boundedContext("io.candydoc.sample.concepts_with_deducted_annotations")
+                .domainContext("io.candydoc.sample.concepts_with_deducted_annotations")
                 .build());
   }
 }

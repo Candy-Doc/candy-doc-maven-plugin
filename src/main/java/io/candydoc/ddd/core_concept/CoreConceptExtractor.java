@@ -65,7 +65,7 @@ public class CoreConceptExtractor implements Extractor<ExtractCoreConcepts> {
         .description(coreConcept.getDescription().value())
         .canonicalName(coreConcept.getCanonicalName().value())
         .packageName(coreConcept.getPackageName().value())
-        .boundedContext(boundedContextName)
+        .domainContext(boundedContextName)
         .build();
   }
 }
