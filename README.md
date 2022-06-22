@@ -30,6 +30,7 @@ Domain-Driven-Design approach.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -42,7 +43,6 @@ Domain-Driven-Design approach.
   - [Domain Event](#domain-event)
   - [Shared Kernel](#shared-kernel)
   - [Value Object](#value-object)
-- [HTML Documentation 🌐](#html-documentation-)
 - [ROADMAP 🗺️](#roadmap-)
 - [&#91;FOR DEV&#93; Development workflow](#for-dev-development-workflow)
   - [Release policy](#release-policy)
@@ -82,7 +82,7 @@ To run this plugin, import the following:
     <packagesToScan>
         <packageToScan>com.foo.bar</packageToScan>
     </packagesToScan>
-    <outputFormat>html</outputFormat>
+    <outputFormat>json</outputFormat>
 </configuration>
 </plugin>
 ```
@@ -102,8 +102,7 @@ Example:
 ```
 
 **outputFormat:** The output format in which the documentation is generated.
-Output format can be either `html`, `yml`
-or `json`.
+Output format can be either `yml` or `json`.
 
 Once your project is correctly annotated with
 the [DDD Annotations](#DDD_Annotations), use mvn to run the plugin (
@@ -207,23 +206,6 @@ values.
 A Core Concept can interact with one or more value objects. A Value Object only
 has primitive fields, is immutable and should be valid when instantiated.
 
-## HTML Documentation 🌐
-
-If you have chosen `html` as output format, you can open the generated
-_index.html_ file from your file explorer to have access to the documentation.
-
-Navigate between the concepts of your project thanks to the left-side menu
-
-![index.png](assets/screenshots/index.png)
-
-Access the content of each concept
-
-![bounded_context.png](assets/screenshots/bounded_context.png)
-
-See the interactions between concepts
-
-![core_concept.png](assets/screenshots/core_concept.png)
-
 ## ROADMAP 🗺️
 
 To know on what the team are actually working on, you can see the different
@@ -280,7 +262,8 @@ Explanations:
 > git checkout -b feat/<branch name>
 > ```
 >
-> Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your feature will be squash and merge _feat/\<branch name\>_ to _main_.
+> Once the feature is implemented, create a pull request to get the approval of a reviewer. If it's approved, your
+> feature will be squash and merge _feat/\<branch name\>_ to _main_.
 >
 >See contributing rules [here](./CONTRIBUTING.md).
 >
