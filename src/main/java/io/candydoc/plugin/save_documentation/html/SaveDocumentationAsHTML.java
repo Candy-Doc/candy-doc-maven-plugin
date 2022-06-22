@@ -3,15 +3,13 @@ package io.candydoc.plugin.save_documentation.html;
 import io.candydoc.ddd.Event;
 import io.candydoc.ddd.extract_ddd_concepts.DocumentationGenerationFailed;
 import io.candydoc.ddd.extract_ddd_concepts.SaveDocumentationPort;
-import io.candydoc.plugin.model.BoundedContextDto;
-import io.candydoc.plugin.model.BoundedContextDtoMapper;
-import io.candydoc.plugin.model.ConceptDto;
-import io.candydoc.plugin.model.ConceptType;
+import io.candydoc.plugin.model.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 
@@ -26,12 +24,16 @@ public class SaveDocumentationAsHTML implements SaveDocumentationPort {
   public void save(List<Event> domainEvents) throws IOException {
     FileUtils.deleteDirectory(HTML_DESTINATION_FOLDER.toFile());
     Files.createDirectories(HTML_DESTINATION_FOLDER);
-    List<BoundedContextDto> boundedContexts = BoundedContextDtoMapper.map(domainEvents);
-    generatePages(boundedContexts);
+    List<DomainContextDto> domainContexts = DomainContextDtoMapper.map(domainEvents);
+    generatePagesForBoundedContexts(
+        domainContexts.stream()
+            .filter(domainContextDto -> domainContextDto instanceof BoundedContextDto)
+            .map(BoundedContextDto.class::cast)
+            .collect(Collectors.toUnmodifiableList()));
     generateStyle();
   }
 
-  private void generatePages(List<BoundedContextDto> boundedContexts) {
+  private void generatePagesForBoundedContexts(List<BoundedContextDto> boundedContexts) {
     Map<String, Object> model = new HashMap<>();
     model.put("boundedContexts", boundedContexts);
     Path fileDestination = HTML_DESTINATION_FOLDER.resolve("index.html");

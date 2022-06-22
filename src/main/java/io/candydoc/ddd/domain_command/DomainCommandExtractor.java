@@ -33,7 +33,7 @@ public class DomainCommandExtractor implements Extractor<ExtractDomainCommands> 
         .simpleName(domainCommand.getSimpleName().value())
         .canonicalName(domainCommand.getCanonicalName().value())
         .packageName(domainCommand.getPackageName().value())
-        .boundedContext(boundedContextName)
+        .domainContext(boundedContextName)
         .build();
   }
 }

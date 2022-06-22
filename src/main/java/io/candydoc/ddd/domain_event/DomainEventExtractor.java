@@ -29,7 +29,7 @@ public class DomainEventExtractor implements Extractor<ExtractDomainEvents> {
                     .simpleName(domainEvent.getSimpleName().value())
                     .canonicalName(domainEvent.getCanonicalName().value())
                     .packageName(domainEvent.getPackageName().value())
-                    .boundedContext(packageToScan)
+                    .domainContext(packageToScan)
                     .build())
         .collect(Collectors.toUnmodifiableList());
   }

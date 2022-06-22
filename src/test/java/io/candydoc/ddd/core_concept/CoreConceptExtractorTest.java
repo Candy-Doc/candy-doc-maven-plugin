@@ -31,7 +31,7 @@ class CoreConceptExtractorTest {
                     "io.candydoc.sample.concepts_with_deducted_annotations.sub_package.CoreConcept1")
                 .description("")
                 .packageName("io.candydoc.sample.concepts_with_deducted_annotations.sub_package")
-                .boundedContext("io.candydoc.sample.concepts_with_deducted_annotations")
+                .domainContext("io.candydoc.sample.concepts_with_deducted_annotations")
                 .build());
   }
 
@@ -60,7 +60,7 @@ class CoreConceptExtractorTest {
                     "io.candydoc.sample.concepts_with_deducted_annotations.sub_package.EnumCoreConcept")
                 .description("My enum core concept description")
                 .packageName("io.candydoc.sample.concepts_with_deducted_annotations.sub_package")
-                .boundedContext("io.candydoc.sample.concepts_with_deducted_annotations")
+                .domainContext("io.candydoc.sample.concepts_with_deducted_annotations")
                 .build());
   }
 }

@@ -14,7 +14,7 @@ public class CoreConceptFound implements Event {
   @NonNull String description;
   @NonNull String canonicalName;
   @NonNull String packageName;
-  @NonNull String boundedContext;
+  @NonNull String domainContext;
 
   public void accept(Visitor v) {
     v.apply(this);

@@ -44,7 +44,7 @@ class SaveDocumentationAsHTMLTest {
               .canonicalName(
                   "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept1")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
-              .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+              .domainContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .build(),
           CoreConceptFound.builder()
               .simpleName("Core Concept 2")
@@ -52,7 +52,7 @@ class SaveDocumentationAsHTMLTest {
               .canonicalName(
                   "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.CoreConcept2")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
-              .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+              .domainContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .build(),
           ValueObjectFound.builder()
               .description("Description of value object 1")
@@ -60,7 +60,7 @@ class SaveDocumentationAsHTMLTest {
               .canonicalName(
                   "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.ValueObject1")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
-              .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+              .domainContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .build(),
           DomainEventFound.builder()
               .description("Description of domain event 1")
@@ -68,7 +68,7 @@ class SaveDocumentationAsHTMLTest {
               .canonicalName(
                   "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.sub_package.DomainEvent1")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
-              .boundedContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
+              .domainContext("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .build(),
           InteractionBetweenConceptFound.builder()
               .from(
