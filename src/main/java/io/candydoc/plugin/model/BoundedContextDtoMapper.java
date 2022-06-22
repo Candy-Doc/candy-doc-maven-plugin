@@ -67,6 +67,7 @@ public class BoundedContextDtoMapper {
                       .simpleName(event.getSimpleName())
                       .canonicalName(event.getCanonicalName())
                       .description(event.getDescription())
+                      .subdomainType(event.getSubdomainType())
                       .build())
           .collect(Collectors.toUnmodifiableList());
     }

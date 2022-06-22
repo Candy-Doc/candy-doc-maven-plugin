@@ -16,6 +16,7 @@ public class BoundedContextDto {
   @NonNull String canonicalName;
   @NonNull String description;
   @NonNull String packageName;
+  @NonNull String subdomainType;
   @JsonIgnore @Builder.Default List<ConceptDto> concepts = List.of();
 
   @JsonIgnore

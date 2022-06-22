@@ -14,6 +14,7 @@ public class BoundedContextFound implements Event {
   @NonNull String canonicalName;
   @NonNull String description;
   @NonNull String packageName;
+  @NonNull String subdomainType;
 
   public void accept(Visitor v) {
     v.apply(this);

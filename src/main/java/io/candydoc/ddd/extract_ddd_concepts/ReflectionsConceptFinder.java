@@ -1,5 +1,6 @@
 package io.candydoc.ddd.extract_ddd_concepts;
 
+import io.candydoc.ddd.SubdomainType;
 import io.candydoc.ddd.aggregate.Aggregate;
 import io.candydoc.ddd.annotations.DDDKeywords;
 import io.candydoc.ddd.bounded_context.BoundedContext;
@@ -173,11 +174,15 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.BoundedContext.class).description();
 
+    SubdomainType subdomainType =
+        clazz.getAnnotation(io.candydoc.ddd.annotations.BoundedContext.class).subdomainType();
+
     return BoundedContext.builder()
         .canonicalName(toCanonicalName(clazz))
         .simpleName(SimpleName.of(simpleName))
         .packageName(toPackageName(clazz))
         .description(Description.of(description))
+        .subdomainType(subdomainType)
         .build();
   }
 

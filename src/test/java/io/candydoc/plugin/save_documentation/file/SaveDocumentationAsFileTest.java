@@ -44,6 +44,7 @@ class SaveDocumentationAsFileTest {
                     "io.candydoc.sample.bounded_context_for_core_concepts_tests.package-info")
                 .packageName("io.candydoc.sample.bounded_context_for_core_concepts_tests")
                 .description("test package 1")
+                .subdomainType("GenericSubdomain")
                 .build(),
             CoreConceptFound.builder()
                 .simpleName("core concept 1")

@@ -30,6 +30,7 @@ class SaveDocumentationAsHTMLTest {
                   "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_one")
               .description("description of bounded context 1")
+              .subdomainType("CoreDomain")
               .build(),
           BoundedContextFound.builder()
               .simpleName("io.candydoc.sample.valid_bounded_contexts.bounded_context_two")
@@ -37,6 +38,7 @@ class SaveDocumentationAsHTMLTest {
                   "io.candydoc.sample.valid_bounded_contexts.bounded_context_two.package-info")
               .packageName("io.candydoc.sample.valid_bounded_contexts.bounded_context_two")
               .description("description of bounded context 2")
+              .subdomainType("SupportingSubdomain")
               .build(),
           CoreConceptFound.builder()
               .simpleName("Core Concept 1")
@@ -90,6 +92,7 @@ class SaveDocumentationAsHTMLTest {
               .canonicalName("io.empty_bounded_context.package-info")
               .description("description of empty bounded context")
               .packageName("io.empty_bounded_context")
+              .subdomainType("GenericSubdomain")
               .build());
 
   @AfterEach

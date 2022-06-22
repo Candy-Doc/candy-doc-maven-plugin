@@ -44,6 +44,7 @@ class SaveDocumentationAdapterFactoryImplTest {
             .canonicalName("io.candydoc.sample.bounded_context_one.package-info")
             .packageName("io.candydoc.sample.bounded_context_one")
             .description("test package 1")
+            .subdomainType("CoreDomain")
             .build();
     saveDocumentationPort.save(new LinkedList<>(Collections.singleton(newBoundedContextEvent)));
     Path expectedPath = Paths.get("target", "candy-doc", "bounded_contexts.json");
@@ -61,6 +62,7 @@ class SaveDocumentationAdapterFactoryImplTest {
             .canonicalName("io.candydoc.sample.bounded_context_one.package-info")
             .packageName("io.candydoc.sample.bounded_context_one")
             .description("test package 1")
+            .subdomainType("CoreDomain")
             .build();
     saveDocumentationPort.save(new LinkedList<>(Collections.singleton(newBoundedContextEvent)));
     Path expectedPath = Paths.get("target", "candy-doc", "bounded_contexts.yml");
