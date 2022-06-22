@@ -23,7 +23,7 @@ class SaveDocumentationAdapterFactoryImplTest {
     String outputDirectory = "target";
     Assertions.assertThatThrownBy(() -> adapterFactory.getAdapter(outputFormat, outputDirectory))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("File format must be 'json', 'yml' or 'html'.");
+        .hasMessage("File format must be 'json' or 'yml'.");
   }
 
   @Test
