@@ -8,9 +8,9 @@ import lombok.*;
 @ToString
 @Value
 @RequiredArgsConstructor
-@DomainEvent(description = "Emitted when shared kernel doesn't minimum required relations")
+@DomainEvent(description = "Emitted when shared kernel doesn't have minimum required relations")
 public class MinimumRelationsRequiredForSharedKernel implements Event {
-  @NonNull SharedKernel sharedKernel;
+  @NonNull String sharedKernel;
 
   public void accept(Event.Visitor v) {
     v.apply(this);

@@ -251,7 +251,8 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
         .simpleName(SimpleName.of(simpleName))
         .packageName(toPackageName(clazz))
         .description(Description.of(description))
-        .relations(Arrays.stream(relations).collect(Collectors.toSet()))
+        .relations(
+            Arrays.stream(relations).map(Relation::of).collect(Collectors.toUnmodifiableSet()))
         .build();
   }
 

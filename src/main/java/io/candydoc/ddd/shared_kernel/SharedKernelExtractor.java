@@ -5,6 +5,7 @@ import io.candydoc.ddd.extract_ddd_concepts.DDDConceptFinder;
 import io.candydoc.ddd.extract_ddd_concepts.ExtractDDDConcepts;
 import io.candydoc.ddd.model.Extractor;
 import io.candydoc.ddd.model.PackageName;
+import io.candydoc.ddd.model.Relation;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +37,9 @@ public class SharedKernelExtractor implements Extractor<ExtractDDDConcepts> {
 
   private MinimumRelationsRequiredForSharedKernel toMinimumRelationsRequiredForSharedKernel(
       SharedKernel badSharedKernel) {
-    return MinimumRelationsRequiredForSharedKernel.builder().sharedKernel(badSharedKernel).build();
+    return MinimumRelationsRequiredForSharedKernel.builder()
+        .sharedKernel(badSharedKernel.getCanonicalName().value())
+        .build();
   }
 
   public List<Event> extract(ExtractSharedKernels command) {
@@ -64,7 +67,10 @@ public class SharedKernelExtractor implements Extractor<ExtractDDDConcepts> {
         .canonicalName(sharedKernel.getCanonicalName().value())
         .packageName(sharedKernel.getPackageName().value())
         .description(sharedKernel.getDescription().value())
-        .relations(sharedKernel.getRelations())
+        .relations(
+            sharedKernel.getRelations().stream()
+                .map(Relation::value)
+                .collect(Collectors.toUnmodifiableSet()))
         .build();
   }
 }

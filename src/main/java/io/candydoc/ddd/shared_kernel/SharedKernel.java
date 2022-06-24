@@ -1,6 +1,7 @@
 package io.candydoc.ddd.shared_kernel;
 
 import io.candydoc.ddd.model.DDDConcept;
+import io.candydoc.ddd.model.Relation;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NonNull;
@@ -12,8 +13,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 public class SharedKernel extends DDDConcept {
 
-  // Todo : Replace String DDDConcept because it is relation with DDDConcept not concept name
-  @NonNull private Set<String> relations;
+  @NonNull private Set<Relation> relations;
 
   @Override
   public <T> T apply(Visitor<T> visitor) {

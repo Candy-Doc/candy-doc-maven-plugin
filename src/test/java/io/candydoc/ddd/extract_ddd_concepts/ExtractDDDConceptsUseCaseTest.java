@@ -12,6 +12,7 @@ import io.candydoc.ddd.domain_event.DomainEventFound;
 import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
 import io.candydoc.ddd.model.ExtractionException;
+import io.candydoc.ddd.shared_kernel.MinimumRelationsRequiredForSharedKernel;
 import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.io.IOException;
@@ -320,11 +321,11 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
-  void find_shared_kernel_inside_given_packages() throws IOException {
+  void shared_kernel_must_have_relations() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
-            .packageToScan("io.candydoc.sample.valid_bounded_contexts")
+            .packageToScan("io.candydoc.sample.wrong_bounded_contexts")
             .build();
 
     // when
@@ -333,21 +334,14 @@ class ExtractDDDConceptsUseCaseTest {
     // then
     Assertions.assertThat(extractionCaptor.getResult())
         .contains(
-            SharedKernelFound.builder()
-                .simpleName("shared_kernel_one")
-                .canonicalName(
-                    "io.candydoc.sample.valid_bounded_contexts.shared_kernel.package-info")
-                .description("description of shared kernel")
-                .packageName("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
-                .relations(
-                    Set.of(
-                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info",
-                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_two.package-info"))
+            MinimumRelationsRequiredForSharedKernel.builder()
+                .sharedKernel(
+                    "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.package-info")
                 .build());
   }
 
   @Test
-  void shared_kernel_must_have_relations() throws IOException {
+  void find_shared_kernel_inside_given_packages() throws IOException {
     // given
     ExtractDDDConcepts command =
         ExtractDDDConcepts.builder()
