@@ -231,11 +231,16 @@ public class ReflectionsConceptFinder implements DDDConceptFinder {
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.SharedKernel.class).description();
 
+    String[] relations =
+        clazz.getAnnotation(io.candydoc.ddd.annotations.SharedKernel.class).relations();
+
     return SharedKernel.builder()
         .canonicalName(toCanonicalName(clazz))
         .simpleName(SimpleName.of(simpleName))
         .packageName(toPackageName(clazz))
         .description(Description.of(description))
+        .relations(
+            Arrays.stream(relations).map(Relation::of).collect(Collectors.toUnmodifiableSet()))
         .build();
   }
 

@@ -9,6 +9,8 @@ import io.candydoc.ddd.domain_command.DomainCommandFound;
 import io.candydoc.ddd.domain_event.DomainEventFound;
 import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
+import io.candydoc.ddd.shared_kernel.MinimumRelationsRequiredForSharedKernel;
+import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.util.LinkedList;
 import java.util.List;
@@ -282,6 +284,35 @@ class BoundedContextDtoMapperTest {
         .flatMap(boundedContextDto -> boundedContextDto.getConcepts(ConceptType.CORE_CONCEPT))
         .flatMap(ConceptDto::getErrors)
         .contains("Share same name with another core concept");
+  }
+
+  @Test
+  void generate_error_if_shared_kernel_doesnt_have_relations() {
+    // given
+    eventList.addAll(
+        List.of(
+            SharedKernelFound.builder()
+                .simpleName("shared kernel")
+                .description("shared kernel description")
+                .canonicalName(
+                    "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.package-info")
+                .packageName("io.candydoc.sample.wrong_bounded_contexts.shared_kernel")
+                .relations(Set.of())
+                .build(),
+            MinimumRelationsRequiredForSharedKernel.builder()
+                .sharedKernel(
+                    "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.package-info")
+                .build()));
+    // TODO : Continue with SharedKernelDto
+    // when
+    List<BoundedContextDto> boundedContextDtos = BoundedContextDtoMapper.map(eventList);
+    // then
+    Assertions.assertThat(boundedContextDtos)
+        .filteredOn(
+            boundedContextDto -> boundedContextDto.getSimpleName().equals("bounded context"))
+        .flatMap(boundedContextDto -> boundedContextDto.getConcepts(ConceptType.CORE_CONCEPT))
+        .flatMap(ConceptDto::getErrors)
+        .contains("Shared kernel doesn't have minimum required relations");
   }
 
   @Test

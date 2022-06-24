@@ -13,10 +13,12 @@ import io.candydoc.ddd.domain_event.DomainEventFound;
 import io.candydoc.ddd.interaction.ConceptRuleViolated;
 import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
 import io.candydoc.ddd.model.ExtractionException;
+import io.candydoc.ddd.shared_kernel.MinimumRelationsRequiredForSharedKernel;
 import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ValueObjectFound;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -372,6 +374,26 @@ class ExtractDDDConceptsUseCaseTest {
   }
 
   @Test
+  void shared_kernel_must_have_relations() throws IOException {
+    // given
+    ExtractDDDConcepts command =
+        ExtractDDDConcepts.builder()
+            .packageToScan("io.candydoc.sample.wrong_bounded_contexts")
+            .build();
+
+    // when
+    extractDDDConceptsUseCase.execute(command);
+
+    // then
+    Assertions.assertThat(extractionCaptor.getResult())
+        .contains(
+            MinimumRelationsRequiredForSharedKernel.builder()
+                .sharedKernel(
+                    "io.candydoc.sample.wrong_bounded_contexts.shared_kernel.package-info")
+                .build());
+  }
+
+  @Test
   void find_shared_kernel_inside_given_packages() throws IOException {
     // given
     ExtractDDDConcepts command =
@@ -391,6 +413,10 @@ class ExtractDDDConceptsUseCaseTest {
                     "io.candydoc.sample.valid_bounded_contexts.shared_kernel.package-info")
                 .description("description of shared kernel")
                 .packageName("io.candydoc.sample.valid_bounded_contexts.shared_kernel")
+                .relations(
+                    Set.of(
+                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_one.package-info",
+                        "io.candydoc.sample.valid_bounded_contexts.bounded_context_two.package-info"))
                 .build());
   }
 

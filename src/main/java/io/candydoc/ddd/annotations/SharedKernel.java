@@ -10,4 +10,6 @@ public @interface SharedKernel {
   String name() default "";
 
   String description() default "";
+
+  String[] relations() default {};
 }

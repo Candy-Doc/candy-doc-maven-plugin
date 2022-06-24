@@ -24,6 +24,7 @@ import io.candydoc.ddd.interaction.InteractionBetweenConceptFound;
 import io.candydoc.ddd.interaction.InteractionChecker;
 import io.candydoc.ddd.model.Extractor;
 import io.candydoc.ddd.shared_kernel.ExtractSharedKernels;
+import io.candydoc.ddd.shared_kernel.MinimumRelationsRequiredForSharedKernel;
 import io.candydoc.ddd.shared_kernel.SharedKernelExtractor;
 import io.candydoc.ddd.shared_kernel.SharedKernelFound;
 import io.candydoc.ddd.value_object.ExtractValueObjects;
@@ -160,4 +161,7 @@ public class DDDConceptsExtractionService
   public void apply(InteractionBetweenConceptFound event) {}
 
   public void apply(NameConflictBetweenCoreConcepts event) {}
+
+  public void apply(
+      MinimumRelationsRequiredForSharedKernel minimumRelationsRequiredForSharedKernel) {}
 }
