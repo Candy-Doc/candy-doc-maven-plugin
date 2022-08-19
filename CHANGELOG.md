@@ -1,3 +1,8 @@
+# [v1.0.5](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v1.0.4...v1.0.5) (2022-08-19)
+
+## 🐛 Bug Fixes
+- [`cbc0ac7`](https://github.com/Candy-Doc/candy-doc-maven-plugin/commit/cbc0ac7)  fix(html): use package name instead of simple name (#174) (Issues: [`#174`](https://github.com/Candy-Doc/candy-doc-maven-plugin/issues/174))
+
 # [v1.0.4](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v1.0.3...v1.0.4) (2022-06-21)
 
 ## 🐛 Bug Fixes
