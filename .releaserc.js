@@ -51,6 +51,10 @@ module.exports = {
       changelogFile: 'CHANGELOG.md',
       changelogTitle: '# Changelog'
     },
+    "@semantic-release/exec",
+    {
+      verifyReleaseCmd: "mvn versions:set -DnewVersion=${nextRelease.version}"
+    },
     '@conveyal/maven-semantic-release',
     '@semantic-release/git',
     {
