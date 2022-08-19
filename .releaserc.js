@@ -52,6 +52,12 @@ module.exports = {
       changelogTitle: '# Changelog'
     },
     '@conveyal/maven-semantic-release',
+          [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "./mvnw versions:set -DnewVersion=${nextRelease.version} -DprocessAllModules -DgenerateBackupPoms=false"
+      }
+    ],
     '@semantic-release/git',
     {
       assets: [
