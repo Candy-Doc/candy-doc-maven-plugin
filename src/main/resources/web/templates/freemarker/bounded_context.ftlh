@@ -22,7 +22,7 @@
                         <div class="interactions-box">
                             <h2 class="interaction__title">${i18n.getString(conceptType.name())}</h2>
                             <#list boundedContext.getConcepts(conceptType) as concept>
-                                <a href="${boundedContext.simpleName}/${concept.canonicalName}.html"
+                                <a href="${boundedContext.packageName}/${concept.canonicalName}.html"
                                    class="interaction">
                                     ${concept.simpleName}
                                 </a>

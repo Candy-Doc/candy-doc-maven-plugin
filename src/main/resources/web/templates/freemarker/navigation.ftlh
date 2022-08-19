@@ -6,7 +6,7 @@
         <#list boundedContexts as boundedContext>
             <ul class="bounded-contexts">
                 <li class="bounded-context">
-                    <a href="${boundedContext.simpleName}/${boundedContext.simpleName}.html">${boundedContext.simpleName}</a>
+                    <a href="${boundedContext.packageName}/${boundedContext.canonicalName}.html">${boundedContext.simpleName}</a>
                     <ul class="bounded-context__concepts">
                         <#if boundedContext.getConcepts()?has_content>
                             <#list boundedContext.getConceptTypes() as conceptType>
@@ -15,7 +15,7 @@
                                     <ul class="concepts">
                                         <#list boundedContext.getConcepts(conceptType) as concept>
                                             <li class="concepts__item">
-                                                <a href="${boundedContext.simpleName}/${concept.canonicalName}.html">${concept.simpleName}</a>
+                                                <a href="${boundedContext.packageName}/${concept.canonicalName}.html">${concept.simpleName}</a>
                                             </li>
                                         </#list>
                                     </ul>
