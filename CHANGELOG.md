@@ -1,3 +1,9 @@
+# [v1.0.6](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v1.0.5...v1.0.6) (2022-08-20)
+  You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/1.0.6/maven-plugin
+
+## 🐛 Bug Fixes
+- [`9c6b39a`](https://github.com/Candy-Doc/candy-doc-maven-plugin/commit/9c6b39a)  fix(ci): Update pom.xml on release (#176) (Issues: [`#176`](https://github.com/Candy-Doc/candy-doc-maven-plugin/issues/176))
+
 # [v1.0.5](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v1.0.4...v1.0.5) (2022-08-19)
 
 ## 🐛 Bug Fixes
