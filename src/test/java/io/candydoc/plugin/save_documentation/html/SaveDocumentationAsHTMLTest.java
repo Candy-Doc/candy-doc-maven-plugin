@@ -20,8 +20,8 @@ import org.junit.jupiter.api.Test;
 
 class SaveDocumentationAsHTMLTest {
 
-  private final SaveDocumentationAsHTML saveDocumentationAsHTML =
-      new SaveDocumentationAsHTML(new FreemarkerEngine());
+  private final SaveUbiquitousLanguageAsHTML saveDocumentationAsHTML =
+      new SaveUbiquitousLanguageAsHTML(new FreemarkerEngine());
   private final List<Event> boundedContextsForHTMLGenerationTests =
       List.of(
           BoundedContextFound.builder()

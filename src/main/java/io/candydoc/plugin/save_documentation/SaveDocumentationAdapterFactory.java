@@ -1,7 +1,7 @@
 package io.candydoc.plugin.save_documentation;
 
-import io.candydoc.ddd.extract_ddd_concepts.SaveDocumentationPort;
+import io.candydoc.ddd.extract_domain_models.SaveUbiquitousLanguagePort;
 
 public interface SaveDocumentationAdapterFactory {
-  SaveDocumentationPort getAdapter(String outputFormat, String outputDirectory);
+  SaveUbiquitousLanguagePort getAdapter(String outputFormat, String outputDirectory);
 }

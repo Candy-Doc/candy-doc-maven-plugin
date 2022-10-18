@@ -21,7 +21,7 @@ import org.mockito.ArgumentCaptor;
 
 class SaveDocumentationAsFileTest {
 
-  private SaveDocumentationAsFile saveDocumentationAsFile;
+  private SaveUbiquitousLanguageAsFile saveDocumentationAsFile;
   private ArgumentCaptor<List<BoundedContextDto>> boundedContextsCaptor;
   private ObjectMapper serializer;
 
@@ -29,7 +29,7 @@ class SaveDocumentationAsFileTest {
   public void setUp() throws IOException {
     serializer = mock(ObjectMapper.class);
     saveDocumentationAsFile =
-        new SaveDocumentationAsFile(serializer, Paths.get("target", "candy-doc.json")) {};
+        new SaveUbiquitousLanguageAsFile(serializer, Paths.get("target", "candy-doc.json")) {};
     boundedContextsCaptor = ArgumentCaptor.forClass(List.class);
 
     executeSaveAndCaptureExtractedConcepts();

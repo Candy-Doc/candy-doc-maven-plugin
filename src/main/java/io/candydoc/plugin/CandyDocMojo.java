@@ -1,6 +1,6 @@
 package io.candydoc.plugin;
 
-import io.candydoc.ddd.extract_ddd_concepts.*;
+import io.candydoc.ddd.extract_domain_models.*;
 import io.candydoc.plugin.save_documentation.SaveDocumentationAdapterFactory;
 import io.candydoc.plugin.save_documentation.SaveDocumentationAdapterFactoryImpl;
 import java.io.File;
@@ -37,17 +37,16 @@ public class CandyDocMojo extends AbstractMojo {
     String outputDirectory = project.getBuild().getDirectory();
     Thread.currentThread().setContextClassLoader(getProjectClassLoader());
     SaveDocumentationAdapterFactory adapterFactory = new SaveDocumentationAdapterFactoryImpl();
-    SaveDocumentationPort saveDocumentationPort =
-        adapterFactory.getAdapter(outputFormat, outputDirectory);
-    DDDConceptFinder DDDConceptFinder = new ReflectionsConceptFinder(packagesToScan);
-    DDDConceptsExtractionService dddConceptsExtractionService =
-        new DDDConceptsExtractionService(DDDConceptFinder);
+    SaveUbiquitousLanguagePort saveUbiquitousLanguagePort = adapterFactory.getAdapter(outputFormat, outputDirectory);
+    DomainModelFinder domainModelFinder = new ReflectionsDomainModelFinder(packagesToScan);
 
-    ExtractDDDConceptsUseCase extractDDDConceptsUseCase =
-        new ExtractDDDConceptsUseCase(dddConceptsExtractionService, saveDocumentationPort);
+    ExtractDomainModelsUseCase extractDomainModelsUseCase =
+        new ExtractDomainModelsUseCase(domainModelFinder, saveUbiquitousLanguagePort);
 
-    extractDDDConceptsUseCase.execute(
-        ExtractDDDConcepts.builder().packagesToScan(packagesToScan).build());
+    extractDomainModelsUseCase.execute(
+        ExtractDomainModels.builder()
+            .packagesToScan(packagesToScan)
+            .build());
   }
 
   private ClassLoader getProjectClassLoader() throws MojoExecutionException {

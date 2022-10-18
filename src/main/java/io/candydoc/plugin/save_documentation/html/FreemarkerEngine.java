@@ -3,7 +3,7 @@ package io.candydoc.plugin.save_documentation.html;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import io.candydoc.ddd.extract_ddd_concepts.DocumentationGenerationFailed;
+import io.candydoc.ddd.extract_domain_models.DocumentationGenerationFailed;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;

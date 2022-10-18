@@ -1,8 +1,8 @@
 package io.candydoc.plugin.save_documentation;
 
 import io.candydoc.ddd.bounded_context.BoundedContextFound;
-import io.candydoc.ddd.extract_ddd_concepts.SaveDocumentationPort;
-import io.candydoc.plugin.save_documentation.file.SaveDocumentationAsFile;
+import io.candydoc.ddd.extract_domain_models.SaveUbiquitousLanguagePort;
+import io.candydoc.plugin.save_documentation.file.SaveUbiquitousLanguageAsFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,7 +37,7 @@ class SaveDocumentationAdapterFactoryImplTest {
 
   @Test
   void save_documentation_as_json() throws IOException {
-    SaveDocumentationPort saveDocumentationPort = adapterFactory.getAdapter("json", "target");
+    SaveUbiquitousLanguagePort saveUbiquitousLanguagePort = adapterFactory.getAdapter("json", "target");
     BoundedContextFound newBoundedContextEvent =
         BoundedContextFound.builder()
             .simpleName("bounded_context_one")
@@ -45,16 +45,16 @@ class SaveDocumentationAdapterFactoryImplTest {
             .packageName("io.candydoc.sample.bounded_context_one")
             .description("test package 1")
             .build();
-    saveDocumentationPort.save(new LinkedList<>(Collections.singleton(newBoundedContextEvent)));
+    saveUbiquitousLanguagePort.save(new LinkedList<>(Collections.singleton(newBoundedContextEvent)));
     Path expectedPath = Paths.get("target", "candy-doc", "bounded_contexts.json");
-    Assertions.assertThat(saveDocumentationPort).isInstanceOf(SaveDocumentationAsFile.class);
+    Assertions.assertThat(saveUbiquitousLanguagePort).isInstanceOf(SaveUbiquitousLanguageAsFile.class);
     Assertions.assertThat(expectedPath).exists();
     Files.delete(expectedPath);
   }
 
   @Test
   void save_documentation_as_yml() throws IOException {
-    SaveDocumentationPort saveDocumentationPort = adapterFactory.getAdapter("yml", "target");
+    SaveUbiquitousLanguagePort saveUbiquitousLanguagePort = adapterFactory.getAdapter("yml", "target");
     BoundedContextFound newBoundedContextEvent =
         BoundedContextFound.builder()
             .simpleName("bounded_context_one")
@@ -62,9 +62,9 @@ class SaveDocumentationAdapterFactoryImplTest {
             .packageName("io.candydoc.sample.bounded_context_one")
             .description("test package 1")
             .build();
-    saveDocumentationPort.save(new LinkedList<>(Collections.singleton(newBoundedContextEvent)));
+    saveUbiquitousLanguagePort.save(new LinkedList<>(Collections.singleton(newBoundedContextEvent)));
     Path expectedPath = Paths.get("target", "candy-doc", "bounded_contexts.yml");
-    Assertions.assertThat(saveDocumentationPort).isInstanceOf(SaveDocumentationAsFile.class);
+    Assertions.assertThat(saveUbiquitousLanguagePort).isInstanceOf(SaveUbiquitousLanguageAsFile.class);
     Assertions.assertThat(expectedPath).exists();
     Files.delete(expectedPath);
   }
