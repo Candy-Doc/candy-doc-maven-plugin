@@ -1,4 +1,4 @@
-package io.candydoc.ddd.strategic_patterns;
+package io.candydoc.ddd.strategic_patterns.bounded_context;
 
 import io.candydoc.ddd.model.CanonicalName;
 import io.candydoc.ddd.model.DDDPattern;

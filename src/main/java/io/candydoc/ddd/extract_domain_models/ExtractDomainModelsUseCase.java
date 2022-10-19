@@ -6,7 +6,6 @@ import io.candydoc.ddd.model.UbiquitousLanguage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,11 +20,11 @@ public class ExtractDomainModelsUseCase {
     public void checkParameters(ExtractDomainModels command) throws ExtractionException {
         if (command.packagesToScan().isEmpty()) {
             throw new PackageToScanMissing(
-                "Missing parameters for 'packageToScan'. Check your pom configuration.");
+                "At least one 'packageToScan' must be provided. Check your pom configuration.");
         }
         if (command.packagesToScan().stream().anyMatch(String::isBlank)) {
             throw new PackageToScanMissing(
-                "Blank packageToScan not allowed for 'packagesToScan'. Check your pom configuration");
+                "Blank packageToScan not allowed for 'packagesToScan'. Check your pom configuration.");
         }
     }
 
@@ -39,11 +38,11 @@ public class ExtractDomainModelsUseCase {
             .collect(Collectors.toUnmodifiableSet());
 
         if (foundDomainModels.isEmpty()) {
-            log.info("No domain model has been found in packages: {}", command.packagesToScan());
+            log.info("No domain model has been found in packages: {}.", command.packagesToScan());
         } else {
             Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainModels(foundDomainModels);
             ubiquitousLanguageRepository.saveAll(ubiquitousLanguages);
-            log.info("Domain models has been saved.");
         }
+        log.info("Domain models extraction done.");
     }
 }

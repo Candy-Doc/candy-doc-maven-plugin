@@ -9,8 +9,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import io.candydoc.plugin.save_documentation.file.json.UbiquitousLanguageAsJson;
-import io.candydoc.plugin.save_documentation.file.yml.UbiquitousLanguageAsYml;
+import io.candydoc.plugin.save_ubiquitous_language.file.json.UbiquitousLanguageAsJson;
+import io.candydoc.plugin.save_ubiquitous_language.file.yml.UbiquitousLanguageAsYml;
 import lombok.SneakyThrows;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -18,7 +18,7 @@ import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
 
 @Mojo(
-    name = "candy-doc",
+    name = "ubiquitous-language",
     defaultPhase = LifecyclePhase.COMPILE,
     requiresDependencyResolution = ResolutionScope.RUNTIME_PLUS_SYSTEM,
     requiresDependencyCollection = ResolutionScope.RUNTIME_PLUS_SYSTEM,

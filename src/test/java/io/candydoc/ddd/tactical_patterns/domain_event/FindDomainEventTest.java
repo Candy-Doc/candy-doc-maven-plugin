@@ -9,7 +9,7 @@ import io.candydoc.ddd.model.Description;
 import io.candydoc.ddd.model.DomainModel;
 import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.model.SimpleName;
-import io.candydoc.ddd.tactical_pattern.Aggregate;
+import io.candydoc.ddd.tactical_pattern.DomainEvent;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class FindDomainEventTest {
 
         // then
         assertThat(actualDomainModels)
-            .contains(Aggregate.builder()
+            .contains(DomainEvent.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_event"))
                 .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest.DomainEventOne"))
                 .simpleName(SimpleName.of("DomainEventOne"))

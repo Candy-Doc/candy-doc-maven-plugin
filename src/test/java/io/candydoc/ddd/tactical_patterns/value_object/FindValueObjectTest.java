@@ -10,6 +10,7 @@ import io.candydoc.ddd.model.DomainModel;
 import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.model.SimpleName;
 import io.candydoc.ddd.tactical_pattern.Aggregate;
+import io.candydoc.ddd.tactical_pattern.ValueObject;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class FindValueObjectTest {
 
         // then
         assertThat(actualDomainModels)
-            .contains(Aggregate.builder()
+            .contains(ValueObject.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.value_object"))
                 .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.value_object.FindValueObjectTest.ValueObjectOne"))
                 .simpleName(SimpleName.of("ValueObjectOne"))
@@ -47,6 +48,23 @@ public class FindValueObjectTest {
 
     @io.candydoc.ddd.annotations.ValueObject
     public static class ValueObjectTwo {
+    }
+
+    @io.candydoc.ddd.annotations.ValueObject
+    public enum EnumValueObject {
+
+        A {
+            @Override
+            void someMethod() {
+            }
+        },
+        B {
+            @Override
+            void someMethod() {
+            }
+        };
+
+        abstract void someMethod();
 
     }
 

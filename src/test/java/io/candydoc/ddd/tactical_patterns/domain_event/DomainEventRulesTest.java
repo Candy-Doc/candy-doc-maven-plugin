@@ -50,12 +50,12 @@ public class DomainEventRulesTest {
 
     @Test
     void it_can_depend_on_value_object() {
-        Dependency anotherValueObject = Dependency.builder()
+        Dependency valueObject = Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
             .pattern(DDDPattern.Tactical.VALUE_OBJECT)
             .build();
 
-        assertThatDependency(anotherValueObject)
+        assertThatDependency(valueObject)
             .isAllowedIn(domainEvent);
     }
 
@@ -83,12 +83,12 @@ public class DomainEventRulesTest {
 
     @Test
     void it_can_not_depend_on_aggregate() {
-        Dependency anotherAggregate = Dependency.builder()
+        Dependency aggregate = Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.AggregateOne"))
             .pattern(DDDPattern.Tactical.AGGREGATE)
             .build();
 
-        assertThatDependency(anotherAggregate)
+        assertThatDependency(aggregate)
             .isForbiddenIn(domainEvent);
     }
 

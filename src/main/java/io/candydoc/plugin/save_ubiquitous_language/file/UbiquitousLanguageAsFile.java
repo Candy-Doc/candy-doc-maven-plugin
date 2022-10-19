@@ -1,6 +1,7 @@
-package io.candydoc.plugin.save_documentation.file;
+package io.candydoc.plugin.save_ubiquitous_language.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.candydoc.ddd.extract_domain_models.DocumentationGenerationFailed;
 import io.candydoc.ddd.extract_domain_models.UbiquitousLanguageRepository;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,7 +23,7 @@ public abstract class UbiquitousLanguageAsFile implements UbiquitousLanguageRepo
       Files.createDirectories(fileToSave.getParent());
       serializer.writeValue(fileToSave.toFile(), null);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new DocumentationGenerationFailed(e);
     }
   }
 }

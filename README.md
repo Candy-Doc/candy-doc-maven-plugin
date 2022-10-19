@@ -74,7 +74,7 @@ To run this plugin, import the following:
 <executions>
     <execution>
         <goals>
-            <goal>candy-doc</goal>
+            <goal>ubiquitous-language</goal>
         </goals>
     </execution>
 </executions>

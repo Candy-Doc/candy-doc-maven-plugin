@@ -10,6 +10,7 @@ import io.candydoc.ddd.model.DomainModel;
 import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.model.SimpleName;
 import io.candydoc.ddd.tactical_pattern.Aggregate;
+import io.candydoc.ddd.tactical_pattern.DomainCommand;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class FindDomainCommandTest {
 
         // then
         assertThat(actualDomainModels)
-            .contains(Aggregate.builder()
+            .contains(DomainCommand.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"))
                 .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.DomainCommandOne"))
                 .simpleName(SimpleName.of("DomainCommandOne"))
