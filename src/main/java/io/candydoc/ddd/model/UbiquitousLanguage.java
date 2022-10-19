@@ -19,6 +19,7 @@ public interface UbiquitousLanguage {
         Map<DDDPattern, Set<DomainModel>> domainModelsPerPattern = domainModels.stream()
             .collect(Collectors.groupingBy(DomainModel::dddPattern, Collectors.toUnmodifiableSet()));
 
+        Set<DomainModel> modelsToProcess = new HashSet<>(domainModels);
         Set<UbiquitousLanguage> ubiquitousLanguages = new HashSet<>();
 
         domainModelsPerPattern.getOrDefault(DDDPattern.Strategic.BOUNDED_CONTEXT, Set.of()).stream()
@@ -26,6 +27,9 @@ public interface UbiquitousLanguage {
                 Set<DomainModel> boundedDomainModels = domainModels.stream()
                     .filter(domainModel -> !boundedContext.equals(domainModel) && domainModel.packageName().startsWith(boundedContext.packageName()))
                     .collect(Collectors.toUnmodifiableSet());
+
+                modelsToProcess.remove(boundedContext);
+                modelsToProcess.removeAll(boundedDomainModels);
 
                 return UbiquitousLanguage.BoundedVocabulary.builder()
                     .boundedContext((BoundedContext) boundedContext)
@@ -40,12 +44,21 @@ public interface UbiquitousLanguage {
                     .filter(domainModel -> !sharedKernel.equals(domainModel) && domainModel.packageName().startsWith(sharedKernel.packageName()))
                     .collect(Collectors.toUnmodifiableSet());
 
+                modelsToProcess.remove(sharedKernel);
+                modelsToProcess.removeAll(sharedDomainModels);
+
                 return SharedVocabulary.builder()
                     .sharedKernel((SharedKernel) sharedKernel)
                     .domainModels(sharedDomainModels)
                     .build();
             })
             .forEach(ubiquitousLanguages::add);
+
+        if (!modelsToProcess.isEmpty()) {
+            ubiquitousLanguages.add(NotBoundedVocabulary.builder()
+                .domainModels(modelsToProcess)
+                .build());
+        }
 
         return Set.copyOf(ubiquitousLanguages);
     }
@@ -67,6 +80,15 @@ public interface UbiquitousLanguage {
     @ToString
     class SharedVocabulary implements UbiquitousLanguage {
         private final SharedKernel sharedKernel;
+        private final Set<DomainModel> domainModels;
+    }
+
+    @Builder
+    @Getter
+    @Accessors(fluent = true)
+    @EqualsAndHashCode
+    @ToString
+    final class NotBoundedVocabulary implements UbiquitousLanguage {
         private final Set<DomainModel> domainModels;
     }
 
