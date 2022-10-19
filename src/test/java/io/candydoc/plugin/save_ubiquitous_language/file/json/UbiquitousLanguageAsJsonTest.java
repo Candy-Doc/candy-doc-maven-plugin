@@ -5,12 +5,12 @@ import com.jayway.jsonpath.JsonPath;
 import io.candydoc.ddd.model.DomainModel;
 import io.candydoc.ddd.model.UbiquitousLanguage;
 import io.candydoc.plugin.fixture.UbiquitousLanguageFixtures;
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Set;
@@ -21,18 +21,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class UbiquitousLanguageAsJsonTest {
 
-    static final Path target = Path.of("target", "candy-doc-test.json");
+    static final Path DESTINATION_FOLDER = Path.of("target", "candyDocTmp");
 
     UbiquitousLanguageAsJson ubiquitousLanguageAsJson;
 
     @BeforeEach
-    public void setUp() {
-        this.ubiquitousLanguageAsJson = new UbiquitousLanguageAsJson(target);
+    public void setUp() throws IOException {
+        this.ubiquitousLanguageAsJson = new UbiquitousLanguageAsJson(DESTINATION_FOLDER);
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
-        FileUtils.deleteDirectory(target.toFile());
+    public void tearDown() {
+        DESTINATION_FOLDER.toFile().deleteOnExit();
     }
 
     @Test
@@ -50,10 +50,12 @@ class UbiquitousLanguageAsJsonTest {
         ubiquitousLanguageAsJson.saveAll(ubiquitousLanguages);
 
         // then
-        DocumentContext actualJson = JsonPath.parse(target.toFile());
+        Path boundedContextFilePath = DESTINATION_FOLDER.resolve("bounded_context_one.json");
 
-        assertThat(actualJson.read("$.boundedContexts[0].packageName").toString())
-            .isEqualTo("io.candydoc.ddd.strategic_patterns.bounded_context.sample");
+        DocumentContext actualJson = JsonPath.parse(boundedContextFilePath.toFile());
+
+        assertThat(actualJson.read("$.contextName").toString())
+            .isEqualTo("Bounded context one");
     }
 
 }

@@ -6,7 +6,7 @@ import io.candydoc.plugin.save_ubiquitous_language.file.UbiquitousLanguageAsFile
 import java.nio.file.Path;
 
 public class UbiquitousLanguageAsJson extends UbiquitousLanguageAsFile {
-  public UbiquitousLanguageAsJson(Path fileToSave) {
-    super(new ObjectMapper(new JsonFactory()), fileToSave);
+  public UbiquitousLanguageAsJson(Path destinationFolder) {
+    super(new ObjectMapper(new JsonFactory()), destinationFolder, "json");
   }
 }

@@ -63,6 +63,14 @@ public interface UbiquitousLanguage {
         return Set.copyOf(ubiquitousLanguages);
     }
 
+    <T> T accept(Visitor<T> visitor);
+
+    interface Visitor<T> {
+        T handle(BoundedVocabulary vocabulary);
+        T handle(SharedVocabulary vocabulary);
+        T handle(NotBoundedVocabulary vocabulary);
+    }
+
     @Builder
     @Getter
     @Accessors(fluent = true)
@@ -71,6 +79,11 @@ public interface UbiquitousLanguage {
     final class BoundedVocabulary implements UbiquitousLanguage {
         private final BoundedContext boundedContext;
         private final Set<DomainModel> domainModels;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor) {
+            return visitor.handle(this);
+        }
     }
 
     @Builder
@@ -81,6 +94,11 @@ public interface UbiquitousLanguage {
     class SharedVocabulary implements UbiquitousLanguage {
         private final SharedKernel sharedKernel;
         private final Set<DomainModel> domainModels;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor) {
+            return visitor.handle(this);
+        }
     }
 
     @Builder
@@ -90,6 +108,11 @@ public interface UbiquitousLanguage {
     @ToString
     final class NotBoundedVocabulary implements UbiquitousLanguage {
         private final Set<DomainModel> domainModels;
+
+        @Override
+        public <T> T accept(Visitor<T> visitor) {
+            return visitor.handle(this);
+        }
     }
 
 
