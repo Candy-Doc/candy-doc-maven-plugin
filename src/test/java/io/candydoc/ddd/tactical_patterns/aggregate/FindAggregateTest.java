@@ -48,6 +48,21 @@ public class FindAggregateTest {
                 .build());
     }
 
+    @Test
+    public void attributes_not_provided() {
+        // when
+        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.tactical_patterns.aggregate"));
+
+        // then
+        assertThat(actualDomainModels)
+            .contains(Aggregate.builder()
+                .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.aggregate"))
+                .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.aggregate.FindAggregateTest.AggregateTwo"))
+                .simpleName(SimpleName.of("AggregateTwo"))
+                .description(Description.of(""))
+                .build());
+    }
+
     @io.candydoc.ddd.annotations.Aggregate(name = "My aggregate", description = "Describe the aggregate here")
     public static class AggregateOne {
         private ValueObjectOne valueObjectOne;
@@ -67,6 +82,10 @@ public class FindAggregateTest {
 
     @io.candydoc.ddd.annotations.ValueObject
     public static class ValueObjectOne {
+    }
+
+    @io.candydoc.ddd.annotations.Aggregate
+    public static class AggregateTwo {
     }
 
 }

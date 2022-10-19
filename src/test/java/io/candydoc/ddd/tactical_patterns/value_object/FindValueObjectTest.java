@@ -41,6 +41,21 @@ public class FindValueObjectTest {
                 .build());
     }
 
+    @Test
+    public void attributes_not_provided() {
+        // when
+        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.tactical_patterns.value_object"));
+
+        // then
+        assertThat(actualDomainModels)
+            .contains(ValueObject.builder()
+                .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.value_object"))
+                .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.value_object.FindValueObjectTest.ValueObjectTwo"))
+                .simpleName(SimpleName.of("ValueObjectTwo"))
+                .description(Description.of(""))
+                .build());
+    }
+
     @io.candydoc.ddd.annotations.ValueObject(description = "Describe the value object here")
     public static class ValueObjectOne {
         private ValueObjectTwo valueObjectTwo;

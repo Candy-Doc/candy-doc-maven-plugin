@@ -40,6 +40,21 @@ public class FindDomainEventTest {
                 .build());
     }
 
+    @Test
+    public void attributes_not_provided() {
+        // when
+        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_event"));
+
+        // then
+        assertThat(actualDomainModels)
+            .contains(DomainEvent.builder()
+                .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_event"))
+                .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest.DomainEventTwo"))
+                .simpleName(SimpleName.of("DomainEventTwo"))
+                .description(Description.of(""))
+                .build());
+    }
+
     @io.candydoc.ddd.annotations.DomainEvent(description = "Describe the domain event here")
     public static class DomainEventOne {
         private ValueObjectOne valueObjectOne;
@@ -47,6 +62,10 @@ public class FindDomainEventTest {
 
     @io.candydoc.ddd.annotations.ValueObject
     public static class ValueObjectOne {
+    }
+
+    @io.candydoc.ddd.annotations.DomainEvent
+    public static class DomainEventTwo {
     }
 
 }

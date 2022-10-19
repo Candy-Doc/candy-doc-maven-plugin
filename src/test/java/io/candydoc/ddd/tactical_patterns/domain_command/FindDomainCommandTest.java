@@ -41,6 +41,21 @@ public class FindDomainCommandTest {
                 .build());
     }
 
+    @Test
+    public void attributes_not_provided() {
+        // when
+        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"));
+
+        // then
+        assertThat(actualDomainModels)
+            .contains(DomainCommand.builder()
+                .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"))
+                .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.DomainCommandTwo"))
+                .simpleName(SimpleName.of("DomainCommandTwo"))
+                .description(Description.of(""))
+                .build());
+    }
+
     @io.candydoc.ddd.annotations.DomainCommand(description = "Describe the domain command here")
     public static class DomainCommandOne {
         private ValueObjectOne valueObjectOne;
@@ -48,6 +63,10 @@ public class FindDomainCommandTest {
 
     @io.candydoc.ddd.annotations.ValueObject
     public static class ValueObjectOne {
+    }
+
+    @io.candydoc.ddd.annotations.DomainCommand
+    public static class DomainCommandTwo {
     }
 
 }
