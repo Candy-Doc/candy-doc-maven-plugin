@@ -9,6 +9,7 @@ import io.candydoc.ddd.model.Description;
 import io.candydoc.ddd.model.DomainModel;
 import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.model.SimpleName;
+import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
 import io.candydoc.ddd.tactical_pattern.ValueObject;
 import org.junit.jupiter.api.Test;
@@ -30,10 +31,25 @@ public class FindSharedKernelTest {
         // then
         assertThat(actualDomainModels)
             .contains(SharedKernel.builder()
-                .packageName(PackageName.of("io.candydoc.ddd.strategic_patterns.shared_kernel.sample"))
-                .canonicalName(CanonicalName.of("io.candydoc.ddd.strategic_patterns.shared_kernel.sample.package-info"))
+                .packageName(PackageName.of("io.candydoc.ddd.strategic_patterns.shared_kernel.sampleA"))
+                .canonicalName(CanonicalName.of("io.candydoc.ddd.strategic_patterns.shared_kernel.sampleA.package-info"))
                 .simpleName(SimpleName.of("Shared kernel one"))
                 .description(Description.of("Describe the shared kernel here"))
+                .build());
+    }
+
+    @Test
+    public void attributes_are_not_provided() {
+        // when
+        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.strategic_patterns.shared_kernel"));
+
+        // then
+        assertThat(actualDomainModels)
+            .contains(SharedKernel.builder()
+                .packageName(PackageName.of("io.candydoc.ddd.strategic_patterns.shared_kernel.sampleB"))
+                .canonicalName(CanonicalName.of("io.candydoc.ddd.strategic_patterns.shared_kernel.sampleB.package-info"))
+                .simpleName(SimpleName.of("sampleB"))
+                .description(Description.of(""))
                 .build());
     }
 }

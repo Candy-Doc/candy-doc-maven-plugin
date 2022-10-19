@@ -103,7 +103,9 @@ public class ReflectionsDomainModelFinder implements DomainModelFinder {
     private static BoundedContext toBoundedContext(Class<?> clazz) {
         String simpleName = clazz.getAnnotation(io.candydoc.ddd.annotations.BoundedContext.class).name();
         if (simpleName.isBlank()) {
-            simpleName = clazz.getSimpleName();
+            String packageName = clazz.getPackageName();
+            String[] packageParts = packageName.split("\\.");
+            simpleName = packageParts[packageParts.length - 1];
         }
 
         String description = clazz.getAnnotation(io.candydoc.ddd.annotations.BoundedContext.class).description();
@@ -144,7 +146,9 @@ public class ReflectionsDomainModelFinder implements DomainModelFinder {
     private static DomainModel toSharedKernel(Class<?> clazz) {
         String simpleName = clazz.getAnnotation(io.candydoc.ddd.annotations.SharedKernel.class).name();
         if (simpleName.isBlank()) {
-            simpleName = clazz.getSimpleName();
+            String packageName = clazz.getPackageName();
+            String[] packageParts = packageName.split("\\.");
+            simpleName = packageParts[packageParts.length - 1];
         }
 
         String description = clazz.getAnnotation(io.candydoc.ddd.annotations.SharedKernel.class).description();

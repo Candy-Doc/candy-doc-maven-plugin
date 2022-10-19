@@ -1,9 +1,7 @@
 package io.candydoc.ddd.extract_domain_models;
 
 import io.candydoc.ddd.model.PackageName;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.ThrowableAssert;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -41,7 +39,7 @@ public class ExtractionTest {
 
         // then
         assertThatThrownBy(callable)
-            .isInstanceOf(ExtractionTest.class)
+            .isInstanceOf(ExtractionException.class)
             .isInstanceOf(PackageToScanMissing.class)
             .hasMessage("At least one 'packageToScan' must be provided. Check your pom configuration.");
     }
@@ -59,7 +57,7 @@ public class ExtractionTest {
 
         // then
         assertThatThrownBy(callable)
-            .isInstanceOf(ExtractionTest.class)
+            .isInstanceOf(ExtractionException.class)
             .isInstanceOf(PackageToScanMissing.class)
             .hasMessage("Blank packageToScan not allowed for 'packagesToScan'. Check your pom configuration.");
     }

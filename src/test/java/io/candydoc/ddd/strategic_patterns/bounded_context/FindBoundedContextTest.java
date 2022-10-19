@@ -27,10 +27,25 @@ public class FindBoundedContextTest {
         // then
         assertThat(actualDomainModels)
             .contains(BoundedContext.builder()
-                .packageName(PackageName.of("io.candydoc.ddd.strategic_patterns.bounded_context.sample"))
-                .canonicalName(CanonicalName.of("io.candydoc.ddd.strategic_patterns.bounded_context.sample.package-info"))
+                .packageName(PackageName.of("io.candydoc.ddd.strategic_patterns.bounded_context.sampleA"))
+                .canonicalName(CanonicalName.of("io.candydoc.ddd.strategic_patterns.bounded_context.sampleA.package-info"))
                 .simpleName(SimpleName.of("Bounded context one"))
                 .description(Description.of("Describe the bounded context here"))
+                .build());
+    }
+
+    @Test
+    public void attributes_are_not_provided() {
+        // when
+        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.strategic_patterns.bounded_context"));
+
+        // then
+        assertThat(actualDomainModels)
+            .contains(BoundedContext.builder()
+                .packageName(PackageName.of("io.candydoc.ddd.strategic_patterns.bounded_context.sampleB"))
+                .canonicalName(CanonicalName.of("io.candydoc.ddd.strategic_patterns.bounded_context.sampleB.package-info"))
+                .simpleName(SimpleName.of("sampleB"))
+                .description(Description.of(""))
                 .build());
     }
 }

@@ -9,10 +9,7 @@ import io.candydoc.ddd.model.Description;
 import io.candydoc.ddd.model.DomainModel;
 import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.model.SimpleName;
-import io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne;
 import io.candydoc.ddd.tactical_pattern.Aggregate;
-import io.candydoc.ddd.tactical_pattern.DomainEvent;
-import io.candydoc.ddd.tactical_pattern.ValueObject;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

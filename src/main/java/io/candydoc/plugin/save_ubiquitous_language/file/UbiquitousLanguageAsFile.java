@@ -21,7 +21,7 @@ public abstract class UbiquitousLanguageAsFile implements UbiquitousLanguageRepo
   public void saveAll(Set<UbiquitousLanguage> ubiquitousLanguages) {
     try {
       Files.createDirectories(fileToSave.getParent());
-      serializer.writeValue(fileToSave.toFile(), null);
+      serializer.writeValue(fileToSave.toFile(), "{}");
     } catch (IOException e) {
       throw new DocumentationGenerationFailed(e);
     }
