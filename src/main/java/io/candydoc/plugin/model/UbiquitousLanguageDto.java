@@ -11,7 +11,6 @@ import java.util.Set;
 @Jacksonized
 @Builder
 @Getter
-@Accessors(fluent = true)
 public final class UbiquitousLanguageDto {
 
     private final String contextName;
@@ -24,22 +23,24 @@ public final class UbiquitousLanguageDto {
             @Override
             public UbiquitousLanguageDto handle(UbiquitousLanguage.BoundedVocabulary vocabulary) {
                 return UbiquitousLanguageDto.builder()
-                    .contextName(vocabulary.boundedContext().simpleName().value())
-                    .build();
+                        .contextName(vocabulary.boundedContext().simpleName().value())
+                        .description(vocabulary.boundedContext().description().value())
+                        .boundedContext(true)
+                        .build();
             }
 
             @Override
             public UbiquitousLanguageDto handle(UbiquitousLanguage.SharedVocabulary vocabulary) {
                 return UbiquitousLanguageDto.builder()
-                    .contextName("")
-                    .build();
+                        .contextName("")
+                        .build();
             }
 
             @Override
-            public UbiquitousLanguageDto handle(UbiquitousLanguage.NotBoundedVocabulary vocabulary) {
+            public UbiquitousLanguageDto handle(UbiquitousLanguage.OrphanBoundedVocabulary vocabulary) {
                 return UbiquitousLanguageDto.builder()
-                    .contextName("")
-                    .build();
+                        .contextName("")
+                        .build();
             }
         });
     }

@@ -1,5 +1,6 @@
 package io.candydoc.plugin.save_ubiquitous_language.file.json;
 
+import com.jayway.jsonassert.JsonAssert;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import io.candydoc.ddd.model.DomainModel;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 class UbiquitousLanguageAsJsonTest {
 
@@ -39,10 +41,10 @@ class UbiquitousLanguageAsJsonTest {
     public void save_bounded_context_as_json() throws IOException {
         // given
         Set<DomainModel> domainModels = Stream.of(
-                UbiquitousLanguageFixtures.BOUNDED_CONTEXT,
-                UbiquitousLanguageFixtures.SHARED_KERNEL
-            ).flatMap(Collection::stream)
-            .collect(Collectors.toUnmodifiableSet());
+                        UbiquitousLanguageFixtures.BOUNDED_CONTEXT,
+                        UbiquitousLanguageFixtures.SHARED_KERNEL)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toUnmodifiableSet());
 
         Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainModels(domainModels);
 
@@ -52,10 +54,10 @@ class UbiquitousLanguageAsJsonTest {
         // then
         Path boundedContextFilePath = DESTINATION_FOLDER.resolve("bounded_context_one.json");
 
-        DocumentContext actualJson = JsonPath.parse(boundedContextFilePath.toFile());
-
-        assertThat(actualJson.read("$.contextName").toString())
-            .isEqualTo("Bounded context one");
+        JsonAssert.with(Files.newInputStream(boundedContextFilePath))
+                .assertThat("$.contextName", equalTo("Bounded context one"))
+                .assertThat("$.description", equalTo("Describe the bounded context here"))
+                .assertThat("$.boundedContext", equalTo(true));
     }
 
 }

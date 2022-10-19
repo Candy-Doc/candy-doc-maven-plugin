@@ -5,12 +5,10 @@ import io.candydoc.ddd.model.Description;
 import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.model.SimpleName;
 import io.candydoc.ddd.model.UbiquitousLanguage;
-import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.tactical_pattern.Aggregate;
 import io.candydoc.ddd.tactical_pattern.DomainCommand;
 import io.candydoc.ddd.tactical_pattern.DomainEvent;
 import io.candydoc.ddd.tactical_pattern.ValueObject;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +24,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class NotABoundedContextTest {
+public class OrphanVocabularyTest {
 
     DomainModelFinder domainModelFinder;
     UbiquitousLanguageRepository ubiquitousLanguageRepository;
@@ -56,9 +54,9 @@ public class NotABoundedContextTest {
             .hasSize(1);
 
         assertThat(ubiquitousLanguagesCaptor.getValue()).first()
-            .isInstanceOf(UbiquitousLanguage.NotBoundedVocabulary.class)
+            .isInstanceOf(UbiquitousLanguage.OrphanBoundedVocabulary.class)
             .satisfies(ubiquitousLanguage -> {
-                UbiquitousLanguage.NotBoundedVocabulary vocabulary = (UbiquitousLanguage.NotBoundedVocabulary) ubiquitousLanguage;
+                UbiquitousLanguage.OrphanBoundedVocabulary vocabulary = (UbiquitousLanguage.OrphanBoundedVocabulary) ubiquitousLanguage;
 
                 assertThat(vocabulary.domainModels())
                     .containsExactlyInAnyOrder(

@@ -55,7 +55,7 @@ public interface UbiquitousLanguage {
             .forEach(ubiquitousLanguages::add);
 
         if (!modelsToProcess.isEmpty()) {
-            ubiquitousLanguages.add(NotBoundedVocabulary.builder()
+            ubiquitousLanguages.add(OrphanBoundedVocabulary.builder()
                 .domainModels(modelsToProcess)
                 .build());
         }
@@ -68,7 +68,7 @@ public interface UbiquitousLanguage {
     interface Visitor<T> {
         T handle(BoundedVocabulary vocabulary);
         T handle(SharedVocabulary vocabulary);
-        T handle(NotBoundedVocabulary vocabulary);
+        T handle(OrphanBoundedVocabulary vocabulary);
     }
 
     @Builder
@@ -106,7 +106,7 @@ public interface UbiquitousLanguage {
     @Accessors(fluent = true)
     @EqualsAndHashCode
     @ToString
-    final class NotBoundedVocabulary implements UbiquitousLanguage {
+    final class OrphanBoundedVocabulary implements UbiquitousLanguage {
         private final Set<DomainModel> domainModels;
 
         @Override
