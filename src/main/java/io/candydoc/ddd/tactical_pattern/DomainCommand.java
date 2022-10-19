@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.Set;
 
 @SuperBuilder
-public class DomainCommand extends DomainModel {
+public class DomainCommand extends TacticalPattern {
 
   private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of(
       DDDPattern.Tactical.VALUE_OBJECT

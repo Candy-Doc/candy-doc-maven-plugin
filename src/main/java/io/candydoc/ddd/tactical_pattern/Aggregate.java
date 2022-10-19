@@ -1,13 +1,12 @@
 package io.candydoc.ddd.tactical_pattern;
 
-import io.candydoc.ddd.model.DomainModel;
 import io.candydoc.ddd.model.DDDPattern;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
 
 @SuperBuilder
-public class Aggregate extends DomainModel {
+public class Aggregate extends TacticalPattern {
 
   private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of(
       DDDPattern.Tactical.DOMAIN_COMMAND,

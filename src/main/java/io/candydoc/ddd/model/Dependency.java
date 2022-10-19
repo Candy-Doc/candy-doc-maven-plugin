@@ -13,5 +13,5 @@ import lombok.experimental.Accessors;
 @ToString
 public class Dependency {
     private final DDDPattern pattern;
-    private final CanonicalName concept;
+    private final CanonicalName name;
 }

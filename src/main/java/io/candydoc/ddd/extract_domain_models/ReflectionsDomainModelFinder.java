@@ -195,7 +195,7 @@ public class ReflectionsDomainModelFinder implements DomainModelFinder {
             .flatMap(dependency -> ReflectionsDomainModelFinder.dddPatternOf(dependency)
                 .map(dddPattern -> Dependency.builder()
                     .pattern(dddPattern)
-                    .concept(CanonicalName.of(dependency.getCanonicalName()))
+                    .name(CanonicalName.of(dependency.getCanonicalName()))
                     .build()))
             .collect(Collectors.toUnmodifiableSet());
     }

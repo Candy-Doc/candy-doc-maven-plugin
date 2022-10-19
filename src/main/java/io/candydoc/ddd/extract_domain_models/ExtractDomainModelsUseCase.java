@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class ExtractDomainModelsUseCase {
 
     private final DomainModelFinder domainModelFinder;
-    private final SaveUbiquitousLanguagePort saveUbiquitousLanguagePort;
+    private final UbiquitousLanguageRepository ubiquitousLanguageRepository;
   
     public void checkParameters(ExtractDomainModels command) throws ExtractionException {
         if (command.packagesToScan().isEmpty()) {
@@ -29,7 +29,7 @@ public class ExtractDomainModelsUseCase {
         }
     }
 
-    public void execute(ExtractDomainModels command) throws IOException, ExtractionException {
+    public void execute(ExtractDomainModels command) throws ExtractionException {
         checkParameters(command);
 
         Set<DomainModel> foundDomainModels = command.packagesToScan().stream()
@@ -39,11 +39,11 @@ public class ExtractDomainModelsUseCase {
             .collect(Collectors.toUnmodifiableSet());
 
         if (foundDomainModels.isEmpty()) {
-            throw new NoBoundedContextNorSharedKernelFound(command.packagesToScan());
+            log.info("No domain model has been found in packages: {}", command.packagesToScan());
+        } else {
+            Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainModels(foundDomainModels);
+            ubiquitousLanguageRepository.saveAll(ubiquitousLanguages);
+            log.info("Domain models has been saved.");
         }
-
-        UbiquitousLanguage ubiquitousLanguage = UbiquitousLanguage.fromDomainModels(foundDomainModels);
-        saveUbiquitousLanguagePort.save(ubiquitousLanguage);
-        log.info("Ubiquitous language saved.");
     }
 }

@@ -1,12 +1,16 @@
 package io.candydoc.plugin;
 
 import io.candydoc.ddd.extract_domain_models.*;
-import io.candydoc.plugin.save_documentation.SaveDocumentationAdapterFactory;
-import io.candydoc.plugin.save_documentation.SaveDocumentationAdapterFactoryImpl;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+
+import io.candydoc.plugin.save_documentation.file.json.UbiquitousLanguageAsJson;
+import io.candydoc.plugin.save_documentation.file.yml.UbiquitousLanguageAsYml;
 import lombok.SneakyThrows;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -36,12 +40,11 @@ public class CandyDocMojo extends AbstractMojo {
   public void execute() {
     String outputDirectory = project.getBuild().getDirectory();
     Thread.currentThread().setContextClassLoader(getProjectClassLoader());
-    SaveDocumentationAdapterFactory adapterFactory = new SaveDocumentationAdapterFactoryImpl();
-    SaveUbiquitousLanguagePort saveUbiquitousLanguagePort = adapterFactory.getAdapter(outputFormat, outputDirectory);
+    UbiquitousLanguageRepository ubiquitousLanguageRepository = getRepository(outputFormat, outputDirectory);
     DomainModelFinder domainModelFinder = new ReflectionsDomainModelFinder(packagesToScan);
 
     ExtractDomainModelsUseCase extractDomainModelsUseCase =
-        new ExtractDomainModelsUseCase(domainModelFinder, saveUbiquitousLanguagePort);
+        new ExtractDomainModelsUseCase(domainModelFinder, ubiquitousLanguageRepository);
 
     extractDomainModelsUseCase.execute(
         ExtractDomainModels.builder()
@@ -61,4 +64,19 @@ public class CandyDocMojo extends AbstractMojo {
       throw new MojoExecutionException("Classloader could not be created.", e);
     }
   }
+
+  public UbiquitousLanguageRepository getRepository(String outputFormat, String outputDirectory) {
+    if (Files.notExists((Path.of(outputDirectory)))) {
+      throw new IllegalArgumentException("Output directory does not exist.");
+    }
+    Path outputFile = Paths.get(outputDirectory, "candy-doc", "ubiquitous_language", "result." + outputFormat);
+    switch (outputFormat) {
+      case "json":
+        return new UbiquitousLanguageAsJson(outputFile);
+      case "yml":
+        return new UbiquitousLanguageAsYml(outputFile);
+    }
+    throw new IllegalArgumentException("File format must be 'json', 'yml'.");
+  }
+
 }
