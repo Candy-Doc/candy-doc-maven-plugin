@@ -26,8 +26,4 @@ public final class FoundDomainObject {
     public boolean matchMoreThanOneDDDPattern() {
         return matchingPatterns.size() > 1;
     }
-
-    public boolean matches(DDDPattern dddPattern) {
-        return matchingPatterns.stream().anyMatch(pattern -> pattern.matches(dddPattern));
-    }
 }

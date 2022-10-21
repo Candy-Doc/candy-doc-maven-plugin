@@ -1,8 +1,8 @@
 package io.candydoc.ddd.model;
 
+import io.candydoc.ddd.extract_domain_vocabulary.WrongUseOfDDDPatterns;
 import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
-import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 import io.candydoc.ddd.tactical_pattern.Aggregate;
 import io.candydoc.ddd.tactical_pattern.DomainCommand;
 import io.candydoc.ddd.tactical_pattern.DomainEvent;
@@ -10,9 +10,7 @@ import io.candydoc.ddd.tactical_pattern.ValueObject;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @EqualsAndHashCode
@@ -30,7 +28,13 @@ public final class FoundDomainObjects {
     }
 
     public void checkConsistency() {
-        // todo: implement
+        Set<FoundDomainObject> invalidDomainModels = domainObjects.values().stream()
+                .filter(FoundDomainObject::matchMoreThanOneDDDPattern)
+                .collect(Collectors.toUnmodifiableSet());
+
+        if (!invalidDomainModels.isEmpty()) {
+            throw new WrongUseOfDDDPatterns(invalidDomainModels);
+        }
     }
 
     public Set<DomainModel> toDomainModels() {
