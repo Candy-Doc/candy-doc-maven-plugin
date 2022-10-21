@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 
 public interface DDDPattern {
 
+    String name();
+
     Class<? extends Annotation> relatedAnnotation();
 
     <T> T accept(Visitor<T> visitor);

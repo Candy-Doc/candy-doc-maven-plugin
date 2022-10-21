@@ -19,8 +19,14 @@ public final class FoundDomainObjects {
 
     private final Map<CanonicalName, FoundDomainObject> domainObjects = new HashMap<>();
 
-    public void add(FoundDomainObject domainObject) {
+    public FoundDomainObjects add(FoundDomainObject domainObject) {
         domainObjects.put(domainObject.canonicalName(), domainObject);
+        return this;
+    }
+
+    public FoundDomainObjects addAll(Collection<FoundDomainObject> domainObjects) {
+        domainObjects.forEach(this::add);
+        return this;
     }
 
     public boolean isEmpty() {

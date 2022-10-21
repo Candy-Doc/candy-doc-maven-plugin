@@ -9,12 +9,15 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public interface UbiquitousLanguage {
+
+    Collection<DomainModel> domainModels();
 
     static Set<UbiquitousLanguage> fromDomainObjects(FoundDomainObjects foundDomainObjects) {
         foundDomainObjects.checkConsistency();
@@ -83,7 +86,7 @@ public interface UbiquitousLanguage {
     @ToString
     final class BoundedVocabulary implements UbiquitousLanguage {
         private final BoundedContext boundedContext;
-        private final Set<DomainModel> domainModels;
+        private final Collection<DomainModel> domainModels;
 
         @Override
         public <T> T accept(Visitor<T> visitor) {
@@ -98,7 +101,7 @@ public interface UbiquitousLanguage {
     @ToString
     class SharedVocabulary implements UbiquitousLanguage {
         private final SharedKernel sharedKernel;
-        private final Set<DomainModel> domainModels;
+        private final Collection<DomainModel> domainModels;
 
         @Override
         public <T> T accept(Visitor<T> visitor) {
@@ -112,7 +115,7 @@ public interface UbiquitousLanguage {
     @EqualsAndHashCode
     @ToString
     final class OrphanBoundedVocabulary implements UbiquitousLanguage {
-        private final Set<DomainModel> domainModels;
+        private final Collection<DomainModel> domainModels;
 
         @Override
         public <T> T accept(Visitor<T> visitor) {

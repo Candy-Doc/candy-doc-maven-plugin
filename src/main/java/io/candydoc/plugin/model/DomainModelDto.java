@@ -1,21 +1,47 @@
 package io.candydoc.plugin.model;
 
+import io.candydoc.ddd.model.DomainModel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.experimental.Accessors;
 import lombok.extern.jackson.Jacksonized;
 
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Jacksonized
 @Builder
 @Getter
-@Accessors(fluent = true)
 public final class DomainModelDto {
 
-    private String canonicalName;
-    private String simpleName;
     private String type;
-    private Set<DependencyDto> dependencies;
+    private String simpleName;
+    private String description;
+    private Collection<DependencyDto> dependencies;
 
+    public static DomainModelDto from(DomainModel domainModel) {
+        List<DependencyDto> dependencies = new ArrayList<>();
+
+        domainModel.allowedDependencies().stream()
+                .map(dependency -> DependencyDto.builder()
+                        .canonicalName(dependency.name().value())
+                        .allowed(true)
+                        .build())
+                .forEach(dependencies::add);
+
+        domainModel.forbiddenDependencies().stream()
+                .map(dependency -> DependencyDto.builder()
+                        .canonicalName(dependency.name().value())
+                        .allowed(false)
+                        .build())
+                .forEach(dependencies::add);
+
+        dependencies.sort(Comparator.comparing(DependencyDto::getCanonicalName));
+
+        return DomainModelDto.builder()
+                .type(domainModel.dddPattern().name())
+                .simpleName(domainModel.simpleName().value())
+                .description(domainModel.description().value())
+                .dependencies(Collections.unmodifiableCollection(dependencies))
+                .build();
+    }
 }

@@ -1,27 +1,21 @@
 package io.candydoc.plugin.save_ubiquitous_language.file.json;
 
-import com.jayway.jsonassert.JsonAssert;
-import io.candydoc.ddd.model.DomainModel;
 import io.candydoc.ddd.model.FoundDomainObjects;
 import io.candydoc.ddd.model.UbiquitousLanguage;
-import io.candydoc.plugin.fixture.UbiquitousLanguageFixtures;
+import io.candydoc.plugin.fixture.DomainVocabularyFixtures;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.equalTo;
+import static io.candydoc.plugin.save_ubiquitous_language.file.json.AssertFileContent.assertThatJson;
 
 class UbiquitousLanguageAsJsonTest {
 
+    static final Path REFERENCE_FOLDER = Path.of("src", "test", "resources", "json");
     static final Path DESTINATION_FOLDER = Path.of("target", "candyDocTmp");
 
     UbiquitousLanguageAsJson ubiquitousLanguageAsJson;
@@ -37,12 +31,10 @@ class UbiquitousLanguageAsJsonTest {
     }
 
     @Test
-    public void save_bounded_context_as_json() throws IOException {
+    public void save_bounded_context_as_json() {
         // given
-        FoundDomainObjects foundDomainObjects = new FoundDomainObjects();
-
-        UbiquitousLanguageFixtures.DOMAIN_OBJECTS_IN_BOUNDED_CONTEXT.forEach(foundDomainObjects::add);
-        UbiquitousLanguageFixtures.DOMAIN_OBJECTS_IN_SHARED_KERNEL.forEach(foundDomainObjects::add);
+        FoundDomainObjects foundDomainObjects = new FoundDomainObjects()
+                .addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_BOUNDED_CONTEXT);
 
         Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
 
@@ -50,12 +42,49 @@ class UbiquitousLanguageAsJsonTest {
         ubiquitousLanguageAsJson.saveAll(ubiquitousLanguages);
 
         // then
-        Path boundedContextFilePath = DESTINATION_FOLDER.resolve("bounded_context_one.json");
+        Path referenceFile = REFERENCE_FOLDER.resolve("bounded_context_one.json");
+        Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_one.json");
 
-        JsonAssert.with(Files.newInputStream(boundedContextFilePath))
-                .assertThat("$.contextName", equalTo("Bounded context one"))
-                .assertThat("$.description", equalTo("Describe the bounded context here"))
-                .assertThat("$.boundedContext", equalTo(true));
+        assertThatJson(actualFile)
+                .isEqualTo(referenceFile);
+    }
+
+    @Test
+    public void save_shared_kernel_as_json() {
+        // given
+        FoundDomainObjects foundDomainObjects = new FoundDomainObjects()
+                .addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_SHARED_KERNEL);
+
+        Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
+
+        // when
+        ubiquitousLanguageAsJson.saveAll(ubiquitousLanguages);
+
+        // then
+        Path referenceFile = REFERENCE_FOLDER.resolve("shared_kernel_one.json");
+        Path actualFile = DESTINATION_FOLDER.resolve("shared_kernel_one.json");
+
+        assertThatJson(actualFile)
+                .isEqualTo(referenceFile);
+    }
+
+    @Test
+    public void save_orphan_vocabulary_as_json() {
+        // given
+        FoundDomainObjects foundDomainObjects = new FoundDomainObjects()
+                .addAll(DomainVocabularyFixtures.ORPHAN_DOMAIN_OBJECTS);
+
+        Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
+
+        // when
+        ubiquitousLanguageAsJson.saveAll(ubiquitousLanguages);
+
+        // then
+        Path referenceFile = REFERENCE_FOLDER.resolve("orphan_vocabulary.json");
+        Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.json");
+
+        assertThatJson(actualFile)
+                .isEqualTo(referenceFile);
     }
 
 }
