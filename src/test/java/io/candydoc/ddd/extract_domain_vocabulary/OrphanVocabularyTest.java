@@ -1,4 +1,4 @@
-package io.candydoc.ddd.extract_domain_models;
+package io.candydoc.ddd.extract_domain_vocabulary;
 
 import io.candydoc.ddd.model.CanonicalName;
 import io.candydoc.ddd.model.Description;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class OrphanVocabularyTest {
 
-    DomainModelFinder domainModelFinder;
+    DomainVocabularyFinder domainVocabularyFinder;
     UbiquitousLanguageRepository ubiquitousLanguageRepository;
     ExtractDomainModelsUseCase useCase;
 
@@ -35,9 +35,9 @@ public class OrphanVocabularyTest {
 
     @BeforeEach
     public void setUp() {
-        this.domainModelFinder = new ReflectionsDomainModelFinder(List.of("io.candydoc.ddd.sample"));
+        this.domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
         this.ubiquitousLanguageRepository = mock(UbiquitousLanguageRepository.class);
-        this.useCase = new ExtractDomainModelsUseCase(domainModelFinder, ubiquitousLanguageRepository);
+        this.useCase = new ExtractDomainModelsUseCase(domainVocabularyFinder, ubiquitousLanguageRepository);
     }
 
     @Test

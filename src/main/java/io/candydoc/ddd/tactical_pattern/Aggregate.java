@@ -10,17 +10,17 @@ import java.util.Set;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Aggregate extends TacticalPattern {
+public class Aggregate extends TacticalModel {
 
   private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of(
-      DDDPattern.Tactical.DOMAIN_COMMAND,
-      DDDPattern.Tactical.DOMAIN_EVENT,
-      DDDPattern.Tactical.VALUE_OBJECT
+      TacticalPattern.DOMAIN_COMMAND,
+      TacticalPattern.DOMAIN_EVENT,
+      TacticalPattern.VALUE_OBJECT
   );
 
   @Override
   public DDDPattern dddPattern() {
-    return DDDPattern.Tactical.AGGREGATE;
+    return TacticalPattern.AGGREGATE;
   }
 
   @Override

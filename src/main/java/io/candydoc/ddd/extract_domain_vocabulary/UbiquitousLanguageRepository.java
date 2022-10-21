@@ -1,4 +1,4 @@
-package io.candydoc.ddd.extract_domain_models;
+package io.candydoc.ddd.extract_domain_vocabulary;
 
 import io.candydoc.ddd.model.UbiquitousLanguage;
 

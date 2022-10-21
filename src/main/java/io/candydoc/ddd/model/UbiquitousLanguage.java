@@ -2,6 +2,7 @@ package io.candydoc.ddd.model;
 
 import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
+import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,14 +16,18 @@ import java.util.stream.Collectors;
 
 public interface UbiquitousLanguage {
 
-    static Set<UbiquitousLanguage> fromDomainModels(Set<DomainModel> domainModels) {
+    static Set<UbiquitousLanguage> fromDomainObjects(FoundDomainObjects foundDomainObjects) {
+        foundDomainObjects.checkConsistency();
+
+        Set<DomainModel> domainModels = foundDomainObjects.toDomainModels();
+
         Map<DDDPattern, Set<DomainModel>> domainModelsPerPattern = domainModels.stream()
             .collect(Collectors.groupingBy(DomainModel::dddPattern, Collectors.toUnmodifiableSet()));
 
         Set<DomainModel> modelsToProcess = new HashSet<>(domainModels);
         Set<UbiquitousLanguage> ubiquitousLanguages = new HashSet<>();
 
-        domainModelsPerPattern.getOrDefault(DDDPattern.Strategic.BOUNDED_CONTEXT, Set.of()).stream()
+        domainModelsPerPattern.getOrDefault(StrategicPattern.BOUNDED_CONTEXT, Set.of()).stream()
             .map(boundedContext -> {
                 Set<DomainModel> boundedDomainModels = domainModels.stream()
                     .filter(domainModel -> !boundedContext.equals(domainModel) && domainModel.packageName().startsWith(boundedContext.packageName()))
@@ -38,7 +43,7 @@ public interface UbiquitousLanguage {
             })
             .forEach(ubiquitousLanguages::add);
 
-        domainModelsPerPattern.getOrDefault(DDDPattern.Strategic.SHARED_KERNEL, Set.of()).stream()
+        domainModelsPerPattern.getOrDefault(StrategicPattern.SHARED_KERNEL, Set.of()).stream()
             .map(sharedKernel -> {
                 Set<DomainModel> sharedDomainModels = domainModels.stream()
                     .filter(domainModel -> !sharedKernel.equals(domainModel) && domainModel.packageName().startsWith(sharedKernel.packageName()))

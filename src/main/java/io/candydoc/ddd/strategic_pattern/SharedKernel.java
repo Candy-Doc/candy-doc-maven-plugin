@@ -10,13 +10,13 @@ import java.util.Set;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class SharedKernel extends StrategicPattern {
+public class SharedKernel extends StrategicModel {
 
     private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of();
 
     @Override
     public DDDPattern dddPattern() {
-        return DDDPattern.Strategic.SHARED_KERNEL;
+        return StrategicPattern.SHARED_KERNEL;
     }
 
     @Override

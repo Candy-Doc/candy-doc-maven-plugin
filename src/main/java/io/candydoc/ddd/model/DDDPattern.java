@@ -1,17 +1,20 @@
 package io.candydoc.ddd.model;
 
+import java.lang.annotation.Annotation;
+
 public interface DDDPattern {
 
-    enum Tactical implements DDDPattern {
-        AGGREGATE,
-        DOMAIN_EVENT,
-        DOMAIN_COMMAND,
-        VALUE_OBJECT;
-    }
+    Class<? extends Annotation> relatedAnnotation();
 
-    enum Strategic implements DDDPattern {
-        BOUNDED_CONTEXT,
-        SHARED_KERNEL;
+    <T> T accept(Visitor<T> visitor);
+
+    interface Visitor<T> {
+        T boundedContext();
+        T sharedKernel();
+        T aggregate();
+        T domainCommand();
+        T domainEvent();
+        T valueObject();
     }
 
 }

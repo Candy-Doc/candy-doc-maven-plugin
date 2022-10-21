@@ -1,20 +1,16 @@
-package io.candydoc.ddd.extract_domain_models;
+package io.candydoc.ddd.extract_domain_vocabulary;
 
-import io.candydoc.ddd.model.DomainModel;
-import io.candydoc.ddd.model.PackageName;
-import io.candydoc.ddd.model.UbiquitousLanguage;
+import io.candydoc.ddd.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collection;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
 public class ExtractDomainModelsUseCase {
 
-    private final DomainModelFinder domainModelFinder;
+    private final DomainVocabularyFinder domainVocabularyFinder;
     private final UbiquitousLanguageRepository ubiquitousLanguageRepository;
   
     public void checkParameters(ExtractDomainModels command) throws ExtractionException {
@@ -31,16 +27,12 @@ public class ExtractDomainModelsUseCase {
     public void execute(ExtractDomainModels command) throws ExtractionException {
         checkParameters(command);
 
-        Set<DomainModel> foundDomainModels = command.packagesToScan().stream()
-            .map(PackageName::of)
-            .map(domainModelFinder::findDomainModels)
-            .flatMap(Collection::stream)
-            .collect(Collectors.toUnmodifiableSet());
+        FoundDomainObjects foundDomainObjects = domainVocabularyFinder.findDomainObjects(command.packagesToScan());
 
-        if (foundDomainModels.isEmpty()) {
+        if (foundDomainObjects.isEmpty()) {
             log.info("No domain model has been found in packages: {}.", command.packagesToScan());
         } else {
-            Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainModels(foundDomainModels);
+            Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
             ubiquitousLanguageRepository.saveAll(ubiquitousLanguages);
         }
         log.info("Domain models extraction done.");

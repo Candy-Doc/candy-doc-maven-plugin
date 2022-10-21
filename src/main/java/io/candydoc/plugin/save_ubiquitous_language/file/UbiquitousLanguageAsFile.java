@@ -1,8 +1,8 @@
 package io.candydoc.plugin.save_ubiquitous_language.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.candydoc.ddd.extract_domain_models.DocumentationGenerationFailed;
-import io.candydoc.ddd.extract_domain_models.UbiquitousLanguageRepository;
+import io.candydoc.ddd.extract_domain_vocabulary.DocumentationGenerationFailed;
+import io.candydoc.ddd.extract_domain_vocabulary.UbiquitousLanguageRepository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -10,13 +10,13 @@ import java.util.Set;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class BoundedContext extends StrategicPattern {
+public class BoundedContext extends StrategicModel {
 
     private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of();
 
     @Override
     public DDDPattern dddPattern() {
-        return DDDPattern.Strategic.BOUNDED_CONTEXT;
+        return StrategicPattern.BOUNDED_CONTEXT;
     }
 
     @Override

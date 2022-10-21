@@ -1,9 +1,8 @@
 package io.candydoc.plugin.save_ubiquitous_language.file.json;
 
 import com.jayway.jsonassert.JsonAssert;
-import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
 import io.candydoc.ddd.model.DomainModel;
+import io.candydoc.ddd.model.FoundDomainObjects;
 import io.candydoc.ddd.model.UbiquitousLanguage;
 import io.candydoc.plugin.fixture.UbiquitousLanguageFixtures;
 import org.junit.jupiter.api.AfterEach;
@@ -40,13 +39,12 @@ class UbiquitousLanguageAsJsonTest {
     @Test
     public void save_bounded_context_as_json() throws IOException {
         // given
-        Set<DomainModel> domainModels = Stream.of(
-                        UbiquitousLanguageFixtures.BOUNDED_CONTEXT,
-                        UbiquitousLanguageFixtures.SHARED_KERNEL)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toUnmodifiableSet());
+        FoundDomainObjects foundDomainObjects = new FoundDomainObjects();
 
-        Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainModels(domainModels);
+        UbiquitousLanguageFixtures.DOMAIN_OBJECTS_IN_BOUNDED_CONTEXT.forEach(foundDomainObjects::add);
+        UbiquitousLanguageFixtures.DOMAIN_OBJECTS_IN_SHARED_KERNEL.forEach(foundDomainObjects::add);
+
+        Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
 
         // when
         ubiquitousLanguageAsJson.saveAll(ubiquitousLanguages);

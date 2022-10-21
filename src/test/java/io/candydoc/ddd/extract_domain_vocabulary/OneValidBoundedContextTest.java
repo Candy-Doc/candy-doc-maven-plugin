@@ -1,8 +1,6 @@
-package io.candydoc.ddd.extract_domain_models;
+package io.candydoc.ddd.extract_domain_vocabulary;
 
 import io.candydoc.ddd.model.CanonicalName;
-import io.candydoc.ddd.model.DDDPattern;
-import io.candydoc.ddd.model.Dependency;
 import io.candydoc.ddd.model.Description;
 import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.model.SimpleName;
@@ -12,7 +10,6 @@ import io.candydoc.ddd.tactical_pattern.Aggregate;
 import io.candydoc.ddd.tactical_pattern.DomainCommand;
 import io.candydoc.ddd.tactical_pattern.DomainEvent;
 import io.candydoc.ddd.tactical_pattern.ValueObject;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +27,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class OneValidBoundedContextTest {
 
-    DomainModelFinder domainModelFinder;
+    DomainVocabularyFinder domainVocabularyFinder;
     UbiquitousLanguageRepository ubiquitousLanguageRepository;
     ExtractDomainModelsUseCase useCase;
 
@@ -39,9 +36,9 @@ public class OneValidBoundedContextTest {
 
     @BeforeEach
     public void setUp() {
-        this.domainModelFinder = new ReflectionsDomainModelFinder(List.of("io.candydoc.ddd.sample"));
+        this.domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
         this.ubiquitousLanguageRepository = mock(UbiquitousLanguageRepository.class);
-        this.useCase = new ExtractDomainModelsUseCase(domainModelFinder, ubiquitousLanguageRepository);
+        this.useCase = new ExtractDomainModelsUseCase(domainVocabularyFinder, ubiquitousLanguageRepository);
     }
 
     @Test

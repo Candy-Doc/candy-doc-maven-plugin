@@ -1,13 +1,11 @@
 package io.candydoc.ddd.strategic_patterns.bounded_context;
 
-import io.candydoc.ddd.extract_domain_models.DomainModelFinder;
-import io.candydoc.ddd.extract_domain_models.ReflectionsDomainModelFinder;
-import io.candydoc.ddd.model.CanonicalName;
-import io.candydoc.ddd.model.Description;
-import io.candydoc.ddd.model.DomainModel;
-import io.candydoc.ddd.model.PackageName;
-import io.candydoc.ddd.model.SimpleName;
+import io.candydoc.ddd.extract_domain_vocabulary.DomainVocabularyFinder;
+import io.candydoc.ddd.extract_domain_vocabulary.ReflectionsDomainVocabularyFinder;
+import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.strategic_pattern.BoundedContext;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,15 +15,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class FindBoundedContextTest {
 
-    static DomainModelFinder domainModelFinder = new ReflectionsDomainModelFinder(List.of("io.candydoc.ddd.strategic_patterns.bounded_context"));
+    static DomainVocabularyFinder domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
+    static FoundDomainObjects foundDomainObjects;
+
+    @BeforeAll
+    public static void setUp() {
+        foundDomainObjects = domainVocabularyFinder.findDomainObjects(List.of("io.candydoc.ddd.strategic_patterns.bounded_context"));
+    }
 
     @Test
     public void find_bounded_context_from_classes() {
-        // when
-        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.strategic_patterns.bounded_context"));
-
-        // then
-        assertThat(actualDomainModels)
+        assertThat(foundDomainObjects.toDomainModels())
             .contains(BoundedContext.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.strategic_patterns.bounded_context.sampleA"))
                 .canonicalName(CanonicalName.of("io.candydoc.ddd.strategic_patterns.bounded_context.sampleA.package-info"))
@@ -36,11 +36,7 @@ public class FindBoundedContextTest {
 
     @Test
     public void attributes_are_not_provided() {
-        // when
-        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.strategic_patterns.bounded_context"));
-
-        // then
-        assertThat(actualDomainModels)
+        assertThat(foundDomainObjects.toDomainModels())
             .contains(BoundedContext.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.strategic_patterns.bounded_context.sampleB"))
                 .canonicalName(CanonicalName.of("io.candydoc.ddd.strategic_patterns.bounded_context.sampleB.package-info"))

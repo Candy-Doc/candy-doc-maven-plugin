@@ -1,15 +1,11 @@
 package io.candydoc.ddd.tactical_patterns.domain_event;
 
-import io.candydoc.ddd.extract_domain_models.DomainModelFinder;
-import io.candydoc.ddd.extract_domain_models.ReflectionsDomainModelFinder;
-import io.candydoc.ddd.model.CanonicalName;
-import io.candydoc.ddd.model.DDDPattern;
-import io.candydoc.ddd.model.Dependency;
-import io.candydoc.ddd.model.Description;
-import io.candydoc.ddd.model.DomainModel;
-import io.candydoc.ddd.model.PackageName;
-import io.candydoc.ddd.model.SimpleName;
+import io.candydoc.ddd.extract_domain_vocabulary.DomainVocabularyFinder;
+import io.candydoc.ddd.extract_domain_vocabulary.ReflectionsDomainVocabularyFinder;
+import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.tactical_pattern.DomainEvent;
+import io.candydoc.ddd.tactical_pattern.TacticalPattern;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,22 +15,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class FindDomainEventTest {
 
-    static DomainModelFinder domainModelFinder = new ReflectionsDomainModelFinder(List.of("io.candydoc.ddd.tactical_patterns.domain_event"));
+    static DomainVocabularyFinder domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
+    static FoundDomainObjects foundDomainObjects;
+
+    @BeforeAll
+    public static void setUp() {
+        foundDomainObjects = domainVocabularyFinder.findDomainObjects(List.of("io.candydoc.ddd.tactical_patterns.domain_event"));
+    }
 
     @Test
     public void find_domain_event_from_classes() {
-        // when
-        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_event"));
-
-        // then
-        assertThat(actualDomainModels)
+        assertThat(foundDomainObjects.toDomainModels())
             .contains(DomainEvent.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_event"))
                 .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest.DomainEventOne"))
                 .simpleName(SimpleName.of("DomainEventOne"))
                 .description(Description.of("Describe the domain event here"))
                 .dependency(Dependency.builder()
-                    .pattern(DDDPattern.Tactical.VALUE_OBJECT)
+                    .pattern(TacticalPattern.VALUE_OBJECT)
                     .name(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest.ValueObjectOne"))
                     .build())
                 .build());
@@ -42,11 +40,7 @@ public class FindDomainEventTest {
 
     @Test
     public void attributes_not_provided() {
-        // when
-        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_event"));
-
-        // then
-        assertThat(actualDomainModels)
+        assertThat(foundDomainObjects.toDomainModels())
             .contains(DomainEvent.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_event"))
                 .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest.DomainEventTwo"))

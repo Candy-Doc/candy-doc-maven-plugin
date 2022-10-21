@@ -1,16 +1,11 @@
 package io.candydoc.ddd.tactical_patterns.domain_command;
 
-import io.candydoc.ddd.extract_domain_models.DomainModelFinder;
-import io.candydoc.ddd.extract_domain_models.ReflectionsDomainModelFinder;
-import io.candydoc.ddd.model.CanonicalName;
-import io.candydoc.ddd.model.DDDPattern;
-import io.candydoc.ddd.model.Dependency;
-import io.candydoc.ddd.model.Description;
-import io.candydoc.ddd.model.DomainModel;
-import io.candydoc.ddd.model.PackageName;
-import io.candydoc.ddd.model.SimpleName;
-import io.candydoc.ddd.tactical_pattern.Aggregate;
+import io.candydoc.ddd.extract_domain_vocabulary.DomainVocabularyFinder;
+import io.candydoc.ddd.extract_domain_vocabulary.ReflectionsDomainVocabularyFinder;
+import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.tactical_pattern.DomainCommand;
+import io.candydoc.ddd.tactical_pattern.TacticalPattern;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -20,40 +15,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class FindDomainCommandTest {
 
-    static DomainModelFinder domainModelFinder = new ReflectionsDomainModelFinder(List.of("io.candydoc.ddd.tactical_patterns.domain_command"));
+    static DomainVocabularyFinder domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
+    static FoundDomainObjects foundDomainObjects;
+
+    @BeforeAll
+    public static void setUp() {
+        foundDomainObjects = domainVocabularyFinder.findDomainObjects(List.of("io.candydoc.ddd.tactical_patterns.domain_command"));
+    }
 
     @Test
     public void find_domain_command_from_classes() {
-        // when
-        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"));
-
-        // then
-        assertThat(actualDomainModels)
-            .contains(DomainCommand.builder()
-                .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"))
-                .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.DomainCommandOne"))
-                .simpleName(SimpleName.of("DomainCommandOne"))
-                .description(Description.of("Describe the domain command here"))
-                .dependency(Dependency.builder()
-                    .pattern(DDDPattern.Tactical.VALUE_OBJECT)
-                    .name(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.ValueObjectOne"))
-                    .build())
-                .build());
+        assertThat(foundDomainObjects.toDomainModels())
+                .contains(DomainCommand.builder()
+                        .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"))
+                        .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.DomainCommandOne"))
+                        .simpleName(SimpleName.of("DomainCommandOne"))
+                        .description(Description.of("Describe the domain command here"))
+                        .dependency(Dependency.builder()
+                                .pattern(TacticalPattern.VALUE_OBJECT)
+                                .name(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.ValueObjectOne"))
+                                .build())
+                        .build());
     }
 
     @Test
     public void attributes_not_provided() {
-        // when
-        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"));
-
-        // then
-        assertThat(actualDomainModels)
-            .contains(DomainCommand.builder()
-                .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"))
-                .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.DomainCommandTwo"))
-                .simpleName(SimpleName.of("DomainCommandTwo"))
-                .description(Description.of(""))
-                .build());
+        assertThat(foundDomainObjects.toDomainModels())
+                .contains(DomainCommand.builder()
+                        .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"))
+                        .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.DomainCommandTwo"))
+                        .simpleName(SimpleName.of("DomainCommandTwo"))
+                        .description(Description.of(""))
+                        .build());
     }
 
     @io.candydoc.ddd.annotations.DomainCommand(description = "Describe the domain command here")

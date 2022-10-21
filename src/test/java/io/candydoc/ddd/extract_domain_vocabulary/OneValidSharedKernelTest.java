@@ -1,15 +1,11 @@
-package io.candydoc.ddd.extract_domain_models;
+package io.candydoc.ddd.extract_domain_vocabulary;
 
 import io.candydoc.ddd.model.CanonicalName;
 import io.candydoc.ddd.model.Description;
 import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.model.SimpleName;
 import io.candydoc.ddd.model.UbiquitousLanguage;
-import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
-import io.candydoc.ddd.tactical_pattern.Aggregate;
-import io.candydoc.ddd.tactical_pattern.DomainCommand;
-import io.candydoc.ddd.tactical_pattern.DomainEvent;
 import io.candydoc.ddd.tactical_pattern.ValueObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +24,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class OneValidSharedKernelTest {
 
-    DomainModelFinder domainModelFinder;
+    DomainVocabularyFinder domainVocabularyFinder;
     UbiquitousLanguageRepository ubiquitousLanguageRepository;
     ExtractDomainModelsUseCase useCase;
 
@@ -37,9 +33,9 @@ public class OneValidSharedKernelTest {
 
     @BeforeEach
     public void setUp() {
-        this.domainModelFinder = new ReflectionsDomainModelFinder(List.of("io.candydoc.ddd.sample"));
+        this.domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
         this.ubiquitousLanguageRepository = mock(UbiquitousLanguageRepository.class);
-        this.useCase = new ExtractDomainModelsUseCase(domainModelFinder, ubiquitousLanguageRepository);
+        this.useCase = new ExtractDomainModelsUseCase(domainVocabularyFinder, ubiquitousLanguageRepository);
     }
 
     @Test

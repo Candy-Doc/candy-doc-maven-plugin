@@ -10,15 +10,15 @@ import java.util.Set;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class DomainEvent extends TacticalPattern {
+public class DomainEvent extends TacticalModel {
 
     private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of(
-        DDDPattern.Tactical.VALUE_OBJECT
+        TacticalPattern.VALUE_OBJECT
     );
 
     @Override
     public DDDPattern dddPattern() {
-        return DDDPattern.Tactical.DOMAIN_EVENT;
+        return TacticalPattern.DOMAIN_EVENT;
     }
 
     @Override

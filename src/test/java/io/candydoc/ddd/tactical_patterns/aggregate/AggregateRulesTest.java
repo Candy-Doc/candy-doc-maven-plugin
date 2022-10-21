@@ -1,12 +1,8 @@
 package io.candydoc.ddd.tactical_patterns.aggregate;
 
-import io.candydoc.ddd.model.CanonicalName;
-import io.candydoc.ddd.model.DDDPattern;
-import io.candydoc.ddd.model.Dependency;
-import io.candydoc.ddd.model.DomainModel;
-import io.candydoc.ddd.model.PackageName;
-import io.candydoc.ddd.model.SimpleName;
+import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.tactical_pattern.Aggregate;
+import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -25,19 +21,19 @@ public class AggregateRulesTest {
             .packageName(PackageName.of("io.candydoc.sample"))
             .dependency(Dependency.builder()
                 .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
-                .pattern(DDDPattern.Tactical.VALUE_OBJECT)
+                .pattern(TacticalPattern.VALUE_OBJECT)
                 .build())
             .dependency(Dependency.builder()
                 .name(CanonicalName.of("io.candydoc.sample.DomainCommandOne"))
-                .pattern(DDDPattern.Tactical.DOMAIN_COMMAND)
+                .pattern(TacticalPattern.DOMAIN_COMMAND)
                 .build())
             .dependency(Dependency.builder()
                 .name(CanonicalName.of("io.candydoc.sample.DomainEventOne"))
-                .pattern(DDDPattern.Tactical.DOMAIN_EVENT)
+                .pattern(TacticalPattern.DOMAIN_EVENT)
                 .build())
             .dependency(Dependency.builder()
                 .name(CanonicalName.of("io.candydoc.sample.AggregateTwo"))
-                .pattern(DDDPattern.Tactical.AGGREGATE)
+                .pattern(TacticalPattern.AGGREGATE)
                 .build())
             .build();
     }
@@ -45,14 +41,14 @@ public class AggregateRulesTest {
     @Test
     void is_an_aggregate() {
         assertThat(aggregate.dddPattern())
-            .isEqualTo(DDDPattern.Tactical.AGGREGATE);
+            .isEqualTo(TacticalPattern.AGGREGATE);
     }
 
     @Test
     void it_can_depend_on_value_object() {
         Dependency valueObject = Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
-            .pattern(DDDPattern.Tactical.VALUE_OBJECT)
+            .pattern(TacticalPattern.VALUE_OBJECT)
             .build();
 
         assertThatDependency(valueObject)
@@ -63,7 +59,7 @@ public class AggregateRulesTest {
     void it_can_depend_on_domain_command() {
         Dependency domainCommand = Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.DomainCommandOne"))
-            .pattern(DDDPattern.Tactical.DOMAIN_COMMAND)
+            .pattern(TacticalPattern.DOMAIN_COMMAND)
             .build();
 
         assertThatDependency(domainCommand)
@@ -74,7 +70,7 @@ public class AggregateRulesTest {
     void it_can_depend_on_domain_event() {
         Dependency domainEvent = Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.DomainEventOne"))
-            .pattern(DDDPattern.Tactical.DOMAIN_EVENT)
+            .pattern(TacticalPattern.DOMAIN_EVENT)
             .build();
 
         assertThatDependency(domainEvent)
@@ -85,7 +81,7 @@ public class AggregateRulesTest {
     void it_can_not_depend_on_another_aggregate() {
         Dependency anotherAggregate = Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.AggregateTwo"))
-            .pattern(DDDPattern.Tactical.AGGREGATE)
+            .pattern(TacticalPattern.AGGREGATE)
             .build();
 
         assertThatDependency(anotherAggregate)

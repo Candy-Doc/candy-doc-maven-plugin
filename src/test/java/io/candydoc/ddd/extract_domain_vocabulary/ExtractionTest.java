@@ -1,6 +1,6 @@
-package io.candydoc.ddd.extract_domain_models;
+package io.candydoc.ddd.extract_domain_vocabulary;
 
-import io.candydoc.ddd.model.PackageName;
+import io.candydoc.ddd.model.FoundDomainObjects;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 public class ExtractionTest {
 
     @Mock
-    DomainModelFinder domainModelFinder;
+    DomainVocabularyFinder domainVocabularyFinder;
     @Mock
     UbiquitousLanguageRepository ubiquitousLanguageRepository;
     @InjectMocks
@@ -65,8 +65,8 @@ public class ExtractionTest {
     @Test
     public void no_ubiquitous_languages_to_save() {
         // given
-        when(domainModelFinder.findDomainModels(any()))
-            .thenReturn(Set.of());
+        when(domainVocabularyFinder.findDomainObjects(any()))
+            .thenReturn(new FoundDomainObjects());
 
         ExtractDomainModels command = ExtractDomainModels.builder()
             .packageToScan("io.candydoc.ddd.sample")
@@ -79,8 +79,8 @@ public class ExtractionTest {
         verify(ubiquitousLanguageRepository, never())
             .saveAll(any());
 
-        verify(domainModelFinder)
-            .findDomainModels(PackageName.of("io.candydoc.ddd.sample"));
+        verify(domainVocabularyFinder)
+            .findDomainObjects(Set.of("io.candydoc.ddd.sample"));
     }
 
 }

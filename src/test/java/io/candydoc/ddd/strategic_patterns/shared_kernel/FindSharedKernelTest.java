@@ -1,35 +1,29 @@
 package io.candydoc.ddd.strategic_patterns.shared_kernel;
 
-import io.candydoc.ddd.extract_domain_models.DomainModelFinder;
-import io.candydoc.ddd.extract_domain_models.ReflectionsDomainModelFinder;
-import io.candydoc.ddd.model.CanonicalName;
-import io.candydoc.ddd.model.DDDPattern;
-import io.candydoc.ddd.model.Dependency;
-import io.candydoc.ddd.model.Description;
-import io.candydoc.ddd.model.DomainModel;
-import io.candydoc.ddd.model.PackageName;
-import io.candydoc.ddd.model.SimpleName;
-import io.candydoc.ddd.strategic_pattern.BoundedContext;
+import io.candydoc.ddd.extract_domain_vocabulary.DomainVocabularyFinder;
+import io.candydoc.ddd.extract_domain_vocabulary.ReflectionsDomainVocabularyFinder;
+import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
-import io.candydoc.ddd.tactical_pattern.ValueObject;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FindSharedKernelTest {
 
-    static DomainModelFinder domainModelFinder = new ReflectionsDomainModelFinder(List.of("io.candydoc.ddd.strategic_patterns.shared_kernel"));
+    static DomainVocabularyFinder domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
+    static FoundDomainObjects foundDomainObjects;
+
+    @BeforeAll
+    public static void setUp() {
+        foundDomainObjects = domainVocabularyFinder.findDomainObjects(List.of("io.candydoc.ddd.strategic_patterns.shared_kernel"));
+    }
 
     @Test
     public void find_shared_kernel_from_classes() {
-        // when
-        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.strategic_patterns.shared_kernel"));
-
-        // then
-        assertThat(actualDomainModels)
+        assertThat(foundDomainObjects.toDomainModels())
             .contains(SharedKernel.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.strategic_patterns.shared_kernel.sampleA"))
                 .canonicalName(CanonicalName.of("io.candydoc.ddd.strategic_patterns.shared_kernel.sampleA.package-info"))
@@ -40,11 +34,7 @@ public class FindSharedKernelTest {
 
     @Test
     public void attributes_are_not_provided() {
-        // when
-        Set<DomainModel> actualDomainModels = domainModelFinder.findDomainModels(PackageName.of("io.candydoc.ddd.strategic_patterns.shared_kernel"));
-
-        // then
-        assertThat(actualDomainModels)
+        assertThat(foundDomainObjects.toDomainModels())
             .contains(SharedKernel.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.strategic_patterns.shared_kernel.sampleB"))
                 .canonicalName(CanonicalName.of("io.candydoc.ddd.strategic_patterns.shared_kernel.sampleB.package-info"))

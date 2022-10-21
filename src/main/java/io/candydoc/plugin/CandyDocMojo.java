@@ -1,6 +1,6 @@
 package io.candydoc.plugin;
 
-import io.candydoc.ddd.extract_domain_models.*;
+import io.candydoc.ddd.extract_domain_vocabulary.*;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -41,10 +41,10 @@ public class CandyDocMojo extends AbstractMojo {
     String outputDirectory = project.getBuild().getDirectory();
     Thread.currentThread().setContextClassLoader(getProjectClassLoader());
     UbiquitousLanguageRepository ubiquitousLanguageRepository = getRepository(outputFormat, outputDirectory);
-    DomainModelFinder domainModelFinder = new ReflectionsDomainModelFinder(packagesToScan);
+    DomainVocabularyFinder domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
 
     ExtractDomainModelsUseCase extractDomainModelsUseCase =
-        new ExtractDomainModelsUseCase(domainModelFinder, ubiquitousLanguageRepository);
+        new ExtractDomainModelsUseCase(domainVocabularyFinder, ubiquitousLanguageRepository);
 
     extractDomainModelsUseCase.execute(
         ExtractDomainModels.builder()
