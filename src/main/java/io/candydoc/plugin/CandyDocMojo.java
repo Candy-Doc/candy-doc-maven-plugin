@@ -1,6 +1,7 @@
 package io.candydoc.plugin;
 
 import io.candydoc.ddd.extract_domain_vocabulary.*;
+import io.candydoc.plugin.save_ubiquitous_language.file.UbiquitousLanguageAsFile;
 import io.candydoc.plugin.save_ubiquitous_language.file.json.UbiquitousLanguageAsJson;
 import io.candydoc.plugin.save_ubiquitous_language.file.yml.UbiquitousLanguageAsYml;
 import lombok.SneakyThrows;
@@ -40,7 +41,7 @@ public class CandyDocMojo extends AbstractMojo {
   public void execute() {
     String outputDirectory = project.getBuild().getDirectory();
     Thread.currentThread().setContextClassLoader(getProjectClassLoader());
-    UbiquitousLanguageRepository ubiquitousLanguageRepository = getRepository(outputFormat, outputDirectory);
+    UbiquitousLanguageRepository ubiquitousLanguageRepository = UbiquitousLanguageAsFile.forFormat(outputFormat, outputDirectory);
     DomainVocabularyFinder domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
 
     ExtractDomainModelsUseCase extractDomainModelsUseCase =
@@ -63,20 +64,6 @@ public class CandyDocMojo extends AbstractMojo {
     } catch (Exception e) {
       throw new MojoExecutionException("Classloader could not be created.", e);
     }
-  }
-
-  public UbiquitousLanguageRepository getRepository(String outputFormat, String outputDirectory) {
-    if (Files.notExists((Path.of(outputDirectory)))) {
-      throw new IllegalArgumentException("Output directory does not exist.");
-    }
-    Path outputFile = Paths.get(outputDirectory, "candy-doc", "ubiquitous_language", "result." + outputFormat);
-    switch (outputFormat) {
-      case "json":
-        return new UbiquitousLanguageAsJson(outputFile);
-      case "yml":
-        return new UbiquitousLanguageAsYml(outputFile);
-    }
-    throw new IllegalArgumentException("File format must be 'json', 'yml'.");
   }
 
 }
