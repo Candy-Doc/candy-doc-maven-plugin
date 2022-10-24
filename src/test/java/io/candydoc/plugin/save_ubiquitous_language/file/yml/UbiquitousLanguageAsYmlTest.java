@@ -3,7 +3,6 @@ package io.candydoc.plugin.save_ubiquitous_language.file.yml;
 import io.candydoc.ddd.model.FoundDomainObjects;
 import io.candydoc.ddd.model.UbiquitousLanguage;
 import io.candydoc.plugin.fixture.DomainVocabularyFixtures;
-import io.candydoc.plugin.save_ubiquitous_language.file.AssertFileContent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
 
-import static io.candydoc.plugin.save_ubiquitous_language.file.AssertFileContent.assertThatJson;
 import static io.candydoc.plugin.save_ubiquitous_language.file.AssertFileContent.assertThatYml;
 
 class UbiquitousLanguageAsYmlTest {

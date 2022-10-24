@@ -1,6 +1,7 @@
 package io.candydoc.ddd.extract_domain_vocabulary;
 
-import io.candydoc.ddd.model.*;
+import io.candydoc.ddd.model.FoundDomainObjects;
+import io.candydoc.ddd.model.UbiquitousLanguage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -4,7 +4,6 @@ import io.candydoc.ddd.model.FoundDomainObjects;
 import io.candydoc.ddd.model.UbiquitousLanguage;
 import io.candydoc.plugin.fixture.DomainVocabularyFixtures;
 import io.candydoc.plugin.save_ubiquitous_language.file.AssertFileContent;
-import io.candydoc.plugin.save_ubiquitous_language.file.json.UbiquitousLanguageAsJson;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,8 +41,8 @@ class UbiquitousLanguageAsJsonTest {
         ubiquitousLanguageAsJson.saveAll(ubiquitousLanguages);
 
         // then
-        Path referenceFile = REFERENCE_FOLDER.resolve("bounded_context_one.yml");
-        Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_one.yml");
+        Path referenceFile = REFERENCE_FOLDER.resolve("bounded_context_one.json");
+        Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_one.json");
 
         AssertFileContent.assertThatJson(actualFile)
                 .isEqualTo(referenceFile);
@@ -61,8 +60,8 @@ class UbiquitousLanguageAsJsonTest {
         ubiquitousLanguageAsJson.saveAll(ubiquitousLanguages);
 
         // then
-        Path referenceFile = REFERENCE_FOLDER.resolve("shared_kernel_one.yml");
-        Path actualFile = DESTINATION_FOLDER.resolve("shared_kernel_one.yml");
+        Path referenceFile = REFERENCE_FOLDER.resolve("shared_kernel_one.json");
+        Path actualFile = DESTINATION_FOLDER.resolve("shared_kernel_one.json");
 
         AssertFileContent.assertThatJson(actualFile)
                 .isEqualTo(referenceFile);
@@ -80,8 +79,8 @@ class UbiquitousLanguageAsJsonTest {
         ubiquitousLanguageAsJson.saveAll(ubiquitousLanguages);
 
         // then
-        Path referenceFile = REFERENCE_FOLDER.resolve("orphan_vocabulary.yml");
-        Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.yml");
+        Path referenceFile = REFERENCE_FOLDER.resolve("orphan_vocabulary.json");
+        Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.json");
 
         AssertFileContent.assertThatJson(actualFile)
                 .isEqualTo(referenceFile);

@@ -1,14 +1,6 @@
 package io.candydoc.plugin;
 
 import io.candydoc.ddd.extract_domain_vocabulary.*;
-import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-
 import io.candydoc.plugin.save_ubiquitous_language.file.json.UbiquitousLanguageAsJson;
 import io.candydoc.plugin.save_ubiquitous_language.file.yml.UbiquitousLanguageAsYml;
 import lombok.SneakyThrows;
@@ -16,6 +8,14 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
+
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
 @Mojo(
     name = "ubiquitous-language",

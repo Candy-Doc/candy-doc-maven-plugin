@@ -10,7 +10,10 @@ import io.candydoc.ddd.tactical_pattern.ValueObject;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @EqualsAndHashCode

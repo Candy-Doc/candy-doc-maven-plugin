@@ -1,11 +1,8 @@
 package io.candydoc.ddd.extract_domain_vocabulary;
 
-import io.candydoc.ddd.model.CanonicalName;
-import io.candydoc.ddd.model.Description;
-import io.candydoc.ddd.model.PackageName;
-import io.candydoc.ddd.model.SimpleName;
-import io.candydoc.ddd.model.UbiquitousLanguage;
+import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
+import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import io.candydoc.ddd.tactical_pattern.ValueObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +11,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,6 +58,14 @@ public class OneValidSharedKernelTest {
                         .simpleName(SimpleName.of("Shared kernel one"))
                         .packageName(PackageName.of("io.candydoc.ddd.sample.one_valid_shared_kernel"))
                         .description(Description.of("One valid shared kernel"))
+                        .dependency(Dependency.builder()
+                            .pattern(TacticalPattern.VALUE_OBJECT)
+                            .name(CanonicalName.of("io.candydoc.ddd.sample.one_valid_shared_kernel.shared_A.SharedValueObjectOne"))
+                            .build())
+                        .dependency(Dependency.builder()
+                            .pattern(TacticalPattern.VALUE_OBJECT)
+                            .name(CanonicalName.of("io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo"))
+                            .build())
                         .build());
 
                 assertThat(vocabulary.domainModels())

@@ -1,5 +1,7 @@
 package io.candydoc.ddd.extract_domain_vocabulary;
 
+import io.candydoc.ddd.annotations.BoundedContext;
+import io.candydoc.ddd.annotations.SharedKernel;
 import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
@@ -58,7 +60,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
                         .matchingPatterns(toFoundDDDPatterns(matchingAnnotations, scannedClass))
                         .packageName(PackageName.of(scannedClass.getPackageName()))
                         .canonicalName(CanonicalName.of(scannedClass.getCanonicalName()))
-                        .dependencies(dependenciesOf(scannedClass))
+                        .dependencies(dependenciesOf(scannedClass, scannedClasses))
                         .build());
             }
         });
@@ -134,7 +136,18 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
                 .build();
     }
 
-    private static Set<CanonicalName> dependenciesOf(Class<?> domainModel) {
+    private static Set<CanonicalName> dependenciesOf(Class<?> domainModel, Set<Class<?>> scannedClasses) {
+        if (domainModel.isAnnotationPresent(BoundedContext.class) || domainModel.isAnnotationPresent(SharedKernel.class)) {
+            String packageName = domainModel.getPackageName();
+            return scannedClasses.stream()
+                    .filter(clazz -> !clazz.equals(domainModel) && clazz.getPackageName().startsWith(packageName))
+                    .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
+                    .collect(Collectors.toUnmodifiableSet());
+        }
+        return dependenciesOfTacticalPattern(domainModel);
+    }
+
+    private static Set<CanonicalName> dependenciesOfTacticalPattern(Class<?> domainModel) {
         Set<Class<?>> dependencies = new HashSet<>();
 
         Arrays.stream(domainModel.getDeclaredFields())

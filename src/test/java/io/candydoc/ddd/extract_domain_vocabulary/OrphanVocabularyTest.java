@@ -1,10 +1,6 @@
 package io.candydoc.ddd.extract_domain_vocabulary;
 
-import io.candydoc.ddd.model.CanonicalName;
-import io.candydoc.ddd.model.Description;
-import io.candydoc.ddd.model.PackageName;
-import io.candydoc.ddd.model.SimpleName;
-import io.candydoc.ddd.model.UbiquitousLanguage;
+import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.tactical_pattern.Aggregate;
 import io.candydoc.ddd.tactical_pattern.DomainCommand;
 import io.candydoc.ddd.tactical_pattern.DomainEvent;
@@ -16,7 +12,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;

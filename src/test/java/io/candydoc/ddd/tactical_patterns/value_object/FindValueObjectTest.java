@@ -5,12 +5,10 @@ import io.candydoc.ddd.extract_domain_vocabulary.ReflectionsDomainVocabularyFind
 import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import io.candydoc.ddd.tactical_pattern.ValueObject;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

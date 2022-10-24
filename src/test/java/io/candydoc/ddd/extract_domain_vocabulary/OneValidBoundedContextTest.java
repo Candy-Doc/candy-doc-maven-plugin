@@ -1,15 +1,8 @@
 package io.candydoc.ddd.extract_domain_vocabulary;
 
-import io.candydoc.ddd.model.CanonicalName;
-import io.candydoc.ddd.model.Description;
-import io.candydoc.ddd.model.PackageName;
-import io.candydoc.ddd.model.SimpleName;
-import io.candydoc.ddd.model.UbiquitousLanguage;
+import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.strategic_pattern.BoundedContext;
-import io.candydoc.ddd.tactical_pattern.Aggregate;
-import io.candydoc.ddd.tactical_pattern.DomainCommand;
-import io.candydoc.ddd.tactical_pattern.DomainEvent;
-import io.candydoc.ddd.tactical_pattern.ValueObject;
+import io.candydoc.ddd.tactical_pattern.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +10,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,6 +57,22 @@ public class OneValidBoundedContextTest {
                         .simpleName(SimpleName.of("Bounded context one"))
                         .packageName(PackageName.of("io.candydoc.ddd.sample.one_valid_bounded_context"))
                         .description(Description.of("One valid bounded context"))
+                        .dependency(Dependency.builder()
+                            .pattern(TacticalPattern.AGGREGATE)
+                            .name(CanonicalName.of("io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.AggregateOne"))
+                            .build())
+                        .dependency(Dependency.builder()
+                            .pattern(TacticalPattern.DOMAIN_COMMAND)
+                            .name(CanonicalName.of("io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne"))
+                            .build())
+                        .dependency(Dependency.builder()
+                            .pattern(TacticalPattern.DOMAIN_EVENT)
+                            .name(CanonicalName.of("io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne"))
+                            .build())
+                        .dependency(Dependency.builder()
+                            .pattern(TacticalPattern.VALUE_OBJECT)
+                            .name(CanonicalName.of("io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne"))
+                            .build())
                         .build());
 
                 assertThat(vocabulary.domainModels())
