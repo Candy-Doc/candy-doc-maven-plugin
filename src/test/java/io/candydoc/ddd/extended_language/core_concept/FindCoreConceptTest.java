@@ -3,9 +3,7 @@ package io.candydoc.ddd.extended_language.core_concept;
 import io.candydoc.ddd.annotations.CoreConcept;
 import io.candydoc.ddd.extract_domain_vocabulary.DomainVocabularyFinder;
 import io.candydoc.ddd.extract_domain_vocabulary.ReflectionsDomainVocabularyFinder;
-import io.candydoc.ddd.model.*;
-import io.candydoc.ddd.tactical_pattern.Aggregate;
-import io.candydoc.ddd.tactical_pattern.TacticalPattern;
+import io.candydoc.ddd.model.FoundDomainObjects;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

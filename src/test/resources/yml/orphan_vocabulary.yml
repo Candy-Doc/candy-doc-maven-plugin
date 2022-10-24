@@ -7,7 +7,7 @@ domainModels:
     type: DOMAIN_COMMAND
     simpleName: OrphanDomainCommandOne
     description: An orphan domain command
-    dependencies: []
+    dependencies: [ ]
   io.candydoc.ddd.sample.orphan.OrphanDomainEventOne:
     type: DOMAIN_EVENT
     simpleName: OrphanDomainEventOne

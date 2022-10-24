@@ -6,6 +6,6 @@ import java.util.Collection;
 
 public interface DomainVocabularyFinder {
 
-  FoundDomainObjects findDomainObjects(Collection<String> packagesToScan);
+    FoundDomainObjects findDomainObjects(Collection<String> packagesToScan);
 
 }

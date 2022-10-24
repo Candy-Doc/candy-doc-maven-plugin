@@ -13,7 +13,7 @@ public class ExtractDomainModelsUseCase {
 
     private final DomainVocabularyFinder domainVocabularyFinder;
     private final UbiquitousLanguageRepository ubiquitousLanguageRepository;
-  
+
     public void checkParameters(ExtractDomainModels command) throws ExtractionException {
         if (command.packagesToScan().isEmpty()) {
             throw new PackageToScanMissing(

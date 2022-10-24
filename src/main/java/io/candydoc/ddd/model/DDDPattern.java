@@ -12,10 +12,15 @@ public interface DDDPattern {
 
     interface Visitor<T> {
         T boundedContext();
+
         T sharedKernel();
+
         T aggregate();
+
         T domainCommand();
+
         T domainEvent();
+
         T valueObject();
     }
 

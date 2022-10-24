@@ -15,14 +15,14 @@ public class WrongUseOfDDDPatterns extends ExtractionException {
 
     private static String toMessage(Collection<FoundDomainObject> domainObjects) {
         return domainObjects.stream()
-                .sorted(Comparator.comparing(FoundDomainObject::canonicalName))
-                .map(domainObject -> String.format("Domain object '%s' matches more than one DDD pattern: %s",
-                        domainObject.canonicalName().value(),
-                        domainObject.matchingPatterns().stream()
-                                .map(FoundDDDPattern::dddPattern)
-                                .sorted()
-                                .collect(Collectors.toUnmodifiableList())))
-                .collect(Collectors.joining(",\n"));
+            .sorted(Comparator.comparing(FoundDomainObject::canonicalName))
+            .map(domainObject -> String.format("Domain object '%s' matches more than one DDD pattern: %s",
+                domainObject.canonicalName().value(),
+                domainObject.matchingPatterns().stream()
+                    .map(FoundDDDPattern::dddPattern)
+                    .sorted()
+                    .collect(Collectors.toUnmodifiableList())))
+            .collect(Collectors.joining(",\n"));
     }
 
 }

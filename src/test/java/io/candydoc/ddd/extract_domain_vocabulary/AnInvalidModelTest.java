@@ -25,14 +25,14 @@ public class AnInvalidModelTest {
     void an_object_can_not_be_defined_by_multiple_ddd_patterns() {
         // when
         ThrowableAssert.ThrowingCallable callable = () -> useCase.execute(ExtractDomainModels.builder()
-                .packageToScan("io.candydoc.ddd.sample.invalid_models")
-                .build());
+            .packageToScan("io.candydoc.ddd.sample.invalid_models")
+            .build());
 
         assertThatThrownBy(callable)
-                .isInstanceOf(ExtractionException.class)
-                .isInstanceOf(WrongUseOfDDDPatterns.class)
-                .hasMessageContaining("Domain object 'io.candydoc.ddd.sample.invalid_models.InvalidModelOne' matches more than one DDD pattern: [AGGREGATE, DOMAIN_COMMAND]")
-                .hasMessageContaining("Domain object 'io.candydoc.ddd.sample.invalid_models.InvalidModelTwo' matches more than one DDD pattern: [DOMAIN_EVENT, VALUE_OBJECT]");
+            .isInstanceOf(ExtractionException.class)
+            .isInstanceOf(WrongUseOfDDDPatterns.class)
+            .hasMessageContaining("Domain object 'io.candydoc.ddd.sample.invalid_models.InvalidModelOne' matches more than one DDD pattern: [AGGREGATE, DOMAIN_COMMAND]")
+            .hasMessageContaining("Domain object 'io.candydoc.ddd.sample.invalid_models.InvalidModelTwo' matches more than one DDD pattern: [DOMAIN_EVENT, VALUE_OBJECT]");
     }
 
 }

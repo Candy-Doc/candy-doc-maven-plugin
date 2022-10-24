@@ -6,13 +6,14 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class SimpleName {
-  @NonNull private final String value;
+    @NonNull
+    private final String value;
 
-  public String value() {
-    return value;
-  }
+    public String value() {
+        return value;
+    }
 
-  public static SimpleName of(String value) {
-    return new SimpleName(value);
-  }
+    public static SimpleName of(String value) {
+        return new SimpleName(value);
+    }
 }

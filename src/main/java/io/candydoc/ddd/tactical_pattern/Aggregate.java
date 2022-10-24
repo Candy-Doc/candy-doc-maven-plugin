@@ -12,20 +12,20 @@ import java.util.Set;
 @ToString(callSuper = true)
 public class Aggregate extends TacticalModel {
 
-  private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of(
-      TacticalPattern.DOMAIN_COMMAND,
-      TacticalPattern.DOMAIN_EVENT,
-      TacticalPattern.VALUE_OBJECT
-  );
+    private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of(
+        TacticalPattern.DOMAIN_COMMAND,
+        TacticalPattern.DOMAIN_EVENT,
+        TacticalPattern.VALUE_OBJECT
+    );
 
-  @Override
-  public DDDPattern dddPattern() {
-    return TacticalPattern.AGGREGATE;
-  }
+    @Override
+    public DDDPattern dddPattern() {
+        return TacticalPattern.AGGREGATE;
+    }
 
-  @Override
-  public Set<DDDPattern> allowedDependencyPatterns() {
-    return ALLOWED_DEPENDENCIES;
-  }
+    @Override
+    public Set<DDDPattern> allowedDependencyPatterns() {
+        return ALLOWED_DEPENDENCIES;
+    }
 
 }

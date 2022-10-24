@@ -57,9 +57,9 @@ public class SharedKernelRulesTest {
         assertThat(sharedKernel.allowedDependencies())
             .containsExactlyInAnyOrder(
                 Dependency.builder()
-                .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
-                .pattern(TacticalPattern.VALUE_OBJECT)
-                .build());
+                    .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
+                    .pattern(TacticalPattern.VALUE_OBJECT)
+                    .build());
     }
 
     @Test

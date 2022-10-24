@@ -38,8 +38,8 @@ public final class FoundDomainObjects {
 
     public void checkConsistency() {
         Set<FoundDomainObject> invalidDomainModels = domainObjects.values().stream()
-                .filter(FoundDomainObject::matchMoreThanOneDDDPattern)
-                .collect(Collectors.toUnmodifiableSet());
+            .filter(FoundDomainObject::matchMoreThanOneDDDPattern)
+            .collect(Collectors.toUnmodifiableSet());
 
         if (!invalidDomainModels.isEmpty()) {
             throw new WrongUseOfDDDPatterns(invalidDomainModels);
@@ -48,8 +48,8 @@ public final class FoundDomainObjects {
 
     public Set<DomainModel> toDomainModels() {
         return domainObjects.values().stream()
-                .map(this::toDomainModel)
-                .collect(Collectors.toUnmodifiableSet());
+            .map(this::toDomainModel)
+            .collect(Collectors.toUnmodifiableSet());
     }
 
     private DomainModel toDomainModel(FoundDomainObject foundDomainObject) {
@@ -69,12 +69,12 @@ public final class FoundDomainObjects {
 
     private Set<Dependency> dependenciesOf(FoundDomainObject foundDomainObject) {
         return domainObjects.entrySet().stream()
-                .filter(entry -> foundDomainObject.dependencies().contains(entry.getKey()))
-                .map(entry -> Dependency.builder()
-                        .name(entry.getKey())
-                        .pattern(entry.getValue().matchingPattern().dddPattern())
-                        .build())
-                .collect(Collectors.toUnmodifiableSet());
+            .filter(entry -> foundDomainObject.dependencies().contains(entry.getKey()))
+            .map(entry -> Dependency.builder()
+                .name(entry.getKey())
+                .pattern(entry.getValue().matchingPattern().dddPattern())
+                .build())
+            .collect(Collectors.toUnmodifiableSet());
     }
 
     private static DomainModel.DomainModelBuilder<?, ?> toDomainModelBuilder(FoundDDDPattern foundDDDPattern) {

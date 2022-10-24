@@ -11,7 +11,7 @@ import java.lang.annotation.Annotation;
 @Accessors(fluent = true)
 @RequiredArgsConstructor
 public enum TacticalPattern implements DDDPattern {
-    AGGREGATE(io.candydoc.ddd.annotations.Aggregate.class){
+    AGGREGATE(io.candydoc.ddd.annotations.Aggregate.class) {
         @Override
         public <T> T accept(Visitor<T> visitor) {
             return visitor.aggregate();

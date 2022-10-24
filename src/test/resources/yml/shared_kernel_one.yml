@@ -14,4 +14,4 @@ domainModels:
     type: VALUE_OBJECT
     simpleName: SharedValueObjectTwo
     description: ''
-    dependencies: []
+    dependencies: [ ]

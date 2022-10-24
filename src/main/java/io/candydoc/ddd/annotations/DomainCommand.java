@@ -7,5 +7,5 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DomainCommand {
-  String description() default "";
+    String description() default "";
 }

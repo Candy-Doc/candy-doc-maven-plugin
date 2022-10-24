@@ -35,7 +35,7 @@ class UbiquitousLanguageAsFileTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "txt", "adoc" })
+    @ValueSource(strings = {"txt", "adoc"})
     void invalid_output_format(String invalidFormat) {
         ThrowableAssert.ThrowingCallable callable = () -> UbiquitousLanguageAsFile.forFormat(invalidFormat, "target");
 

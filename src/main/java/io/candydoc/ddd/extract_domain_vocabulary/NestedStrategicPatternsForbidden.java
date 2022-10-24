@@ -2,7 +2,6 @@ package io.candydoc.ddd.extract_domain_vocabulary;
 
 import io.candydoc.ddd.model.Dependency;
 import io.candydoc.ddd.strategic_pattern.StrategicModel;
-import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 
 import java.util.Collection;
 import java.util.List;

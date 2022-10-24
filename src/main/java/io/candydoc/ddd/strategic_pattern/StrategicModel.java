@@ -14,6 +14,7 @@ public abstract class StrategicModel extends DomainModel {
 
     public interface Visitor<T> {
         T boundedContext(BoundedContext boundedContext);
+
         T sharedKernel(SharedKernel sharedKernel);
     }
 }

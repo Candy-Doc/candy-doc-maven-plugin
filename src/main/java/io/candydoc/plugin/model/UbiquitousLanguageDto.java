@@ -23,9 +23,9 @@ public final class UbiquitousLanguageDto {
 
     public static UbiquitousLanguageDto from(UbiquitousLanguage ubiquitousLanguage) {
         Map<String, DomainModelDto> domainModelPerCanonicalName = ubiquitousLanguage.domainModels().stream()
-                .map(domainModel -> Map.entry(domainModel.canonicalName().value(), DomainModelDto.from(domainModel)))
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o1, o2) -> o1, TreeMap::new));
+            .map(domainModel -> Map.entry(domainModel.canonicalName().value(), DomainModelDto.from(domainModel)))
+            .sorted(Map.Entry.comparingByKey())
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (o1, o2) -> o1, TreeMap::new));
 
         return ubiquitousLanguage.accept(new UbiquitousLanguage.Visitor<>() {
             @Override
@@ -33,11 +33,11 @@ public final class UbiquitousLanguageDto {
                 BoundedContext boundedContext = vocabulary.boundedContext();
 
                 return UbiquitousLanguageDto.builder()
-                        .type("BOUNDED_CONTEXT")
-                        .name(boundedContext.simpleName().value())
-                        .description(boundedContext.description().value())
-                        .domainModels(domainModelPerCanonicalName)
-                        .build();
+                    .type("BOUNDED_CONTEXT")
+                    .name(boundedContext.simpleName().value())
+                    .description(boundedContext.description().value())
+                    .domainModels(domainModelPerCanonicalName)
+                    .build();
             }
 
             @Override
@@ -45,21 +45,21 @@ public final class UbiquitousLanguageDto {
                 SharedKernel sharedKernel = vocabulary.sharedKernel();
 
                 return UbiquitousLanguageDto.builder()
-                        .type("SHARED_KERNEL")
-                        .name(sharedKernel.simpleName().value())
-                        .description(sharedKernel.description().value())
-                        .domainModels(domainModelPerCanonicalName)
-                        .build();
+                    .type("SHARED_KERNEL")
+                    .name(sharedKernel.simpleName().value())
+                    .description(sharedKernel.description().value())
+                    .domainModels(domainModelPerCanonicalName)
+                    .build();
             }
 
             @Override
             public UbiquitousLanguageDto handle(UbiquitousLanguage.OrphanBoundedVocabulary vocabulary) {
                 return UbiquitousLanguageDto.builder()
-                        .type("ORPHAN_VOCABULARY")
-                        .name("Orphan vocabulary")
-                        .description("These models are not under a bounded context nor a shared kernel")
-                        .domainModels(domainModelPerCanonicalName)
-                        .build();
+                    .type("ORPHAN_VOCABULARY")
+                    .name("Orphan vocabulary")
+                    .description("These models are not under a bounded context nor a shared kernel")
+                    .domainModels(domainModelPerCanonicalName)
+                    .build();
             }
         });
     }

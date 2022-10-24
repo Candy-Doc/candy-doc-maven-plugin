@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Aggregate {
-  String name() default "";
+    String name() default "";
 
-  String description() default "";
+    String description() default "";
 }

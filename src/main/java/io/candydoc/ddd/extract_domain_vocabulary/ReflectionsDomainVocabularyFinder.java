@@ -22,28 +22,28 @@ import java.util.stream.Collectors;
 public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder {
 
     public static final Map<DDDPattern, Function<Class<?>, FoundDDDPattern>>
-            DDD_PATTERN_PROCESSOR =
-            Map.of(
-                    StrategicPattern.BOUNDED_CONTEXT,
-                    ReflectionsDomainVocabularyFinder::toBoundedContextPattern,
-                    StrategicPattern.SHARED_KERNEL,
-                    ReflectionsDomainVocabularyFinder::toSharedKernel,
-                    TacticalPattern.AGGREGATE,
-                    ReflectionsDomainVocabularyFinder::toAggregatePattern,
-                    TacticalPattern.DOMAIN_COMMAND,
-                    ReflectionsDomainVocabularyFinder::toDomainCommandPattern,
-                    TacticalPattern.DOMAIN_EVENT,
-                    ReflectionsDomainVocabularyFinder::toDomainEventPattern,
-                    TacticalPattern.VALUE_OBJECT,
-                    ReflectionsDomainVocabularyFinder::toValueObjectPattern);
+        DDD_PATTERN_PROCESSOR =
+        Map.of(
+            StrategicPattern.BOUNDED_CONTEXT,
+            ReflectionsDomainVocabularyFinder::toBoundedContextPattern,
+            StrategicPattern.SHARED_KERNEL,
+            ReflectionsDomainVocabularyFinder::toSharedKernel,
+            TacticalPattern.AGGREGATE,
+            ReflectionsDomainVocabularyFinder::toAggregatePattern,
+            TacticalPattern.DOMAIN_COMMAND,
+            ReflectionsDomainVocabularyFinder::toDomainCommandPattern,
+            TacticalPattern.DOMAIN_EVENT,
+            ReflectionsDomainVocabularyFinder::toDomainEventPattern,
+            TacticalPattern.VALUE_OBJECT,
+            ReflectionsDomainVocabularyFinder::toValueObjectPattern);
 
     @Override
     public FoundDomainObjects findDomainObjects(Collection<String> packagesToScan) {
         String[] packagesAsArray = packagesToScan.toArray(new String[]{});
         final ConfigurationBuilder config = new ConfigurationBuilder()
-                .setScanners(new SubTypesScanner(false))
-                .forPackages(packagesAsArray)
-                .filterInputsBy(new FilterBuilder().includePackage(packagesAsArray));
+            .setScanners(new SubTypesScanner(false))
+            .forPackages(packagesAsArray)
+            .filterInputsBy(new FilterBuilder().includePackage(packagesAsArray));
 
         Reflections reflections = new Reflections(config);
 
@@ -52,18 +52,18 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
 
         scannedClasses.forEach(scannedClass -> {
             Set<Class<? extends Annotation>> matchingAnnotations = DDD_PATTERN_PROCESSOR.keySet().stream()
-                    .map(DDDPattern::relatedAnnotation)
-                    .filter(scannedClass::isAnnotationPresent)
-                    .collect(Collectors.toUnmodifiableSet());
+                .map(DDDPattern::relatedAnnotation)
+                .filter(scannedClass::isAnnotationPresent)
+                .collect(Collectors.toUnmodifiableSet());
 
             if (!matchingAnnotations.isEmpty()) {
                 foundDomainObjects.add(FoundDomainObject.builder()
-                        .matchingPatterns(toFoundDDDPatterns(matchingAnnotations, scannedClass))
-                        .packageName(PackageName.of(scannedClass.getPackageName()))
-                        .canonicalName(CanonicalName.of(scannedClass.getCanonicalName()))
-                        .dependencies(dependenciesOf(scannedClass, scannedClasses))
-                        .coreConcept(isCoreConcept(scannedClass))
-                        .build());
+                    .matchingPatterns(toFoundDDDPatterns(matchingAnnotations, scannedClass))
+                    .packageName(PackageName.of(scannedClass.getPackageName()))
+                    .canonicalName(CanonicalName.of(scannedClass.getCanonicalName()))
+                    .dependencies(dependenciesOf(scannedClass, scannedClasses))
+                    .coreConcept(isCoreConcept(scannedClass))
+                    .build());
             }
         });
 
@@ -72,9 +72,9 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
 
     private static Set<FoundDDDPattern> toFoundDDDPatterns(Set<Class<? extends Annotation>> matchingAnnotations, Class<?> clazz) {
         return DDD_PATTERN_PROCESSOR.keySet().stream()
-                .filter(dddPattern -> matchingAnnotations.contains(dddPattern.relatedAnnotation()))
-                .map(dddPattern -> toFoundDDDPattern(dddPattern, clazz))
-                .collect(Collectors.toUnmodifiableSet());
+            .filter(dddPattern -> matchingAnnotations.contains(dddPattern.relatedAnnotation()))
+            .map(dddPattern -> toFoundDDDPattern(dddPattern, clazz))
+            .collect(Collectors.toUnmodifiableSet());
     }
 
     private static FoundDDDPattern toFoundDDDPattern(DDDPattern dddPattern, Class<?> clazz) {
@@ -132,19 +132,19 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
 
     private static FoundDDDPattern toFoundDDDPattern(DDDPattern dddPattern, String simpleName, String description) {
         return FoundDDDPattern.builder()
-                .dddPattern(dddPattern)
-                .name(SimpleName.of(simpleName))
-                .description(Description.of(description))
-                .build();
+            .dddPattern(dddPattern)
+            .name(SimpleName.of(simpleName))
+            .description(Description.of(description))
+            .build();
     }
 
     private static Set<CanonicalName> dependenciesOf(Class<?> domainModel, Set<Class<?>> scannedClasses) {
         if (domainModel.isAnnotationPresent(BoundedContext.class) || domainModel.isAnnotationPresent(SharedKernel.class)) {
             String packageName = domainModel.getPackageName();
             return scannedClasses.stream()
-                    .filter(clazz -> !clazz.equals(domainModel) && clazz.getPackageName().startsWith(packageName))
-                    .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
-                    .collect(Collectors.toUnmodifiableSet());
+                .filter(clazz -> !clazz.equals(domainModel) && clazz.getPackageName().startsWith(packageName))
+                .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
+                .collect(Collectors.toUnmodifiableSet());
         }
         return dependenciesOfTacticalPattern(domainModel);
     }
@@ -153,18 +153,18 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
         Set<Class<?>> dependencies = new HashSet<>();
 
         Arrays.stream(domainModel.getDeclaredFields())
-                .map(Field::getType)
-                .forEach(dependencies::add);
+            .map(Field::getType)
+            .forEach(dependencies::add);
 
         Arrays.stream(domainModel.getDeclaredMethods())
-                .forEach(method -> {
-                    dependencies.add(method.getReturnType());
-                    dependencies.addAll(Set.of(method.getParameterTypes()));
-                });
+            .forEach(method -> {
+                dependencies.add(method.getReturnType());
+                dependencies.addAll(Set.of(method.getParameterTypes()));
+            });
 
         return dependencies.stream()
-                .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
-                .collect(Collectors.toUnmodifiableSet());
+            .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
+            .collect(Collectors.toUnmodifiableSet());
     }
 
     private boolean isCoreConcept(Class<?> scannedClass) {

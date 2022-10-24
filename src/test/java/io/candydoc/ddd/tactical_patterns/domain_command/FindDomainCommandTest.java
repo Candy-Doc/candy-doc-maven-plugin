@@ -25,27 +25,27 @@ public class FindDomainCommandTest {
     @Test
     public void find_domain_command_from_classes() {
         assertThat(foundDomainObjects.toDomainModels())
-                .contains(DomainCommand.builder()
-                        .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"))
-                        .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.DomainCommandOne"))
-                        .simpleName(SimpleName.of("DomainCommandOne"))
-                        .description(Description.of("Describe the domain command here"))
-                        .dependency(Dependency.builder()
-                                .pattern(TacticalPattern.VALUE_OBJECT)
-                                .name(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.ValueObjectOne"))
-                                .build())
-                        .build());
+            .contains(DomainCommand.builder()
+                .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"))
+                .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.DomainCommandOne"))
+                .simpleName(SimpleName.of("DomainCommandOne"))
+                .description(Description.of("Describe the domain command here"))
+                .dependency(Dependency.builder()
+                    .pattern(TacticalPattern.VALUE_OBJECT)
+                    .name(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.ValueObjectOne"))
+                    .build())
+                .build());
     }
 
     @Test
     public void attributes_not_provided() {
         assertThat(foundDomainObjects.toDomainModels())
-                .contains(DomainCommand.builder()
-                        .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"))
-                        .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.DomainCommandTwo"))
-                        .simpleName(SimpleName.of("DomainCommandTwo"))
-                        .description(Description.of(""))
-                        .build());
+            .contains(DomainCommand.builder()
+                .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"))
+                .canonicalName(CanonicalName.of("io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.DomainCommandTwo"))
+                .simpleName(SimpleName.of("DomainCommandTwo"))
+                .description(Description.of(""))
+                .build());
     }
 
     @io.candydoc.ddd.annotations.DomainCommand(description = "Describe the domain command here")

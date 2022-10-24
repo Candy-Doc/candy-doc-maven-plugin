@@ -34,7 +34,7 @@ class UbiquitousLanguageAsYmlTest {
     public void save_bounded_context_as_json() {
         // given
         FoundDomainObjects foundDomainObjects = new FoundDomainObjects()
-                .addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_BOUNDED_CONTEXT);
+            .addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_BOUNDED_CONTEXT);
 
         Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
 
@@ -46,14 +46,14 @@ class UbiquitousLanguageAsYmlTest {
         Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_one.yml");
 
         assertThatYml(actualFile)
-                .isEqualTo(referenceFile);
+            .isEqualTo(referenceFile);
     }
 
     @Test
     public void save_shared_kernel_as_json() {
         // given
         FoundDomainObjects foundDomainObjects = new FoundDomainObjects()
-                .addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_SHARED_KERNEL);
+            .addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_SHARED_KERNEL);
 
         Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
 
@@ -65,14 +65,14 @@ class UbiquitousLanguageAsYmlTest {
         Path actualFile = DESTINATION_FOLDER.resolve("shared_kernel_one.yml");
 
         assertThatYml(actualFile)
-                .isEqualTo(referenceFile);
+            .isEqualTo(referenceFile);
     }
 
     @Test
     public void save_orphan_vocabulary_as_json() {
         // given
         FoundDomainObjects foundDomainObjects = new FoundDomainObjects()
-                .addAll(DomainVocabularyFixtures.ORPHAN_DOMAIN_OBJECTS);
+            .addAll(DomainVocabularyFixtures.ORPHAN_DOMAIN_OBJECTS);
 
         Set<UbiquitousLanguage> ubiquitousLanguages = UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
 
@@ -84,7 +84,7 @@ class UbiquitousLanguageAsYmlTest {
         Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.yml");
 
         assertThatYml(actualFile)
-                .isEqualTo(referenceFile);
+            .isEqualTo(referenceFile);
     }
 
 }

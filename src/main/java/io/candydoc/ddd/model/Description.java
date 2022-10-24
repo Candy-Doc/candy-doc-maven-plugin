@@ -9,13 +9,13 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class Description {
-  private final String value;
+    private final String value;
 
-  public String value() {
-    return value;
-  }
+    public String value() {
+        return value;
+    }
 
-  public static Description of(String value) {
-    return new Description(value);
-  }
+    public static Description of(String value) {
+        return new Description(value);
+    }
 }

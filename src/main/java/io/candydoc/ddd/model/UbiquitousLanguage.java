@@ -4,7 +4,6 @@ import io.candydoc.ddd.extract_domain_vocabulary.NestedStrategicPatternsForbidde
 import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
 import io.candydoc.ddd.strategic_pattern.StrategicModel;
-import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,7 +12,6 @@ import lombok.experimental.Accessors;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
