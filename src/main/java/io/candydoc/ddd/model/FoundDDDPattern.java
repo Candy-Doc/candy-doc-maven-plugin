@@ -16,10 +16,6 @@ public class FoundDDDPattern {
     private SimpleName name;
     private Description description;
 
-    public boolean matches(DDDPattern dddPattern) {
-        return this.dddPattern.equals(dddPattern);
-    }
-
     public <T> T accept(DDDPattern.Visitor<T> visitor) {
         return dddPattern.accept(visitor);
     }
