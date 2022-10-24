@@ -55,7 +55,6 @@ public final class FoundDomainObjects {
     private DomainModel toDomainModel(FoundDomainObject foundDomainObject) {
         FoundDDDPattern foundDDDPattern = foundDomainObject.matchingPattern();
         Set<Dependency> dependencies = dependenciesOf(foundDomainObject);
-        boolean coreConcept = foundDomainObject.coreConcept();
 
         return toDomainModelBuilder(foundDDDPattern)
             .packageName(foundDomainObject.packageName())
@@ -63,7 +62,6 @@ public final class FoundDomainObjects {
             .simpleName(foundDDDPattern.name())
             .description(foundDDDPattern.description())
             .dependencies(dependencies)
-            .coreConcept(coreConcept)
             .build();
     }
 

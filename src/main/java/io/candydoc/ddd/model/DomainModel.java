@@ -20,7 +20,6 @@ public abstract class DomainModel {
     @Singular
     @Getter(AccessLevel.PRIVATE)
     private final Set<Dependency> dependencies;
-    private final boolean coreConcept;
 
     public boolean dependsOn(CanonicalName canonicalName) {
         return dependencies.stream()

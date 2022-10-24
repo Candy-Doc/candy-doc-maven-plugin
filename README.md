@@ -37,7 +37,6 @@ Domain-Driven-Design approach.
 - [DDD Annotations](#ddd-annotations)
   - [Aggregate](#aggregate)
   - [Bounded Context](#bounded-context)
-  - [Core Concept](#core-concept)
   - [Domain Command](#domain-command)
   - [Domain Event](#domain-event)
   - [Shared Kernel](#shared-kernel)
@@ -102,12 +101,10 @@ Example:
 ```
 
 **outputFormat:** The output format in which the documentation is generated.
-Output format can be either `html`, `yml`
-or `json`.
+Output format can be either `json` or `yml`.
 
 Once your project is correctly annotated with
-the [DDD Annotations](#DDD_Annotations), use mvn to run the plugin (
-replace `${candy-doc.version}` with the current version you are using):
+the [DDD Annotations](#DDD_Annotations), use mvn to run the plugin (replace `${candy-doc.version}` with the current version you are using):
 
 `mvn io.candy-doc:candy-doc:${candy-doc.version}:candy-doc`
 
@@ -117,7 +114,41 @@ The documentation will be generated in the `target/candy-doc` directory.
 
 Domain-Driven-Design concepts are identified with annotations.
 
-### Aggregate
+### Strategic patterns
+
+#### Bounded Context
+
+```java
+@BoundedContext(name = "", description = "")
+```
+
+Set of elements (classes, services, etc) containing only what is needed in a
+specific context.
+
+Only `package-info.java` files can be annotated with `@BoundedContext`. Every
+other concepts must be inside a bounded context.
+
+#### Shared Kernel
+
+```java
+@SharedKernel(name = "", description = "")
+```
+
+Set of elements (classes, services, etc) containing only what is needed in a specific context.
+A shared kernel is the intersection of two bounded contexts (same DDD concepts used in each one).
+It is often used to describe the relationship between two (or more) teams that share a small but common model.
+It can only contain value objects.
+
+Only `package-info.java` files can be annotated with `@SharedKernel`.
+They work like bounded context do.
+
+#### Nested context
+
+Nested bounded contexts or nested shared kernels are forbidden and prevented by the plugin when processing classes.
+
+### Tactical patterns
+
+#### Aggregate
 
 ```java
 @Aggregate(name = "", description = "")
@@ -133,30 +164,7 @@ It is accessed by commands, returns events and deals with value objects.
 Value objects in an aggregate are usually seen as Domain entities. This is the
 only domain model that can be mutable.
 
-### Bounded Context
-
-```java
-@BoundedContext(name = "", description = "")
-```
-
-Set of elements (classes, services, etc) containing only what is needed in a
-specific context.
-
-Only `package-info.java` files can be annotated with `@BoundedContext`. Every
-other concepts must be inside a bounded context.
-
-### Core Concept
-
-```java
-@CoreConcept(name = "", description = "")
-```
-
-Concept with the highest level of importance inside a bounded context. It is
-used in the domain layer, on aggregates and value objects.
-
-A Core Concept can interact with other concepts.
-
-### Domain Command
+#### Domain Command
 
 ```java
 @DomainCommand(description = "")
@@ -167,7 +175,7 @@ A command is the entry point to perform a business logic from an aggregate.
 It should use primitives only (and could use value objects) and is performed on
 an aggregate.
 
-### Domain Event
+#### Domain Event
 
 ```java
 @DomainEvent(description = "")
@@ -181,21 +189,7 @@ An event should always stay dumb and only carry static information.
 Moreover, domain events cannot use strong domain concepts as domain logic should
 never be used outside the domain.
 
-### Shared Kernel
-
-```java
-@SharedKernel(name = "", description = "")
-```
-
-Set of elements (classes, services, etc) containing only what is needed in a specific context.
-A shared kernel is the intersection of two bounded contexts (same DDD concepts used in each one).
-It is often used to describe the relationship between two (or more) teams that share a small but common model.
-It can only contains value objects and core concepts.
-
-Only `package-info.java` files can be annotated with `@SharedKernel`.
-They work like bounded context do.
-
-### Value Object
+#### Value Object
 
 ```java
 @ValueObject(description = "")
@@ -206,23 +200,6 @@ values.
 
 A Core Concept can interact with one or more value objects. A Value Object only
 has primitive fields, is immutable and should be valid when instantiated.
-
-## HTML Documentation 🌐
-
-If you have chosen `html` as output format, you can open the generated
-_index.html_ file from your file explorer to have access to the documentation.
-
-Navigate between the concepts of your project thanks to the left-side menu
-
-![index.png](assets/screenshots/index.png)
-
-Access the content of each concept
-
-![bounded_context.png](assets/screenshots/bounded_context.png)
-
-See the interactions between concepts
-
-![core_concept.png](assets/screenshots/core_concept.png)
 
 ## ROADMAP 🗺️
 
@@ -290,27 +267,11 @@ Explanations:
 > git pull
 > ```
 
-## Technologies
-
-Project created with:
-
-| Technology        | Version  |
-| ----------------- | -------- |
-| Java              | 11       |
-| Maven             | 3.6.3    |
-| Reflections8      | 0.11.5   |
-| Lombok            | 1.8.12   |
-| Jackson           | 2.8.6    |
-| Apache Freemarker | 2.3.31   |
-| Apache Commons-IO | 2.8.0    |
-| Maven Release     | 3.0.0-M4 |
-
 ## References
-
-- DDD, en vrai pour le développeur (Cyrille Martraire):
-  <https://www.youtube.com/watch?v=h3DLKrvp5V8>
 - DDD (Martin Fowler):
   <https://martinfowler.com/tags/domain%20driven%20design.html>
+- DDD, en vrai pour le développeur (Cyrille Martraire):
+  <https://www.youtube.com/watch?v=h3DLKrvp5V8>
 - Summary of a 4 days DDD Training (Thomas Ferro):
   <https://thomasferro.medium.com/summary-of-a-four-days-ddd-training-74103a6d99a1>
 

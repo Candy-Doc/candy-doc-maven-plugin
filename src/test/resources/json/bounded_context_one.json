@@ -34,8 +34,7 @@
       "type": "VALUE_OBJECT",
       "simpleName": "ValueObjectOne",
       "description": "",
-      "dependencies": [],
-      "coreConcept": true
+      "dependencies": []
     }
   }
 }

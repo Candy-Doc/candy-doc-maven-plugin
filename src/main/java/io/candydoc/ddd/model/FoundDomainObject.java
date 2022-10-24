@@ -17,7 +17,6 @@ public final class FoundDomainObject {
     private final CanonicalName canonicalName;
     @Singular
     private final Set<CanonicalName> dependencies;
-    private final boolean coreConcept;
 
     public FoundDDDPattern matchingPattern() {
         return matchingPatterns.iterator().next();

@@ -27,4 +27,3 @@ domainModels:
     simpleName: ValueObjectOne
     description: ''
     dependencies: [ ]
-    coreConcept: true

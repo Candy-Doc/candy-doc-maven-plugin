@@ -1,7 +1,5 @@
 package io.candydoc.plugin.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.candydoc.ddd.model.DomainModel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,8 +16,6 @@ public final class DomainModelDto {
     private String simpleName;
     private String description;
     private Collection<DependencyDto> dependencies;
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    private boolean coreConcept;
 
     public static DomainModelDto from(DomainModel domainModel) {
         List<DependencyDto> dependencies = new ArrayList<>();
@@ -45,7 +41,6 @@ public final class DomainModelDto {
             .simpleName(domainModel.simpleName().value())
             .description(domainModel.description().value())
             .dependencies(Collections.unmodifiableCollection(dependencies))
-            .coreConcept(domainModel.coreConcept())
             .build();
     }
 }
