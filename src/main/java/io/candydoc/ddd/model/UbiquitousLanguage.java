@@ -1,5 +1,6 @@
 package io.candydoc.ddd.model;
 
+import io.candydoc.ddd.extract_domain_vocabulary.NestedStrategicPatternsForbidden;
 import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
 import io.candydoc.ddd.strategic_pattern.StrategicModel;
@@ -31,6 +32,10 @@ public interface UbiquitousLanguage {
             .filter(StrategicModel.class::isInstance)
             .map(StrategicModel.class::cast)
             .forEach(strategicModel -> {
+                if (!strategicModel.forbiddenDependencies().isEmpty()) {
+                    throw new NestedStrategicPatternsForbidden(strategicModel);
+                }
+
                 Set<DomainModel> boundedModels = domainModels.stream()
                     .filter(domainModel -> strategicModel.dependsOn(domainModel.canonicalName()))
                     .collect(Collectors.toUnmodifiableSet());
