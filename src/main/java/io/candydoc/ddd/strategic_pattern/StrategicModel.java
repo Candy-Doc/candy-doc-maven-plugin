@@ -10,11 +10,11 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public abstract class StrategicModel extends DomainModel {
 
-    public abstract <T> T accept(Visitor<T> visitor);
+  public abstract <T> T accept(Visitor<T> visitor);
 
-    public interface Visitor<T> {
-        T boundedContext(BoundedContext boundedContext);
+  public interface Visitor<T> {
+    T boundedContext(BoundedContext boundedContext);
 
-        T sharedKernel(SharedKernel sharedKernel);
-    }
+    T sharedKernel(SharedKernel sharedKernel);
+  }
 }

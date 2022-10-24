@@ -4,24 +4,23 @@ import java.lang.annotation.Annotation;
 
 public interface DDDPattern {
 
-    String name();
+  String name();
 
-    Class<? extends Annotation> relatedAnnotation();
+  Class<? extends Annotation> relatedAnnotation();
 
-    <T> T accept(Visitor<T> visitor);
+  <T> T accept(Visitor<T> visitor);
 
-    interface Visitor<T> {
-        T boundedContext();
+  interface Visitor<T> {
+    T boundedContext();
 
-        T sharedKernel();
+    T sharedKernel();
 
-        T aggregate();
+    T aggregate();
 
-        T domainCommand();
+    T domainCommand();
 
-        T domainEvent();
+    T domainEvent();
 
-        T valueObject();
-    }
-
+    T valueObject();
+  }
 }

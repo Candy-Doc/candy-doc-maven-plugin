@@ -268,6 +268,7 @@ Explanations:
 > ```
 
 ## References
+
 - DDD (Martin Fowler):
   <https://martinfowler.com/tags/domain%20driven%20design.html>
 - DDD, en vrai pour le développeur (Cyrille Martraire):

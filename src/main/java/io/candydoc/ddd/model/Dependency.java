@@ -12,6 +12,6 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode
 @ToString
 public class Dependency {
-    private final DDDPattern pattern;
-    private final CanonicalName name;
+  private final DDDPattern pattern;
+  private final CanonicalName name;
 }

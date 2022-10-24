@@ -1,4 +1,3 @@
----
 type: BOUNDED_CONTEXT
 name: Bounded context one
 description: Describe the bounded context here
@@ -8,22 +7,22 @@ domainModels:
     simpleName: AggregateOne
     description: ''
     dependencies:
-      - canonicalName: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne
-        allowed: true
-      - canonicalName: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne
-        allowed: true
+    - canonicalName: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne
+      allowed: true
+    - canonicalName: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne
+      allowed: true
   io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne:
     type: DOMAIN_COMMAND
     simpleName: DomainCommandOne
     description: ''
-    dependencies: [ ]
+    dependencies: []
   io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne:
     type: DOMAIN_EVENT
     simpleName: DomainEventOne
     description: ''
-    dependencies: [ ]
+    dependencies: []
   io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne:
     type: VALUE_OBJECT
     simpleName: ValueObjectOne
     description: ''
-    dependencies: [ ]
+    dependencies: []

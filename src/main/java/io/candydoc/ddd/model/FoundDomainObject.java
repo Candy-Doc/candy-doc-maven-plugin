@@ -1,9 +1,8 @@
 package io.candydoc.ddd.model;
 
+import java.util.Set;
 import lombok.*;
 import lombok.experimental.Accessors;
-
-import java.util.Set;
 
 @Builder
 @Getter
@@ -11,18 +10,16 @@ import java.util.Set;
 @EqualsAndHashCode
 @ToString
 public final class FoundDomainObject {
-    @Singular
-    private final Set<FoundDDDPattern> matchingPatterns;
-    private final PackageName packageName;
-    private final CanonicalName canonicalName;
-    @Singular
-    private final Set<CanonicalName> dependencies;
+  @Singular private final Set<FoundDDDPattern> matchingPatterns;
+  private final PackageName packageName;
+  private final CanonicalName canonicalName;
+  @Singular private final Set<CanonicalName> dependencies;
 
-    public FoundDDDPattern matchingPattern() {
-        return matchingPatterns.iterator().next();
-    }
+  public FoundDDDPattern matchingPattern() {
+    return matchingPatterns.iterator().next();
+  }
 
-    public boolean matchMoreThanOneDDDPattern() {
-        return matchingPatterns.size() > 1;
-    }
+  public boolean matchMoreThanOneDDDPattern() {
+    return matchingPatterns.size() > 1;
+  }
 }

@@ -1,9 +1,8 @@
 package io.candydoc.ddd.extract_domain_vocabulary;
 
+import java.util.SortedSet;
 import lombok.*;
 import lombok.experimental.Accessors;
-
-import java.util.SortedSet;
 
 @Builder
 @Getter
@@ -11,6 +10,6 @@ import java.util.SortedSet;
 @EqualsAndHashCode
 @ToString
 public class ExtractDomainModels {
-    @Singular("packageToScan")
-    private final SortedSet<String> packagesToScan;
+  @Singular("packageToScan")
+  private final SortedSet<String> packagesToScan;
 }

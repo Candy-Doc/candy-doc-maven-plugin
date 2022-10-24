@@ -1,4 +1,3 @@
----
 type: ORPHAN_VOCABULARY
 name: Orphan vocabulary
 description: These models are not under a bounded context nor a shared kernel
@@ -7,18 +6,18 @@ domainModels:
     type: DOMAIN_COMMAND
     simpleName: OrphanDomainCommandOne
     description: An orphan domain command
-    dependencies: [ ]
+    dependencies: []
   io.candydoc.ddd.sample.orphan.OrphanDomainEventOne:
     type: DOMAIN_EVENT
     simpleName: OrphanDomainEventOne
     description: An orphan domain event
     dependencies:
-      - canonicalName: io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne
-        allowed: false
+    - canonicalName: io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne
+      allowed: false
   io.candydoc.ddd.sample.orphan.OrphanValueObjectOne:
     type: VALUE_OBJECT
     simpleName: OrphanValueObjectOne
     description: An orphan value object
     dependencies:
-      - canonicalName: io.candydoc.ddd.sample.orphan.OrphanDomainEventOne
-        allowed: false
+    - canonicalName: io.candydoc.ddd.sample.orphan.OrphanDomainEventOne
+      allowed: false

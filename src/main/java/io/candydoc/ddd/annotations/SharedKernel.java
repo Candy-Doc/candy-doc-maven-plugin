@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 @Target({ElementType.PACKAGE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SharedKernel {
-    String name() default "";
+  String name() default "";
 
-    String description() default "";
+  String description() default "";
 }

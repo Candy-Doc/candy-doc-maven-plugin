@@ -12,11 +12,11 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode
 @ToString
 public class FoundDDDPattern {
-    private DDDPattern dddPattern;
-    private SimpleName name;
-    private Description description;
+  private DDDPattern dddPattern;
+  private SimpleName name;
+  private Description description;
 
-    public <T> T accept(DDDPattern.Visitor<T> visitor) {
-        return dddPattern.accept(visitor);
-    }
+  public <T> T accept(DDDPattern.Visitor<T> visitor) {
+    return dddPattern.accept(visitor);
+  }
 }

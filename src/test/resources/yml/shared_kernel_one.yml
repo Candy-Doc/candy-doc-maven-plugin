@@ -1,4 +1,3 @@
----
 type: SHARED_KERNEL
 name: Shared kernel one
 description: One valid shared kernel
@@ -8,10 +7,10 @@ domainModels:
     simpleName: SharedValueObjectOne
     description: Some description
     dependencies:
-      - canonicalName: io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo
-        allowed: true
+    - canonicalName: io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo
+      allowed: true
   io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo:
     type: VALUE_OBJECT
     simpleName: SharedValueObjectTwo
     description: ''
-    dependencies: [ ]
+    dependencies: []

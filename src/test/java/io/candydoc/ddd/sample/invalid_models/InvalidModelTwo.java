@@ -5,5 +5,4 @@ import io.candydoc.ddd.annotations.ValueObject;
 
 @ValueObject
 @DomainEvent
-public class InvalidModelTwo {
-}
+public class InvalidModelTwo {}

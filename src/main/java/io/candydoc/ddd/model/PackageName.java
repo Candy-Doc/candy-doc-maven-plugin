@@ -9,17 +9,17 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public class PackageName {
-    private final String value;
+  private final String value;
 
-    public String value() {
-        return value;
-    }
+  public String value() {
+    return value;
+  }
 
-    public static PackageName of(String value) {
-        return new PackageName(value);
-    }
+  public static PackageName of(String value) {
+    return new PackageName(value);
+  }
 
-    public boolean startsWith(PackageName packageToScan) {
-        return this.value.startsWith(packageToScan.value());
-    }
+  public boolean startsWith(PackageName packageToScan) {
+    return this.value.startsWith(packageToScan.value());
+  }
 }

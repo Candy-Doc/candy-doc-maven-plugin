@@ -5,5 +5,4 @@ import io.candydoc.ddd.annotations.DomainCommand;
 
 @Aggregate
 @DomainCommand
-public class InvalidModelOne {
-}
+public class InvalidModelOne {}
