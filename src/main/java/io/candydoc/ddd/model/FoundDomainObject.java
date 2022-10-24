@@ -12,17 +12,17 @@ import java.util.Set;
 @ToString
 public final class FoundDomainObject {
     @Singular
-    private Set<FoundDDDPattern> matchingPatterns;
-    private PackageName packageName;
-    private CanonicalName canonicalName;
+    private final Set<FoundDDDPattern> matchingPatterns;
+    private final PackageName packageName;
+    private final CanonicalName canonicalName;
     @Singular
-    private Set<CanonicalName> dependencies;
+    private final Set<CanonicalName> dependencies;
+    private final boolean coreConcept;
 
     public FoundDDDPattern matchingPattern() {
         return matchingPatterns.iterator().next();
     }
 
-    // fixme: test when it is annotated with more than one pattern
     public boolean matchMoreThanOneDDDPattern() {
         return matchingPatterns.size() > 1;
     }

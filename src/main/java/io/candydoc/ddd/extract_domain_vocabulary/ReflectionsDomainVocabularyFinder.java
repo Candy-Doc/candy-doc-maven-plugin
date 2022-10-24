@@ -1,6 +1,7 @@
 package io.candydoc.ddd.extract_domain_vocabulary;
 
 import io.candydoc.ddd.annotations.BoundedContext;
+import io.candydoc.ddd.annotations.CoreConcept;
 import io.candydoc.ddd.annotations.SharedKernel;
 import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.strategic_pattern.StrategicPattern;
@@ -61,6 +62,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
                         .packageName(PackageName.of(scannedClass.getPackageName()))
                         .canonicalName(CanonicalName.of(scannedClass.getCanonicalName()))
                         .dependencies(dependenciesOf(scannedClass, scannedClasses))
+                        .coreConcept(isCoreConcept(scannedClass))
                         .build());
             }
         });
@@ -163,6 +165,10 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
         return dependencies.stream()
                 .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
                 .collect(Collectors.toUnmodifiableSet());
+    }
+
+    private boolean isCoreConcept(Class<?> scannedClass) {
+        return scannedClass.isAnnotationPresent(CoreConcept.class);
     }
 
 }
