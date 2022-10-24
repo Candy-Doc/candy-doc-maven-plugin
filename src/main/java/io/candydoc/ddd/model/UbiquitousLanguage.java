@@ -2,6 +2,7 @@ package io.candydoc.ddd.model;
 
 import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
+import io.candydoc.ddd.strategic_pattern.StrategicModel;
 import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -23,44 +24,23 @@ public interface UbiquitousLanguage {
         foundDomainObjects.checkConsistency();
 
         Set<DomainModel> domainModels = foundDomainObjects.toDomainModels();
-
-        Map<DDDPattern, Set<DomainModel>> domainModelsPerPattern = domainModels.stream()
-            .collect(Collectors.groupingBy(DomainModel::dddPattern, Collectors.toUnmodifiableSet()));
-
         Set<DomainModel> modelsToProcess = new HashSet<>(domainModels);
         Set<UbiquitousLanguage> ubiquitousLanguages = new HashSet<>();
 
-        domainModelsPerPattern.getOrDefault(StrategicPattern.BOUNDED_CONTEXT, Set.of()).stream()
-            .map(boundedContext -> {
-                Set<DomainModel> boundedDomainModels = domainModels.stream()
-                    .filter(domainModel -> !boundedContext.equals(domainModel) && domainModel.packageName().startsWith(boundedContext.packageName()))
+        domainModels.stream()
+            .filter(StrategicModel.class::isInstance)
+            .map(StrategicModel.class::cast)
+            .forEach(strategicModel -> {
+                Set<DomainModel> boundedModels = domainModels.stream()
+                    .filter(domainModel -> strategicModel.dependsOn(domainModel.canonicalName()))
                     .collect(Collectors.toUnmodifiableSet());
 
-                modelsToProcess.remove(boundedContext);
-                modelsToProcess.removeAll(boundedDomainModels);
+                modelsToProcess.remove(strategicModel);
+                modelsToProcess.removeAll(boundedModels);
 
-                return UbiquitousLanguage.BoundedVocabulary.builder()
-                    .boundedContext((BoundedContext) boundedContext)
-                    .domainModels(boundedDomainModels)
-                    .build();
-            })
-            .forEach(ubiquitousLanguages::add);
-
-        domainModelsPerPattern.getOrDefault(StrategicPattern.SHARED_KERNEL, Set.of()).stream()
-            .map(sharedKernel -> {
-                Set<DomainModel> sharedDomainModels = domainModels.stream()
-                    .filter(domainModel -> !sharedKernel.equals(domainModel) && domainModel.packageName().startsWith(sharedKernel.packageName()))
-                    .collect(Collectors.toUnmodifiableSet());
-
-                modelsToProcess.remove(sharedKernel);
-                modelsToProcess.removeAll(sharedDomainModels);
-
-                return SharedVocabulary.builder()
-                    .sharedKernel((SharedKernel) sharedKernel)
-                    .domainModels(sharedDomainModels)
-                    .build();
-            })
-            .forEach(ubiquitousLanguages::add);
+                UbiquitousLanguage ubiquitousLanguage = toUbiquitousLanguage(strategicModel, boundedModels);
+                ubiquitousLanguages.add(ubiquitousLanguage);
+            });
 
         if (!modelsToProcess.isEmpty()) {
             ubiquitousLanguages.add(OrphanBoundedVocabulary.builder()
@@ -71,11 +51,33 @@ public interface UbiquitousLanguage {
         return Set.copyOf(ubiquitousLanguages);
     }
 
+    static UbiquitousLanguage toUbiquitousLanguage(StrategicModel strategicModel, Set<DomainModel> boundedModels) {
+        return strategicModel.accept(new StrategicModel.Visitor<>() {
+            @Override
+            public UbiquitousLanguage boundedContext(BoundedContext boundedContext) {
+                return UbiquitousLanguage.BoundedVocabulary.builder()
+                    .boundedContext((BoundedContext) strategicModel)
+                    .domainModels(boundedModels)
+                    .build();
+            }
+
+            @Override
+            public UbiquitousLanguage sharedKernel(SharedKernel sharedKernel) {
+                return SharedVocabulary.builder()
+                    .sharedKernel((SharedKernel) strategicModel)
+                    .domainModels(boundedModels)
+                    .build();
+            }
+        });
+    }
+
     <T> T accept(Visitor<T> visitor);
 
     interface Visitor<T> {
         T handle(BoundedVocabulary vocabulary);
+
         T handle(SharedVocabulary vocabulary);
+
         T handle(OrphanBoundedVocabulary vocabulary);
     }
 

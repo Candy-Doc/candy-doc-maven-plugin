@@ -24,4 +24,8 @@ public class BoundedContext extends StrategicModel {
         return ALLOWED_DEPENDENCIES;
     }
 
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
+        return visitor.boundedContext(this);
+    }
 }

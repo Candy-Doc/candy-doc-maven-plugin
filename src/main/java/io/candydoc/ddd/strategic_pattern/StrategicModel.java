@@ -9,4 +9,11 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public abstract class StrategicModel extends DomainModel {
+
+    public abstract <T> T accept(Visitor<T> visitor);
+
+    public interface Visitor<T> {
+        T boundedContext(BoundedContext boundedContext);
+        T sharedKernel(SharedKernel sharedKernel);
+    }
 }

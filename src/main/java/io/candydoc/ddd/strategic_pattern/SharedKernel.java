@@ -23,4 +23,9 @@ public class SharedKernel extends StrategicModel {
     public Set<DDDPattern> allowedDependencyPatterns() {
         return ALLOWED_DEPENDENCIES;
     }
+
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
+        return visitor.sharedKernel(this);
+    }
 }
