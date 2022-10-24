@@ -53,15 +53,19 @@ public class SharedKernelRulesTest {
     }
 
     @Test
-    void it_depends_on_itsef_only() {
+    void it_can_contain_value_objects() {
         assertThat(sharedKernel.allowedDependencies())
-            .isEmpty();
+            .containsExactlyInAnyOrder(
+                Dependency.builder()
+                .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
+                .pattern(TacticalPattern.VALUE_OBJECT)
+                .build());
+    }
 
+    @Test
+    void it_can_not_contains_other_tactical_patterns_than_value_object() {
         assertThat(sharedKernel.forbiddenDependencies())
-            .containsExactlyInAnyOrder(Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
-                    .pattern(TacticalPattern.VALUE_OBJECT)
-                    .build(),
+            .contains(
                 Dependency.builder()
                     .name(CanonicalName.of("io.candydoc.sample.DomainCommandOne"))
                     .pattern(TacticalPattern.DOMAIN_COMMAND)
@@ -73,7 +77,13 @@ public class SharedKernelRulesTest {
                 Dependency.builder()
                     .name(CanonicalName.of("io.candydoc.sample.AggregateOne"))
                     .pattern(TacticalPattern.AGGREGATE)
-                    .build(),
+                    .build());
+    }
+
+    @Test
+    void it_can_not_have_nested_bounded_contexts_nor_shared_kernels() {
+        assertThat(sharedKernel.forbiddenDependencies())
+            .contains(
                 Dependency.builder()
                     .name(CanonicalName.of("io.candydoc.sample.BoundedContextOne"))
                     .pattern(StrategicPattern.BOUNDED_CONTEXT)
@@ -83,5 +93,4 @@ public class SharedKernelRulesTest {
                     .pattern(StrategicPattern.SHARED_KERNEL)
                     .build());
     }
-
 }

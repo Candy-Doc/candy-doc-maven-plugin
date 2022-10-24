@@ -53,12 +53,10 @@ public class BoundedContextRulesTest {
     }
 
     @Test
-    void it_depends_on_itsef_only() {
+    void it_depends_on_tactical_patterns_inside_the_same_package() {
         assertThat(boundedContext.allowedDependencies())
-            .isEmpty();
-
-        assertThat(boundedContext.forbiddenDependencies())
-            .containsExactlyInAnyOrder(Dependency.builder()
+            .containsExactlyInAnyOrder(
+                Dependency.builder()
                     .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
                     .pattern(TacticalPattern.VALUE_OBJECT)
                     .build(),
@@ -73,7 +71,13 @@ public class BoundedContextRulesTest {
                 Dependency.builder()
                     .name(CanonicalName.of("io.candydoc.sample.AggregateOne"))
                     .pattern(TacticalPattern.AGGREGATE)
-                    .build(),
+                    .build());
+    }
+
+    @Test
+    void it_can_not_have_nested_bounded_contexts_nor_shared_kernels() {
+        assertThat(boundedContext.forbiddenDependencies())
+            .containsExactlyInAnyOrder(
                 Dependency.builder()
                     .name(CanonicalName.of("io.candydoc.sample.BoundedContextTwo"))
                     .pattern(StrategicPattern.BOUNDED_CONTEXT)
@@ -83,5 +87,4 @@ public class BoundedContextRulesTest {
                     .pattern(StrategicPattern.SHARED_KERNEL)
                     .build());
     }
-
 }
