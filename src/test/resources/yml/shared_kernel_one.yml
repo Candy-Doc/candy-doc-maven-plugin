@@ -7,7 +7,7 @@ domainModels:
     simpleName: SharedValueObjectOne
     description: Some description
     dependencies:
-    - canonicalName: io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo
+    - refersTo: io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo
       allowed: true
   io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo:
     type: VALUE_OBJECT

@@ -22,22 +22,16 @@ public final class DomainModelDto {
     domainModel.allowedDependencies().stream()
         .map(
             dependency ->
-                DependencyDto.builder()
-                    .canonicalName(dependency.name().value())
-                    .allowed(true)
-                    .build())
+                DependencyDto.builder().refersTo(dependency.name().value()).allowed(true).build())
         .forEach(dependencies::add);
 
     domainModel.forbiddenDependencies().stream()
         .map(
             dependency ->
-                DependencyDto.builder()
-                    .canonicalName(dependency.name().value())
-                    .allowed(false)
-                    .build())
+                DependencyDto.builder().refersTo(dependency.name().value()).allowed(false).build())
         .forEach(dependencies::add);
 
-    dependencies.sort(Comparator.comparing(DependencyDto::getCanonicalName));
+    dependencies.sort(Comparator.comparing(DependencyDto::getRefersTo));
 
     return DomainModelDto.builder()
         .type(domainModel.dddPattern().name())

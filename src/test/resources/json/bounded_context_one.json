@@ -9,11 +9,11 @@
       "description": "",
       "dependencies": [
         {
-          "canonicalName": "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne",
+          "refersTo": "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne",
           "allowed": true
         },
         {
-          "canonicalName": "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne",
+          "refersTo": "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne",
           "allowed": true
         }
       ]

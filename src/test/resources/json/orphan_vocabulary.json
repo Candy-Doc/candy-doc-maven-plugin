@@ -15,7 +15,7 @@
       "description": "An orphan domain event",
       "dependencies": [
         {
-          "canonicalName": "io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne",
+          "refersTo": "io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne",
           "allowed": false
         }
       ]
@@ -26,7 +26,7 @@
       "description": "An orphan value object",
       "dependencies": [
         {
-          "canonicalName": "io.candydoc.ddd.sample.orphan.OrphanDomainEventOne",
+          "refersTo": "io.candydoc.ddd.sample.orphan.OrphanDomainEventOne",
           "allowed": false
         }
       ]

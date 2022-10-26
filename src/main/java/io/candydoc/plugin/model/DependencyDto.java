@@ -8,6 +8,6 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 @Getter
 public final class DependencyDto {
-  private final String canonicalName;
+  private final String refersTo;
   private boolean allowed;
 }

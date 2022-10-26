@@ -12,12 +12,12 @@ domainModels:
     simpleName: OrphanDomainEventOne
     description: An orphan domain event
     dependencies:
-    - canonicalName: io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne
+    - refersTo: io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne
       allowed: false
   io.candydoc.ddd.sample.orphan.OrphanValueObjectOne:
     type: VALUE_OBJECT
     simpleName: OrphanValueObjectOne
     description: An orphan value object
     dependencies:
-    - canonicalName: io.candydoc.ddd.sample.orphan.OrphanDomainEventOne
+    - refersTo: io.candydoc.ddd.sample.orphan.OrphanDomainEventOne
       allowed: false
