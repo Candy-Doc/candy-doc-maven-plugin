@@ -45,8 +45,6 @@ Domain-Driven-Design approach.
     - [Domain Event](#domain-event)
     - [Value Object](#value-object)
 - [ROADMAP 🗺️](#roadmap-)
-- [&#91;FOR DEV&#93; Development workflow](#for-dev-development-workflow)
-  - [Release policy](#release-policy)
 - [References](#references)
 - [Join us 🙋](#join-us-)
 - [Contributors ✨](#contributors-)
