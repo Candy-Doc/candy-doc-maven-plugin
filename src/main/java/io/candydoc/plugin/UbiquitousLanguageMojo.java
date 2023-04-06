@@ -19,7 +19,7 @@ import org.apache.maven.project.MavenProject;
     requiresDependencyCollection = ResolutionScope.RUNTIME_PLUS_SYSTEM,
     instantiationStrategy = InstantiationStrategy.SINGLETON,
     threadSafe = true)
-public class CandyDocMojo extends AbstractMojo {
+public class UbiquitousLanguageMojo extends AbstractMojo {
 
   @Parameter(property = "packagesToScan")
   List<String> packagesToScan;

@@ -37,6 +37,10 @@ public abstract class DomainModel {
         .collect(Collectors.toUnmodifiableSet());
   }
 
+  public boolean hasForbiddenDependencies() {
+    return !forbiddenDependencies().isEmpty();
+  }
+
   public abstract DDDPattern dddPattern();
 
   public abstract Set<DDDPattern> allowedDependencyPatterns();

@@ -35,7 +35,7 @@ public final class FoundDomainObjects {
     return domainObjects.isEmpty();
   }
 
-  public void checkConsistency() {
+  public void checkCorrectUseOfDDDPatterns() {
     Set<FoundDomainObject> invalidDomainModels =
         domainObjects.values().stream()
             .filter(FoundDomainObject::matchMoreThanOneDDDPattern)

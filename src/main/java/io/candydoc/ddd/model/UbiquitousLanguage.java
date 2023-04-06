@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,19 +19,23 @@ public interface UbiquitousLanguage {
 
   Collection<DomainModel> domainModels();
 
+  private static Stream<StrategicModel> strategic(Set<DomainModel> domainModels) {
+    return domainModels.stream()
+        .filter(StrategicModel.class::isInstance)
+        .map(StrategicModel.class::cast);
+  }
+
   static Set<UbiquitousLanguage> fromDomainObjects(FoundDomainObjects foundDomainObjects) {
-    foundDomainObjects.checkConsistency();
+    foundDomainObjects.checkCorrectUseOfDDDPatterns();
 
     Set<DomainModel> domainModels = foundDomainObjects.toDomainModels();
     Set<DomainModel> modelsToProcess = new HashSet<>(domainModels);
     Set<UbiquitousLanguage> ubiquitousLanguages = new HashSet<>();
 
-    domainModels.stream()
-        .filter(StrategicModel.class::isInstance)
-        .map(StrategicModel.class::cast)
+    strategic(domainModels)
         .forEach(
             strategicModel -> {
-              if (!strategicModel.forbiddenDependencies().isEmpty()) {
+              if (strategicModel.hasForbiddenDependencies()) {
                 throw new NestedStrategicPatternsForbidden(strategicModel);
               }
 
