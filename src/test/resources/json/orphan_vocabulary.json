@@ -1,0 +1,35 @@
+{
+  "type": "ORPHAN_VOCABULARY",
+  "name": "Orphan vocabulary",
+  "description": "These models are not under a bounded context nor a shared kernel",
+  "domainModels": {
+    "io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne": {
+      "type": "DOMAIN_COMMAND",
+      "simpleName": "OrphanDomainCommandOne",
+      "description": "An orphan domain command",
+      "dependencies": []
+    },
+    "io.candydoc.ddd.sample.orphan.OrphanDomainEventOne": {
+      "type": "DOMAIN_EVENT",
+      "simpleName": "OrphanDomainEventOne",
+      "description": "An orphan domain event",
+      "dependencies": [
+        {
+          "refersTo": "io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne",
+          "allowed": false
+        }
+      ]
+    },
+    "io.candydoc.ddd.sample.orphan.OrphanValueObjectOne": {
+      "type": "VALUE_OBJECT",
+      "simpleName": "OrphanValueObjectOne",
+      "description": "An orphan value object",
+      "dependencies": [
+        {
+          "refersTo": "io.candydoc.ddd.sample.orphan.OrphanDomainEventOne",
+          "allowed": false
+        }
+      ]
+    }
+  }
+}
