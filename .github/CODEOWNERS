@@ -14,10 +14,10 @@
 
 
 # Continuous integration:
-.github/*    @mderoullers
-.pre-commit-config.yaml    @mderoullers
-ci_settings.xml    @mderoullers
+# .github/*    @next_devops_dude
+# .pre-commit-config.yaml    @next_devops_dude
+# ci_settings.xml    @next_devops_dude
 
 
 # Plugin
-src/    @ecattez @mderoullers @NaelFR
+src/    @ecattez
