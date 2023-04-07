@@ -1,3 +1,9 @@
+# [v2.0.0](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v1.0.6...v2.0.0) (2023-04-07)
+  You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/2.0.0/maven-plugin
+
+## 💥 Breaking Changes
+- [`aa5d38a`](https://github.com/Candy-Doc/candy-doc-maven-plugin/commit/aa5d38a)  refactor(domain): Rewrite the core code of Candy-Doc (#180) (Issues: [`#180`](https://github.com/Candy-Doc/candy-doc-maven-plugin/issues/180) [`#173`](https://github.com/Candy-Doc/candy-doc-maven-plugin/issues/173))
+
 # [v1.0.6](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v1.0.5...v1.0.6) (2022-08-20)
   You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/1.0.6/maven-plugin
 
