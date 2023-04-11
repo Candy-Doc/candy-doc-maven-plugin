@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode
 @ToString
 public abstract class DomainModel {
-  private final CanonicalName canonicalName;
+  private final FullName fullName;
   private final SimpleName simpleName;
   private final PackageName packageName;
   private final Description description;
@@ -21,8 +21,8 @@ public abstract class DomainModel {
   @Getter(AccessLevel.PRIVATE)
   private final Set<Dependency> dependencies;
 
-  public boolean dependsOn(CanonicalName canonicalName) {
-    return dependencies.stream().anyMatch(dependency -> dependency.name().equals(canonicalName));
+  public boolean dependsOn(FullName fullName) {
+    return dependencies.stream().anyMatch(dependency -> dependency.name().equals(fullName));
   }
 
   public Set<Dependency> allowedDependencies() {

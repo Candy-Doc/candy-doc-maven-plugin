@@ -21,12 +21,12 @@ public final class UbiquitousLanguageDto {
   private final Map<String, DomainModelDto> domainModels;
 
   public static UbiquitousLanguageDto from(UbiquitousLanguage ubiquitousLanguage) {
-    Map<String, DomainModelDto> domainModelPerCanonicalName =
+    Map<String, DomainModelDto> domainModelPerFullName =
         ubiquitousLanguage.domainModels().stream()
             .map(
                 domainModel ->
                     Map.entry(
-                        domainModel.canonicalName().value(), DomainModelDto.from(domainModel)))
+                        domainModel.fullName().value(), DomainModelDto.from(domainModel)))
             .sorted(Map.Entry.comparingByKey())
             .collect(
                 Collectors.toMap(
@@ -42,7 +42,7 @@ public final class UbiquitousLanguageDto {
                 .type("BOUNDED_CONTEXT")
                 .name(boundedContext.simpleName().value())
                 .description(boundedContext.description().value())
-                .domainModels(domainModelPerCanonicalName)
+                .domainModels(domainModelPerFullName)
                 .build();
           }
 
@@ -54,7 +54,7 @@ public final class UbiquitousLanguageDto {
                 .type("SHARED_KERNEL")
                 .name(sharedKernel.simpleName().value())
                 .description(sharedKernel.description().value())
-                .domainModels(domainModelPerCanonicalName)
+                .domainModels(domainModelPerFullName)
                 .build();
           }
 
@@ -65,7 +65,7 @@ public final class UbiquitousLanguageDto {
                 .type("ORPHAN_VOCABULARY")
                 .name("Orphan vocabulary")
                 .description("These models are not under a bounded context nor a shared kernel")
-                .domainModels(domainModelPerCanonicalName)
+                .domainModels(domainModelPerFullName)
                 .build();
           }
         });

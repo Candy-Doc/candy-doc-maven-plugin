@@ -12,8 +12,8 @@ import lombok.experimental.Accessors;
 public final class FoundDomainObject {
   @Singular private final Set<FoundDDDPattern> matchingPatterns;
   private final PackageName packageName;
-  private final CanonicalName canonicalName;
-  @Singular private final Set<CanonicalName> dependencies;
+  private final FullName fullName;
+  @Singular private final Set<FullName> dependencies;
 
   public FoundDDDPattern matchingPattern() {
     return matchingPatterns.iterator().next();

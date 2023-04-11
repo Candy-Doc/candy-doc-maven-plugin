@@ -61,7 +61,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
                 FoundDomainObject.builder()
                     .matchingPatterns(toFoundDDDPatterns(matchingAnnotations, scannedClass))
                     .packageName(PackageName.of(scannedClass.getPackageName()))
-                    .canonicalName(CanonicalName.of(scannedClass.getCanonicalName()))
+                    .fullName(FullName.of(scannedClass.getName()))
                     .dependencies(dependenciesOf(scannedClass, scannedClasses))
                     .build());
           }
@@ -147,7 +147,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
         .build();
   }
 
-  private static Set<CanonicalName> dependenciesOf(
+  private static Set<FullName> dependenciesOf(
       Class<?> domainModel, Set<Class<?>> scannedClasses) {
     if (domainModel.isAnnotationPresent(BoundedContext.class)
         || domainModel.isAnnotationPresent(SharedKernel.class)) {
@@ -155,13 +155,13 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
       return scannedClasses.stream()
           .filter(
               clazz -> !clazz.equals(domainModel) && clazz.getPackageName().startsWith(packageName))
-          .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
+          .map(dependency -> FullName.of(dependency.getName()))
           .collect(Collectors.toUnmodifiableSet());
     }
     return dependenciesOfTacticalPattern(domainModel);
   }
 
-  private static Set<CanonicalName> dependenciesOfTacticalPattern(Class<?> domainModel) {
+  private static Set<FullName> dependenciesOfTacticalPattern(Class<?> domainModel) {
     Set<Class<?>> dependencies = new HashSet<>();
 
     Arrays.stream(domainModel.getDeclaredFields()).map(Field::getType).forEach(dependencies::add);
@@ -174,7 +174,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
             });
 
     return dependencies.stream()
-        .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
+        .map(dependency -> FullName.of(dependency.getName()))
         .collect(Collectors.toUnmodifiableSet());
   }
 }

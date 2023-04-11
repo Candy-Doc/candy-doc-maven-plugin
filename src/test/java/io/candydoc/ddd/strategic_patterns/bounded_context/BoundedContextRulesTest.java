@@ -17,37 +17,37 @@ public class BoundedContextRulesTest {
   static void setUp() {
     boundedContext =
         BoundedContext.builder()
-            .canonicalName(CanonicalName.of("io.candydoc.sample.BoundedContextOne"))
+            .fullName(FullName.of("io.candydoc.sample.BoundedContextOne"))
             .simpleName(SimpleName.of("BoundedContextOne"))
             .packageName(PackageName.of("io.candydoc.sample"))
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
+                    .name(FullName.of("io.candydoc.sample.ValueObjectOne"))
                     .pattern(TacticalPattern.VALUE_OBJECT)
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.DomainCommandOne"))
+                    .name(FullName.of("io.candydoc.sample.DomainCommandOne"))
                     .pattern(TacticalPattern.DOMAIN_COMMAND)
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.DomainEventOne"))
+                    .name(FullName.of("io.candydoc.sample.DomainEventOne"))
                     .pattern(TacticalPattern.DOMAIN_EVENT)
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.AggregateOne"))
+                    .name(FullName.of("io.candydoc.sample.AggregateOne"))
                     .pattern(TacticalPattern.AGGREGATE)
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.BoundedContextTwo"))
+                    .name(FullName.of("io.candydoc.sample.BoundedContextTwo"))
                     .pattern(StrategicPattern.BOUNDED_CONTEXT)
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.SharedKernelOne"))
+                    .name(FullName.of("io.candydoc.sample.SharedKernelOne"))
                     .pattern(StrategicPattern.SHARED_KERNEL)
                     .build())
             .build();
@@ -63,19 +63,19 @@ public class BoundedContextRulesTest {
     assertThat(boundedContext.allowedDependencies())
         .containsExactlyInAnyOrder(
             Dependency.builder()
-                .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
+                .name(FullName.of("io.candydoc.sample.ValueObjectOne"))
                 .pattern(TacticalPattern.VALUE_OBJECT)
                 .build(),
             Dependency.builder()
-                .name(CanonicalName.of("io.candydoc.sample.DomainCommandOne"))
+                .name(FullName.of("io.candydoc.sample.DomainCommandOne"))
                 .pattern(TacticalPattern.DOMAIN_COMMAND)
                 .build(),
             Dependency.builder()
-                .name(CanonicalName.of("io.candydoc.sample.DomainEventOne"))
+                .name(FullName.of("io.candydoc.sample.DomainEventOne"))
                 .pattern(TacticalPattern.DOMAIN_EVENT)
                 .build(),
             Dependency.builder()
-                .name(CanonicalName.of("io.candydoc.sample.AggregateOne"))
+                .name(FullName.of("io.candydoc.sample.AggregateOne"))
                 .pattern(TacticalPattern.AGGREGATE)
                 .build());
   }
@@ -85,11 +85,11 @@ public class BoundedContextRulesTest {
     assertThat(boundedContext.forbiddenDependencies())
         .containsExactlyInAnyOrder(
             Dependency.builder()
-                .name(CanonicalName.of("io.candydoc.sample.BoundedContextTwo"))
+                .name(FullName.of("io.candydoc.sample.BoundedContextTwo"))
                 .pattern(StrategicPattern.BOUNDED_CONTEXT)
                 .build(),
             Dependency.builder()
-                .name(CanonicalName.of("io.candydoc.sample.SharedKernelOne"))
+                .name(FullName.of("io.candydoc.sample.SharedKernelOne"))
                 .pattern(StrategicPattern.SHARED_KERNEL)
                 .build());
   }

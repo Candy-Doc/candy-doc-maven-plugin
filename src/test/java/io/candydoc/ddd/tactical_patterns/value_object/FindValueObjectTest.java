@@ -29,17 +29,17 @@ public class FindValueObjectTest {
         .contains(
             ValueObject.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.value_object"))
-                .canonicalName(
-                    CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.value_object.FindValueObjectTest.ValueObjectOne"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.value_object.FindValueObjectTest$ValueObjectOne"))
                 .simpleName(SimpleName.of("ValueObjectOne"))
                 .description(Description.of("Describe the value object here"))
                 .dependency(
                     Dependency.builder()
                         .pattern(TacticalPattern.VALUE_OBJECT)
                         .name(
-                            CanonicalName.of(
-                                "io.candydoc.ddd.tactical_patterns.value_object.FindValueObjectTest.ValueObjectTwo"))
+                            FullName.of(
+                                "io.candydoc.ddd.tactical_patterns.value_object.FindValueObjectTest$ValueObjectTwo"))
                         .build())
                 .build());
   }
@@ -50,9 +50,9 @@ public class FindValueObjectTest {
         .contains(
             ValueObject.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.value_object"))
-                .canonicalName(
-                    CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.value_object.FindValueObjectTest.ValueObjectTwo"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.value_object.FindValueObjectTest$ValueObjectTwo"))
                 .simpleName(SimpleName.of("ValueObjectTwo"))
                 .description(Description.of(""))
                 .build());

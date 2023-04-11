@@ -5,7 +5,7 @@ import lombok.*;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode
 @ToString
-public class CanonicalName implements Comparable<CanonicalName> {
+public class FullName implements Comparable<FullName> {
   @NonNull private final String value;
 
   public String value() {
@@ -13,11 +13,11 @@ public class CanonicalName implements Comparable<CanonicalName> {
   }
 
   @Override
-  public int compareTo(CanonicalName other) {
+  public int compareTo(FullName other) {
     return value.compareTo(other.value);
   }
 
-  public static CanonicalName of(String value) {
-    return new CanonicalName(value);
+  public static FullName of(String value) {
+    return new FullName(value);
   }
 }

@@ -19,10 +19,10 @@ import lombok.ToString;
 @ToString
 public final class FoundDomainObjects {
 
-  private final Map<CanonicalName, FoundDomainObject> domainObjects = new HashMap<>();
+  private final Map<FullName, FoundDomainObject> domainObjects = new HashMap<>();
 
   public FoundDomainObjects add(FoundDomainObject domainObject) {
-    domainObjects.put(domainObject.canonicalName(), domainObject);
+    domainObjects.put(domainObject.fullName(), domainObject);
     return this;
   }
 
@@ -58,7 +58,7 @@ public final class FoundDomainObjects {
 
     return toDomainModelBuilder(foundDDDPattern)
         .packageName(foundDomainObject.packageName())
-        .canonicalName(foundDomainObject.canonicalName())
+        .fullName(foundDomainObject.fullName())
         .simpleName(foundDDDPattern.name())
         .description(foundDDDPattern.description())
         .dependencies(dependencies)

@@ -29,8 +29,8 @@ public class FindBoundedContextTest {
             BoundedContext.builder()
                 .packageName(
                     PackageName.of("io.candydoc.ddd.strategic_patterns.bounded_context.sampleA"))
-                .canonicalName(
-                    CanonicalName.of(
+                .fullName(
+                    FullName.of(
                         "io.candydoc.ddd.strategic_patterns.bounded_context.sampleA.package-info"))
                 .simpleName(SimpleName.of("Bounded context one"))
                 .description(Description.of("Describe the bounded context here"))
@@ -44,8 +44,8 @@ public class FindBoundedContextTest {
             BoundedContext.builder()
                 .packageName(
                     PackageName.of("io.candydoc.ddd.strategic_patterns.bounded_context.sampleB"))
-                .canonicalName(
-                    CanonicalName.of(
+                .fullName(
+                    FullName.of(
                         "io.candydoc.ddd.strategic_patterns.bounded_context.sampleB.package-info"))
                 .simpleName(SimpleName.of("sampleB"))
                 .description(Description.of(""))

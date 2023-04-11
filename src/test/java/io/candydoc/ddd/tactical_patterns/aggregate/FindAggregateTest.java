@@ -29,31 +29,31 @@ public class FindAggregateTest {
         .contains(
             Aggregate.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.aggregate"))
-                .canonicalName(
-                    CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.aggregate.FindAggregateTest.AggregateOne"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.aggregate.FindAggregateTest$AggregateOne"))
                 .simpleName(SimpleName.of("My aggregate"))
                 .description(Description.of("Describe the aggregate here"))
                 .dependency(
                     Dependency.builder()
                         .pattern(TacticalPattern.VALUE_OBJECT)
                         .name(
-                            CanonicalName.of(
-                                "io.candydoc.ddd.tactical_patterns.aggregate.FindAggregateTest.ValueObjectOne"))
+                            FullName.of(
+                                "io.candydoc.ddd.tactical_patterns.aggregate.FindAggregateTest$ValueObjectOne"))
                         .build())
                 .dependency(
                     Dependency.builder()
                         .pattern(TacticalPattern.DOMAIN_COMMAND)
                         .name(
-                            CanonicalName.of(
-                                "io.candydoc.ddd.tactical_patterns.aggregate.FindAggregateTest.DomainCommandOne"))
+                            FullName.of(
+                                "io.candydoc.ddd.tactical_patterns.aggregate.FindAggregateTest$DomainCommandOne"))
                         .build())
                 .dependency(
                     Dependency.builder()
                         .pattern(TacticalPattern.DOMAIN_EVENT)
                         .name(
-                            CanonicalName.of(
-                                "io.candydoc.ddd.tactical_patterns.aggregate.FindAggregateTest.DomainEventOne"))
+                            FullName.of(
+                                "io.candydoc.ddd.tactical_patterns.aggregate.FindAggregateTest$DomainEventOne"))
                         .build())
                 .build());
   }
@@ -64,9 +64,9 @@ public class FindAggregateTest {
         .contains(
             Aggregate.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.aggregate"))
-                .canonicalName(
-                    CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.aggregate.FindAggregateTest.AggregateTwo"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.aggregate.FindAggregateTest$AggregateTwo"))
                 .simpleName(SimpleName.of("AggregateTwo"))
                 .description(Description.of(""))
                 .build());

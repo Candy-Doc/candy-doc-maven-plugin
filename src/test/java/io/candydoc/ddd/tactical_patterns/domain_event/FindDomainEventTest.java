@@ -29,17 +29,17 @@ public class FindDomainEventTest {
         .contains(
             DomainEvent.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_event"))
-                .canonicalName(
-                    CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest.DomainEventOne"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest$DomainEventOne"))
                 .simpleName(SimpleName.of("DomainEventOne"))
                 .description(Description.of("Describe the domain event here"))
                 .dependency(
                     Dependency.builder()
                         .pattern(TacticalPattern.VALUE_OBJECT)
                         .name(
-                            CanonicalName.of(
-                                "io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest.ValueObjectOne"))
+                            FullName.of(
+                                "io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest$ValueObjectOne"))
                         .build())
                 .build());
   }
@@ -50,9 +50,9 @@ public class FindDomainEventTest {
         .contains(
             DomainEvent.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_event"))
-                .canonicalName(
-                    CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest.DomainEventTwo"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest$DomainEventTwo"))
                 .simpleName(SimpleName.of("DomainEventTwo"))
                 .description(Description.of(""))
                 .build());
