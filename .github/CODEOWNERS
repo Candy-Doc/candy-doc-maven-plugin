@@ -2,7 +2,7 @@
 # Each line is a file pattern followed by one or more owners.
 
 # These owners will be the default owners for everything in the repo.
-* @ecattez @mderoullers @NaelFR
+* @ecattez
 
 # Order is important. The last matching pattern has the most precedence.
 # So if a pull request only touches javascript files, only these owners
@@ -14,10 +14,10 @@
 
 
 # Continuous integration:
-.github/*    @mderoullers
-.pre-commit-config.yaml    @mderoullers
-ci_settings.xml    @mderoullers
+# .github/*    @next_devops_dude
+# .pre-commit-config.yaml    @next_devops_dude
+# ci_settings.xml    @next_devops_dude
 
 
 # Plugin
-src/    @ecattez @mderoullers @NaelFR
+src/    @ecattez
