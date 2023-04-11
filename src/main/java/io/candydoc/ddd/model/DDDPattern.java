@@ -22,5 +22,7 @@ public interface DDDPattern {
     T domainEvent();
 
     T valueObject();
+
+    T entity();
   }
 }

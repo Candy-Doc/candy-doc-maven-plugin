@@ -3,10 +3,8 @@ package io.candydoc.ddd.model;
 import io.candydoc.ddd.extract_domain_vocabulary.WrongUseOfDDDPatterns;
 import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
-import io.candydoc.ddd.tactical_pattern.Aggregate;
-import io.candydoc.ddd.tactical_pattern.DomainCommand;
-import io.candydoc.ddd.tactical_pattern.DomainEvent;
-import io.candydoc.ddd.tactical_pattern.ValueObject;
+import io.candydoc.ddd.tactical_pattern.*;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -109,6 +107,11 @@ public final class FoundDomainObjects {
           @Override
           public DomainModel.DomainModelBuilder<?, ?> valueObject() {
             return ValueObject.builder();
+          }
+
+          @Override
+          public DomainModel.DomainModelBuilder<?, ?> entity() {
+            return Entity.builder();
           }
         });
   }
