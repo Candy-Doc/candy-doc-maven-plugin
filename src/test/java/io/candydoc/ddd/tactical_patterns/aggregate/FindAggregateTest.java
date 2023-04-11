@@ -81,6 +81,8 @@ public class FindAggregateTest {
     public DomainEventOne handle(DomainCommandOne command) {
       return new DomainEventOne();
     }
+
+    public void execute(String firstElement, String secondElement) {}
   }
 
   @io.candydoc.ddd.annotations.DomainCommand

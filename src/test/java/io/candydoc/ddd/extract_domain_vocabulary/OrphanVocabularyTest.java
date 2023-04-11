@@ -1,7 +1,6 @@
 package io.candydoc.ddd.extract_domain_vocabulary;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import io.candydoc.ddd.model.*;
@@ -10,29 +9,22 @@ import io.candydoc.ddd.tactical_pattern.DomainCommand;
 import io.candydoc.ddd.tactical_pattern.DomainEvent;
 import io.candydoc.ddd.tactical_pattern.ValueObject;
 import java.util.Set;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class OrphanVocabularyTest {
 
-  DomainVocabularyFinder domainVocabularyFinder;
-  UbiquitousLanguageRepository ubiquitousLanguageRepository;
-  ExtractDomainModelsUseCase useCase;
-
+  @Spy DomainVocabularyFinder domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
+  @Mock UbiquitousLanguageRepository ubiquitousLanguageRepository;
+  @InjectMocks ExtractDomainModelsUseCase useCase;
   @Captor private ArgumentCaptor<Set<UbiquitousLanguage>> ubiquitousLanguagesCaptor;
-
-  @BeforeEach
-  public void setUp() {
-    this.domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
-    this.ubiquitousLanguageRepository = mock(UbiquitousLanguageRepository.class);
-    this.useCase =
-        new ExtractDomainModelsUseCase(domainVocabularyFinder, ubiquitousLanguageRepository);
-  }
 
   @Test
   public void extract_ubiquitous_language_that_is_not_in_a_bounded_context_nor_a_shared_kernel() {
