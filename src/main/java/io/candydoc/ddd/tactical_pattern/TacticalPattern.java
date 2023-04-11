@@ -33,7 +33,14 @@ public enum TacticalPattern implements DDDPattern {
     public <T> T accept(Visitor<T> visitor) {
       return visitor.valueObject();
     }
+  },
+  ENTITY(io.candydoc.ddd.annotations.Entity.class) {
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
+      return visitor.entity();
+    }
   };
+
 
   private final Class<? extends Annotation> relatedAnnotation;
 }
