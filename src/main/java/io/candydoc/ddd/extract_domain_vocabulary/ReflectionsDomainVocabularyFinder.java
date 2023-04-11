@@ -112,7 +112,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
   private static FoundDDDPattern toAggregatePattern(Class<?> clazz) {
     String simpleName = clazz.getAnnotation(io.candydoc.ddd.annotations.Aggregate.class).name();
     if (simpleName.isBlank()) {
-      simpleName = clazz.getSimpleName();
+      simpleName = lastPartOfClassName(clazz);
     }
 
     String description =
@@ -123,19 +123,19 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
   private static FoundDDDPattern toDomainCommandPattern(Class<?> clazz) {
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.DomainCommand.class).description();
-    return toFoundDDDPattern(TacticalPattern.DOMAIN_COMMAND, clazz.getSimpleName(), description);
+    return toFoundDDDPattern(TacticalPattern.DOMAIN_COMMAND, lastPartOfClassName(clazz), description);
   }
 
   private static FoundDDDPattern toDomainEventPattern(Class<?> clazz) {
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.DomainEvent.class).description();
-    return toFoundDDDPattern(TacticalPattern.DOMAIN_EVENT, clazz.getSimpleName(), description);
+    return toFoundDDDPattern(TacticalPattern.DOMAIN_EVENT, lastPartOfClassName(clazz), description);
   }
 
   private static FoundDDDPattern toValueObjectPattern(Class<?> clazz) {
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.ValueObject.class).description();
-    return toFoundDDDPattern(TacticalPattern.VALUE_OBJECT, clazz.getSimpleName(), description);
+    return toFoundDDDPattern(TacticalPattern.VALUE_OBJECT, lastPartOfClassName(clazz), description);
   }
 
   private static FoundDDDPattern toFoundDDDPattern(
@@ -177,4 +177,11 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
         .map(dependency -> FullName.of(dependency.getName()))
         .collect(Collectors.toUnmodifiableSet());
   }
+
+  private static String lastPartOfClassName(Class<?> className) {
+    String name = className.getName();
+    String lastPart = name.substring(name.lastIndexOf(".") + 1);
+    return lastPart.substring(lastPart.lastIndexOf("$") + 1);
+  }
+
 }
