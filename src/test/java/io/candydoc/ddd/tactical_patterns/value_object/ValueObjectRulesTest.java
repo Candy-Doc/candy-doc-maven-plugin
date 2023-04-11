@@ -40,6 +40,11 @@ public class ValueObjectRulesTest {
                     .name(FullName.of("io.candydoc.sample.AggregateOne"))
                     .pattern(TacticalPattern.AGGREGATE)
                     .build())
+            .dependency(
+                Dependency.builder()
+                    .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
+                    .pattern(TacticalPattern.ENTITY)
+                    .build())
             .build();
   }
 
@@ -90,5 +95,16 @@ public class ValueObjectRulesTest {
             .build();
 
     assertThatDependency(anotherAggregate).isForbiddenIn(valueObject);
+  }
+
+  @Test
+  void it_can_not_depend_on_entity() {
+    Dependency entity =
+        Dependency.builder()
+            .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
+            .pattern(TacticalPattern.ENTITY)
+            .build();
+
+    assertThatDependency(entity).isForbiddenIn(valueObject);
   }
 }
