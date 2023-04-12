@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.candydoc.ddd.model.Dependency;
 import io.candydoc.ddd.model.DomainModel;
 import io.candydoc.ddd.tactical_pattern.DomainEvent;
+import io.candydoc.ddd.tactical_pattern.TacticalModelWithDeterredDependencies;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -37,9 +38,9 @@ public class AssertDependency {
     return new AssertDependency(dependency);
   }
 
-  public AssertDependency isDeterredIn(DomainEvent domainEvent) {
-    assertThat(domainEvent.deterredDependencies()).as(DETERRED_LABEL).contains(dependency.pattern());
-    assertThat(domainEvent.allowedDependencies()).as(ALLOWED_LABEL).contains(dependency);
+  public AssertDependency isDeterredIn(TacticalModelWithDeterredDependencies tacticalModelWithDeterredDependencies) {
+    assertThat(tacticalModelWithDeterredDependencies.deterredDependencies()).as(DETERRED_LABEL).contains(dependency);
+    assertThat(tacticalModelWithDeterredDependencies.allowedDependencies()).as(ALLOWED_LABEL).contains(dependency);
     return this;
   }
 }

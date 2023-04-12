@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class DomainEvent extends TacticalModel {
+public class DomainEvent extends TacticalModelWithDeterredDependencies {
 
   private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of(
       TacticalPattern.VALUE_OBJECT,
@@ -29,7 +29,8 @@ public class DomainEvent extends TacticalModel {
     return ALLOWED_DEPENDENCIES;
   }
 
-  public Set<DDDPattern> deterredDependencies() {
+  @Override
+  public Set<DDDPattern> deterredDependenciesPatterns() {
     return DETERRED_DEPENDENCIES;
   }
 }

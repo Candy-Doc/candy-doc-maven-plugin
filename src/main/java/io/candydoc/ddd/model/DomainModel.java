@@ -18,8 +18,8 @@ public abstract class DomainModel {
   private final Description description;
 
   @Singular
-  @Getter(AccessLevel.PRIVATE)
-  private final Set<Dependency> dependencies;
+  @Getter(AccessLevel.PROTECTED)
+  protected final Set<Dependency> dependencies;
 
   public boolean dependsOn(CanonicalName canonicalName) {
     return dependencies.stream().anyMatch(dependency -> dependency.name().equals(canonicalName));
