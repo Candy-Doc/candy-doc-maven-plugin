@@ -25,8 +25,7 @@ public final class UbiquitousLanguageDto {
         ubiquitousLanguage.domainModels().stream()
             .map(
                 domainModel ->
-                    Map.entry(
-                        domainModel.fullName().value(), DomainModelDto.from(domainModel)))
+                    Map.entry(domainModel.fullName().value(), DomainModelDto.from(domainModel)))
             .sorted(Map.Entry.comparingByKey())
             .collect(
                 Collectors.toMap(

@@ -67,7 +67,7 @@ public class FindAggregateTest {
                 .fullName(
                     FullName.of(
                         "io.candydoc.ddd.tactical_patterns.aggregate.FindAggregateTest$AggregateTwo"))
-                .simpleName(SimpleName.of("AggregateTwo"))
+                .simpleName(SimpleName.of("FindAggregateTest$AggregateTwo"))
                 .description(Description.of(""))
                 .build());
   }

@@ -123,7 +123,8 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
   private static FoundDDDPattern toDomainCommandPattern(Class<?> clazz) {
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.DomainCommand.class).description();
-    return toFoundDDDPattern(TacticalPattern.DOMAIN_COMMAND, lastPartOfClassName(clazz), description);
+    return toFoundDDDPattern(
+        TacticalPattern.DOMAIN_COMMAND, lastPartOfClassName(clazz), description);
   }
 
   private static FoundDDDPattern toDomainEventPattern(Class<?> clazz) {
@@ -147,8 +148,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
         .build();
   }
 
-  private static Set<FullName> dependenciesOf(
-      Class<?> domainModel, Set<Class<?>> scannedClasses) {
+  private static Set<FullName> dependenciesOf(Class<?> domainModel, Set<Class<?>> scannedClasses) {
     if (domainModel.isAnnotationPresent(BoundedContext.class)
         || domainModel.isAnnotationPresent(SharedKernel.class)) {
       String packageName = domainModel.getPackageName();
@@ -180,8 +180,6 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
 
   private static String lastPartOfClassName(Class<?> className) {
     String name = className.getName();
-    String lastPart = name.substring(name.lastIndexOf(".") + 1);
-    return lastPart.substring(lastPart.lastIndexOf("$") + 1);
+    return name.substring(name.lastIndexOf(".") + 1);
   }
-
 }

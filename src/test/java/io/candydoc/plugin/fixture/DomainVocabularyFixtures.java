@@ -102,8 +102,7 @@ public class DomainVocabularyFixtures {
                       .name(SimpleName.of("Shared kernel one"))
                       .description(Description.of("One valid shared kernel"))
                       .build())
-              .fullName(
-                  FullName.of("io.candydoc.ddd.sample.one_valid_shared_kernel.package-info"))
+              .fullName(FullName.of("io.candydoc.ddd.sample.one_valid_shared_kernel.package-info"))
               .packageName(PackageName.of("io.candydoc.ddd.sample.one_valid_shared_kernel"))
               .dependency(
                   FullName.of(
@@ -174,7 +173,6 @@ public class DomainVocabularyFixtures {
                       .description(Description.of("An orphan domain command"))
                       .build())
               .packageName(PackageName.of("io.candydoc.ddd.sample.orphan"))
-              .fullName(
-                  FullName.of("io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne"))
+              .fullName(FullName.of("io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne"))
               .build());
 }

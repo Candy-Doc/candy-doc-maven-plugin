@@ -32,7 +32,7 @@ public class FindValueObjectTest {
                 .fullName(
                     FullName.of(
                         "io.candydoc.ddd.tactical_patterns.value_object.FindValueObjectTest$ValueObjectOne"))
-                .simpleName(SimpleName.of("ValueObjectOne"))
+                .simpleName(SimpleName.of("FindValueObjectTest$ValueObjectOne"))
                 .description(Description.of("Describe the value object here"))
                 .dependency(
                     Dependency.builder()
@@ -53,7 +53,7 @@ public class FindValueObjectTest {
                 .fullName(
                     FullName.of(
                         "io.candydoc.ddd.tactical_patterns.value_object.FindValueObjectTest$ValueObjectTwo"))
-                .simpleName(SimpleName.of("ValueObjectTwo"))
+                .simpleName(SimpleName.of("FindValueObjectTest$ValueObjectTwo"))
                 .description(Description.of(""))
                 .build());
   }

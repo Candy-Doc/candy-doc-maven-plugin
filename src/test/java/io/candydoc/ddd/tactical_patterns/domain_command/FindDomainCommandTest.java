@@ -32,7 +32,7 @@ public class FindDomainCommandTest {
                 .fullName(
                     FullName.of(
                         "io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest$DomainCommandOne"))
-                .simpleName(SimpleName.of("DomainCommandOne"))
+                .simpleName(SimpleName.of("FindDomainCommandTest$DomainCommandOne"))
                 .description(Description.of("Describe the domain command here"))
                 .dependency(
                     Dependency.builder()
@@ -53,7 +53,7 @@ public class FindDomainCommandTest {
                 .fullName(
                     FullName.of(
                         "io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest$DomainCommandTwo"))
-                .simpleName(SimpleName.of("DomainCommandTwo"))
+                .simpleName(SimpleName.of("FindDomainCommandTest$DomainCommandTwo"))
                 .description(Description.of(""))
                 .build());
   }

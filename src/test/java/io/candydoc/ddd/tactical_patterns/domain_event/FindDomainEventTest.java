@@ -32,7 +32,7 @@ public class FindDomainEventTest {
                 .fullName(
                     FullName.of(
                         "io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest$DomainEventOne"))
-                .simpleName(SimpleName.of("DomainEventOne"))
+                .simpleName(SimpleName.of("FindDomainEventTest$DomainEventOne"))
                 .description(Description.of("Describe the domain event here"))
                 .dependency(
                     Dependency.builder()
@@ -53,7 +53,7 @@ public class FindDomainEventTest {
                 .fullName(
                     FullName.of(
                         "io.candydoc.ddd.tactical_patterns.domain_event.FindDomainEventTest$DomainEventTwo"))
-                .simpleName(SimpleName.of("DomainEventTwo"))
+                .simpleName(SimpleName.of("FindDomainEventTest$DomainEventTwo"))
                 .description(Description.of(""))
                 .build());
   }
