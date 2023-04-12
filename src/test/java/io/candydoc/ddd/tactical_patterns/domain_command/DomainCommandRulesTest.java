@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.tactical_pattern.DomainCommand;
+import io.candydoc.ddd.tactical_pattern.TacticalModelWithDeterredDependencies;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -65,14 +66,14 @@ public class DomainCommandRulesTest {
   }
 
   @Test
-  void it_can_depend_on_entity() {
+  void it_can_depend_on_entity_but_not_recommended() {
     Dependency entity =
         Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
             .pattern(TacticalPattern.ENTITY)
             .build();
 
-    assertThatDependency(entity).isAllowedIn(domainCommand);
+    assertThatDependency(entity).isDeterredIn((TacticalModelWithDeterredDependencies) domainCommand);
   }
 
   @Test
