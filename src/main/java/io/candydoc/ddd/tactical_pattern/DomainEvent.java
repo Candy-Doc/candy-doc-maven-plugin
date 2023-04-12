@@ -2,8 +2,10 @@ package io.candydoc.ddd.tactical_pattern;
 
 import io.candydoc.ddd.model.DDDPattern;
 import java.util.Set;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import java.util.stream.Collectors;
+
+import io.candydoc.ddd.model.Dependency;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
@@ -15,6 +17,8 @@ public class DomainEvent extends TacticalModel {
       TacticalPattern.VALUE_OBJECT,
       TacticalPattern.ENTITY);
 
+  private static final Set<DDDPattern> DETERRED_DEPENDENCIES = Set.of(
+      TacticalPattern.ENTITY);
   @Override
   public DDDPattern dddPattern() {
     return TacticalPattern.DOMAIN_EVENT;
@@ -23,5 +27,9 @@ public class DomainEvent extends TacticalModel {
   @Override
   public Set<DDDPattern> allowedDependencyPatterns() {
     return ALLOWED_DEPENDENCIES;
+  }
+
+  public Set<DDDPattern> deterredDependencies() {
+    return DETERRED_DEPENDENCIES;
   }
 }

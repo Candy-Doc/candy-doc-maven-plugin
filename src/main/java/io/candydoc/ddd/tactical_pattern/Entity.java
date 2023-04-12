@@ -16,6 +16,7 @@ public class Entity extends TacticalModel {
       Set.of(
           TacticalPattern.ENTITY,
           TacticalPattern.VALUE_OBJECT);
+
   @Override
   public DDDPattern dddPattern() {
     return TacticalPattern.ENTITY;
@@ -25,6 +26,5 @@ public class Entity extends TacticalModel {
   public Set<DDDPattern> allowedDependencyPatterns() {
     return ALLOWED_DEPENDENCIES;
   }
-
 
 }

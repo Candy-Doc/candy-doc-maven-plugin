@@ -97,13 +97,13 @@ public class DomainEventRulesTest {
     assertThatDependency(aggregate).isForbiddenIn(domainEvent);
   }
   @Test
-  void it_can_depend_on_entity() {
+  void it_can_depend_on_entity_but_not_recommended() {
     Dependency entity =
         Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
             .pattern(TacticalPattern.ENTITY)
             .build();
 
-    assertThatDependency(entity).isAllowedIn(domainEvent);
+    assertThatDependency(entity).isDeterredIn((DomainEvent) domainEvent);
   }
 }
