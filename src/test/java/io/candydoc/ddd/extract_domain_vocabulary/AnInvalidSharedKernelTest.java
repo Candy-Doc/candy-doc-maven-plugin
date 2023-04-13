@@ -4,22 +4,19 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 import org.assertj.core.api.ThrowableAssert;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 public class AnInvalidSharedKernelTest {
 
-  DomainVocabularyFinder domainVocabularyFinder;
-  UbiquitousLanguageRepository ubiquitousLanguageRepository;
-  ExtractDomainModelsUseCase useCase;
-
-  @BeforeEach
-  public void setUp() {
-    this.domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
-    this.ubiquitousLanguageRepository = mock(UbiquitousLanguageRepository.class);
-    this.useCase =
-        new ExtractDomainModelsUseCase(domainVocabularyFinder, ubiquitousLanguageRepository);
-  }
+  @Spy DomainVocabularyFinder domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
+  @Mock UbiquitousLanguageRepository ubiquitousLanguageRepository;
+  @InjectMocks ExtractDomainModelsUseCase useCase;
 
   @Test
   public void nested_strategic_patterns_are_forbidden() {

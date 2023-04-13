@@ -1,25 +1,21 @@
 package io.candydoc.ddd.extract_domain_vocabulary;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
 
 import org.assertj.core.api.ThrowableAssert;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 public class AnInvalidModelTest {
 
-  DomainVocabularyFinder domainVocabularyFinder;
-  UbiquitousLanguageRepository ubiquitousLanguageRepository;
-  ExtractDomainModelsUseCase useCase;
-
-  @BeforeEach
-  public void setUp() {
-    this.domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
-    this.ubiquitousLanguageRepository = mock(UbiquitousLanguageRepository.class);
-    this.useCase =
-        new ExtractDomainModelsUseCase(domainVocabularyFinder, ubiquitousLanguageRepository);
-  }
+  @Spy DomainVocabularyFinder domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
+  @Mock UbiquitousLanguageRepository ubiquitousLanguageRepository;
+  @InjectMocks ExtractDomainModelsUseCase useCase;
 
   @Test
   void an_object_can_not_be_defined_by_multiple_ddd_patterns() {

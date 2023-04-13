@@ -183,7 +183,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
         .forEach(
             method -> {
               dependencies.add(method.getReturnType());
-              dependencies.addAll(Set.of(method.getParameterTypes()));
+              dependencies.addAll(Arrays.asList(method.getParameterTypes()));
             });
 
     return dependencies.stream()
