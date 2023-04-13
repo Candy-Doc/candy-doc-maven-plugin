@@ -41,6 +41,5 @@ public enum TacticalPattern implements DDDPattern {
     }
   };
 
-
   private final Class<? extends Annotation> relatedAnnotation;
 }

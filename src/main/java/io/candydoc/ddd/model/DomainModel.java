@@ -48,6 +48,5 @@ public abstract class DomainModel {
 
   public abstract Set<DDDPattern> allowedDependencyPatterns();
 
-
   public abstract List<DependencyDto> accept(DependencyVisitor visitor);
 }

@@ -112,7 +112,6 @@ public class DomainVocabularyFixtures {
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne"))
               .build());
 
-
   public static final Set<FoundDomainObject> DOMAIN_OBJECTS_IN_SHARED_KERNEL =
       Set.of(
           FoundDomainObject.builder()

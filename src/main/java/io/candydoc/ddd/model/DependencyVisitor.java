@@ -9,10 +9,16 @@ import java.util.List;
 
 public interface DependencyVisitor {
   List<DependencyDto> visit(BoundedContext boundedContext);
+
   List<DependencyDto> visit(SharedKernel sharedKernel);
+
   List<DependencyDto> visit(Aggregate aggregate);
+
   List<DependencyDto> visit(DomainEvent domainEvent);
+
   List<DependencyDto> visit(DomainCommand domainCommand);
+
   List<DependencyDto> visit(Entity entity);
+
   List<DependencyDto> visit(ValueObject valueObject);
 }

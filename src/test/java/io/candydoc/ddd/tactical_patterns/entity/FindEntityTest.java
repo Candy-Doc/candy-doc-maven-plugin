@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class FindEntityTest {
 
-
   static DomainVocabularyFinder domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
   static FoundDomainObjects foundDomainObjects;
 
@@ -68,24 +67,18 @@ public class FindEntityTest {
                 .build());
   }
 
-  @io.candydoc.ddd.annotations.Entity(
-      name = "My entity",
-      description = "Description of the entity")
+  @io.candydoc.ddd.annotations.Entity(name = "My entity", description = "Description of the entity")
   public static class MyEntity {
     private ValueObjectOne valueObjectOne;
     private ValueObjectTwo valueObjectTwo;
   }
 
-
-  @io.candydoc.ddd.annotations.ValueObject(
-      description = "This is a value object")
-  public static class ValueObjectOne {
-  }
+  @io.candydoc.ddd.annotations.ValueObject(description = "This is a value object")
+  public static class ValueObjectOne {}
 
   @io.candydoc.ddd.annotations.ValueObject
-  public static class ValueObjectTwo {
-  }
+  public static class ValueObjectTwo {}
 
   @io.candydoc.ddd.annotations.Entity
-  public static class EntityWithoutAttributes{}
+  public static class EntityWithoutAttributes {}
 }

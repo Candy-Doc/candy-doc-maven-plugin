@@ -46,6 +46,7 @@ public class EntityRulesTest {
                     .build())
             .build();
   }
+
   @Test
   void is_an_entity() {
     assertThat(entity.dddPattern()).isEqualTo(TacticalPattern.ENTITY);

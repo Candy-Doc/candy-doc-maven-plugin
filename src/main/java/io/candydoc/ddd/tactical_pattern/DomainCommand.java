@@ -19,11 +19,10 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class DomainCommand extends TacticalModelWithDeterredDependencies {
 
-  private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of(
-      TacticalPattern.VALUE_OBJECT);
+  private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of(TacticalPattern.VALUE_OBJECT);
 
-  private static final Set<DDDPattern> DETERRED_DEPENDENCIES =  Set.of(
-      TacticalPattern.ENTITY);
+  private static final Set<DDDPattern> DETERRED_DEPENDENCIES = Set.of(TacticalPattern.ENTITY);
+
   @Override
   public DDDPattern dddPattern() {
     return TacticalPattern.DOMAIN_COMMAND;

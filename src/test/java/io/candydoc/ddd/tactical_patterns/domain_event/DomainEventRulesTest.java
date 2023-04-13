@@ -96,6 +96,7 @@ public class DomainEventRulesTest {
 
     assertThatDependency(aggregate).isForbiddenIn(domainEvent);
   }
+
   @Test
   void it_can_depend_on_entity_but_not_recommended() {
     Dependency entity =

@@ -37,8 +37,11 @@ public class AssertDependency {
     return new AssertDependency(dependency);
   }
 
-  public AssertDependency isDeterredIn(TacticalModelWithDeterredDependencies modelWithDeterredDependencies) {
-    assertThat(modelWithDeterredDependencies.deterredDependencies()).as(DETERRED_LABEL).contains(dependency);
+  public AssertDependency isDeterredIn(
+      TacticalModelWithDeterredDependencies modelWithDeterredDependencies) {
+    assertThat(modelWithDeterredDependencies.deterredDependencies())
+        .as(DETERRED_LABEL)
+        .contains(dependency);
     return this;
   }
 }

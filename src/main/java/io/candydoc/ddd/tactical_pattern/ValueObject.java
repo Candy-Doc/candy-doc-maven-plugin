@@ -27,6 +27,7 @@ public class ValueObject extends TacticalModel {
   public Set<DDDPattern> allowedDependencyPatterns() {
     return ALLOWED_DEPENDENCIES;
   }
+
   @Override
   public List<DependencyDto> accept(DependencyVisitor visitor) {
     return visitor.visit(this);

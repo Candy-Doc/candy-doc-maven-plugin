@@ -38,5 +38,4 @@ public class SharedKernel extends StrategicModel {
   public List<DependencyDto> accept(DependencyVisitor visitor) {
     return visitor.visit(this);
   }
-
 }

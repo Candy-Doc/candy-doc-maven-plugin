@@ -16,9 +16,7 @@ import java.util.Set;
 public class Entity extends TacticalModel {
 
   private static final Set<DDDPattern> ALLOWED_DEPENDENCIES =
-      Set.of(
-          TacticalPattern.ENTITY,
-          TacticalPattern.VALUE_OBJECT);
+      Set.of(TacticalPattern.ENTITY, TacticalPattern.VALUE_OBJECT);
 
   @Override
   public DDDPattern dddPattern() {
@@ -34,5 +32,4 @@ public class Entity extends TacticalModel {
   public List<DependencyDto> accept(DependencyVisitor visitor) {
     return visitor.visit(this);
   }
-
 }
