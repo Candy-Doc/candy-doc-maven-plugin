@@ -5,7 +5,6 @@ import io.candydoc.ddd.strategic_pattern.SharedKernel;
 import io.candydoc.ddd.tactical_pattern.*;
 import io.candydoc.plugin.model.DependencyAuthorization;
 import io.candydoc.plugin.model.DependencyDto;
-
 import java.util.ArrayList;
 import java.util.List;
 

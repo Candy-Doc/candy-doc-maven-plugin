@@ -3,7 +3,6 @@ package io.candydoc.plugin.model;
 import io.candydoc.ddd.model.AuthorizationDependenciesVisitor;
 import io.candydoc.ddd.model.DomainModel;
 import java.util.*;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;

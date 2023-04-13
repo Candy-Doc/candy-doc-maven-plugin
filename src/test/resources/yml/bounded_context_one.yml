@@ -7,29 +7,29 @@ domainModels:
     simpleName: AggregateOne
     description: ''
     dependencies:
-      - refersTo: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne
-        authorization: ALLOWED
-      - refersTo: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne
-        authorization: ALLOWED
+    - refersTo: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne
+      authorization: ALLOWED
+    - refersTo: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne
+      authorization: ALLOWED
   io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne:
     type: DOMAIN_COMMAND
     simpleName: DomainCommandOne
     description: ''
-    dependencies: [ ]
+    dependencies: []
   io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne:
     type: DOMAIN_EVENT
     simpleName: DomainEventOne
     description: ''
     dependencies:
-      - refersTo: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne
-        authorization: DETERRED
+    - refersTo: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne
+      authorization: DETERRED
   io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne:
     type: ENTITY
     simpleName: EntityOne
     description: ''
-    dependencies: [ ]
+    dependencies: []
   io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne:
     type: VALUE_OBJECT
     simpleName: ValueObjectOne
     description: ''
-    dependencies: [ ]
+    dependencies: []

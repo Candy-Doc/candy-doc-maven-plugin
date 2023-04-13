@@ -1,10 +1,9 @@
 package io.candydoc.ddd.model;
 
+import io.candydoc.plugin.model.DependencyDto;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import io.candydoc.plugin.model.DependencyDto;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;

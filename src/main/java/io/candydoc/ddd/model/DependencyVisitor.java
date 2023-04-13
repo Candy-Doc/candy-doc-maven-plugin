@@ -4,7 +4,6 @@ import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
 import io.candydoc.ddd.tactical_pattern.*;
 import io.candydoc.plugin.model.DependencyDto;
-
 import java.util.List;
 
 public interface DependencyVisitor {

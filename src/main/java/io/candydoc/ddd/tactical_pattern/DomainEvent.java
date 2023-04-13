@@ -1,15 +1,13 @@
 package io.candydoc.ddd.tactical_pattern;
 
 import io.candydoc.ddd.model.DDDPattern;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import io.candydoc.ddd.model.Dependency;
 import io.candydoc.ddd.model.DependencyVisitor;
 import io.candydoc.ddd.model.TacticalModelWithDeterredDependencies;
 import io.candydoc.plugin.model.DependencyDto;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

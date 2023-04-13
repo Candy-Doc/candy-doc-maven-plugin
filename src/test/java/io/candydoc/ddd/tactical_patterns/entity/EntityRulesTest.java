@@ -1,13 +1,13 @@
 package io.candydoc.ddd.tactical_patterns.entity;
 
+import static io.candydoc.ddd.AssertDependency.assertThatDependency;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.tactical_pattern.Entity;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import static io.candydoc.ddd.AssertDependency.assertThatDependency;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class EntityRulesTest {
   static DomainModel entity;

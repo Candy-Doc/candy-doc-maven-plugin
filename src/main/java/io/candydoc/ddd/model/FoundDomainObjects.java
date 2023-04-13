@@ -4,7 +4,6 @@ import io.candydoc.ddd.extract_domain_vocabulary.WrongUseOfDDDPatterns;
 import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
 import io.candydoc.ddd.tactical_pattern.*;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

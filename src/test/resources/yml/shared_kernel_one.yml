@@ -7,10 +7,10 @@ domainModels:
     simpleName: SharedValueObjectOne
     description: Some description
     dependencies:
-      - refersTo: io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo
-        authorization: ALLOWED
+    - refersTo: io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo
+      authorization: ALLOWED
   io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo:
     type: VALUE_OBJECT
     simpleName: SharedValueObjectTwo
     description: ''
-    dependencies: [ ]
+    dependencies: []

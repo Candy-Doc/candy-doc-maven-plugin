@@ -1,17 +1,15 @@
 package io.candydoc.ddd.tactical_patterns.entity;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.candydoc.ddd.extract_domain_vocabulary.DomainVocabularyFinder;
 import io.candydoc.ddd.extract_domain_vocabulary.ReflectionsDomainVocabularyFinder;
 import io.candydoc.ddd.model.*;
-import io.candydoc.ddd.tactical_pattern.Aggregate;
 import io.candydoc.ddd.tactical_pattern.Entity;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
+import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class FindEntityTest {
 

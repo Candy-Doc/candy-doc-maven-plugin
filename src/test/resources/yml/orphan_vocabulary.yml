@@ -6,18 +6,18 @@ domainModels:
     type: DOMAIN_COMMAND
     simpleName: OrphanDomainCommandOne
     description: An orphan domain command
-    dependencies: [ ]
+    dependencies: []
   io.candydoc.ddd.sample.orphan.OrphanDomainEventOne:
     type: DOMAIN_EVENT
     simpleName: OrphanDomainEventOne
     description: An orphan domain event
     dependencies:
-      - refersTo: io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne
-        authorization: FORBIDDEN
+    - refersTo: io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne
+      authorization: FORBIDDEN
   io.candydoc.ddd.sample.orphan.OrphanValueObjectOne:
     type: VALUE_OBJECT
     simpleName: OrphanValueObjectOne
     description: An orphan value object
     dependencies:
-      - refersTo: io.candydoc.ddd.sample.orphan.OrphanDomainEventOne
-        authorization: FORBIDDEN
+    - refersTo: io.candydoc.ddd.sample.orphan.OrphanDomainEventOne
+      authorization: FORBIDDEN

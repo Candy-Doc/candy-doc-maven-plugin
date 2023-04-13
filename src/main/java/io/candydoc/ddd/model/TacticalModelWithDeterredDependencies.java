@@ -1,12 +1,11 @@
 package io.candydoc.ddd.model;
 
 import io.candydoc.ddd.tactical_pattern.TacticalModel;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
