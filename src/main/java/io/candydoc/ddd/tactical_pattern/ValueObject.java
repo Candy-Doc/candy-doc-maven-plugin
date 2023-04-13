@@ -1,7 +1,12 @@
 package io.candydoc.ddd.tactical_pattern;
 
 import io.candydoc.ddd.model.DDDPattern;
+
+import java.util.List;
 import java.util.Set;
+
+import io.candydoc.ddd.model.DependencyVisitor;
+import io.candydoc.plugin.model.DependencyDto;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -21,5 +26,9 @@ public class ValueObject extends TacticalModel {
   @Override
   public Set<DDDPattern> allowedDependencyPatterns() {
     return ALLOWED_DEPENDENCIES;
+  }
+  @Override
+  public List<DependencyDto> accept(DependencyVisitor visitor) {
+    return visitor.visit(this);
   }
 }

@@ -8,7 +8,7 @@ domainModels:
     description: Some description
     dependencies:
     - refersTo: io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo
-      allowed: true
+      authorization: ALLOWED
   io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo:
     type: VALUE_OBJECT
     simpleName: SharedValueObjectTwo

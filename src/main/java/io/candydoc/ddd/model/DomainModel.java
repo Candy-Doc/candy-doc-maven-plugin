@@ -1,7 +1,10 @@
 package io.candydoc.ddd.model;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import io.candydoc.plugin.model.DependencyDto;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
@@ -44,4 +47,7 @@ public abstract class DomainModel {
   public abstract DDDPattern dddPattern();
 
   public abstract Set<DDDPattern> allowedDependencyPatterns();
+
+
+  public abstract List<DependencyDto> accept(DependencyVisitor visitor);
 }

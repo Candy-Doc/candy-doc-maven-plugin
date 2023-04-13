@@ -13,11 +13,11 @@ domainModels:
     description: An orphan domain event
     dependencies:
     - refersTo: io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne
-      allowed: false
+      authorization: FORBIDDEN
   io.candydoc.ddd.sample.orphan.OrphanValueObjectOne:
     type: VALUE_OBJECT
     simpleName: OrphanValueObjectOne
     description: An orphan value object
     dependencies:
     - refersTo: io.candydoc.ddd.sample.orphan.OrphanDomainEventOne
-      allowed: false
+      authorization: FORBIDDEN

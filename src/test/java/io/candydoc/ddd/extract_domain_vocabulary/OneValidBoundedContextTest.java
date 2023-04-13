@@ -91,6 +91,13 @@ public class OneValidBoundedContextTest {
                                       CanonicalName.of(
                                           "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne"))
                                   .build())
+                          .dependency(
+                              Dependency.builder()
+                                  .pattern(TacticalPattern.ENTITY)
+                                  .name(
+                                      CanonicalName.of(
+                                          "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne"))
+                                  .build())
                           .build());
 
               assertThat(vocabulary.domainModels())
@@ -123,6 +130,23 @@ public class OneValidBoundedContextTest {
                               CanonicalName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne"))
                           .simpleName(SimpleName.of("DomainEventOne"))
+                          .description(Description.of(""))
+                          .dependency(
+                              Dependency.builder()
+                                  .pattern(TacticalPattern.ENTITY)
+                                  .name(
+                                      CanonicalName.of(
+                                          "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne"))
+                                  .build())
+                          .build(),
+                      Entity.builder()
+                          .packageName(
+                              PackageName.of(
+                                  "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))
+                          .canonicalName(
+                              CanonicalName.of(
+                                  "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne"))
+                          .simpleName(SimpleName.of("EntityOne"))
                           .description(Description.of(""))
                           .build(),
                       ValueObject.builder()

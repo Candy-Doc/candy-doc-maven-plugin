@@ -1,7 +1,9 @@
 package io.candydoc.plugin.model;
 
+import io.candydoc.ddd.model.AuthorizationDependenciesVisitor;
 import io.candydoc.ddd.model.DomainModel;
 import java.util.*;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
@@ -17,20 +19,7 @@ public final class DomainModelDto {
   private Collection<DependencyDto> dependencies;
 
   public static DomainModelDto from(DomainModel domainModel) {
-    List<DependencyDto> dependencies = new ArrayList<>();
-
-    domainModel.allowedDependencies().stream()
-        .map(
-            dependency ->
-                DependencyDto.builder().refersTo(dependency.name().value()).allowed(true).build())
-        .forEach(dependencies::add);
-
-    domainModel.forbiddenDependencies().stream()
-        .map(
-            dependency ->
-                DependencyDto.builder().refersTo(dependency.name().value()).allowed(false).build())
-        .forEach(dependencies::add);
-
+    List<DependencyDto> dependencies = domainModel.accept(new AuthorizationDependenciesVisitor());
     dependencies.sort(Comparator.comparing(DependencyDto::getRefersTo));
 
     return DomainModelDto.builder()

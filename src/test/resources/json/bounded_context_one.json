@@ -10,11 +10,11 @@
       "dependencies": [
         {
           "refersTo": "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne",
-          "allowed": true
+          "authorization": "ALLOWED"
         },
         {
           "refersTo": "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne",
-          "allowed": true
+          "authorization": "ALLOWED"
         }
       ]
     },
@@ -28,6 +28,17 @@
       "type": "DOMAIN_EVENT",
       "simpleName": "DomainEventOne",
       "description": "",
+      "dependencies": [
+        {
+          "refersTo": "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne",
+          "authorization": "DETERRED"
+        }
+      ]
+    },
+    "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne": {
+      "type": "ENTITY",
+      "simpleName": "EntityOne",
+      "description": "",
       "dependencies": []
     },
     "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne": {
@@ -37,4 +48,5 @@
       "dependencies": []
     }
   }
+
 }
