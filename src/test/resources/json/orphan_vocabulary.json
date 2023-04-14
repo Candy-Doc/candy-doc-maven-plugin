@@ -16,7 +16,7 @@
       "dependencies": [
         {
           "refersTo": "io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne",
-          "authorization": "FORBIDDEN"
+          "allowed": false
         }
       ]
     },
@@ -27,7 +27,7 @@
       "dependencies": [
         {
           "refersTo": "io.candydoc.ddd.sample.orphan.OrphanDomainEventOne",
-          "authorization": "FORBIDDEN"
+          "allowed": false
         }
       ]
     }

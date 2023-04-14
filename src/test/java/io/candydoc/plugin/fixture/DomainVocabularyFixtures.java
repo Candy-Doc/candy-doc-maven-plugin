@@ -33,9 +33,6 @@ public class DomainVocabularyFixtures {
               .dependency(
                   CanonicalName.of(
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne"))
-              .dependency(
-                  CanonicalName.of(
-                      "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne"))
               .build(),
           FoundDomainObject.builder()
               .matchingPattern(
@@ -81,22 +78,6 @@ public class DomainVocabularyFixtures {
               .canonicalName(
                   CanonicalName.of(
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne"))
-              .dependency(
-                  CanonicalName.of(
-                      "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne"))
-              .build(),
-          FoundDomainObject.builder()
-              .matchingPattern(
-                  FoundDDDPattern.builder()
-                      .dddPattern(TacticalPattern.ENTITY)
-                      .name(SimpleName.of("EntityOne"))
-                      .description(EMPTY_DESCRIPTION)
-                      .build())
-              .packageName(
-                  PackageName.of("io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))
-              .canonicalName(
-                  CanonicalName.of(
-                      "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne"))
               .build(),
           FoundDomainObject.builder()
               .matchingPattern(

@@ -1,7 +1,5 @@
 package io.candydoc.ddd.model;
 
-import io.candydoc.plugin.model.DependencyDto;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.*;
@@ -20,8 +18,8 @@ public abstract class DomainModel {
   private final Description description;
 
   @Singular
-  @Getter(AccessLevel.PROTECTED)
-  protected final Set<Dependency> dependencies;
+  @Getter(AccessLevel.PRIVATE)
+  private final Set<Dependency> dependencies;
 
   public boolean dependsOn(CanonicalName canonicalName) {
     return dependencies.stream().anyMatch(dependency -> dependency.name().equals(canonicalName));
@@ -46,6 +44,4 @@ public abstract class DomainModel {
   public abstract DDDPattern dddPattern();
 
   public abstract Set<DDDPattern> allowedDependencyPatterns();
-
-  public abstract List<DependencyDto> accept(DependencyVisitor visitor);
 }

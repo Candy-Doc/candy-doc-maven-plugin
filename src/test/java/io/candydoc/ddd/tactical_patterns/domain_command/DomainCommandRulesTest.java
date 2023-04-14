@@ -64,17 +64,16 @@ public class DomainCommandRulesTest {
     assertThatDependency(valueObject).isAllowedIn(domainCommand);
   }
 
-  //  @Test
-  //  void it_can_depend_on_entity_but_not_recommended() {
-  //    Dependency entity =
-  //        Dependency.builder()
-  //            .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
-  //            .pattern(TacticalPattern.ENTITY)
-  //            .build();
-  //
-  //    assertThatDependency(entity).isDeterredIn((TacticalModelWithDeterredDependencies)
-  // domainCommand);
-  //  }
+  @Test
+  void it_can_not_depend_on_entity() {
+    Dependency entity =
+        Dependency.builder()
+            .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
+            .pattern(TacticalPattern.ENTITY)
+            .build();
+
+    assertThatDependency(entity).isForbiddenIn(domainCommand);
+  }
 
   @Test
   void it_can_not_depend_on_another_domain_command() {

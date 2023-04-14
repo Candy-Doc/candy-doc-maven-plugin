@@ -8,9 +8,9 @@ domainModels:
     description: ''
     dependencies:
     - refersTo: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne
-      authorization: ALLOWED
+      allowed: true
     - refersTo: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne
-      authorization: ALLOWED
+      allowed: true
   io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne:
     type: DOMAIN_COMMAND
     simpleName: DomainCommandOne
@@ -19,13 +19,6 @@ domainModels:
   io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne:
     type: DOMAIN_EVENT
     simpleName: DomainEventOne
-    description: ''
-    dependencies:
-    - refersTo: io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne
-      authorization: DETERRED
-  io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne:
-    type: ENTITY
-    simpleName: EntityOne
     description: ''
     dependencies: []
   io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne:

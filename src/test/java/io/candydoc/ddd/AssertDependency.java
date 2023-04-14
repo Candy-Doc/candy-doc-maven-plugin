@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.candydoc.ddd.model.Dependency;
 import io.candydoc.ddd.model.DomainModel;
-import io.candydoc.ddd.model.TacticalModelWithDeterredDependencies;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 public class AssertDependency {
 
   private static final String ALLOWED_LABEL = "Allowed dependencies";
-  private static final String DETERRED_LABEL = "Allowed but not recommended dependencies";
   private static final String FORBIDDEN_LABEL = "Forbidden dependencies";
 
   private final Dependency dependency;
@@ -35,13 +33,5 @@ public class AssertDependency {
 
   public static AssertDependency assertThatDependency(Dependency dependency) {
     return new AssertDependency(dependency);
-  }
-
-  public AssertDependency isDeterredIn(
-      TacticalModelWithDeterredDependencies modelWithDeterredDependencies) {
-    assertThat(modelWithDeterredDependencies.deterredDependencies())
-        .as(DETERRED_LABEL)
-        .contains(dependency);
-    return this;
   }
 }

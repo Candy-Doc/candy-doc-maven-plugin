@@ -1,11 +1,8 @@
 package io.candydoc.ddd.strategic_pattern;
 
 import io.candydoc.ddd.model.DDDPattern;
-import io.candydoc.ddd.model.DependencyVisitor;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
-import io.candydoc.plugin.model.DependencyDto;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -32,10 +29,5 @@ public class BoundedContext extends StrategicModel {
   @Override
   public <T> T accept(Visitor<T> visitor) {
     return visitor.boundedContext(this);
-  }
-
-  @Override
-  public List<DependencyDto> accept(DependencyVisitor visitor) {
-    return visitor.visit(this);
   }
 }
