@@ -43,7 +43,7 @@ public class DomainCommandRulesTest {
             .dependency(
                 Dependency.builder()
                     .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
-                    .pattern(TacticalPattern.ENTITY)
+                    .pattern(TacticalPattern.DOMAIN_ENTITY)
                     .build())
             .build();
   }
@@ -69,7 +69,7 @@ public class DomainCommandRulesTest {
     Dependency entity =
         Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
-            .pattern(TacticalPattern.ENTITY)
+            .pattern(TacticalPattern.DOMAIN_ENTITY)
             .build();
 
     assertThatDependency(entity).isAllowedIn(domainCommand);

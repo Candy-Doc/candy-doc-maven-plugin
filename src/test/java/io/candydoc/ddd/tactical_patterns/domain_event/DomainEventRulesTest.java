@@ -43,7 +43,7 @@ public class DomainEventRulesTest {
             .dependency(
                 Dependency.builder()
                     .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
-                    .pattern(TacticalPattern.ENTITY)
+                    .pattern(TacticalPattern.DOMAIN_ENTITY)
                     .build())
             .build();
   }
@@ -96,12 +96,13 @@ public class DomainEventRulesTest {
 
     assertThatDependency(aggregate).isForbiddenIn(domainEvent);
   }
+
   @Test
   void it_can_depend_on_entity() {
     Dependency entity =
         Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
-            .pattern(TacticalPattern.ENTITY)
+            .pattern(TacticalPattern.DOMAIN_ENTITY)
             .build();
 
     assertThatDependency(entity).isAllowedIn(domainEvent);

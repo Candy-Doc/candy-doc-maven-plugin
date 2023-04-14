@@ -43,7 +43,7 @@ public class ValueObjectRulesTest {
             .dependency(
                 Dependency.builder()
                     .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
-                    .pattern(TacticalPattern.ENTITY)
+                    .pattern(TacticalPattern.DOMAIN_ENTITY)
                     .build())
             .build();
   }
@@ -102,7 +102,7 @@ public class ValueObjectRulesTest {
     Dependency entity =
         Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
-            .pattern(TacticalPattern.ENTITY)
+            .pattern(TacticalPattern.DOMAIN_ENTITY)
             .build();
 
     assertThatDependency(entity).isForbiddenIn(valueObject);

@@ -15,7 +15,7 @@ public class Aggregate extends TacticalModel {
       Set.of(
           TacticalPattern.DOMAIN_COMMAND,
           TacticalPattern.DOMAIN_EVENT,
-          TacticalPattern.ENTITY,
+          TacticalPattern.DOMAIN_ENTITY,
           TacticalPattern.VALUE_OBJECT);
 
   @Override

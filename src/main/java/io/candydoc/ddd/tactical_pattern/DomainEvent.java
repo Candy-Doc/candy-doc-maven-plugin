@@ -11,9 +11,8 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class DomainEvent extends TacticalModel {
 
-  private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of(
-      TacticalPattern.VALUE_OBJECT,
-      TacticalPattern.ENTITY);
+  private static final Set<DDDPattern> ALLOWED_DEPENDENCIES =
+      Set.of(TacticalPattern.VALUE_OBJECT, TacticalPattern.DOMAIN_ENTITY);
 
   @Override
   public DDDPattern dddPattern() {
