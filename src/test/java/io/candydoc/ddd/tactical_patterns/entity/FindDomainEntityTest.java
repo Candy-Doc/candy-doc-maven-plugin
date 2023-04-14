@@ -69,7 +69,7 @@ public class FindDomainEntityTest {
       name = "My entity",
       description = "Description of the entity")
   public static class MyEntity {
-    @io.candydoc.ddd.annotations.Id private int id;
+    //    @io.candydoc.ddd.annotations.Id private int id;
     private ValueObjectOne valueObjectOne;
     private ValueObjectTwo valueObjectTwo;
   }
