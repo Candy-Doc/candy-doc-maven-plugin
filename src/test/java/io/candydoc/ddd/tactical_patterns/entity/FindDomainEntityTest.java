@@ -5,13 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.candydoc.ddd.extract_domain_vocabulary.DomainVocabularyFinder;
 import io.candydoc.ddd.extract_domain_vocabulary.ReflectionsDomainVocabularyFinder;
 import io.candydoc.ddd.model.*;
-import io.candydoc.ddd.tactical_pattern.Entity;
+import io.candydoc.ddd.tactical_pattern.DomainEntity;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class FindEntityTest {
+public class FindDomainEntityTest {
 
   static DomainVocabularyFinder domainVocabularyFinder = new ReflectionsDomainVocabularyFinder();
   static FoundDomainObjects foundDomainObjects;
@@ -27,11 +27,11 @@ public class FindEntityTest {
   public void find_entity_from_classes() {
     assertThat(foundDomainObjects.toDomainModels())
         .contains(
-            Entity.builder()
+            DomainEntity.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.entity"))
                 .canonicalName(
                     CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.entity.FindEntityTest.MyEntity"))
+                        "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest.MyEntity"))
                 .simpleName(SimpleName.of("My entity"))
                 .description(Description.of("Description of the entity"))
                 .dependency(
@@ -39,14 +39,14 @@ public class FindEntityTest {
                         .pattern(TacticalPattern.VALUE_OBJECT)
                         .name(
                             CanonicalName.of(
-                                "io.candydoc.ddd.tactical_patterns.entity.FindEntityTest.ValueObjectOne"))
+                                "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest.ValueObjectOne"))
                         .build())
                 .dependency(
                     Dependency.builder()
                         .pattern(TacticalPattern.VALUE_OBJECT)
                         .name(
                             CanonicalName.of(
-                                "io.candydoc.ddd.tactical_patterns.entity.FindEntityTest.ValueObjectTwo"))
+                                "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest.ValueObjectTwo"))
                         .build())
                 .build());
   }
@@ -55,18 +55,21 @@ public class FindEntityTest {
   public void attributes_not_provided() {
     assertThat(foundDomainObjects.toDomainModels())
         .contains(
-            Entity.builder()
+            io.candydoc.ddd.tactical_pattern.DomainEntity.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.entity"))
                 .canonicalName(
                     CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.entity.FindEntityTest.EntityWithoutAttributes"))
+                        "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest.EntityWithoutAttributes"))
                 .simpleName(SimpleName.of("EntityWithoutAttributes"))
                 .description(Description.of(""))
                 .build());
   }
 
-  @io.candydoc.ddd.annotations.Entity(name = "My entity", description = "Description of the entity")
+  @io.candydoc.ddd.annotations.DomainEntity(
+      name = "My entity",
+      description = "Description of the entity")
   public static class MyEntity {
+    @io.candydoc.ddd.annotations.Id private int id;
     private ValueObjectOne valueObjectOne;
     private ValueObjectTwo valueObjectTwo;
   }
@@ -77,6 +80,6 @@ public class FindEntityTest {
   @io.candydoc.ddd.annotations.ValueObject
   public static class ValueObjectTwo {}
 
-  @io.candydoc.ddd.annotations.Entity
+  @io.candydoc.ddd.annotations.DomainEntity
   public static class EntityWithoutAttributes {}
 }

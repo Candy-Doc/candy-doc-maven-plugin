@@ -33,7 +33,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
           ReflectionsDomainVocabularyFinder::toDomainEventPattern,
           TacticalPattern.VALUE_OBJECT,
           ReflectionsDomainVocabularyFinder::toValueObjectPattern,
-          TacticalPattern.ENTITY,
+          TacticalPattern.DOMAIN_ENTITY,
           ReflectionsDomainVocabularyFinder::toEntityPattern);
 
   @Override
@@ -141,14 +141,14 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
   }
 
   private static FoundDDDPattern toEntityPattern(Class<?> clazz) {
-    String simpleName = clazz.getAnnotation(io.candydoc.ddd.annotations.Entity.class).name();
+    String simpleName = clazz.getAnnotation(io.candydoc.ddd.annotations.DomainEntity.class).name();
     if (simpleName.isBlank()) {
       simpleName = clazz.getSimpleName();
     }
 
     String description =
-        clazz.getAnnotation(io.candydoc.ddd.annotations.Entity.class).description();
-    return toFoundDDDPattern(TacticalPattern.ENTITY, simpleName, description);
+        clazz.getAnnotation(io.candydoc.ddd.annotations.DomainEntity.class).description();
+    return toFoundDDDPattern(TacticalPattern.DOMAIN_ENTITY, simpleName, description);
   }
 
   private static FoundDDDPattern toFoundDDDPattern(

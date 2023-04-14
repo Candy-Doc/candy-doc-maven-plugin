@@ -1,6 +1,6 @@
 package io.candydoc.ddd.sample.one_valid_bounded_context.feature_A;
 
-import io.candydoc.ddd.annotations.Entity;
+import io.candydoc.ddd.annotations.DomainEntity;
 
-@Entity
+@DomainEntity
 public class EntityOne {}

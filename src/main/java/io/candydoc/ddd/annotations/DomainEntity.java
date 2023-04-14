@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 @Inherited
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Entity {
+public @interface DomainEntity {
   String name() default "";
 
   String description() default "";

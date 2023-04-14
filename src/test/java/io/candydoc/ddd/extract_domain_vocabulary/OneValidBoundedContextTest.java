@@ -85,7 +85,7 @@ public class OneValidBoundedContextTest {
                                   .build())
                           .dependency(
                               Dependency.builder()
-                                  .pattern(TacticalPattern.ENTITY)
+                                  .pattern(TacticalPattern.DOMAIN_ENTITY)
                                   .name(
                                       CanonicalName.of(
                                           "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne"))
@@ -124,7 +124,7 @@ public class OneValidBoundedContextTest {
                           .simpleName(SimpleName.of("DomainEventOne"))
                           .description(Description.of(""))
                           .build(),
-                      Entity.builder()
+                      DomainEntity.builder()
                           .packageName(
                               PackageName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))

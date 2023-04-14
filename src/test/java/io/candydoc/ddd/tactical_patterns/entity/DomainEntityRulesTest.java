@@ -4,18 +4,18 @@ import static io.candydoc.ddd.AssertDependency.assertThatDependency;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.candydoc.ddd.model.*;
-import io.candydoc.ddd.tactical_pattern.Entity;
+import io.candydoc.ddd.tactical_pattern.DomainEntity;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class EntityRulesTest {
+public class DomainEntityRulesTest {
   static DomainModel entity;
 
   @BeforeAll
   static void setUp() {
     entity =
-        Entity.builder()
+        DomainEntity.builder()
             .canonicalName(CanonicalName.of("io.candydoc.sample.EntityOne"))
             .simpleName(SimpleName.of("EntityOne"))
             .packageName(PackageName.of("io.candydoc.sample"))
@@ -42,14 +42,14 @@ public class EntityRulesTest {
             .dependency(
                 Dependency.builder()
                     .name(CanonicalName.of("io.candydoc.sample.EntityTwo"))
-                    .pattern(TacticalPattern.ENTITY)
+                    .pattern(TacticalPattern.DOMAIN_ENTITY)
                     .build())
             .build();
   }
 
   @Test
   void is_an_entity() {
-    assertThat(entity.dddPattern()).isEqualTo(TacticalPattern.ENTITY);
+    assertThat(entity.dddPattern()).isEqualTo(TacticalPattern.DOMAIN_ENTITY);
   }
 
   @Test
@@ -57,7 +57,7 @@ public class EntityRulesTest {
     Dependency anotherValueObject =
         Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.EntityTwo"))
-            .pattern(TacticalPattern.ENTITY)
+            .pattern(TacticalPattern.DOMAIN_ENTITY)
             .build();
 
     assertThatDependency(anotherValueObject).isAllowedIn(entity);

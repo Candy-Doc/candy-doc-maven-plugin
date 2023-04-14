@@ -9,14 +9,14 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Entity extends TacticalModel {
+public class DomainEntity extends TacticalModel {
 
   private static final Set<DDDPattern> ALLOWED_DEPENDENCIES =
-      Set.of(TacticalPattern.ENTITY, TacticalPattern.VALUE_OBJECT);
+      Set.of(TacticalPattern.DOMAIN_ENTITY, TacticalPattern.VALUE_OBJECT);
 
   @Override
   public DDDPattern dddPattern() {
-    return TacticalPattern.ENTITY;
+    return TacticalPattern.DOMAIN_ENTITY;
   }
 
   @Override
