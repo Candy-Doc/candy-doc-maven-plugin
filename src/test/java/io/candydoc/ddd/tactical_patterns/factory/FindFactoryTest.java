@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.candydoc.ddd.extract_domain_vocabulary.DomainVocabularyFinder;
 import io.candydoc.ddd.extract_domain_vocabulary.ReflectionsDomainVocabularyFinder;
-import io.candydoc.ddd.model.CanonicalName;
 import io.candydoc.ddd.model.Description;
 import io.candydoc.ddd.model.FoundDomainObjects;
+import io.candydoc.ddd.model.FullName;
 import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.model.SimpleName;
 import io.candydoc.ddd.tactical_pattern.Factory;
@@ -31,10 +31,10 @@ public class FindFactoryTest {
         .contains(
             Factory.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.factory"))
-                .canonicalName(
-                    CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.factory.FindFactoryTest.FactoryOne"))
-                .simpleName(SimpleName.of("FactoryOne"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.factory.FindFactoryTest$FactoryOne"))
+                .simpleName(SimpleName.of("FindFactoryTest$FactoryOne"))
                 .description(Description.of("Description of the factory"))
                 .build());
   }
@@ -45,10 +45,10 @@ public class FindFactoryTest {
         .contains(
             Factory.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.factory"))
-                .canonicalName(
-                    CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.factory.FindFactoryTest.FactoryWithoutAttributes"))
-                .simpleName(SimpleName.of("FactoryWithoutAttributes"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.factory.FindFactoryTest$FactoryWithoutAttributes"))
+                .simpleName(SimpleName.of("FindFactoryTest$FactoryWithoutAttributes"))
                 .description(Description.of(""))
                 .build());
   }
