@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.candydoc.ddd.extract_domain_vocabulary.DomainVocabularyFinder;
 import io.candydoc.ddd.extract_domain_vocabulary.ReflectionsDomainVocabularyFinder;
 import io.candydoc.ddd.model.*;
+import io.candydoc.ddd.rules.DDDWarning;
 import io.candydoc.ddd.tactical_pattern.DomainEntity;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import java.util.List;
@@ -62,6 +63,7 @@ public class FindDomainEntityTest {
                         "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest.EntityWithoutAttributes"))
                 .simpleName(SimpleName.of("EntityWithoutAttributes"))
                 .description(Description.of(""))
+                .warning(DDDWarning.of("Entity should at least have one ID"))
                 .build());
   }
 
@@ -69,9 +71,8 @@ public class FindDomainEntityTest {
       name = "My entity",
       description = "Description of the entity")
   public static class MyEntity {
-    @io.candydoc.ddd.annotations.Id private int id;
-    private ValueObjectOne valueObjectOne;
-    private ValueObjectTwo valueObjectTwo;
+    @io.candydoc.ddd.annotations.DomainEntityId private ValueObjectOne valueObjectOne;
+    @io.candydoc.ddd.annotations.DomainEntityId private ValueObjectTwo valueObjectTwo;
   }
 
   @io.candydoc.ddd.annotations.ValueObject(description = "This is a value object")

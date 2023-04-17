@@ -1,5 +1,6 @@
 package io.candydoc.ddd.model;
 
+import io.candydoc.ddd.rules.DDDWarning;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.*;
@@ -20,6 +21,10 @@ public abstract class DomainModel {
   @Singular
   @Getter(AccessLevel.PRIVATE)
   private final Set<Dependency> dependencies;
+
+  @Singular
+  @Getter(AccessLevel.PRIVATE)
+  private final Set<DDDWarning> warnings;
 
   public boolean dependsOn(CanonicalName canonicalName) {
     return dependencies.stream().anyMatch(dependency -> dependency.name().equals(canonicalName));

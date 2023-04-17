@@ -59,6 +59,7 @@ public final class FoundDomainObjects {
         .simpleName(foundDDDPattern.name())
         .description(foundDDDPattern.description())
         .dependencies(dependencies)
+        .warnings(foundDomainObject.warnings())
         .build();
   }
 

@@ -3,6 +3,8 @@ package io.candydoc.ddd.extract_domain_vocabulary;
 import io.candydoc.ddd.annotations.BoundedContext;
 import io.candydoc.ddd.annotations.SharedKernel;
 import io.candydoc.ddd.model.*;
+import io.candydoc.ddd.rules.DDDWarning;
+import io.candydoc.ddd.rules.DomainEntityId;
 import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import java.lang.annotation.Annotation;
@@ -65,6 +67,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
                     .packageName(PackageName.of(scannedClass.getPackageName()))
                     .canonicalName(CanonicalName.of(scannedClass.getCanonicalName()))
                     .dependencies(dependenciesOf(scannedClass, scannedClasses))
+                    .warnings(checkPatternRules(scannedClass))
                     .build());
           }
         });
@@ -189,5 +192,30 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
     return dependencies.stream()
         .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
         .collect(Collectors.toUnmodifiableSet());
+  }
+
+  private static Set<DDDWarning> checkPatternRules(Class<?> clazz) {
+    Set<DDDWarning> warnings = new HashSet<>();
+
+    if (clazz.isAnnotationPresent(io.candydoc.ddd.annotations.DomainEntity.class)) {
+      Set<DomainEntityId> domainEntityIds =
+          Arrays.stream(clazz.getDeclaredFields())
+              .filter(
+                  field ->
+                      field.isAnnotationPresent(io.candydoc.ddd.annotations.DomainEntityId.class))
+              .map(
+                  field ->
+                      DomainEntityId.builder()
+                          .type(field.getType())
+                          .name(CanonicalName.of(field.getName()))
+                          .build())
+              .collect(Collectors.toUnmodifiableSet());
+
+      if (domainEntityIds.isEmpty()) {
+        warnings.add(DDDWarning.of("Entity should at least have one ID"));
+      }
+    }
+
+    return warnings;
   }
 }

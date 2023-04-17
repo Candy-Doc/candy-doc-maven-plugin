@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
 import io.candydoc.ddd.model.*;
+import io.candydoc.ddd.rules.DDDWarning;
 import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.tactical_pattern.*;
 import java.util.Set;
@@ -90,6 +91,13 @@ public class OneValidBoundedContextTest {
                                       CanonicalName.of(
                                           "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne"))
                                   .build())
+                          .dependency(
+                              Dependency.builder()
+                                  .pattern(TacticalPattern.DOMAIN_ENTITY)
+                                  .name(
+                                      CanonicalName.of(
+                                          "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityWithId"))
+                                  .build())
                           .build());
 
               assertThat(vocabulary.domainModels())
@@ -132,6 +140,17 @@ public class OneValidBoundedContextTest {
                               CanonicalName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne"))
                           .simpleName(SimpleName.of("EntityOne"))
+                          .description(Description.of(""))
+                          .warning(DDDWarning.of("Entity should at least have one ID"))
+                          .build(),
+                      DomainEntity.builder()
+                          .packageName(
+                              PackageName.of(
+                                  "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))
+                          .canonicalName(
+                              CanonicalName.of(
+                                  "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityWithId"))
+                          .simpleName(SimpleName.of("EntityWithId"))
                           .description(Description.of(""))
                           .build(),
                       ValueObject.builder()

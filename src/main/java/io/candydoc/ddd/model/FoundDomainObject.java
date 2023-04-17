@@ -1,5 +1,6 @@
 package io.candydoc.ddd.model;
 
+import io.candydoc.ddd.rules.DDDWarning;
 import java.util.Set;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -14,6 +15,7 @@ public final class FoundDomainObject {
   private final PackageName packageName;
   private final CanonicalName canonicalName;
   @Singular private final Set<CanonicalName> dependencies;
+  @Singular private final Set<DDDWarning> warnings;
 
   public FoundDDDPattern matchingPattern() {
     return matchingPatterns.iterator().next();
