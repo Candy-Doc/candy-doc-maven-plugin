@@ -45,6 +45,12 @@ public enum TacticalPattern implements DDDPattern {
     public <T> T accept(Visitor<T> visitor) {
       return visitor.factory();
     }
+  },
+  REPOSITORY(io.candydoc.ddd.annotations.Repository.class) {
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
+      return visitor.repository();
+    }
   };
   private final Class<? extends Annotation> relatedAnnotation;
 }

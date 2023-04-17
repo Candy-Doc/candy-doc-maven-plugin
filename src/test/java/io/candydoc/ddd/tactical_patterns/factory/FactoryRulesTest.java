@@ -13,6 +13,7 @@ import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+// TODO : Add service and repository tests
 public class FactoryRulesTest {
   static DomainModel factory;
 
@@ -20,7 +21,7 @@ public class FactoryRulesTest {
   static void setUp() {
     factory =
         Factory.builder()
-            .canonicalName(CanonicalName.of("io.candydoc.sample.DomainCommandOne"))
+            .canonicalName(CanonicalName.of("io.candydoc.sample.RepositoryOne"))
             .simpleName(SimpleName.of("FactoryOne"))
             .packageName(PackageName.of("io.candydoc.sample"))
             .dependency(
@@ -47,7 +48,7 @@ public class FactoryRulesTest {
   }
 
   @Test
-  void it_can_bot_depend_on_value_object() {
+  void it_can_not_depend_on_value_object() {
     Dependency valueObject =
         Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))

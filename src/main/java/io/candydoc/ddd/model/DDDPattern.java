@@ -26,5 +26,7 @@ public interface DDDPattern {
     T entity();
 
     T factory();
+
+    T repository();
   }
 }

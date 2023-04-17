@@ -26,7 +26,7 @@ public class FindFactoryTest {
   }
 
   @Test
-  public void find_entity_from_classes() {
+  public void find_factory_from_classes() {
     assertThat(foundDomainObjects.toDomainModels())
         .contains(
             Factory.builder()
