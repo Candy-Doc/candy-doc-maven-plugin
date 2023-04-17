@@ -11,7 +11,12 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class Factory extends TacticalModel {
 
-  private static final Set<DDDPattern> ALLOWED_DEPENDENCIES = Set.of(TacticalPattern.AGGREGATE);
+  private static final Set<DDDPattern> ALLOWED_DEPENDENCIES =
+      Set.of(
+          TacticalPattern.AGGREGATE,
+          TacticalPattern.REPOSITORY,
+          TacticalPattern.FACTORY,
+          TacticalPattern.DOMAIN_SERVICE);
 
   @Override
   public DDDPattern dddPattern() {

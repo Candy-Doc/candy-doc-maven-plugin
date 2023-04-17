@@ -57,7 +57,7 @@ public class DomainServiceRulesTest {
   }
 
   @Test
-  void it_can_depend_on_other_domain_service() {
+  void it_can_depend_on_another_domain_service() {
     Dependency anotherValueObject =
         Dependency.builder()
             .name(CanonicalName.of("io.candydoc.sample.DomainServiceTwo"))

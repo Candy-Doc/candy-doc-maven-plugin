@@ -39,12 +39,71 @@ public class FactoryRulesTest {
                     .name(CanonicalName.of("io.candydoc.sample.AggregateOne"))
                     .pattern(TacticalPattern.AGGREGATE)
                     .build())
+            .dependency(
+                Dependency.builder()
+                    .name(CanonicalName.of("io.candydoc.sample.DomainServiceOne"))
+                    .pattern(TacticalPattern.DOMAIN_SERVICE)
+                    .build())
+            .dependency(
+                Dependency.builder()
+                    .name(CanonicalName.of("io.candydoc.sample.RepositoryOne"))
+                    .pattern(TacticalPattern.REPOSITORY)
+                    .build())
+            .dependency(
+                Dependency.builder()
+                    .name(CanonicalName.of("io.candydoc.sample.FactoryTwo"))
+                    .pattern(TacticalPattern.FACTORY)
+                    .build())
             .build();
   }
 
   @Test
   void is_a_factory() {
     assertThat(factory.dddPattern()).isEqualTo(TacticalPattern.FACTORY);
+  }
+
+  @Test
+  void it_can_depend_on_aggregate() {
+    Dependency aggregate =
+        Dependency.builder()
+            .name(CanonicalName.of("io.candydoc.sample.AggregateOne"))
+            .pattern(TacticalPattern.AGGREGATE)
+            .build();
+
+    assertThatDependency(aggregate).isAllowedIn(factory);
+  }
+
+  @Test
+  void it_can_depend_on_repository() {
+    Dependency repository =
+        Dependency.builder()
+            .name(CanonicalName.of("io.candydoc.sample.RepositoryOne"))
+            .pattern(TacticalPattern.REPOSITORY)
+            .build();
+
+    assertThatDependency(repository).isAllowedIn(factory);
+  }
+
+  @Test
+  void it_can_depend_on_domain_service() {
+    Dependency domain_service =
+        Dependency.builder()
+            .name(CanonicalName.of("io.candydoc.sample.DomainServiceOne"))
+            .pattern(TacticalPattern.DOMAIN_SERVICE)
+            .build();
+
+    assertThatDependency(domain_service).isAllowedIn(factory);
+  }
+
+  @Test
+  void it_can_depend_on_another_factory() {
+    Dependency another_factory =
+        Dependency.builder()
+            .name(CanonicalName.of("io.candydoc.sample.FactoryTwo"))
+            .pattern(TacticalPattern.FACTORY)
+            .build();
+
+    assertThatDependency(another_factory).isAllowedIn(factory);
   }
 
   @Test
@@ -67,16 +126,5 @@ public class FactoryRulesTest {
             .build();
 
     assertThatDependency(entity).isForbiddenIn(factory);
-  }
-
-  @Test
-  void it_can_depend_on_aggregate() {
-    Dependency aggregate =
-        Dependency.builder()
-            .name(CanonicalName.of("io.candydoc.sample.AggregateOne"))
-            .pattern(TacticalPattern.AGGREGATE)
-            .build();
-
-    assertThatDependency(aggregate).isAllowedIn(factory);
   }
 }
