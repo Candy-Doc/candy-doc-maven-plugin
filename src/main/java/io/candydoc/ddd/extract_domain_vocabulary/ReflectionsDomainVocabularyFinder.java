@@ -61,7 +61,13 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
               TacticalPattern.VALUE_OBJECT,
               ReflectionsDomainVocabularyFinder::checkValueObjectRules,
               TacticalPattern.DOMAIN_ENTITY,
-              ReflectionsDomainVocabularyFinder::checkEntityRules);
+              ReflectionsDomainVocabularyFinder::checkEntityRules,
+              TacticalPattern.FACTORY,
+              ReflectionsDomainVocabularyFinder::checkFactoryRules,
+              TacticalPattern.REPOSITORY,
+              ReflectionsDomainVocabularyFinder::checkRepositoryRules,
+              TacticalPattern.DOMAIN_SERVICE,
+              ReflectionsDomainVocabularyFinder::checkDomainServiceRules);
 
   @Override
   public FoundDomainObjects findDomainObjects(Collection<String> packagesToScan) {
@@ -288,6 +294,18 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
   }
 
   private static Set<DomainWarning> checkValueObjectRules(Class<?> clazz) {
+    return new HashSet<>();
+  }
+
+  private static Set<DomainWarning> checkFactoryRules(Class<?> clazz) {
+    return new HashSet<>();
+  }
+
+  private static Set<DomainWarning> checkRepositoryRules(Class<?> clazz) {
+    return new HashSet<>();
+  }
+
+  private static Set<DomainWarning> checkDomainServiceRules(Class<?> clazz) {
     return new HashSet<>();
   }
 

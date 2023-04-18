@@ -191,6 +191,7 @@ public class DomainVocabularyFixtures {
               .canonicalName(
                   CanonicalName.of(
                       "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Entity_Z"))
+              .warning(DomainWarning.NO_ID)
               .dependency(
                   CanonicalName.of(
                       "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.ValueObject_Z2"))

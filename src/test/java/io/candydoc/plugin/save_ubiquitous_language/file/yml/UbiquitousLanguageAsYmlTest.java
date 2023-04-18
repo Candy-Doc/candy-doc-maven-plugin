@@ -30,7 +30,7 @@ class UbiquitousLanguageAsYmlTest {
   }
 
   @Test
-  public void save_bounded_context_as_json() {
+  public void save_bounded_context_as_yml() {
     // given
     FoundDomainObjects foundDomainObjects =
         new FoundDomainObjects().addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_BOUNDED_CONTEXT);
@@ -49,7 +49,7 @@ class UbiquitousLanguageAsYmlTest {
   }
 
   @Test
-  public void save_second_bounded_context_as_json() {
+  public void save_second_bounded_context_as_yml() {
     // given
     FoundDomainObjects foundDomainObjects =
         new FoundDomainObjects()
@@ -69,7 +69,7 @@ class UbiquitousLanguageAsYmlTest {
   }
 
   @Test
-  public void save_shared_kernel_as_json() {
+  public void save_shared_kernel_as_yml() {
     // given
     FoundDomainObjects foundDomainObjects =
         new FoundDomainObjects().addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_SHARED_KERNEL);
@@ -88,7 +88,7 @@ class UbiquitousLanguageAsYmlTest {
   }
 
   @Test
-  public void save_orphan_vocabulary_as_json() {
+  public void save_orphan_vocabulary_as_yml() {
     // given
     FoundDomainObjects foundDomainObjects =
         new FoundDomainObjects().addAll(DomainVocabularyFixtures.ORPHAN_DOMAIN_OBJECTS);

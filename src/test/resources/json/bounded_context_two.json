@@ -16,19 +16,22 @@
           "refersTo": "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.ValueObject_Z1",
           "allowed": true
         }
-      ]
+      ],
+      "warnings": []
     },
     "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.DomainCommand_Z": {
       "type": "DOMAIN_COMMAND",
       "simpleName": "DomainCommand_Z",
       "description": "",
-      "dependencies": []
+      "dependencies": [],
+      "warnings": []
     },
     "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.DomainEvent_Z": {
       "type": "DOMAIN_EVENT",
       "simpleName": "DomainEvent_Z",
       "description": "",
-      "dependencies": []
+      "dependencies": [],
+      "warnings": []
     },
     "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.DomainService_Z": {
       "type": "DOMAIN_SERVICE",
@@ -43,7 +46,8 @@
           "refersTo": "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Repository_Z",
           "allowed": true
         }
-      ]
+      ],
+      "warnings": []
     },
     "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Entity_Z": {
       "type": "DOMAIN_ENTITY",
@@ -54,7 +58,8 @@
           "refersTo": "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.ValueObject_Z2",
           "allowed": true
         }
-      ]
+      ],
+      "warnings": ["NO_ID"]
     },
     "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Factory_Z": {
       "type": "FACTORY",
@@ -65,7 +70,8 @@
           "refersTo": "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Repository_Z",
           "allowed": true
         }
-      ]
+      ],
+      "warnings": []
     },
     "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Repository_Z": {
       "type": "REPOSITORY",
@@ -76,19 +82,22 @@
           "refersTo": "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Aggregate_Z",
           "allowed": true
         }
-      ]
+      ],
+      "warnings": []
     },
     "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.ValueObject_Z1": {
       "type": "VALUE_OBJECT",
       "simpleName": "ValueObject_Z1",
       "description": "",
-      "dependencies": []
+      "dependencies": [],
+      "warnings": []
     },
     "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.ValueObject_Z2": {
       "type": "VALUE_OBJECT",
       "simpleName": "ValueObject_Z2",
       "description": "",
-      "dependencies": []
+      "dependencies": [],
+      "warnings": []
     }
   }
 }

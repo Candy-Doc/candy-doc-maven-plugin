@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import io.candydoc.ddd.model.CanonicalName;
 import io.candydoc.ddd.model.Dependency;
 import io.candydoc.ddd.model.Description;
+import io.candydoc.ddd.model.DomainWarning;
 import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.model.SimpleName;
 import io.candydoc.ddd.model.UbiquitousLanguage;
@@ -187,6 +188,7 @@ public class SecondValidBoundedContextTest {
                                   "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Entity_Z"))
                           .simpleName(SimpleName.of("Entity_Z"))
                           .description(Description.of(""))
+                          .warning(DomainWarning.NO_ID)
                           .dependency(
                               Dependency.builder()
                                   .pattern(TacticalPattern.VALUE_OBJECT)
