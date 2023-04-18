@@ -7,6 +7,8 @@ import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -198,10 +200,23 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
     return dependenciesOfTacticalPattern(domainModel);
   }
 
+  private static Class<?> getFieldType(Field field) {
+    Type fieldType = field.getGenericType();
+    if (fieldType instanceof ParameterizedType) {
+      Type[] actualTypeArguments = ((ParameterizedType) fieldType).getActualTypeArguments();
+      if (actualTypeArguments.length > 0 && actualTypeArguments[0] instanceof Class) {
+        return (Class<?>) actualTypeArguments[0];
+      }
+    }
+    return field.getType();
+  }
+
   private static Set<CanonicalName> dependenciesOfTacticalPattern(Class<?> domainModel) {
     Set<Class<?>> dependencies = new HashSet<>();
 
-    Arrays.stream(domainModel.getDeclaredFields()).map(Field::getType).forEach(dependencies::add);
+    Arrays.stream(domainModel.getDeclaredFields())
+        .map(ReflectionsDomainVocabularyFinder::getFieldType)
+        .forEach(dependencies::add);
 
     Arrays.stream(domainModel.getDeclaredMethods())
         .forEach(

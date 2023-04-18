@@ -13,7 +13,6 @@ import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-// TODO : Add service and repository tests
 public class FactoryRulesTest {
   static DomainModel factory;
 
