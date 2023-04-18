@@ -1,6 +1,7 @@
 package io.candydoc.plugin.model;
 
 import io.candydoc.ddd.model.DomainModel;
+import io.candydoc.ddd.model.DomainWarning;
 import java.util.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +16,7 @@ public final class DomainModelDto {
   private String simpleName;
   private String description;
   private Collection<DependencyDto> dependencies;
+  private Collection<DomainWarning> warnings;
 
   public static DomainModelDto from(DomainModel domainModel) {
     List<DependencyDto> dependencies = new ArrayList<>();
@@ -38,6 +40,7 @@ public final class DomainModelDto {
         .simpleName(domainModel.simpleName().value())
         .description(domainModel.description().value())
         .dependencies(Collections.unmodifiableCollection(dependencies))
+        .warnings(domainModel.warnings())
         .build();
   }
 }

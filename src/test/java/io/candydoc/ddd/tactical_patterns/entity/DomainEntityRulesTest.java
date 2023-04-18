@@ -4,7 +4,6 @@ import static io.candydoc.ddd.AssertDependency.assertThatDependency;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.candydoc.ddd.model.*;
-import io.candydoc.ddd.rules.DomainEntityId;
 import io.candydoc.ddd.tactical_pattern.DomainEntity;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,11 +16,6 @@ public class DomainEntityRulesTest {
   static void setUp() {
     entity =
         DomainEntity.builder()
-            .domainEntityId(
-                DomainEntityId.builder()
-                    .type(String.class)
-                    .name(CanonicalName.of("EntityId"))
-                    .build())
             .canonicalName(CanonicalName.of("io.candydoc.sample.EntityOne"))
             .simpleName(SimpleName.of("EntityOne"))
             .packageName(PackageName.of("io.candydoc.sample"))
@@ -111,12 +105,5 @@ public class DomainEntityRulesTest {
             .build();
 
     assertThatDependency(anotherAggregate).isForbiddenIn(entity);
-  }
-
-  @Test
-  void it_can_have_id() {
-    assertThat(entity.getDomainEntityIds())
-        .contains(
-            DomainEntityId.builder().type(String.class).name(CanonicalName.of("EntityId")).build());
   }
 }

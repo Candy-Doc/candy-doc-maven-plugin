@@ -12,13 +12,15 @@
           "refersTo": "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo",
           "allowed": true
         }
-      ]
+      ],
+      "warnings": []
     },
     "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo": {
       "type": "VALUE_OBJECT",
       "simpleName": "SharedValueObjectTwo",
       "description": "",
-      "dependencies": []
+      "dependencies": [],
+      "warnings": []
     }
   }
 }

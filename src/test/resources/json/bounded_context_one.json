@@ -16,25 +16,29 @@
           "refersTo": "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne",
           "allowed": true
         }
-      ]
+      ],
+      "warnings": []
     },
     "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne": {
       "type": "DOMAIN_COMMAND",
       "simpleName": "DomainCommandOne",
       "description": "",
-      "dependencies": []
+      "dependencies": [],
+      "warnings": []
     },
     "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne": {
       "type": "DOMAIN_EVENT",
       "simpleName": "DomainEventOne",
       "description": "",
-      "dependencies": []
+      "dependencies": [],
+      "warnings": []
     },
     "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne": {
       "type": "VALUE_OBJECT",
       "simpleName": "ValueObjectOne",
       "description": "",
-      "dependencies": []
+      "dependencies": [],
+      "warnings": []
     }
   }
 }

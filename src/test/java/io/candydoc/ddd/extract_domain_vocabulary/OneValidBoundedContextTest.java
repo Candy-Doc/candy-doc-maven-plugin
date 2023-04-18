@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
 import io.candydoc.ddd.model.*;
-import io.candydoc.ddd.rules.DDDWarning;
+import io.candydoc.ddd.model.DomainWarning;
 import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.tactical_pattern.*;
 import java.util.Set;
@@ -141,7 +141,7 @@ public class OneValidBoundedContextTest {
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne"))
                           .simpleName(SimpleName.of("EntityOne"))
                           .description(Description.of(""))
-                          .warning(DDDWarning.of("Entity should at least have one ID"))
+                          .warning(DomainWarning.NO_ID)
                           .build(),
                       DomainEntity.builder()
                           .packageName(

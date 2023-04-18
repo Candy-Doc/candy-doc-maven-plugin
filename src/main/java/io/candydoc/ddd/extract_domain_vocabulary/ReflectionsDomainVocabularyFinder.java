@@ -3,8 +3,7 @@ package io.candydoc.ddd.extract_domain_vocabulary;
 import io.candydoc.ddd.annotations.BoundedContext;
 import io.candydoc.ddd.annotations.SharedKernel;
 import io.candydoc.ddd.model.*;
-import io.candydoc.ddd.rules.DDDWarning;
-import io.candydoc.ddd.rules.DomainEntityId;
+import io.candydoc.ddd.model.DomainWarning;
 import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import java.lang.annotation.Annotation;
@@ -38,6 +37,24 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
           TacticalPattern.DOMAIN_ENTITY,
           ReflectionsDomainVocabularyFinder::toEntityPattern);
 
+  public static final Map<DDDPattern, Function<Class<?>, Set<DomainWarning>>>
+      DDD_WARNING_PROCESSOR =
+          Map.of(
+              StrategicPattern.BOUNDED_CONTEXT,
+              ReflectionsDomainVocabularyFinder::checkBoundedContextRules,
+              StrategicPattern.SHARED_KERNEL,
+              ReflectionsDomainVocabularyFinder::checkSharedKernelRules,
+              TacticalPattern.AGGREGATE,
+              ReflectionsDomainVocabularyFinder::checkAggregateRules,
+              TacticalPattern.DOMAIN_COMMAND,
+              ReflectionsDomainVocabularyFinder::checkDomainCommandRules,
+              TacticalPattern.DOMAIN_EVENT,
+              ReflectionsDomainVocabularyFinder::checkDomainEventRules,
+              TacticalPattern.VALUE_OBJECT,
+              ReflectionsDomainVocabularyFinder::checkValueObjectRules,
+              TacticalPattern.DOMAIN_ENTITY,
+              ReflectionsDomainVocabularyFinder::checkEntityRules);
+
   @Override
   public FoundDomainObjects findDomainObjects(Collection<String> packagesToScan) {
     String[] packagesAsArray = packagesToScan.toArray(new String[] {});
@@ -67,7 +84,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
                     .packageName(PackageName.of(scannedClass.getPackageName()))
                     .canonicalName(CanonicalName.of(scannedClass.getCanonicalName()))
                     .dependencies(dependenciesOf(scannedClass, scannedClasses))
-                    .warnings(checkPatternRules(scannedClass))
+                    .warnings(checkPatternsRules(matchingAnnotations, scannedClass))
                     .build());
           }
         });
@@ -194,28 +211,55 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
         .collect(Collectors.toUnmodifiableSet());
   }
 
-  private static Set<DDDWarning> checkPatternRules(Class<?> clazz) {
-    Set<DDDWarning> warnings = new HashSet<>();
+  private static Set<DomainWarning> checkPatternsRules(
+      Set<Class<? extends Annotation>> matchingAnnotations, Class<?> clazz) {
+    return DDD_WARNING_PROCESSOR.keySet().stream()
+        .filter(dddPattern -> matchingAnnotations.contains(dddPattern.relatedAnnotation()))
+        .map(dddPattern -> checkPatternRules(dddPattern, clazz))
+        .iterator()
+        .next();
+  }
 
-    if (clazz.isAnnotationPresent(io.candydoc.ddd.annotations.DomainEntity.class)) {
-      Set<DomainEntityId> domainEntityIds =
-          Arrays.stream(clazz.getDeclaredFields())
-              .filter(
-                  field ->
-                      field.isAnnotationPresent(io.candydoc.ddd.annotations.DomainEntityId.class))
-              .map(
-                  field ->
-                      DomainEntityId.builder()
-                          .type(field.getType())
-                          .name(CanonicalName.of(field.getName()))
-                          .build())
-              .collect(Collectors.toUnmodifiableSet());
+  private static Set<DomainWarning> checkPatternRules(DDDPattern dddPattern, Class<?> clazz) {
+    return DDD_WARNING_PROCESSOR.get(dddPattern).apply(clazz);
+  }
 
-      if (domainEntityIds.isEmpty()) {
-        warnings.add(DDDWarning.of("Entity should at least have one ID"));
-      }
+  private static Set<DomainWarning> checkBoundedContextRules(Class<?> clazz) {
+    return new HashSet<>();
+  }
+
+  private static Set<DomainWarning> checkSharedKernelRules(Class<?> clazz) {
+    return new HashSet<>();
+  }
+
+  private static Set<DomainWarning> checkAggregateRules(Class<?> clazz) {
+    return new HashSet<>();
+  }
+
+  private static Set<DomainWarning> checkDomainCommandRules(Class<?> clazz) {
+    return new HashSet<>();
+  }
+
+  private static Set<DomainWarning> checkDomainEventRules(Class<?> clazz) {
+    return new HashSet<>();
+  }
+
+  private static Set<DomainWarning> checkValueObjectRules(Class<?> clazz) {
+    return new HashSet<>();
+  }
+
+  private static Set<DomainWarning> checkEntityRules(Class<?> clazz) {
+    Set<DomainWarning> warnings = new HashSet<>();
+    Set<Field> domainEntityIds =
+        Arrays.stream(clazz.getDeclaredFields())
+            .filter(
+                field ->
+                    field.isAnnotationPresent(io.candydoc.ddd.annotations.DomainEntityId.class))
+            .collect(Collectors.toUnmodifiableSet());
+
+    if (domainEntityIds.isEmpty()) {
+      warnings.add(DomainWarning.NO_ID);
     }
-
     return warnings;
   }
 }
