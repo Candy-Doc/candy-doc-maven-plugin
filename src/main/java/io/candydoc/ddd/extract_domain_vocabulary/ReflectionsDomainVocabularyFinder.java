@@ -7,6 +7,8 @@ import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -32,7 +34,15 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
           TacticalPattern.DOMAIN_EVENT,
           ReflectionsDomainVocabularyFinder::toDomainEventPattern,
           TacticalPattern.VALUE_OBJECT,
-          ReflectionsDomainVocabularyFinder::toValueObjectPattern);
+          ReflectionsDomainVocabularyFinder::toValueObjectPattern,
+          TacticalPattern.DOMAIN_ENTITY,
+          ReflectionsDomainVocabularyFinder::toEntityPattern,
+          TacticalPattern.FACTORY,
+          ReflectionsDomainVocabularyFinder::toFactoryPattern,
+          TacticalPattern.REPOSITORY,
+          ReflectionsDomainVocabularyFinder::toRepositoryPattern,
+          TacticalPattern.DOMAIN_SERVICE,
+          ReflectionsDomainVocabularyFinder::toDomainServicePattern);
 
   @Override
   public FoundDomainObjects findDomainObjects(Collection<String> packagesToScan) {
@@ -61,7 +71,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
                 FoundDomainObject.builder()
                     .matchingPatterns(toFoundDDDPatterns(matchingAnnotations, scannedClass))
                     .packageName(PackageName.of(scannedClass.getPackageName()))
-                    .fullName(FullName.of(scannedClass.getName()))
+                    .canonicalName(CanonicalName.of(scannedClass.getCanonicalName()))
                     .dependencies(dependenciesOf(scannedClass, scannedClasses))
                     .build());
           }
@@ -112,7 +122,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
   private static FoundDDDPattern toAggregatePattern(Class<?> clazz) {
     String simpleName = clazz.getAnnotation(io.candydoc.ddd.annotations.Aggregate.class).name();
     if (simpleName.isBlank()) {
-      simpleName = lastPartOfClassName(clazz);
+      simpleName = clazz.getSimpleName();
     }
 
     String description =
@@ -123,20 +133,48 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
   private static FoundDDDPattern toDomainCommandPattern(Class<?> clazz) {
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.DomainCommand.class).description();
-    return toFoundDDDPattern(
-        TacticalPattern.DOMAIN_COMMAND, lastPartOfClassName(clazz), description);
+    return toFoundDDDPattern(TacticalPattern.DOMAIN_COMMAND, clazz.getSimpleName(), description);
   }
 
   private static FoundDDDPattern toDomainEventPattern(Class<?> clazz) {
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.DomainEvent.class).description();
-    return toFoundDDDPattern(TacticalPattern.DOMAIN_EVENT, lastPartOfClassName(clazz), description);
+    return toFoundDDDPattern(TacticalPattern.DOMAIN_EVENT, clazz.getSimpleName(), description);
+  }
+
+  private static FoundDDDPattern toFactoryPattern(Class<?> clazz) {
+    String description =
+        clazz.getAnnotation(io.candydoc.ddd.annotations.Factory.class).description();
+    return toFoundDDDPattern(TacticalPattern.FACTORY, clazz.getSimpleName(), description);
+  }
+
+  private static FoundDDDPattern toRepositoryPattern(Class<?> clazz) {
+    String description =
+        clazz.getAnnotation(io.candydoc.ddd.annotations.Repository.class).description();
+    return toFoundDDDPattern(TacticalPattern.REPOSITORY, clazz.getSimpleName(), description);
+  }
+
+  private static FoundDDDPattern toDomainServicePattern(Class<?> clazz) {
+    String description =
+        clazz.getAnnotation(io.candydoc.ddd.annotations.DomainService.class).description();
+    return toFoundDDDPattern(TacticalPattern.DOMAIN_SERVICE, clazz.getSimpleName(), description);
   }
 
   private static FoundDDDPattern toValueObjectPattern(Class<?> clazz) {
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.ValueObject.class).description();
-    return toFoundDDDPattern(TacticalPattern.VALUE_OBJECT, lastPartOfClassName(clazz), description);
+    return toFoundDDDPattern(TacticalPattern.VALUE_OBJECT, clazz.getSimpleName(), description);
+  }
+
+  private static FoundDDDPattern toEntityPattern(Class<?> clazz) {
+    String simpleName = clazz.getAnnotation(io.candydoc.ddd.annotations.DomainEntity.class).name();
+    if (simpleName.isBlank()) {
+      simpleName = clazz.getSimpleName();
+    }
+
+    String description =
+        clazz.getAnnotation(io.candydoc.ddd.annotations.DomainEntity.class).description();
+    return toFoundDDDPattern(TacticalPattern.DOMAIN_ENTITY, simpleName, description);
   }
 
   private static FoundDDDPattern toFoundDDDPattern(
@@ -148,23 +186,37 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
         .build();
   }
 
-  private static Set<FullName> dependenciesOf(Class<?> domainModel, Set<Class<?>> scannedClasses) {
+  private static Set<CanonicalName> dependenciesOf(
+      Class<?> domainModel, Set<Class<?>> scannedClasses) {
     if (domainModel.isAnnotationPresent(BoundedContext.class)
         || domainModel.isAnnotationPresent(SharedKernel.class)) {
       String packageName = domainModel.getPackageName();
       return scannedClasses.stream()
           .filter(
               clazz -> !clazz.equals(domainModel) && clazz.getPackageName().startsWith(packageName))
-          .map(dependency -> FullName.of(dependency.getName()))
+          .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
           .collect(Collectors.toUnmodifiableSet());
     }
     return dependenciesOfTacticalPattern(domainModel);
   }
 
-  private static Set<FullName> dependenciesOfTacticalPattern(Class<?> domainModel) {
+  private static Class<?> getFieldType(Field field) {
+    Type fieldType = field.getGenericType();
+    if (fieldType instanceof ParameterizedType) {
+      Type[] actualTypeArguments = ((ParameterizedType) fieldType).getActualTypeArguments();
+      if (actualTypeArguments.length > 0 && actualTypeArguments[0] instanceof Class) {
+        return (Class<?>) actualTypeArguments[0];
+      }
+    }
+    return field.getType();
+  }
+
+  private static Set<CanonicalName> dependenciesOfTacticalPattern(Class<?> domainModel) {
     Set<Class<?>> dependencies = new HashSet<>();
 
-    Arrays.stream(domainModel.getDeclaredFields()).map(Field::getType).forEach(dependencies::add);
+    Arrays.stream(domainModel.getDeclaredFields())
+        .map(ReflectionsDomainVocabularyFinder::getFieldType)
+        .forEach(dependencies::add);
 
     Arrays.stream(domainModel.getDeclaredMethods())
         .forEach(
@@ -174,12 +226,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
             });
 
     return dependencies.stream()
-        .map(dependency -> FullName.of(dependency.getName()))
+        .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
         .collect(Collectors.toUnmodifiableSet());
-  }
-
-  private static String lastPartOfClassName(Class<?> className) {
-    String name = className.getName();
-    return name.substring(name.lastIndexOf(".") + 1);
   }
 }
