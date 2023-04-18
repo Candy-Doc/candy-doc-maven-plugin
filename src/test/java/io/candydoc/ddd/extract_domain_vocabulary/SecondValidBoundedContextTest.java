@@ -265,6 +265,13 @@ public class SecondValidBoundedContextTest {
                                       CanonicalName.of(
                                           "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Repository_Z"))
                                   .build())
+                          .dependency(
+                              Dependency.builder()
+                                  .pattern(TacticalPattern.DOMAIN_EVENT)
+                                  .name(
+                                      CanonicalName.of(
+                                          "io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.DomainEvent_Z"))
+                                  .build())
                           .build());
             });
   }
