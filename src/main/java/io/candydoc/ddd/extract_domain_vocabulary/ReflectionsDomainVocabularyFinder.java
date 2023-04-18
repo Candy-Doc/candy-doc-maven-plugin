@@ -200,15 +200,19 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
     return dependenciesOfTacticalPattern(domainModel);
   }
 
-  private static Class<?> getFieldType(Field field) {
+  private static List<Class<?>> getFieldType(Field field) {
     Type fieldType = field.getGenericType();
     if (fieldType instanceof ParameterizedType) {
+      List<Class<?>> actualArgumentClasses = new ArrayList<>();
       Type[] actualTypeArguments = ((ParameterizedType) fieldType).getActualTypeArguments();
-      if (actualTypeArguments.length > 0 && actualTypeArguments[0] instanceof Class) {
-        return (Class<?>) actualTypeArguments[0];
+      for (Type type : actualTypeArguments) {
+        if (type instanceof Class) {
+          actualArgumentClasses.add((Class<?>) type);
+        }
       }
+      return actualArgumentClasses;
     }
-    return field.getType();
+    return List.of(field.getType());
   }
 
   private static Set<CanonicalName> dependenciesOfTacticalPattern(Class<?> domainModel) {
@@ -216,7 +220,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
 
     Arrays.stream(domainModel.getDeclaredFields())
         .map(ReflectionsDomainVocabularyFinder::getFieldType)
-        .forEach(dependencies::add);
+        .forEach(dependencies::addAll);
 
     Arrays.stream(domainModel.getDeclaredMethods())
         .forEach(

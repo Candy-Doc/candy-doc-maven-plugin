@@ -6,5 +6,6 @@ import io.candydoc.ddd.annotations.DomainService;
 public class DomainService_Z {
   private Repository_Z repository;
 
-  //  public void publishDomainEvent_Z(){};
+  public void publishDomainEvent_Z(DomainEvent_Z eventToPublish) {}
+  ;
 }
