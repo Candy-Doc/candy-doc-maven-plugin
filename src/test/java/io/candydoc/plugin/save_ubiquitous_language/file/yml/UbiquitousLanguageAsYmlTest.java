@@ -49,6 +49,26 @@ class UbiquitousLanguageAsYmlTest {
   }
 
   @Test
+  public void save_second_bounded_context_as_json() {
+    // given
+    FoundDomainObjects foundDomainObjects =
+        new FoundDomainObjects()
+            .addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_SECOND_BOUNDED_CONTEXT);
+
+    Set<UbiquitousLanguage> ubiquitousLanguages =
+        UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
+
+    // when
+    ubiquitousLanguageAsYml.saveAll(ubiquitousLanguages);
+
+    // then
+    Path referenceFile = REFERENCE_FOLDER.resolve("bounded_context_two.yml");
+    Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_two.yml");
+
+    assertThatYml(actualFile).isEqualTo(referenceFile);
+  }
+
+  @Test
   public void save_shared_kernel_as_json() {
     // given
     FoundDomainObjects foundDomainObjects =

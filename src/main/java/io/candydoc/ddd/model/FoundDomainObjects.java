@@ -113,6 +113,21 @@ public final class FoundDomainObjects {
           public DomainModel.DomainModelBuilder<?, ?> entity() {
             return DomainEntity.builder();
           }
+
+          @Override
+          public DomainModel.DomainModelBuilder<?, ?> factory() {
+            return Factory.builder();
+          }
+
+          @Override
+          public DomainModel.DomainModelBuilder<?, ?> repository() {
+            return Repository.builder();
+          }
+
+          @Override
+          public DomainModel.DomainModelBuilder<?, ?> domainService() {
+            return DomainService.builder();
+          }
         });
   }
 }

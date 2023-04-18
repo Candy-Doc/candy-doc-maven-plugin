@@ -1,0 +1,63 @@
+type: BOUNDED_CONTEXT
+name: Bounded context two
+description: Second valid bounded context
+domainModels:
+  io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Aggregate_Z:
+    type: AGGREGATE
+    simpleName: Aggregate_Z
+    description: ''
+    dependencies:
+    - refersTo: io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Entity_Z
+      allowed: true
+    - refersTo: io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.ValueObject_Z1
+      allowed: true
+  io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.DomainCommand_Z:
+    type: DOMAIN_COMMAND
+    simpleName: DomainCommand_Z
+    description: ''
+    dependencies: []
+  io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.DomainEvent_Z:
+    type: DOMAIN_EVENT
+    simpleName: DomainEvent_Z
+    description: ''
+    dependencies: []
+  io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.DomainService_Z:
+    type: DOMAIN_SERVICE
+    simpleName: DomainService_Z
+    description: ''
+    dependencies:
+    - refersTo: io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.DomainEvent_Z
+      allowed: true
+    - refersTo: io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Repository_Z
+      allowed: true
+  io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Entity_Z:
+    type: DOMAIN_ENTITY
+    simpleName: Entity_Z
+    description: ''
+    dependencies:
+    - refersTo: io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.ValueObject_Z2
+      allowed: true
+  io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Factory_Z:
+    type: FACTORY
+    simpleName: Factory_Z
+    description: ''
+    dependencies:
+    - refersTo: io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Repository_Z
+      allowed: true
+  io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Repository_Z:
+    type: REPOSITORY
+    simpleName: Repository_Z
+    description: ''
+    dependencies:
+    - refersTo: io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.Aggregate_Z
+      allowed: true
+  io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.ValueObject_Z1:
+    type: VALUE_OBJECT
+    simpleName: ValueObject_Z1
+    description: ''
+    dependencies: []
+  io.candydoc.ddd.sample.second_valid_bounded_context.feature_Z.ValueObject_Z2:
+    type: VALUE_OBJECT
+    simpleName: ValueObject_Z2
+    description: ''
+    dependencies: []
