@@ -53,6 +53,28 @@ public class FindDomainEntityTest {
   }
 
   @Test
+  public void id_not_provided() {
+    assertThat(foundDomainObjects.toDomainModels())
+        .contains(
+            io.candydoc.ddd.tactical_pattern.DomainEntity.builder()
+                .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.entity"))
+                .canonicalName(
+                    CanonicalName.of(
+                        "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest.EntityWithoutId"))
+                .simpleName(SimpleName.of("EntityWithoutId"))
+                .description(Description.of(""))
+                .dependency(
+                    Dependency.builder()
+                        .pattern(TacticalPattern.VALUE_OBJECT)
+                        .name(
+                            CanonicalName.of(
+                                "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest.ValueObjectOne"))
+                        .build())
+                .warning(DomainWarning.NO_ID)
+                .build());
+  }
+
+  @Test
   public void attributes_not_provided() {
     assertThat(foundDomainObjects.toDomainModels())
         .contains(
@@ -80,6 +102,11 @@ public class FindDomainEntityTest {
 
   @io.candydoc.ddd.annotations.ValueObject
   public static class ValueObjectTwo {}
+
+  @io.candydoc.ddd.annotations.DomainEntity
+  public static class EntityWithoutId {
+    private ValueObjectOne id;
+  }
 
   @io.candydoc.ddd.annotations.DomainEntity
   public static class EntityWithoutAttributes {}
