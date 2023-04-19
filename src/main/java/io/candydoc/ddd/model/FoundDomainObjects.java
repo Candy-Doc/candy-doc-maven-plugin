@@ -110,7 +110,7 @@ public final class FoundDomainObjects {
           }
 
           @Override
-          public DomainModel.DomainModelBuilder<?, ?> entity() {
+          public DomainModel.DomainModelBuilder<?, ?> domainEntity() {
             return DomainEntity.builder();
           }
 
