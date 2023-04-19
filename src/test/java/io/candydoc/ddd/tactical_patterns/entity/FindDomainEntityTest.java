@@ -33,7 +33,7 @@ public class FindDomainEntityTest {
                 .canonicalName(
                     CanonicalName.of(
                         "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest.MyEntity"))
-                .simpleName(SimpleName.of("My entity"))
+                .simpleName(SimpleName.of("MyEntity"))
                 .description(Description.of("Description of the entity"))
                 .dependency(
                     Dependency.builder()
@@ -89,9 +89,7 @@ public class FindDomainEntityTest {
                 .build());
   }
 
-  @io.candydoc.ddd.annotations.DomainEntity(
-      name = "My entity",
-      description = "Description of the entity")
+  @io.candydoc.ddd.annotations.DomainEntity(description = "Description of the entity")
   public static class MyEntity {
     @io.candydoc.ddd.annotations.DomainEntityId private ValueObjectOne valueObjectOne;
     @io.candydoc.ddd.annotations.DomainEntityId private ValueObjectTwo valueObjectTwo;

@@ -170,14 +170,9 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
   }
 
   private static FoundDDDPattern toEntityPattern(Class<?> clazz) {
-    String simpleName = clazz.getAnnotation(io.candydoc.ddd.annotations.DomainEntity.class).name();
-    if (simpleName.isBlank()) {
-      simpleName = clazz.getSimpleName();
-    }
-
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.DomainEntity.class).description();
-    return toFoundDDDPattern(TacticalPattern.DOMAIN_ENTITY, simpleName, description);
+    return toFoundDDDPattern(TacticalPattern.DOMAIN_ENTITY, clazz.getSimpleName(), description);
   }
 
   private static FoundDDDPattern toFoundDDDPattern(
