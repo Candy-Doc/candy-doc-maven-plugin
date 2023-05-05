@@ -1,3 +1,9 @@
+# [v2.1.0](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v2.0.1...v2.1.0) (2023-05-05)
+  You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/2.1.0/maven-plugin
+
+## ✨ New minor Features
+- [`60ccecd`](https://github.com/Candy-Doc/candy-doc-maven-plugin/commit/60ccecd)  feat: deal with inner and anonymous classes (#188) (Issues: [`#188`](https://github.com/Candy-Doc/candy-doc-maven-plugin/issues/188))
+
 # [v2.0.1](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v2.0.0...v2.0.1) (2023-04-11)
   You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/2.0.1/maven-plugin
 
