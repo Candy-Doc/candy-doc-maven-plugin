@@ -48,8 +48,8 @@ public class OneValidBoundedContextTest {
               assertThat(vocabulary.boundedContext())
                   .isEqualTo(
                       BoundedContext.builder()
-                          .canonicalName(
-                              CanonicalName.of(
+                          .fullName(
+                              FullName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.package-info"))
                           .simpleName(SimpleName.of("Bounded context one"))
                           .packageName(
@@ -59,28 +59,28 @@ public class OneValidBoundedContextTest {
                               Dependency.builder()
                                   .pattern(TacticalPattern.AGGREGATE)
                                   .name(
-                                      CanonicalName.of(
+                                      FullName.of(
                                           "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.AggregateOne"))
                                   .build())
                           .dependency(
                               Dependency.builder()
                                   .pattern(TacticalPattern.DOMAIN_COMMAND)
                                   .name(
-                                      CanonicalName.of(
+                                      FullName.of(
                                           "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne"))
                                   .build())
                           .dependency(
                               Dependency.builder()
                                   .pattern(TacticalPattern.DOMAIN_EVENT)
                                   .name(
-                                      CanonicalName.of(
+                                      FullName.of(
                                           "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne"))
                                   .build())
                           .dependency(
                               Dependency.builder()
                                   .pattern(TacticalPattern.VALUE_OBJECT)
                                   .name(
-                                      CanonicalName.of(
+                                      FullName.of(
                                           "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne"))
                                   .build())
                           .build());
@@ -91,8 +91,8 @@ public class OneValidBoundedContextTest {
                           .packageName(
                               PackageName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))
-                          .canonicalName(
-                              CanonicalName.of(
+                          .fullName(
+                              FullName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.AggregateOne"))
                           .simpleName(SimpleName.of("AggregateOne"))
                           .description(Description.of(""))
@@ -101,8 +101,8 @@ public class OneValidBoundedContextTest {
                           .packageName(
                               PackageName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))
-                          .canonicalName(
-                              CanonicalName.of(
+                          .fullName(
+                              FullName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne"))
                           .simpleName(SimpleName.of("DomainCommandOne"))
                           .description(Description.of(""))
@@ -111,8 +111,8 @@ public class OneValidBoundedContextTest {
                           .packageName(
                               PackageName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))
-                          .canonicalName(
-                              CanonicalName.of(
+                          .fullName(
+                              FullName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne"))
                           .simpleName(SimpleName.of("DomainEventOne"))
                           .description(Description.of(""))
@@ -121,8 +121,8 @@ public class OneValidBoundedContextTest {
                           .packageName(
                               PackageName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))
-                          .canonicalName(
-                              CanonicalName.of(
+                          .fullName(
+                              FullName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne"))
                           .simpleName(SimpleName.of("ValueObjectOne"))
                           .description(Description.of(""))

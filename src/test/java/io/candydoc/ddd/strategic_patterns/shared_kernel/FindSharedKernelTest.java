@@ -29,8 +29,8 @@ public class FindSharedKernelTest {
             SharedKernel.builder()
                 .packageName(
                     PackageName.of("io.candydoc.ddd.strategic_patterns.shared_kernel.sampleA"))
-                .canonicalName(
-                    CanonicalName.of(
+                .fullName(
+                    FullName.of(
                         "io.candydoc.ddd.strategic_patterns.shared_kernel.sampleA.package-info"))
                 .simpleName(SimpleName.of("Shared kernel one"))
                 .description(Description.of("Describe the shared kernel here"))
@@ -44,8 +44,8 @@ public class FindSharedKernelTest {
             SharedKernel.builder()
                 .packageName(
                     PackageName.of("io.candydoc.ddd.strategic_patterns.shared_kernel.sampleB"))
-                .canonicalName(
-                    CanonicalName.of(
+                .fullName(
+                    FullName.of(
                         "io.candydoc.ddd.strategic_patterns.shared_kernel.sampleB.package-info"))
                 .simpleName(SimpleName.of("sampleB"))
                 .description(Description.of(""))

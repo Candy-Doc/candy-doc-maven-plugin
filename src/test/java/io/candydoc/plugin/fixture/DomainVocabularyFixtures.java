@@ -19,19 +19,19 @@ public class DomainVocabularyFixtures {
                       .description(Description.of("Describe the bounded context here"))
                       .build())
               .packageName(PackageName.of("io.candydoc.ddd.sample.one_valid_bounded_context"))
-              .canonicalName(
-                  CanonicalName.of("io.candydoc.ddd.sample.one_valid_bounded_context.package-info"))
+              .fullName(
+                  FullName.of("io.candydoc.ddd.sample.one_valid_bounded_context.package-info"))
               .dependency(
-                  CanonicalName.of(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.AggregateOne"))
               .dependency(
-                  CanonicalName.of(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne"))
               .dependency(
-                  CanonicalName.of(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne"))
               .dependency(
-                  CanonicalName.of(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne"))
               .build(),
           FoundDomainObject.builder()
@@ -43,14 +43,14 @@ public class DomainVocabularyFixtures {
                       .build())
               .packageName(
                   PackageName.of("io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))
-              .canonicalName(
-                  CanonicalName.of(
+              .fullName(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.AggregateOne"))
               .dependency(
-                  CanonicalName.of(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne"))
               .dependency(
-                  CanonicalName.of(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne"))
               .build(),
           FoundDomainObject.builder()
@@ -62,8 +62,8 @@ public class DomainVocabularyFixtures {
                       .build())
               .packageName(
                   PackageName.of("io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))
-              .canonicalName(
-                  CanonicalName.of(
+              .fullName(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainCommandOne"))
               .build(),
           FoundDomainObject.builder()
@@ -75,8 +75,8 @@ public class DomainVocabularyFixtures {
                       .build())
               .packageName(
                   PackageName.of("io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))
-              .canonicalName(
-                  CanonicalName.of(
+              .fullName(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne"))
               .build(),
           FoundDomainObject.builder()
@@ -88,8 +88,8 @@ public class DomainVocabularyFixtures {
                       .build())
               .packageName(
                   PackageName.of("io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))
-              .canonicalName(
-                  CanonicalName.of(
+              .fullName(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne"))
               .build());
 
@@ -102,14 +102,13 @@ public class DomainVocabularyFixtures {
                       .name(SimpleName.of("Shared kernel one"))
                       .description(Description.of("One valid shared kernel"))
                       .build())
-              .canonicalName(
-                  CanonicalName.of("io.candydoc.ddd.sample.one_valid_shared_kernel.package-info"))
+              .fullName(FullName.of("io.candydoc.ddd.sample.one_valid_shared_kernel.package-info"))
               .packageName(PackageName.of("io.candydoc.ddd.sample.one_valid_shared_kernel"))
               .dependency(
-                  CanonicalName.of(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_A.SharedValueObjectOne"))
               .dependency(
-                  CanonicalName.of(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo"))
               .build(),
           FoundDomainObject.builder()
@@ -121,11 +120,11 @@ public class DomainVocabularyFixtures {
                       .build())
               .packageName(
                   PackageName.of("io.candydoc.ddd.sample.one_valid_shared_kernel.shared_A"))
-              .canonicalName(
-                  CanonicalName.of(
+              .fullName(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_A.SharedValueObjectOne"))
               .dependency(
-                  CanonicalName.of(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo"))
               .build(),
           FoundDomainObject.builder()
@@ -137,8 +136,8 @@ public class DomainVocabularyFixtures {
                       .build())
               .packageName(
                   PackageName.of("io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B"))
-              .canonicalName(
-                  CanonicalName.of(
+              .fullName(
+                  FullName.of(
                       "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo"))
               .build());
 
@@ -152,8 +151,8 @@ public class DomainVocabularyFixtures {
                       .description(Description.of("An orphan value object"))
                       .build())
               .packageName(PackageName.of("io.candydoc.ddd.sample.orphan"))
-              .canonicalName(CanonicalName.of("io.candydoc.ddd.sample.orphan.OrphanValueObjectOne"))
-              .dependency(CanonicalName.of("io.candydoc.ddd.sample.orphan.OrphanDomainEventOne"))
+              .fullName(FullName.of("io.candydoc.ddd.sample.orphan.OrphanValueObjectOne"))
+              .dependency(FullName.of("io.candydoc.ddd.sample.orphan.OrphanDomainEventOne"))
               .build(),
           FoundDomainObject.builder()
               .matchingPattern(
@@ -163,8 +162,8 @@ public class DomainVocabularyFixtures {
                       .description(Description.of("An orphan domain event"))
                       .build())
               .packageName(PackageName.of("io.candydoc.ddd.sample.orphan"))
-              .canonicalName(CanonicalName.of("io.candydoc.ddd.sample.orphan.OrphanDomainEventOne"))
-              .dependency(CanonicalName.of("io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne"))
+              .fullName(FullName.of("io.candydoc.ddd.sample.orphan.OrphanDomainEventOne"))
+              .dependency(FullName.of("io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne"))
               .build(),
           FoundDomainObject.builder()
               .matchingPattern(
@@ -174,7 +173,6 @@ public class DomainVocabularyFixtures {
                       .description(Description.of("An orphan domain command"))
                       .build())
               .packageName(PackageName.of("io.candydoc.ddd.sample.orphan"))
-              .canonicalName(
-                  CanonicalName.of("io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne"))
+              .fullName(FullName.of("io.candydoc.ddd.sample.orphan.OrphanDomainCommandOne"))
               .build());
 }

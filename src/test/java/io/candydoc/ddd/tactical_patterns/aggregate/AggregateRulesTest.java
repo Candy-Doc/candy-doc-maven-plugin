@@ -17,27 +17,27 @@ public class AggregateRulesTest {
   static void setUp() {
     aggregate =
         Aggregate.builder()
-            .canonicalName(CanonicalName.of("io.candydoc.sample.AggregateOne"))
+            .fullName(FullName.of("io.candydoc.sample.AggregateOne"))
             .simpleName(SimpleName.of("AggregateOne"))
             .packageName(PackageName.of("io.candydoc.sample"))
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
+                    .name(FullName.of("io.candydoc.sample.ValueObjectOne"))
                     .pattern(TacticalPattern.VALUE_OBJECT)
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.DomainCommandOne"))
+                    .name(FullName.of("io.candydoc.sample.DomainCommandOne"))
                     .pattern(TacticalPattern.DOMAIN_COMMAND)
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.DomainEventOne"))
+                    .name(FullName.of("io.candydoc.sample.DomainEventOne"))
                     .pattern(TacticalPattern.DOMAIN_EVENT)
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.AggregateTwo"))
+                    .name(FullName.of("io.candydoc.sample.AggregateTwo"))
                     .pattern(TacticalPattern.AGGREGATE)
                     .build())
             .build();
@@ -52,7 +52,7 @@ public class AggregateRulesTest {
   void it_can_depend_on_value_object() {
     Dependency valueObject =
         Dependency.builder()
-            .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
+            .name(FullName.of("io.candydoc.sample.ValueObjectOne"))
             .pattern(TacticalPattern.VALUE_OBJECT)
             .build();
 
@@ -63,7 +63,7 @@ public class AggregateRulesTest {
   void it_can_depend_on_domain_command() {
     Dependency domainCommand =
         Dependency.builder()
-            .name(CanonicalName.of("io.candydoc.sample.DomainCommandOne"))
+            .name(FullName.of("io.candydoc.sample.DomainCommandOne"))
             .pattern(TacticalPattern.DOMAIN_COMMAND)
             .build();
 
@@ -74,7 +74,7 @@ public class AggregateRulesTest {
   void it_can_depend_on_domain_event() {
     Dependency domainEvent =
         Dependency.builder()
-            .name(CanonicalName.of("io.candydoc.sample.DomainEventOne"))
+            .name(FullName.of("io.candydoc.sample.DomainEventOne"))
             .pattern(TacticalPattern.DOMAIN_EVENT)
             .build();
 
@@ -85,7 +85,7 @@ public class AggregateRulesTest {
   void it_can_not_depend_on_another_aggregate() {
     Dependency anotherAggregate =
         Dependency.builder()
-            .name(CanonicalName.of("io.candydoc.sample.AggregateTwo"))
+            .name(FullName.of("io.candydoc.sample.AggregateTwo"))
             .pattern(TacticalPattern.AGGREGATE)
             .build();
 

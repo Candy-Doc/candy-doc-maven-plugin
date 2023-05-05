@@ -49,8 +49,8 @@ public class OneValidSharedKernelTest {
               assertThat(vocabulary.sharedKernel())
                   .isEqualTo(
                       SharedKernel.builder()
-                          .canonicalName(
-                              CanonicalName.of(
+                          .fullName(
+                              FullName.of(
                                   "io.candydoc.ddd.sample.one_valid_shared_kernel.package-info"))
                           .simpleName(SimpleName.of("Shared kernel one"))
                           .packageName(
@@ -60,14 +60,14 @@ public class OneValidSharedKernelTest {
                               Dependency.builder()
                                   .pattern(TacticalPattern.VALUE_OBJECT)
                                   .name(
-                                      CanonicalName.of(
+                                      FullName.of(
                                           "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_A.SharedValueObjectOne"))
                                   .build())
                           .dependency(
                               Dependency.builder()
                                   .pattern(TacticalPattern.VALUE_OBJECT)
                                   .name(
-                                      CanonicalName.of(
+                                      FullName.of(
                                           "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo"))
                                   .build())
                           .build());
@@ -78,8 +78,8 @@ public class OneValidSharedKernelTest {
                           .packageName(
                               PackageName.of(
                                   "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_A"))
-                          .canonicalName(
-                              CanonicalName.of(
+                          .fullName(
+                              FullName.of(
                                   "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_A.SharedValueObjectOne"))
                           .simpleName(SimpleName.of("SharedValueObjectOne"))
                           .description(Description.of(""))
@@ -88,8 +88,8 @@ public class OneValidSharedKernelTest {
                           .packageName(
                               PackageName.of(
                                   "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B"))
-                          .canonicalName(
-                              CanonicalName.of(
+                          .fullName(
+                              FullName.of(
                                   "io.candydoc.ddd.sample.one_valid_shared_kernel.shared_B.SharedValueObjectTwo"))
                           .simpleName(SimpleName.of("SharedValueObjectTwo"))
                           .description(Description.of(""))

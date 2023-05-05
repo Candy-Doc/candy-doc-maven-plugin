@@ -41,7 +41,7 @@ public interface UbiquitousLanguage {
 
               Set<DomainModel> boundedModels =
                   domainModels.stream()
-                      .filter(domainModel -> strategicModel.dependsOn(domainModel.canonicalName()))
+                      .filter(domainModel -> strategicModel.dependsOn(domainModel.fullName()))
                       .collect(Collectors.toUnmodifiableSet());
 
               modelsToProcess.remove(strategicModel);

@@ -14,12 +14,12 @@ public class WrongUseOfDDDPatterns extends ExtractionException {
 
   private static String toMessage(Collection<FoundDomainObject> domainObjects) {
     return domainObjects.stream()
-        .sorted(Comparator.comparing(FoundDomainObject::canonicalName))
+        .sorted(Comparator.comparing(FoundDomainObject::fullName))
         .map(
             domainObject ->
                 String.format(
                     "Domain object '%s' matches more than one DDD pattern: %s",
-                    domainObject.canonicalName().value(),
+                    domainObject.fullName().value(),
                     domainObject.matchingPatterns().stream()
                         .map(FoundDDDPattern::dddPattern)
                         .sorted()

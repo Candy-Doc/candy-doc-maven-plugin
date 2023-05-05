@@ -52,8 +52,8 @@ public class OrphanVocabularyTest {
                       Aggregate.builder()
                           .packageName(
                               PackageName.of("io.candydoc.ddd.sample.just_a_package.feature_A"))
-                          .canonicalName(
-                              CanonicalName.of(
+                          .fullName(
+                              FullName.of(
                                   "io.candydoc.ddd.sample.just_a_package.feature_A.AggregateOne"))
                           .simpleName(SimpleName.of("AggregateOne"))
                           .description(Description.of(""))
@@ -61,8 +61,8 @@ public class OrphanVocabularyTest {
                       DomainCommand.builder()
                           .packageName(
                               PackageName.of("io.candydoc.ddd.sample.just_a_package.feature_A"))
-                          .canonicalName(
-                              CanonicalName.of(
+                          .fullName(
+                              FullName.of(
                                   "io.candydoc.ddd.sample.just_a_package.feature_A.DomainCommandOne"))
                           .simpleName(SimpleName.of("DomainCommandOne"))
                           .description(Description.of(""))
@@ -70,8 +70,8 @@ public class OrphanVocabularyTest {
                       DomainEvent.builder()
                           .packageName(
                               PackageName.of("io.candydoc.ddd.sample.just_a_package.feature_A"))
-                          .canonicalName(
-                              CanonicalName.of(
+                          .fullName(
+                              FullName.of(
                                   "io.candydoc.ddd.sample.just_a_package.feature_A.DomainEventOne"))
                           .simpleName(SimpleName.of("DomainEventOne"))
                           .description(Description.of(""))
@@ -79,8 +79,8 @@ public class OrphanVocabularyTest {
                       ValueObject.builder()
                           .packageName(
                               PackageName.of("io.candydoc.ddd.sample.just_a_package.feature_A"))
-                          .canonicalName(
-                              CanonicalName.of(
+                          .fullName(
+                              FullName.of(
                                   "io.candydoc.ddd.sample.just_a_package.feature_A.ValueObjectOne"))
                           .simpleName(SimpleName.of("ValueObjectOne"))
                           .description(Description.of(""))

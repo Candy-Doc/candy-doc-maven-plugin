@@ -17,7 +17,7 @@ public class NestedStrategicPatternsForbidden extends ExtractionException {
     List<String> nestedStrategicModels =
         strategicModel.forbiddenDependencies().stream()
             .map(Dependency::name)
-            .map(canonicalName -> String.format("- %s", canonicalName.value()))
+            .map(name -> String.format("- %s", name.value()))
             .collect(Collectors.toUnmodifiableList());
 
     return Stream.of(

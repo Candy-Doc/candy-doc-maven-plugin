@@ -29,17 +29,17 @@ public class FindDomainCommandTest {
         .contains(
             DomainCommand.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"))
-                .canonicalName(
-                    CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.DomainCommandOne"))
-                .simpleName(SimpleName.of("DomainCommandOne"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest$DomainCommandOne"))
+                .simpleName(SimpleName.of("FindDomainCommandTest$DomainCommandOne"))
                 .description(Description.of("Describe the domain command here"))
                 .dependency(
                     Dependency.builder()
                         .pattern(TacticalPattern.VALUE_OBJECT)
                         .name(
-                            CanonicalName.of(
-                                "io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.ValueObjectOne"))
+                            FullName.of(
+                                "io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest$ValueObjectOne"))
                         .build())
                 .build());
   }
@@ -50,10 +50,10 @@ public class FindDomainCommandTest {
         .contains(
             DomainCommand.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.domain_command"))
-                .canonicalName(
-                    CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest.DomainCommandTwo"))
-                .simpleName(SimpleName.of("DomainCommandTwo"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.domain_command.FindDomainCommandTest$DomainCommandTwo"))
+                .simpleName(SimpleName.of("FindDomainCommandTest$DomainCommandTwo"))
                 .description(Description.of(""))
                 .build());
   }

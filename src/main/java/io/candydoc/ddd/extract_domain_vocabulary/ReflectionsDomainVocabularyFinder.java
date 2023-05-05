@@ -61,7 +61,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
                 FoundDomainObject.builder()
                     .matchingPatterns(toFoundDDDPatterns(matchingAnnotations, scannedClass))
                     .packageName(PackageName.of(scannedClass.getPackageName()))
-                    .canonicalName(CanonicalName.of(scannedClass.getCanonicalName()))
+                    .fullName(FullName.of(scannedClass.getName()))
                     .dependencies(dependenciesOf(scannedClass, scannedClasses))
                     .build());
           }
@@ -112,7 +112,7 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
   private static FoundDDDPattern toAggregatePattern(Class<?> clazz) {
     String simpleName = clazz.getAnnotation(io.candydoc.ddd.annotations.Aggregate.class).name();
     if (simpleName.isBlank()) {
-      simpleName = clazz.getSimpleName();
+      simpleName = lastPartOfClassName(clazz);
     }
 
     String description =
@@ -123,19 +123,20 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
   private static FoundDDDPattern toDomainCommandPattern(Class<?> clazz) {
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.DomainCommand.class).description();
-    return toFoundDDDPattern(TacticalPattern.DOMAIN_COMMAND, clazz.getSimpleName(), description);
+    return toFoundDDDPattern(
+        TacticalPattern.DOMAIN_COMMAND, lastPartOfClassName(clazz), description);
   }
 
   private static FoundDDDPattern toDomainEventPattern(Class<?> clazz) {
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.DomainEvent.class).description();
-    return toFoundDDDPattern(TacticalPattern.DOMAIN_EVENT, clazz.getSimpleName(), description);
+    return toFoundDDDPattern(TacticalPattern.DOMAIN_EVENT, lastPartOfClassName(clazz), description);
   }
 
   private static FoundDDDPattern toValueObjectPattern(Class<?> clazz) {
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.ValueObject.class).description();
-    return toFoundDDDPattern(TacticalPattern.VALUE_OBJECT, clazz.getSimpleName(), description);
+    return toFoundDDDPattern(TacticalPattern.VALUE_OBJECT, lastPartOfClassName(clazz), description);
   }
 
   private static FoundDDDPattern toFoundDDDPattern(
@@ -147,21 +148,20 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
         .build();
   }
 
-  private static Set<CanonicalName> dependenciesOf(
-      Class<?> domainModel, Set<Class<?>> scannedClasses) {
+  private static Set<FullName> dependenciesOf(Class<?> domainModel, Set<Class<?>> scannedClasses) {
     if (domainModel.isAnnotationPresent(BoundedContext.class)
         || domainModel.isAnnotationPresent(SharedKernel.class)) {
       String packageName = domainModel.getPackageName();
       return scannedClasses.stream()
           .filter(
               clazz -> !clazz.equals(domainModel) && clazz.getPackageName().startsWith(packageName))
-          .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
+          .map(dependency -> FullName.of(dependency.getName()))
           .collect(Collectors.toUnmodifiableSet());
     }
     return dependenciesOfTacticalPattern(domainModel);
   }
 
-  private static Set<CanonicalName> dependenciesOfTacticalPattern(Class<?> domainModel) {
+  private static Set<FullName> dependenciesOfTacticalPattern(Class<?> domainModel) {
     Set<Class<?>> dependencies = new HashSet<>();
 
     Arrays.stream(domainModel.getDeclaredFields()).map(Field::getType).forEach(dependencies::add);
@@ -174,7 +174,12 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
             });
 
     return dependencies.stream()
-        .map(dependency -> CanonicalName.of(dependency.getCanonicalName()))
+        .map(dependency -> FullName.of(dependency.getName()))
         .collect(Collectors.toUnmodifiableSet());
+  }
+
+  private static String lastPartOfClassName(Class<?> className) {
+    String name = className.getName();
+    return name.substring(name.lastIndexOf(".") + 1);
   }
 }
