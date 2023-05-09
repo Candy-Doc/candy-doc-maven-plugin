@@ -98,7 +98,7 @@ public class DomainEventRulesTest {
   }
 
   @Test
-  void it_can_depend_on_entity() {
+  void it_can_depend_on_domain_entity() {
     Dependency entity =
         Dependency.builder()
             .name(FullName.of("io.candydoc.sample.EntityOne"))

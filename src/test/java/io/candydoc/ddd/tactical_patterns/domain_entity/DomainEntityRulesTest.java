@@ -1,4 +1,4 @@
-package io.candydoc.ddd.tactical_patterns.entity;
+package io.candydoc.ddd.tactical_patterns.domain_entity;
 
 import static io.candydoc.ddd.AssertDependency.assertThatDependency;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,12 +48,12 @@ public class DomainEntityRulesTest {
   }
 
   @Test
-  void is_an_entity() {
+  void is_a_domain_entity() {
     assertThat(entity.dddPattern()).isEqualTo(TacticalPattern.DOMAIN_ENTITY);
   }
 
   @Test
-  void it_can_depend_on_other_entity() {
+  void it_can_depend_on_other_domain_entity() {
     Dependency anotherValueObject =
         Dependency.builder()
             .name(FullName.of("io.candydoc.sample.EntityTwo"))
