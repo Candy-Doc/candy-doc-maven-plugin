@@ -2,6 +2,7 @@ package io.candydoc.plugin.save_ubiquitous_language.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Manifest {
   }
 
   public void save(String extension) throws IOException {
+    Files.createDirectories(DESTINATION_FOLDER);
     serializer.writeValue(DESTINATION_FOLDER.resolve("MANIFEST." + extension).toFile(), jsonPaths);
   }
 }
