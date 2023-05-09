@@ -5,6 +5,8 @@ import static io.candydoc.plugin.save_ubiquitous_language.file.AssertFileContent
 import io.candydoc.ddd.model.FoundDomainObjects;
 import io.candydoc.ddd.model.UbiquitousLanguage;
 import io.candydoc.plugin.fixture.DomainVocabularyFixtures;
+import io.candydoc.plugin.save_ubiquitous_language.file.AssertFileContent;
+import io.candydoc.plugin.save_ubiquitous_language.file.Manifest;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
@@ -30,7 +32,7 @@ class UbiquitousLanguageAsYmlTest {
   }
 
   @Test
-  public void save_bounded_context_as_json() {
+  public void save_bounded_context_as_yml() {
     // given
     FoundDomainObjects foundDomainObjects =
         new FoundDomainObjects().addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_BOUNDED_CONTEXT);
@@ -46,10 +48,15 @@ class UbiquitousLanguageAsYmlTest {
     Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_one.yml");
 
     assertThatYml(actualFile).isEqualTo(referenceFile);
+
+    Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_bounded_context_one.yml");
+    Path manifestActualFile = Manifest.DESTINATION_FOLDER.resolve("MANIFEST.yml");
+
+    AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
   }
 
   @Test
-  public void save_shared_kernel_as_json() {
+  public void save_shared_kernel_as_yml() {
     // given
     FoundDomainObjects foundDomainObjects =
         new FoundDomainObjects().addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_SHARED_KERNEL);
@@ -65,10 +72,15 @@ class UbiquitousLanguageAsYmlTest {
     Path actualFile = DESTINATION_FOLDER.resolve("shared_kernel_one.yml");
 
     assertThatYml(actualFile).isEqualTo(referenceFile);
+
+    Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_shared_kernel_one.yml");
+    Path manifestActualFile = Manifest.DESTINATION_FOLDER.resolve("MANIFEST.yml");
+
+    AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
   }
 
   @Test
-  public void save_orphan_vocabulary_as_json() {
+  public void save_orphan_vocabulary_as_yml() {
     // given
     FoundDomainObjects foundDomainObjects =
         new FoundDomainObjects().addAll(DomainVocabularyFixtures.ORPHAN_DOMAIN_OBJECTS);
@@ -84,5 +96,10 @@ class UbiquitousLanguageAsYmlTest {
     Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.yml");
 
     assertThatYml(actualFile).isEqualTo(referenceFile);
+
+    Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_orphan_vocabulary.yml");
+    Path manifestActualFile = Manifest.DESTINATION_FOLDER.resolve("MANIFEST.yml");
+
+    AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
   }
 }

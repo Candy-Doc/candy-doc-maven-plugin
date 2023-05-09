@@ -4,6 +4,7 @@ import io.candydoc.ddd.model.FoundDomainObjects;
 import io.candydoc.ddd.model.UbiquitousLanguage;
 import io.candydoc.plugin.fixture.DomainVocabularyFixtures;
 import io.candydoc.plugin.save_ubiquitous_language.file.AssertFileContent;
+import io.candydoc.plugin.save_ubiquitous_language.file.Manifest;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
@@ -45,6 +46,11 @@ class UbiquitousLanguageAsJsonTest {
     Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_one.json");
 
     AssertFileContent.assertThatJson(actualFile).isEqualTo(referenceFile);
+
+    Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_bounded_context_one.json");
+    Path manifestActualFile = Manifest.DESTINATION_FOLDER.resolve("MANIFEST.json");
+
+    AssertFileContent.assertThatJson(manifestActualFile).isEqualTo(manifestReferenceFile);
   }
 
   @Test
@@ -64,6 +70,11 @@ class UbiquitousLanguageAsJsonTest {
     Path actualFile = DESTINATION_FOLDER.resolve("shared_kernel_one.json");
 
     AssertFileContent.assertThatJson(actualFile).isEqualTo(referenceFile);
+
+    Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_shared_kernel_one.json");
+    Path manifestActualFile = Manifest.DESTINATION_FOLDER.resolve("MANIFEST.json");
+
+    AssertFileContent.assertThatJson(manifestActualFile).isEqualTo(manifestReferenceFile);
   }
 
   @Test
@@ -83,5 +94,10 @@ class UbiquitousLanguageAsJsonTest {
     Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.json");
 
     AssertFileContent.assertThatJson(actualFile).isEqualTo(referenceFile);
+
+    Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_orphan_vocabulary.json");
+    Path manifestActualFile = Manifest.DESTINATION_FOLDER.resolve("MANIFEST.json");
+
+    AssertFileContent.assertThatJson(manifestActualFile).isEqualTo(manifestReferenceFile);
   }
 }
