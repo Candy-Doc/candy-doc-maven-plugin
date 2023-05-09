@@ -10,6 +10,8 @@ import io.candydoc.plugin.save_ubiquitous_language.file.yml.UbiquitousLanguageAs
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public abstract class UbiquitousLanguageAsFile implements UbiquitousLanguageRepository {
 
+  public static final Path MANIFEST_DESTINATION_FOLDER = Path.of("target/candy-doc");
   private final ObjectMapper serializer;
   @Getter private final Path destinationFolder;
   @Getter private final String extension;
@@ -27,17 +30,17 @@ public abstract class UbiquitousLanguageAsFile implements UbiquitousLanguageRepo
   public void saveAll(Set<UbiquitousLanguage> ubiquitousLanguages) {
     try {
       Files.createDirectories(destinationFolder);
-      Manifest manifest = new Manifest(serializer);
+      Manifest manifest = new Manifest();
 
       for (UbiquitousLanguage ubiquitousLanguage : ubiquitousLanguages) {
         UbiquitousLanguageDto dto = UbiquitousLanguageDto.from(ubiquitousLanguage);
         String fileName = dto.getName().toLowerCase().replace(" ", "_");
         serializer.writeValue(destinationFolder.resolve(fileName + "." + extension).toFile(), dto);
 
-        manifest.addFile(destinationFolder.resolve(fileName + "." + extension));
+        manifest.addFile(destinationFolder.resolve(fileName + "." + extension).toString());
       }
 
-      manifest.save(extension);
+      manifest.save();
     } catch (IOException e) {
       throw new UbiquitousLanguageSavingFailed(e);
     }
@@ -60,5 +63,23 @@ public abstract class UbiquitousLanguageAsFile implements UbiquitousLanguageRepo
         return new UbiquitousLanguageAsYml(outputFile);
     }
     throw new IllegalArgumentException("Supported file formats are 'json', 'yml'.");
+  }
+
+  public class Manifest {
+    private final List<String> jsonPaths;
+
+    public Manifest() {
+      jsonPaths = new ArrayList<>();
+    }
+
+    public void addFile(String resolve) {
+      jsonPaths.add(resolve);
+    }
+
+    public void save() throws IOException {
+      Files.createDirectories(MANIFEST_DESTINATION_FOLDER);
+      serializer.writeValue(
+          MANIFEST_DESTINATION_FOLDER.resolve("MANIFEST." + extension).toFile(), jsonPaths);
+    }
   }
 }
