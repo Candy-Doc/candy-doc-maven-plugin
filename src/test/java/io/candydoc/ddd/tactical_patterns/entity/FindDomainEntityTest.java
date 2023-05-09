@@ -29,24 +29,24 @@ public class FindDomainEntityTest {
         .contains(
             DomainEntity.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.entity"))
-                .canonicalName(
-                    CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest.MyEntity"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest$MyEntity"))
                 .simpleName(SimpleName.of("My entity"))
                 .description(Description.of("Description of the entity"))
                 .dependency(
                     Dependency.builder()
                         .pattern(TacticalPattern.VALUE_OBJECT)
                         .name(
-                            CanonicalName.of(
-                                "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest.ValueObjectOne"))
+                            FullName.of(
+                                "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest$ValueObjectOne"))
                         .build())
                 .dependency(
                     Dependency.builder()
                         .pattern(TacticalPattern.VALUE_OBJECT)
                         .name(
-                            CanonicalName.of(
-                                "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest.ValueObjectTwo"))
+                            FullName.of(
+                                "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest$ValueObjectTwo"))
                         .build())
                 .build());
   }
@@ -57,9 +57,9 @@ public class FindDomainEntityTest {
         .contains(
             io.candydoc.ddd.tactical_pattern.DomainEntity.builder()
                 .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.entity"))
-                .canonicalName(
-                    CanonicalName.of(
-                        "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest.EntityWithoutAttributes"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.entity.FindDomainEntityTest$EntityWithoutAttributes"))
                 .simpleName(SimpleName.of("EntityWithoutAttributes"))
                 .description(Description.of(""))
                 .build());
@@ -69,7 +69,6 @@ public class FindDomainEntityTest {
       name = "My entity",
       description = "Description of the entity")
   public static class MyEntity {
-    @io.candydoc.ddd.annotations.Id private int id;
     private ValueObjectOne valueObjectOne;
     private ValueObjectTwo valueObjectTwo;
   }

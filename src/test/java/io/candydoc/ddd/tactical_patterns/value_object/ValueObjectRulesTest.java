@@ -42,7 +42,7 @@ public class ValueObjectRulesTest {
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
+                    .name(FullName.of("io.candydoc.sample.EntityOne"))
                     .pattern(TacticalPattern.DOMAIN_ENTITY)
                     .build())
             .build();
@@ -101,7 +101,7 @@ public class ValueObjectRulesTest {
   void it_can_not_depend_on_entity() {
     Dependency entity =
         Dependency.builder()
-            .name(CanonicalName.of("io.candydoc.sample.EntityOne"))
+            .name(FullName.of("io.candydoc.sample.EntityOne"))
             .pattern(TacticalPattern.DOMAIN_ENTITY)
             .build();
 

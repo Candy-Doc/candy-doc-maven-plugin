@@ -16,32 +16,32 @@ public class DomainEntityRulesTest {
   static void setUp() {
     entity =
         DomainEntity.builder()
-            .canonicalName(CanonicalName.of("io.candydoc.sample.EntityOne"))
+            .fullName(FullName.of("io.candydoc.sample.EntityOne"))
             .simpleName(SimpleName.of("EntityOne"))
             .packageName(PackageName.of("io.candydoc.sample"))
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
+                    .name(FullName.of("io.candydoc.sample.ValueObjectOne"))
                     .pattern(TacticalPattern.VALUE_OBJECT)
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.DomainCommandOne"))
+                    .name(FullName.of("io.candydoc.sample.DomainCommandOne"))
                     .pattern(TacticalPattern.DOMAIN_COMMAND)
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.DomainEventOne"))
+                    .name(FullName.of("io.candydoc.sample.DomainEventOne"))
                     .pattern(TacticalPattern.DOMAIN_EVENT)
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.AggregateOne"))
+                    .name(FullName.of("io.candydoc.sample.AggregateOne"))
                     .pattern(TacticalPattern.AGGREGATE)
                     .build())
             .dependency(
                 Dependency.builder()
-                    .name(CanonicalName.of("io.candydoc.sample.EntityTwo"))
+                    .name(FullName.of("io.candydoc.sample.EntityTwo"))
                     .pattern(TacticalPattern.DOMAIN_ENTITY)
                     .build())
             .build();
@@ -56,7 +56,7 @@ public class DomainEntityRulesTest {
   void it_can_depend_on_other_entity() {
     Dependency anotherValueObject =
         Dependency.builder()
-            .name(CanonicalName.of("io.candydoc.sample.EntityTwo"))
+            .name(FullName.of("io.candydoc.sample.EntityTwo"))
             .pattern(TacticalPattern.DOMAIN_ENTITY)
             .build();
 
@@ -67,7 +67,7 @@ public class DomainEntityRulesTest {
   void it_can_depend_on_value_object() {
     Dependency anotherValueObject =
         Dependency.builder()
-            .name(CanonicalName.of("io.candydoc.sample.ValueObjectOne"))
+            .name(FullName.of("io.candydoc.sample.ValueObjectOne"))
             .pattern(TacticalPattern.VALUE_OBJECT)
             .build();
 
@@ -78,7 +78,7 @@ public class DomainEntityRulesTest {
   void it_can_not_depend_on_domain_command() {
     Dependency domainCommand =
         Dependency.builder()
-            .name(CanonicalName.of("io.candydoc.sample.DomainCommandOne"))
+            .name(FullName.of("io.candydoc.sample.DomainCommandOne"))
             .pattern(TacticalPattern.DOMAIN_COMMAND)
             .build();
 
@@ -89,7 +89,7 @@ public class DomainEntityRulesTest {
   void it_can_not_depend_on_domain_event() {
     Dependency domainEvent =
         Dependency.builder()
-            .name(CanonicalName.of("io.candydoc.sample.DomainEventOne"))
+            .name(FullName.of("io.candydoc.sample.DomainEventOne"))
             .pattern(TacticalPattern.DOMAIN_EVENT)
             .build();
 
@@ -100,7 +100,7 @@ public class DomainEntityRulesTest {
   void it_can_not_depend_on_aggregate() {
     Dependency anotherAggregate =
         Dependency.builder()
-            .name(CanonicalName.of("io.candydoc.sample.AggregateOne"))
+            .name(FullName.of("io.candydoc.sample.AggregateOne"))
             .pattern(TacticalPattern.AGGREGATE)
             .build();
 
