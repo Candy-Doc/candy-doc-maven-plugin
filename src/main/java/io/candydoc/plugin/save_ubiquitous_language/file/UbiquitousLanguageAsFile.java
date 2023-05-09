@@ -27,13 +27,17 @@ public abstract class UbiquitousLanguageAsFile implements UbiquitousLanguageRepo
   public void saveAll(Set<UbiquitousLanguage> ubiquitousLanguages) {
     try {
       Files.createDirectories(destinationFolder);
+      Manifest manifest = new Manifest(serializer);
 
       for (UbiquitousLanguage ubiquitousLanguage : ubiquitousLanguages) {
         UbiquitousLanguageDto dto = UbiquitousLanguageDto.from(ubiquitousLanguage);
         String fileName = dto.getName().toLowerCase().replace(" ", "_");
         serializer.writeValue(destinationFolder.resolve(fileName + "." + extension).toFile(), dto);
+
+        manifest.addFile(destinationFolder.resolve(fileName + "." + extension));
       }
 
+      manifest.save(extension);
     } catch (IOException e) {
       throw new UbiquitousLanguageSavingFailed(e);
     }
