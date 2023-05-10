@@ -45,7 +45,7 @@ class UbiquitousLanguageAsJsonTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("bounded_context_one.json");
     Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_one.json");
 
-    assertThat(actualFile).exists().json().isEqualTo(referenceFile);
+    assertThat(actualFile).exists().json().isSameHas(referenceFile);
   }
 
   @Test
@@ -64,7 +64,7 @@ class UbiquitousLanguageAsJsonTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("shared_kernel_one.json");
     Path actualFile = DESTINATION_FOLDER.resolve("shared_kernel_one.json");
 
-    assertThat(actualFile).exists().json().isEqualTo(referenceFile);
+    assertThat(actualFile).exists().json().isSameHas(referenceFile);
   }
 
   @Test
@@ -83,6 +83,6 @@ class UbiquitousLanguageAsJsonTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("orphan_vocabulary.json");
     Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.json");
 
-    assertThat(actualFile).exists().json().isEqualTo(referenceFile);
+    assertThat(actualFile).exists().json().isSameHas(referenceFile);
   }
 }
