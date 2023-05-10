@@ -1,3 +1,5 @@
-[
-    "target/candyDocTmp/shared_kernel_one.json"
-]
+{
+  "files": [
+    "/shared_kernel_one.json"
+  ]
+}

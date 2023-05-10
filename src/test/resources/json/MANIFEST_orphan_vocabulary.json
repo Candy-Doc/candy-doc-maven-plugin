@@ -1,3 +1,5 @@
-[
-    "target/candyDocTmp/orphan_vocabulary.json"
-]
+{
+  "files": [
+    "/orphan_vocabulary.json"
+  ]
+}

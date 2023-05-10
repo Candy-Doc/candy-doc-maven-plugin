@@ -1,3 +1,5 @@
-[
-    "target/candyDocTmp/bounded_context_one.json"
-]
+{
+  "files": [
+    "/bounded_context_one.json"
+  ]
+}
