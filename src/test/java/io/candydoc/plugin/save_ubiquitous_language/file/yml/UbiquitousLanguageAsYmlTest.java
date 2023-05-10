@@ -1,7 +1,5 @@
 package io.candydoc.plugin.save_ubiquitous_language.file.yml;
 
-import static io.candydoc.plugin.save_ubiquitous_language.file.AssertFileContent.assertThatYml;
-
 import io.candydoc.ddd.model.FoundDomainObjects;
 import io.candydoc.ddd.model.UbiquitousLanguage;
 import io.candydoc.plugin.fixture.DomainVocabularyFixtures;
@@ -46,12 +44,15 @@ class UbiquitousLanguageAsYmlTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("bounded_context_one.yml");
     Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_one.yml");
 
-    assertThatYml(actualFile).isEqualTo(referenceFile);
+    AssertFileContent.assertThat(actualFile).exists().yml().isSameHas(referenceFile);
 
     Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_bounded_context_one.yml");
     Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.yml");
 
-    AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
+    AssertFileContent.assertThat(manifestActualFile)
+        .exists()
+        .yml()
+        .isSameHas(manifestReferenceFile);
   }
 
   @Test
@@ -70,12 +71,15 @@ class UbiquitousLanguageAsYmlTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("shared_kernel_one.yml");
     Path actualFile = DESTINATION_FOLDER.resolve("shared_kernel_one.yml");
 
-    assertThatYml(actualFile).isEqualTo(referenceFile);
+    AssertFileContent.assertThat(actualFile).exists().yml().isSameHas(referenceFile);
 
     Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_shared_kernel_one.yml");
     Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.yml");
 
-    AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
+    AssertFileContent.assertThat(manifestActualFile)
+        .exists()
+        .yml()
+        .isSameHas(manifestReferenceFile);
   }
 
   @Test
@@ -94,11 +98,14 @@ class UbiquitousLanguageAsYmlTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("orphan_vocabulary.yml");
     Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.yml");
 
-    assertThatYml(actualFile).isEqualTo(referenceFile);
+    AssertFileContent.assertThat(actualFile).exists().yml().isSameHas(referenceFile);
 
     Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_orphan_vocabulary.yml");
     Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.yml");
 
-    AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
+    AssertFileContent.assertThat(manifestActualFile)
+        .exists()
+        .yml()
+        .isSameHas(manifestReferenceFile);
   }
 }
