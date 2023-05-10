@@ -44,15 +44,12 @@ class UbiquitousLanguageAsJsonTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("bounded_context_one.json");
     Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_one.json");
 
-    AssertFileContent.assertThat(actualFile).exists().json().isSameHas(referenceFile);
+    AssertFileContent.assertThatJson(actualFile).isEqualTo(referenceFile);
 
     Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_bounded_context_one.json");
     Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.json");
 
-    AssertFileContent.assertThat(manifestActualFile)
-        .exists()
-        .json()
-        .isSameHas(manifestReferenceFile);
+    AssertFileContent.assertThatJson(manifestActualFile).isEqualTo(manifestReferenceFile);
   }
 
   @Test
@@ -71,15 +68,12 @@ class UbiquitousLanguageAsJsonTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("shared_kernel_one.json");
     Path actualFile = DESTINATION_FOLDER.resolve("shared_kernel_one.json");
 
-    AssertFileContent.assertThat(actualFile).exists().json().isSameHas(referenceFile);
+    AssertFileContent.assertThatJson(actualFile).isEqualTo(referenceFile);
 
     Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_shared_kernel_one.json");
     Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.json");
 
-    AssertFileContent.assertThat(manifestActualFile)
-        .exists()
-        .json()
-        .isSameHas(manifestReferenceFile);
+    AssertFileContent.assertThatJson(manifestActualFile).isEqualTo(manifestReferenceFile);
   }
 
   @Test
@@ -98,14 +92,11 @@ class UbiquitousLanguageAsJsonTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("orphan_vocabulary.json");
     Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.json");
 
-    AssertFileContent.assertThat(actualFile).exists().json().isSameHas(referenceFile);
+    AssertFileContent.assertThatJson(actualFile).isEqualTo(referenceFile);
 
     Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_orphan_vocabulary.json");
     Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.json");
 
-    AssertFileContent.assertThat(manifestActualFile)
-        .exists()
-        .json()
-        .isSameHas(manifestReferenceFile);
+    AssertFileContent.assertThatJson(manifestActualFile).isEqualTo(manifestReferenceFile);
   }
 }
