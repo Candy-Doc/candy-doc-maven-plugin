@@ -164,7 +164,6 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
   }
 
   private static List<Class<?>> getFieldType(Field field) {
-    System.out.println(field);
     return Optional.ofNullable(field.getGenericType())
         .filter(ParameterizedType.class::isInstance)
         .map(ReflectionsDomainVocabularyFinder::extractTypeParameters)
