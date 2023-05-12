@@ -83,6 +83,13 @@ public class AggregateWithManyValueObjectsTest {
                                       FullName.of(
                                           "io.candydoc.ddd.sample.aggregate_with_many_value_objects.feature.ValueObjectTwo"))
                                   .build())
+                          .dependency(
+                              Dependency.builder()
+                                  .pattern(TacticalPattern.VALUE_OBJECT)
+                                  .name(
+                                      FullName.of(
+                                          "io.candydoc.ddd.sample.aggregate_with_many_value_objects.feature.ValueObjectThree"))
+                                  .build())
                           .build());
 
               assertThat(vocabulary.domainModels())
@@ -110,6 +117,13 @@ public class AggregateWithManyValueObjectsTest {
                                       FullName.of(
                                           "io.candydoc.ddd.sample.aggregate_with_many_value_objects.feature.ValueObjectTwo"))
                                   .build())
+                          .dependency(
+                              Dependency.builder()
+                                  .pattern(TacticalPattern.VALUE_OBJECT)
+                                  .name(
+                                      FullName.of(
+                                          "io.candydoc.ddd.sample.aggregate_with_many_value_objects.feature.ValueObjectThree"))
+                                  .build())
                           .build(),
                       ValueObject.builder()
                           .packageName(
@@ -129,6 +143,16 @@ public class AggregateWithManyValueObjectsTest {
                               FullName.of(
                                   "io.candydoc.ddd.sample.aggregate_with_many_value_objects.feature.ValueObjectTwo"))
                           .simpleName(SimpleName.of("ValueObjectTwo"))
+                          .description(Description.of(""))
+                          .build(),
+                      ValueObject.builder()
+                          .packageName(
+                              PackageName.of(
+                                  "io.candydoc.ddd.sample.aggregate_with_many_value_objects.feature"))
+                          .fullName(
+                              FullName.of(
+                                  "io.candydoc.ddd.sample.aggregate_with_many_value_objects.feature.ValueObjectThree"))
+                          .simpleName(SimpleName.of("ValueObjectThree"))
                           .description(Description.of(""))
                           .build());
             });

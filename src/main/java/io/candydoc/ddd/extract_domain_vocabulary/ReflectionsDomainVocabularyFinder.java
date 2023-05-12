@@ -164,18 +164,26 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
   }
 
   private static List<Class<?>> getFieldType(Field field) {
-    Type fieldType = field.getGenericType();
-    if (fieldType instanceof ParameterizedType) {
-      List<Class<?>> actualArgumentClasses = new ArrayList<>();
-      Type[] actualTypeArguments = ((ParameterizedType) fieldType).getActualTypeArguments();
-      for (Type type : actualTypeArguments) {
-        if (type instanceof Class) {
-          actualArgumentClasses.add((Class<?>) type);
-        }
-      }
-      return actualArgumentClasses;
-    }
-    return List.of(field.getType());
+    System.out.println(field);
+    return Optional.ofNullable(field.getGenericType())
+        .filter(ParameterizedType.class::isInstance)
+        .map(ReflectionsDomainVocabularyFinder::extractTypeParameters)
+        .orElse(List.of(field.getType()));
+  }
+
+  private static List<Class<?>> extractTypeParameters(Type fieldType) {
+    Type[] actualTypeArguments = ((ParameterizedType) fieldType).getActualTypeArguments();
+    List<Class<?>> typeParameters = new ArrayList<>();
+    Arrays.stream(actualTypeArguments)
+        .forEach(
+            (Type type) -> {
+              if (type instanceof ParameterizedType) {
+                typeParameters.addAll(extractTypeParameters(type));
+              } else {
+                typeParameters.add((Class<?>) type);
+              }
+            });
+    return typeParameters;
   }
 
   private static Set<FullName> dependenciesOfTacticalPattern(Class<?> domainModel) {
