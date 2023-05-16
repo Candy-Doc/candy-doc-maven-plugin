@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections8.Reflections;
 import org.reflections8.scanners.SubTypesScanner;
@@ -172,17 +173,16 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
 
   private static List<Class<?>> extractTypeParameters(Type fieldType) {
     Type[] actualTypeArguments = ((ParameterizedType) fieldType).getActualTypeArguments();
-    List<Class<?>> typeParameters = new ArrayList<>();
-    Arrays.stream(actualTypeArguments)
-        .forEach(
-            (Type type) -> {
+    return Arrays.stream(actualTypeArguments)
+        .flatMap(
+            type -> {
               if (type instanceof ParameterizedType) {
-                typeParameters.addAll(extractTypeParameters(type));
+                return extractTypeParameters(type).stream();
               } else {
-                typeParameters.add((Class<?>) type);
+                return Stream.of((Class<?>) type);
               }
-            });
-    return typeParameters;
+            })
+        .collect(Collectors.toList());
   }
 
   private static Set<FullName> dependenciesOfTacticalPattern(Class<?> domainModel) {
