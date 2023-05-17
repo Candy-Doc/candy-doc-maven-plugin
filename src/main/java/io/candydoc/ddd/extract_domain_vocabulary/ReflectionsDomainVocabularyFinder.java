@@ -161,10 +161,23 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
     return dependenciesOfTacticalPattern(domainModel);
   }
 
+  private static void addSuperClassesDeclaredFields(
+      Class<?> domainModel, Set<Class<?>> dependencies) {
+    Class<?> domainModelSuperClass = domainModel.getSuperclass();
+    if (domainModelSuperClass != null) {
+      Arrays.stream(domainModelSuperClass.getDeclaredFields())
+          .map(Field::getType)
+          .forEach(dependencies::add);
+      addSuperClassesDeclaredFields(domainModel.getSuperclass(), dependencies);
+    }
+  }
+
   private static Set<FullName> dependenciesOfTacticalPattern(Class<?> domainModel) {
     Set<Class<?>> dependencies = new HashSet<>();
 
     Arrays.stream(domainModel.getDeclaredFields()).map(Field::getType).forEach(dependencies::add);
+
+    addSuperClassesDeclaredFields(domainModel, dependencies);
 
     Arrays.stream(domainModel.getDeclaredMethods())
         .forEach(
