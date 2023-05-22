@@ -16,7 +16,10 @@ repos:
   rev: v2.3.0
   hooks:
   - id: pretty-format-java
-    args: [--autofix]
+    args: [--autofix, --google-java-formatter-version=1.17.0]
+    entry: pretty-format-java
+    types: [java]
+    require_serial: true
   - id: pretty-format-yaml
     args: [--autofix, --indent, '2']
 - repo: https://github.com/igorshubovych/markdownlint-cli
