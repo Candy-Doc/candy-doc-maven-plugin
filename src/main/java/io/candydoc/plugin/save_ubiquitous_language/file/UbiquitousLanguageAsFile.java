@@ -63,7 +63,7 @@ public abstract class UbiquitousLanguageAsFile implements UbiquitousLanguageRepo
     UbiquitousLanguageDto dto = UbiquitousLanguageDto.from(ubiquitousLanguage);
     String fileName = getFileName(dto.getName());
     serializer.writeValue(destinationFolder.resolve(fileName).toFile(), dto);
-    return Path.of("/", fileName);
+    return Path.of("./", fileName);
   }
 
   private String getFileName(String name) {
