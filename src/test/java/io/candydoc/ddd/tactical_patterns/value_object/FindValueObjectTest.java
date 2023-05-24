@@ -58,6 +58,20 @@ public class FindValueObjectTest {
                 .build());
   }
 
+  @Test
+  public void find_record_as_value_object() {
+    assertThat(foundDomainObjects.toDomainModels())
+        .contains(
+            ValueObject.builder()
+                .packageName(PackageName.of("io.candydoc.ddd.tactical_patterns.value_object"))
+                .fullName(
+                    FullName.of(
+                        "io.candydoc.ddd.tactical_patterns.value_object.FindValueObjectTest$RecordOne"))
+                .simpleName(SimpleName.of("FindValueObjectTest$RecordOne"))
+                .description(Description.of(""))
+                .build());
+  }
+
   @io.candydoc.ddd.annotations.ValueObject(description = "Describe the value object here")
   public static class ValueObjectOne {
     private ValueObjectTwo valueObjectTwo;
@@ -79,4 +93,7 @@ public class FindValueObjectTest {
 
     abstract void someMethod();
   }
+
+  @io.candydoc.ddd.annotations.ValueObject
+  public record RecordOne() {}
 }
