@@ -1,12 +1,12 @@
 package io.candydoc.ddd.model;
 
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @Getter
 @Accessors(fluent = true)
 @EqualsAndHashCode

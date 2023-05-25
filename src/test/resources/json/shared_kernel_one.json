@@ -20,5 +20,13 @@
       "description": "",
       "dependencies": []
     }
-  }
+  },
+  "relations": [
+    {
+      "relatedTo": "io.candydoc.ddd.sample.one_valid_bounded_context"
+    },
+    {
+      "relatedTo": "io.candydoc.ddd.sample.second_valid_bounded_context"
+    }
+  ]
 }

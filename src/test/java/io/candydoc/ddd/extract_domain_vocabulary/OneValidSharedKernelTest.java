@@ -56,6 +56,10 @@ public class OneValidSharedKernelTest {
                           .packageName(
                               PackageName.of("io.candydoc.ddd.sample.one_valid_shared_kernel"))
                           .description(Description.of("One valid shared kernel"))
+                          .relation(
+                              Relations.of("io.candydoc.ddd.sample.one_valid_bounded_context"))
+                          .relation(
+                              Relations.of("io.candydoc.ddd.sample.second_valid_bounded_context"))
                           .dependency(
                               Dependency.builder()
                                   .pattern(TacticalPattern.VALUE_OBJECT)

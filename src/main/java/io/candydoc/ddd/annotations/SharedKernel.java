@@ -11,5 +11,5 @@ public @interface SharedKernel {
 
   String description() default "";
 
-  String[] relations() default {""};
+  String[] relations() default {};
 }

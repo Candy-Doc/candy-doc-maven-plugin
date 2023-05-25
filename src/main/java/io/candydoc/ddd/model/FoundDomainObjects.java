@@ -88,7 +88,8 @@ public final class FoundDomainObjects {
 
           @Override
           public DomainModel.DomainModelBuilder<?, ?> sharedKernel() {
-            return SharedKernel.builder();
+            return SharedKernel.builder()
+                .relations(((FoundDDDPatternWithRelations) foundDDDPattern).relations());
           }
 
           @Override

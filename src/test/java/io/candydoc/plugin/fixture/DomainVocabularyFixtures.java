@@ -97,10 +97,14 @@ public class DomainVocabularyFixtures {
       Set.of(
           FoundDomainObject.builder()
               .matchingPattern(
-                  FoundDDDPattern.builder()
+                  FoundDDDPatternWithRelations.builder()
                       .dddPattern(StrategicPattern.SHARED_KERNEL)
                       .name(SimpleName.of("Shared kernel one"))
                       .description(Description.of("One valid shared kernel"))
+                      .relations(
+                          Set.of(
+                              Relations.of("io.candydoc.ddd.sample.one_valid_bounded_context"),
+                              Relations.of("io.candydoc.ddd.sample.second_valid_bounded_context")))
                       .build())
               .fullName(FullName.of("io.candydoc.ddd.sample.one_valid_shared_kernel.package-info"))
               .packageName(PackageName.of("io.candydoc.ddd.sample.one_valid_shared_kernel"))

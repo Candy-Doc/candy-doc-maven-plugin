@@ -3,17 +3,18 @@ package io.candydoc.plugin.model;
 import io.candydoc.ddd.model.UbiquitousLanguage;
 import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 
 @Jacksonized
-@Builder
+@SuperBuilder
 @Getter
-public final class UbiquitousLanguageDto {
+public class UbiquitousLanguageDto {
 
   private final String type;
   private final String name;
@@ -49,10 +50,15 @@ public final class UbiquitousLanguageDto {
           public UbiquitousLanguageDto handle(UbiquitousLanguage.SharedVocabulary vocabulary) {
             SharedKernel sharedKernel = vocabulary.sharedKernel();
 
-            return UbiquitousLanguageDto.builder()
+            return UbiquitousLanguageWithRelationsDto.builder()
                 .type("SHARED_KERNEL")
                 .name(sharedKernel.simpleName().value())
                 .description(sharedKernel.description().value())
+                .relations(
+                    sharedKernel.relations().stream()
+                        .map(relation -> RelationDto.builder().relatedTo(relation.values()).build())
+                        .sorted(Comparator.comparing(RelationDto::getRelatedTo))
+                        .collect(Collectors.toUnmodifiableList()))
                 .domainModels(domainModelPerFullName)
                 .build();
           }

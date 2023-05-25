@@ -106,7 +106,14 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
 
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.SharedKernel.class).description();
-    return toFoundDDDPattern(StrategicPattern.SHARED_KERNEL, simpleName, description);
+
+    Set<Relations> relations =
+        Arrays.stream(clazz.getAnnotation(SharedKernel.class).relations())
+            .map(Relations::of)
+            .collect(Collectors.toUnmodifiableSet());
+
+    return toFoundDDDPatternWithRelations(
+        StrategicPattern.SHARED_KERNEL, simpleName, description, relations);
   }
 
   private static FoundDDDPattern toAggregatePattern(Class<?> clazz) {
@@ -145,6 +152,16 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
         .dddPattern(dddPattern)
         .name(SimpleName.of(simpleName))
         .description(Description.of(description))
+        .build();
+  }
+
+  private static FoundDDDPatternWithRelations toFoundDDDPatternWithRelations(
+      DDDPattern dddPattern, String simpleName, String description, Set<Relations> relations) {
+    return FoundDDDPatternWithRelations.builder()
+        .dddPattern(dddPattern)
+        .name(SimpleName.of(simpleName))
+        .description(Description.of(description))
+        .relations(relations)
         .build();
   }
 
