@@ -45,7 +45,7 @@ class UbiquitousLanguageAsYmlTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("bounded_context_one.yml");
     Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_one.yml");
 
-    assertThat(actualFile).exists().yml().isSameHas(referenceFile);
+    assertThat(actualFile).exists().yml().isSameAs(referenceFile);
   }
 
   @Test
@@ -64,7 +64,7 @@ class UbiquitousLanguageAsYmlTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("shared_kernel_one.yml");
     Path actualFile = DESTINATION_FOLDER.resolve("shared_kernel_one.yml");
 
-    assertThat(actualFile).exists().yml().isSameHas(referenceFile);
+    assertThat(actualFile).exists().yml().isSameAs(referenceFile);
   }
 
   @Test
@@ -83,6 +83,6 @@ class UbiquitousLanguageAsYmlTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("orphan_vocabulary.yml");
     Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.yml");
 
-    assertThat(actualFile).exists().yml().isSameHas(referenceFile);
+    assertThat(actualFile).exists().yml().isSameAs(referenceFile);
   }
 }

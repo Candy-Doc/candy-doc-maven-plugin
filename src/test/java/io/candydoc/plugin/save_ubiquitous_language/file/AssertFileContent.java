@@ -34,7 +34,7 @@ public class AssertFileContent extends AbstractAssert<AssertFileContent, Path> {
     return new AssertYmlContent(actual);
   }
 
-  public AssertFileContent isSameHas(Path reference) {
+  public AssertFileContent isSameAs(Path reference) {
     isNotNull();
     try {
       JsonNode actualJson = trustedMapper.readTree(actual.toFile());
@@ -54,8 +54,8 @@ public class AssertFileContent extends AbstractAssert<AssertFileContent, Path> {
       trustedMapper = new ObjectMapper(new JsonFactory());
     }
 
-    public AssertFileContent isSameHas(Path reference) {
-      super.isSameHas(reference);
+    public AssertFileContent isSameAs(Path reference) {
+      super.isSameAs(reference);
       return this;
     }
   }
@@ -67,8 +67,8 @@ public class AssertFileContent extends AbstractAssert<AssertFileContent, Path> {
       trustedMapper = new ObjectMapper(new YAMLFactory());
     }
 
-    public AssertFileContent isSameHas(Path reference) {
-      super.isSameHas(reference);
+    public AssertFileContent isSameAs(Path reference) {
+      super.isSameAs(reference);
       return this;
     }
   }
