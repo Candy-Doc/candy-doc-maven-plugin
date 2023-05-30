@@ -10,8 +10,9 @@
   
   ✨ Candy Doc Maven plugin ✨
 ](#-candy-doc-maven-plugin-)
-  - [Installation 🚀](#installation-)
-    - [With Maven](#with-maven)
+  - [Table of Contents](#table-of-contents)
+- [Installation 🚀](#installation-)
+  - [With Maven](#with-maven)
 - [Usage ‍📝](#usage-‍)
   - [DDD Annotations ✏️](#ddd-annotations-)
     - [Strategic patterns](#strategic-patterns)
@@ -19,7 +20,7 @@
   - [Documentation generation 🏗️](#documentation-generation-)
   - [UI Manipulation 🕹️](#ui-manipulation-)
 - [Support 🚑](#support-)
-- [Roadmap 🗺️](#roadmap-)
+  - [Roadmap 🗺️](#roadmap-)
   - [References 📚](#references-)
   - [Join us 🙋](#join-us-)
   - [Contributors ✨](#contributors-)
