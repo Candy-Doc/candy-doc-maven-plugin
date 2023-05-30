@@ -59,9 +59,30 @@ Domain-Driven-Design approach.
 
 <img style="width: 80%; margin-left: 10%; margin-top: 20px" src="assets/screenshots/candy-board-sample.png" alt="Candy-board sample">
 
-## Installation 🚀
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of Contents
 
-### With Maven
+- [Installation 🚀](#installation-)
+  - [With Maven](#with-maven)
+- [Usage ‍📝](#usage-‍)
+  - [DDD Annotations ✏️](#ddd-annotations-)
+    - [Strategic patterns](#strategic-patterns)
+    - [Tactical patterns](#tactical-patterns)
+  - [Documentation generation 🏗️](#documentation-generation-)
+  - [UI Manipulation 🕹️](#ui-manipulation-)
+- [Support 🚑](#support-)
+  - [Roadmap 🗺️](#roadmap-)
+  - [References 📚](#references-)
+  - [Join us 🙋](#join-us-)
+  - [Contributors ✨](#contributors-)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+# Installation 🚀
+
+## With Maven
 
 To run this plugin, import the following in your project **_pom.xml_** :
 
@@ -177,7 +198,7 @@ If you face any issue feel free to create an issue on the GitHub repository or t
 
 ![Discord](https://img.shields.io/discord/951511594972631120?label=%20)
 
-# Roadmap 🗺️
+## Roadmap 🗺️
 
 To know on what the team are actually working on, you can see the different
 milestones [here](https://github.com/Candy-Doc/candy-doc-maven-plugin/milestones)
