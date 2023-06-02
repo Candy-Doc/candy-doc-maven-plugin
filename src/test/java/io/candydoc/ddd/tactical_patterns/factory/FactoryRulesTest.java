@@ -47,14 +47,14 @@ public class FactoryRulesTest {
   }
 
   @Test
-  void it_can_not_depend_on_value_object() {
+  void it_can_depend_on_value_object() {
     Dependency valueObject =
         Dependency.builder()
             .name(FullName.of("io.candydoc.sample.ValueObjectOne"))
             .pattern(TacticalPattern.VALUE_OBJECT)
             .build();
 
-    assertThatDependency(valueObject).isForbiddenIn(factory);
+    assertThatDependency(valueObject).isAllowedIn(factory);
   }
 
   @Test
