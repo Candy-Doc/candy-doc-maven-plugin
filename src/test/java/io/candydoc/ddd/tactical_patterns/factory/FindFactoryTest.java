@@ -53,9 +53,9 @@ public class FindFactoryTest {
                 .build());
   }
 
-  @io.candydoc.ddd.annotations.Factory(description = "Description of the factory")
+  @io.candydoc.ddd.annotations.DomainFactory(description = "Description of the factory")
   public static class FactoryOne {}
 
-  @io.candydoc.ddd.annotations.Factory
+  @io.candydoc.ddd.annotations.DomainFactory
   public static class FactoryWithoutAttributes {}
 }
