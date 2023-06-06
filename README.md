@@ -1,33 +1,3 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-## Table of Contents
-
-- [
-  
-    
-    
-    
-  
-  ✨ Candy Doc Maven plugin ✨
-](#-candy-doc-maven-plugin-)
-  - [Table of Contents](#table-of-contents)
-- [Installation 🚀](#installation-)
-  - [With Maven](#with-maven)
-- [Usage ‍📝](#usage-‍)
-  - [DDD Annotations ✏️](#ddd-annotations-)
-    - [Strategic patterns](#strategic-patterns)
-    - [Tactical patterns](#tactical-patterns)
-  - [Documentation generation 🏗️](#documentation-generation-)
-  - [UI Manipulation 🕹️](#ui-manipulation-)
-- [Support 🚑](#support-)
-  - [Roadmap 🗺️](#roadmap-)
-  - [References 📚](#references-)
-  - [Join us 🙋](#join-us-)
-  - [Contributors ✨](#contributors-)
-- [License](#license)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 <h1 align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" width="242" height="90" alt="CandyDoc logo" srcset="https://user-images.githubusercontent.com/22562938/170952295-d5634b7d-54bf-4beb-a105-50123b29a15b.png">
