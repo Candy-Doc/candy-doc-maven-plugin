@@ -65,14 +65,14 @@ public class DomainCommandRulesTest {
   }
 
   @Test
-  void it_can_depend_on_domain_entity() {
+  void it_can_not_depend_on_domain_entity() {
     Dependency entity =
         Dependency.builder()
             .name(FullName.of("io.candydoc.sample.EntityOne"))
             .pattern(TacticalPattern.DOMAIN_ENTITY)
             .build();
 
-    assertThatDependency(entity).isAllowedIn(domainCommand);
+    assertThatDependency(entity).isForbiddenIn(domainCommand);
   }
 
   @Test
