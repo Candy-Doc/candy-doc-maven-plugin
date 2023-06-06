@@ -6,7 +6,7 @@
 
   <groupId>io.candy-doc</groupId>
   <artifactId>candy-doc</artifactId>
-  <version>2.1.0</version>
+  <version>1.0.6</version>
   <packaging>maven-plugin</packaging>
   <name>Candy Doc</name>
   <description>Candy doc plugin</description>
