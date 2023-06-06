@@ -4,7 +4,7 @@ First of all, all the team thank you for taking the time to contribute! 😻
 
 We are really happy you join the community and we hope you'll enjoy working on this project.
 
-In order to provide the most convenient collaboration, here is a tutorial and some directives to follow for purposes of the project organization
+In order to provide the most convenient collaboration, here is a tutorial and some directives to follow to ensure a good organization.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -44,7 +44,7 @@ If you're still here, it means you likely never or barely contribute to an open-
 
 No shame ! We all get through this. Lucky you, here's the basics that I would have liked to know when I started.
 
-Some parts are inspired by [_first-contributions_](https://github.com/firstcontributions/first-contributions) GitHub
+Some parts are inspired by [_first-contributions_](https://github.com/firstcontributions/first-contributions) GitHub.
 
 ### 1. Discussing the bug or the new feature
 
@@ -75,7 +75,7 @@ When you fork a project, you create an independent copy of the entire project.
 
 Forking allows you to contribute to an existing project without directly modifying the original codebase. You can make changes, add features, or fix issues in your forked repository.
 
-To fork this repository click on the _**Fork**_ button on the top-right corner of this page.
+To fork this repository click on the _**Fork**_ button in the top-right corner of this page.
 
 <img style="margin: 20px ; width: 600px" src="./assets/screenshots/fork.png"/>
 
@@ -125,46 +125,11 @@ git switch --create fix/the-issue
 
 **_You can now safely, contribute to project on your favorite IDE_**
 
-Please make sure to keep commits small and relevant by following our git commit message convention.
-
-Example : ✨ feat(infra): create a new orm interface
-
-- Use this format `<gitmoji><type>(optional scope): <description>`\
-  More examples [here](https://github.com/arvinxx/gitmoji-commit-workflow/tree/master/packages/commitlint-config)
-- Limit the first line to 72 characters or less
-- Consider starting the commit message with an applicable emoji:
-
-  > **Major release emojis**
-
-  - 💥 - `:boom:` - Introduce breaking changes.
-  - 🍬 - `:candy:` - Major feature.
-
-  > **Minor release emojis**
-
-  - ✨ - `:sparkles:` - Introduce new minor features.
-  - ⚡  - `:zap:` - Improve performance.
-  - 💄 - `:lipstick:` - Add or update the UI and style files.
-  - ♻️ - `:recycle:` - Refactor code.
-
-  > **Patch release emojis**
-
-  - 🐛 - `:bug:` - Fix a bug.
-  - ⬇️- `:arrow_down:` - Downgrade dependencies.
-  - ⬆️ - `:arrow_up:` - Upgrade dependencies.
-  - 🚨 - `:rotating_light:` - Fix compiler / linter warnings.
-
-  > **Other emojis**
-
-  - 🔥 - `:fire:` - Remove code or files.
-  - 📝 - `:memo:` - Add or update documentation.
-  - 💚 - `:green_heart:` - Fix CI Build.
-  - 👷 - `:construction_worker:` - Add or update CI build system.
-  - ✏️ - `:pencil2:` - Fix typos.
-  - 🧪 - `:test_tube:` - Add test(s).
+Please make sure to keep commits **_small_** and **_relevant_** by following our [**_git commit message convention_**](COMMIT_MESSAGE_CONVENTION.md).
 
 ### 6. Create a pull request
 
-**_Once you commit all the changes, create a pull request against the main branch_**
+**_Once you committed all the changes, create a pull request against the main branch_**
 
 - First, make sure you pushed your commits on your branch.
 
@@ -172,7 +137,7 @@ Example : ✨ feat(infra): create a new orm interface
 
 <img style="margin: 20px ; width: 400px" src="./assets/screenshots/pull_request.png"/>
 
-- A GitHub message should appear and propose you to create your pull request. Click on ```Compare & pull request```.
+- A GitHub message should appear and propose you to create a pull request. Click on ```Compare & pull request```.
 
 <img style="margin: 20px ; width: 600px" src="./assets/screenshots/compare_and_pull_request.png"/>
 
@@ -198,7 +163,7 @@ Go through the following points, before creating a new PR.
 2. Once approved, go ahead and fork the REPO.
 3. Make sure to start from the `main`, since this is the up-to-date branch.
 4. Make sure to keep commits small and relevant.
-5. Follow [our git commit message convention](#Git-Commit-Messages).
+5. Follow [our git commit message convention](COMMIT_MESSAGE_CONVENTION.md).
 6. Once done with all the changes, create a PR against the `main` branch.
 
 ## How to set your PGP key
