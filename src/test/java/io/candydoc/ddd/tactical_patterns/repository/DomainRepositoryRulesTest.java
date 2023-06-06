@@ -10,8 +10,12 @@ import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.model.SimpleName;
 import io.candydoc.ddd.tactical_pattern.DomainRepository;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 public class DomainRepositoryRulesTest {
 
@@ -24,11 +28,16 @@ public class DomainRepositoryRulesTest {
             .fullName(FullName.of("io.candydoc.sample.RepositoryOne"))
             .simpleName(SimpleName.of("RepositoryOne"))
             .packageName(PackageName.of("io.candydoc.sample"))
-            .dependency(
-                Dependency.builder()
-                    .name(FullName.of("io.candydoc.sample.ValueObjectOne"))
-                    .pattern(TacticalPattern.VALUE_OBJECT)
-                    .build())
+            .dependencies(
+                Arrays.stream(TacticalPattern.values())
+                    .filter(tacticalPattern -> !tacticalPattern.equals(TacticalPattern.AGGREGATE))
+                    .map(
+                        tacticalPattern ->
+                            Dependency.builder()
+                                .name(FullName.of("io.candydoc.sample.OtherConceptThanAggregate"))
+                                .pattern(tacticalPattern)
+                                .build())
+                    .collect(Collectors.toUnmodifiableSet()))
             .dependency(
                 Dependency.builder()
                     .name(FullName.of("io.candydoc.sample.AggregateOne"))
@@ -42,15 +51,19 @@ public class DomainRepositoryRulesTest {
     assertThat(repository.dddPattern()).isEqualTo(TacticalPattern.DOMAIN_REPOSITORY);
   }
 
-  @Test
-  void it_can_not_depend_on_value_object() {
-    Dependency valueObject =
+  @ParameterizedTest
+  @EnumSource(
+      value = TacticalPattern.class,
+      names = {"AGGREGATE"},
+      mode = EnumSource.Mode.EXCLUDE)
+  void it_can_not_depend_on_other_concepts_than_aggregate(TacticalPattern tacticalPattern) {
+    Dependency otherConceptThanAggregate =
         Dependency.builder()
-            .name(FullName.of("io.candydoc.sample.ValueObjectOne"))
-            .pattern(TacticalPattern.VALUE_OBJECT)
+            .name(FullName.of("io.candydoc.sample.OtherConceptThanAggregate"))
+            .pattern(tacticalPattern)
             .build();
 
-    assertThatDependency(valueObject).isForbiddenIn(repository);
+    assertThatDependency(otherConceptThanAggregate).isForbiddenIn(repository);
   }
 
   @Test

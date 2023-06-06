@@ -40,7 +40,7 @@ public class FindDomainRepositoryTest {
   }
 
   @Test
-  public void attributes_not_provided() {
+  public void description_not_provided() {
     assertThat(foundDomainObjects.toDomainModels())
         .contains(
             DomainRepository.builder()
