@@ -53,11 +53,6 @@ public class AssertFileContent extends AbstractAssert<AssertFileContent, Path> {
       super(actual);
       trustedMapper = new ObjectMapper(new JsonFactory());
     }
-
-    public AssertFileContent isSameAs(Path reference) {
-      super.isSameAs(reference);
-      return this;
-    }
   }
 
   public static class AssertYmlContent extends AssertFileContent {
@@ -65,11 +60,6 @@ public class AssertFileContent extends AbstractAssert<AssertFileContent, Path> {
     private AssertYmlContent(Path actual) {
       super(actual);
       trustedMapper = new ObjectMapper(new YAMLFactory());
-    }
-
-    public AssertFileContent isSameAs(Path reference) {
-      super.isSameAs(reference);
-      return this;
     }
   }
 }
