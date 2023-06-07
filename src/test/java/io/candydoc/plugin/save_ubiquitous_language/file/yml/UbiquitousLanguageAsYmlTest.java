@@ -1,6 +1,6 @@
 package io.candydoc.plugin.save_ubiquitous_language.file.yml;
 
-import static io.candydoc.plugin.save_ubiquitous_language.file.AssertFileContent.assertThatYml;
+import static io.candydoc.plugin.save_ubiquitous_language.file.AssertFileContent.assertThat;
 
 import io.candydoc.ddd.model.FoundDomainObjects;
 import io.candydoc.ddd.model.UbiquitousLanguage;
@@ -45,7 +45,7 @@ class UbiquitousLanguageAsYmlTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("bounded_context_one.yml");
     Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_one.yml");
 
-    assertThatYml(actualFile).isEqualTo(referenceFile);
+    assertThat(actualFile).exists().yml().isSameAs(referenceFile);
   }
 
   @Test
@@ -64,7 +64,7 @@ class UbiquitousLanguageAsYmlTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("shared_kernel_one.yml");
     Path actualFile = DESTINATION_FOLDER.resolve("shared_kernel_one.yml");
 
-    assertThatYml(actualFile).isEqualTo(referenceFile);
+    assertThat(actualFile).exists().yml().isSameAs(referenceFile);
   }
 
   @Test
@@ -83,6 +83,6 @@ class UbiquitousLanguageAsYmlTest {
     Path referenceFile = REFERENCE_FOLDER.resolve("orphan_vocabulary.yml");
     Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.yml");
 
-    assertThatYml(actualFile).isEqualTo(referenceFile);
+    assertThat(actualFile).exists().yml().isSameAs(referenceFile);
   }
 }
