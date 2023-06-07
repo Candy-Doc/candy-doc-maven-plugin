@@ -2,9 +2,9 @@
 
 First of all, all the team thank you for taking the time to contribute! 😻
 
-We are really happy you join the community and we hope you'll enjoy working on this project.
+We are really happy that you join the community, and we hope you'll enjoy working on this project.
 
-In order to provide the most convenient collaboration, here is a tutorial and some directives to follow to ensure a good organization.
+In order to provide the most convenient collaboration, here is a tutorial and some directives to follow.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
