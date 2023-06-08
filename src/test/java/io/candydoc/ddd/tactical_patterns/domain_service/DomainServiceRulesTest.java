@@ -43,6 +43,11 @@ public class DomainServiceRulesTest {
                     .name(FullName.of("io.candydoc.sample.DomainServiceTwo"))
                     .pattern(TacticalPattern.DOMAIN_SERVICE)
                     .build())
+            .dependency(
+                Dependency.builder()
+                    .name(FullName.of("io.candydoc.sample.DomainCommandOne"))
+                    .pattern(TacticalPattern.DOMAIN_COMMAND)
+                    .build())
             .build();
   }
 
@@ -85,13 +90,24 @@ public class DomainServiceRulesTest {
   }
 
   @Test
-  void it_can_not_depend_on_aggregate() {
+  void it_can_depend_on_aggregate() {
     Dependency anotherAggregate =
         Dependency.builder()
             .name(FullName.of("io.candydoc.sample.AggregateOne"))
             .pattern(TacticalPattern.AGGREGATE)
             .build();
 
-    assertThatDependency(anotherAggregate).isForbiddenIn(service);
+    assertThatDependency(anotherAggregate).isAllowedIn(service);
+  }
+
+  @Test
+  void it_can_depend_on_domain_command() {
+    Dependency anotherAggregate =
+        Dependency.builder()
+            .name(FullName.of("io.candydoc.sample.DomainCommandOne"))
+            .pattern(TacticalPattern.DOMAIN_COMMAND)
+            .build();
+
+    assertThatDependency(anotherAggregate).isAllowedIn(service);
   }
 }
