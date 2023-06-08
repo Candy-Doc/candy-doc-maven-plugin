@@ -8,6 +8,7 @@ import io.candydoc.ddd.model.DomainModel;
 import io.candydoc.ddd.model.FullName;
 import io.candydoc.ddd.model.PackageName;
 import io.candydoc.ddd.model.SimpleName;
+import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 import io.candydoc.ddd.tactical_pattern.DomainRepository;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
 import java.util.Arrays;
@@ -34,8 +35,19 @@ public class DomainRepositoryRulesTest {
                     .map(
                         tacticalPattern ->
                             Dependency.builder()
-                                .name(FullName.of("io.candydoc.sample.OtherConceptThanAggregate"))
+                                .name(
+                                    FullName.of(
+                                        "io.candydoc.sample.OtherTacticalPatternThanAggregate"))
                                 .pattern(tacticalPattern)
+                                .build())
+                    .collect(Collectors.toUnmodifiableSet()))
+            .dependencies(
+                Arrays.stream(StrategicPattern.values())
+                    .map(
+                        strategicPattern ->
+                            Dependency.builder()
+                                .name(FullName.of("io.candydoc.sample.StrategicPattern"))
+                                .pattern(strategicPattern)
                                 .build())
                     .collect(Collectors.toUnmodifiableSet()))
             .dependency(
@@ -56,14 +68,26 @@ public class DomainRepositoryRulesTest {
       value = TacticalPattern.class,
       names = {"AGGREGATE"},
       mode = EnumSource.Mode.EXCLUDE)
-  void it_can_not_depend_on_other_concepts_than_aggregate(TacticalPattern tacticalPattern) {
-    Dependency otherConceptThanAggregate =
+  void it_can_not_depend_on_other_tactical_pattern_than_aggregate(TacticalPattern tacticalPattern) {
+    Dependency otherTacticalPatternThanAggregate =
         Dependency.builder()
-            .name(FullName.of("io.candydoc.sample.OtherConceptThanAggregate"))
+            .name(FullName.of("io.candydoc.sample.OtherTacticalPatternThanAggregate"))
             .pattern(tacticalPattern)
             .build();
 
-    assertThatDependency(otherConceptThanAggregate).isForbiddenIn(repository);
+    assertThatDependency(otherTacticalPatternThanAggregate).isForbiddenIn(repository);
+  }
+
+  @ParameterizedTest
+  @EnumSource(StrategicPattern.class)
+  void it_can_not_depend_on_strategic_patterns(StrategicPattern strategicPattern) {
+    Dependency otherTacticalPatternThanAggregate =
+        Dependency.builder()
+            .name(FullName.of("io.candydoc.sample.StrategicPattern"))
+            .pattern(strategicPattern)
+            .build();
+
+    assertThatDependency(otherTacticalPatternThanAggregate).isForbiddenIn(repository);
   }
 
   @Test
