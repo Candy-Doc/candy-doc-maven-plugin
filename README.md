@@ -4,18 +4,18 @@
     <source media="(prefers-color-scheme: light)"width="242" height="90" alt="CandyDoc logo" srcset="https://user-images.githubusercontent.com/22562938/170952293-a3d745d2-c61d-4094-82dd-0e04ea3e0efb.png">
     <img alt="CandyDoc" width="400" src="https://user-images.githubusercontent.com/22562938/170954304-420d51b3-f499-4201-945a-df2dd105e8f6.png">
   </picture>
-  <p>Candy Doc Maven plugin</p>
+  <p>✨ Candy Doc Maven plugin ✨</p>
 </h1>
 
 <p align="center">
   <a href="https://mvnrepository.com/artifact/io.candy-doc/candy-doc">
-    <img src="https://flat.badgen.net/maven/v/maven-central/io.candy-doc/candy-doc" alt="Maven central release">
+    <img src="https://badgen.net/maven/v/maven-central/io.candy-doc/candy-doc" alt="Maven central release">
   </a>
   <a href="https://github.com/Candy-Doc/candy-doc-components-library/blob/main/LICENSE" alt="License">
-    <img src="https://flat.badgen.net/badge/license/GPL3/blue" alt="License">
+    <img src="https://badgen.net/badge/license/GPL3" alt="License">
   </a>
   <a href="https://discord.com/invite/CxwdeKjtcT" alt="Discord link">
-    <img src="https://flat.badgen.net/discord/online-members/CxwdeKjtcT" alt="Discord members">
+    <img src="https://badgen.net/discord/online-members/CxwdeKjtcT" alt="Discord members">
   </a>
 </p>
 
@@ -26,39 +26,38 @@ Domain-Driven-Design approach.
 > the development on programming
 > a domain model that has a rich understanding
 > of the processes and rules of a domain."_ - Martin Fowler
-> [See more](#References)
+> [See more](#references)
+
+<img style="width: 80%; margin-left: 10%; margin-top: 20px" src="assets/screenshots/candy-board-sample.png" alt="Candy-board sample">
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of Contents
 
-- [Installation](#installation)
+- [Installation 🚀](#installation-)
   - [With Maven](#with-maven)
-- [DDD Annotations](#ddd-annotations)
-  - [Strategic patterns](#strategic-patterns)
-    - [Bounded Context](#bounded-context)
-    - [Shared Kernel](#shared-kernel)
-    - [Nested context](#nested-context)
-  - [Tactical patterns](#tactical-patterns)
-    - [Aggregate](#aggregate)
-    - [Domain Command](#domain-command)
-    - [Domain Event](#domain-event)
-    - [Value Object](#value-object)
-- [ROADMAP 🗺️](#roadmap-)
-- [References](#references)
-- [Join us 🙋](#join-us-)
-- [Contributors ✨](#contributors-)
+- [Usage ‍📝](#usage-‍)
+  - [DDD Annotations ✏️](#ddd-annotations-)
+    - [Strategic patterns](#strategic-patterns)
+    - [Tactical patterns](#tactical-patterns)
+  - [Documentation generation 🏗️](#documentation-generation-)
+  - [UI Manipulation 🕹️](#ui-manipulation-)
+- [Support 🚑](#support-)
+  - [Roadmap 🗺️](#roadmap-)
+  - [References 📚](#references-)
+  - [Join us 🙋](#join-us-)
+  - [Contributors ✨](#contributors-)
+- [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Installation
+# Installation 🚀
 
-### With Maven
+## With Maven
 
-To run this plugin, import the following:
+To run this plugin, import the following in your project **_pom.xml_** :
 
 ```xml
-
 <dependency>
     <groupId>io.candy-doc</groupId>
     <artifactId>candy-doc</artifactId>
@@ -66,146 +65,116 @@ To run this plugin, import the following:
 </dependency>
 
 <plugin>
-<groupId>io.candy-doc</groupId>
-<artifactId>candy-doc</artifactId>
-<version>${candy-doc.version}</version>
-<executions>
-    <execution>
-        <goals>
-            <goal>ubiquitous-language</goal>
-        </goals>
-    </execution>
-</executions>
-<configuration>
-    <packagesToScan>
-        <packageToScan>com.foo.bar</packageToScan>
-    </packagesToScan>
-    <outputFormat>json</outputFormat>
-</configuration>
+    <groupId>io.candy-doc</groupId>
+    <artifactId>candy-doc</artifactId>
+    <version>${candy-doc.version}</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>ubiquitous-language</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <packagesToScan>
+            <packageToScan>com.foo.bar</packageToScan>
+        </packagesToScan>
+        <outputFormat>json</outputFormat>
+    </configuration>
 </plugin>
 ```
 
 Then, specify the configuration parameters:
 
-**packagesToScan:** The chosen packages to scan to generate a documentation for.
-
-Example:
+- **outputFormat:** The output format in which the documentation is generated.
+  - Output format can be either `json` or `yml`.
+- **packagesToScan:** The chosen packages to scan to generate a documentation for, as shown below :
 
 ```xml
-
 <packagesToScan>
     <packageToScan>com.foo.bar.baz</packageToScan>
     <packageToScan>com.foo.qux</packageToScan>
 </packagesToScan>
 ```
 
-**outputFormat:** The output format in which the documentation is generated.
-Output format can be either `json` or `yml`.
+# Usage ‍📝
 
-Once your project is correctly annotated with
-the [DDD Annotations](#DDD_Annotations), use mvn to run the plugin (replace `${candy-doc.version}` with the current version you are using):
+To use the plugin, you need to annotate your project with the DDD annotations described below :
 
-`mvn io.candy-doc:candy-doc:${candy-doc.version}:candy-doc`
-
-The documentation will be generated in the `target/candy-doc` directory.
-
-## DDD Annotations
+## DDD Annotations ✏️
 
 Domain-Driven-Design concepts are identified with annotations.
 
 ### Strategic patterns
 
-#### Bounded Context
+Only `package-info.java` files can be annotated with `@BoundedContext` or `@SharedKernel`. Every
+other concepts must belong to a strategic pattern.
 
 ```java
 @BoundedContext(name = "", description = "")
-```
 
-Set of elements (classes, services, etc) containing only what is needed in a
-specific context.
-
-Only `package-info.java` files can be annotated with `@BoundedContext`. Every
-other concepts must be inside a bounded context.
-
-#### Shared Kernel
-
-```java
 @SharedKernel(name = "", description = "")
 ```
-
-Set of elements (classes, services, etc) containing only what is needed in a specific context.
-A shared kernel is the intersection of two bounded contexts (same DDD concepts used in each one).
-It is often used to describe the relationship between two (or more) teams that share a small but common model.
-It can only contain value objects.
-
-Only `package-info.java` files can be annotated with `@SharedKernel`.
-They work like bounded context do.
-
-#### Nested context
 
 Nested bounded contexts or nested shared kernels are forbidden and prevented by the plugin when processing classes.
 
 ### Tactical patterns
 
-#### Aggregate
-
 ```java
 @Aggregate(name = "", description = "")
-```
 
-Cluster of domain objects that can be treated as a single unit. It has an
-identity and a lifetime.
-
-An aggregate contains the domain logic and is aware of framework issues.
-
-It is accessed by commands, returns events and deals with value objects.
-
-Value objects in an aggregate are usually seen as Domain entities. This is the
-only domain model that can be mutable.
-
-#### Domain Command
-
-```java
 @DomainCommand(description = "")
-```
 
-A command is the entry point to perform a business logic from an aggregate.
-
-It should use primitives only (and could use value objects) and is performed on
-an aggregate.
-
-#### Domain Event
-
-```java
 @DomainEvent(description = "")
-```
 
-Captures the memory of something interesting which affects the domain. It
-usually starts with a verb in the past tense.
-
-An event should always stay dumb and only carry static information.
-
-Moreover, domain events cannot use strong domain concepts as domain logic should
-never be used outside the domain.
-
-#### Value Object
-
-```java
 @ValueObject(description = "")
 ```
 
-An object that has no identity, no lifetime and who is compared based on his
-values.
+## Documentation generation 🏗️
 
-A Core Concept can interact with one or more value objects. A Value Object only
-has primitive fields, is immutable and should be valid when instantiated.
+Once your project is correctly annotated with
+the [DDD Annotations](#DDD_Annotations), use Maven to run the plugin :
 
-## ROADMAP 🗺️
+```
+mvn clean install
+```
+
+A JSON file will be generated in the `target/candy-doc` directory. The next step is the candy-board downloading. Use the following commands :
+
+```
+npm i @candy-doc/cli
+candy-doc build /target/candy-doc/ubiquitous-language/
+```
+
+Those two lines will download the Candy-doc CLI and download the Candy-doc UI called **Candy-board**.
+
+Now, a `candy-build` repository appeared in your root directory.
+
+You can display your documentation by opening the `index.html` file in your favorite browser.
+
+## UI Manipulation 🕹️
+
+Here's some features of Candy-board. Feel free to use them at your convenience.
+
+- Node move
+- SVG export
+- Focus on direct neighbors (by checking `Enable hiding neigbors`)
+- Node position storage
+- New graph generation (by clicking `Reset graph`)
+
+# Support 🚑
+
+If you face any issue feel free to create an issue on the GitHub repository or to contact us on our
+[Discord server](https://discord.gg/CxwdeKjtcT), join us !
+
+![Discord](https://img.shields.io/discord/951511594972631120?label=%20)
+
+## Roadmap 🗺️
 
 To know on what the team are actually working on, you can see the different
 milestones [here](https://github.com/Candy-Doc/candy-doc-maven-plugin/milestones)
 
-## References
+## References 📚
 
 - DDD (Martin Fowler):
   <https://martinfowler.com/tags/domain%20driven%20design.html>
@@ -242,6 +211,16 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/AVernholles"><img src="https://avatars.githubusercontent.com/u/86226889?v=4?s=100" width="100px;" alt=""/><br /><sub><b>AVernholles</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=AVernholles" title="Documentation">📖</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=AVernholles" title="Code">💻</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/issues?q=author%3AAVernholles" title="Bug reports">🐛</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=AVernholles" title="Tests">⚠️</a> <a href="#ideas-AVernholles" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/pulls?q=is%3Apr+reviewed-by%3AAVernholles" title="Reviewed Pull Requests">👀</a> <a href="#example-AVernholles" title="Examples">💡</a> <a href="#design-AVernholles" title="Design">🎨</a> <a href="#content-AVernholles" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/aginesy"><img src="https://avatars.githubusercontent.com/u/56438555?v=4?s=100" width="100px;" alt=""/><br /><sub><b>aginesy</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=aginesy" title="Documentation">📖</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=aginesy" title="Code">💻</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/issues?q=author%3Aaginesy" title="Bug reports">🐛</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=aginesy" title="Tests">⚠️</a> <a href="#ideas-aginesy" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/pulls?q=is%3Apr+reviewed-by%3Aaginesy" title="Reviewed Pull Requests">👀</a> <a href="#example-aginesy" title="Examples">💡</a> <a href="#design-aginesy" title="Design">🎨</a> <a href="#content-aginesy" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/AntonyDerache"><img src="https://avatars.githubusercontent.com/u/52654615?v=4" width="100px;" alt=""/><br /><sub><b>Antony Derache</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=AntonyDerache" title="Documentation">📖</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=AntonyDerache" title="Code">💻</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/issues?q=author%3AAntonyDerache" title="Bug reports">🐛</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=AntonyDerache" title="Tests">⚠️</a> <a href="#ideas-AntonyDerache" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/pulls?q=is%3Apr+reviewed-by%3AAntonyDerache" title="Reviewed Pull Requests">👀</a> <a title="Design">🎨</a> <a title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/dylanmsql"><img src="https://avatars.githubusercontent.com/u/77782703?v=4" width="100px;" alt=""/><br /><sub><b>Dylan Masquelier</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=dylanmsql" title="Documentation">📖</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=dylanmsql" title="Code">💻</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/issues?q=author%3Adylanmsql" title="Bug reports">🐛</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=dylanmsql" title="Tests">⚠️</a> <a href="#ideas-dylanmsql" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/pulls?q=is%3Apr+reviewed-by%3Adylanmsql" title="Reviewed Pull Requests">👀</a> <a title="Design">🎨</a> <a title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/Yugo-Cartron"><img src="https://avatars.githubusercontent.com/u/60648252?v=4" width="100px;" alt=""/><br /><sub><b>Yugo Cartron</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=Yugo-Cartron" title="Documentation">📖</a> <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=Yugo-Cartron" title="Code">💻</a> 
+      <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/issues?q=author%3AYugo-Cartron" title="Bug reports">🐛</a> 
+      <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/commits?author=Yugo-Cartron" title="Tests">⚠️</a> 
+      <a title="Ideas, Planning, & Feedback">🤔</a> 
+      <a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/pulls?q=is%3Apr+reviewed-by%3AYugo-Cartron" title="Reviewed Pull Requests">👀</a>
+      <a title="Design">🎨</a> 
+      <a title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/monxxi"><img src="https://avatars.githubusercontent.com/u/44546269?v=4" width="100px;" alt=""/><br /><sub><b>Kevin Prevost</b></sub></a><br /><a href="https://github.com/Candy-Doc/candy-doc-maven-plugin/pulls?q=is%3Apr+reviewed-by%3Amonxxi" title="Reviewed Pull Requests">👀</a</td>
   </tr>
 </table>
 
@@ -254,3 +233,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 Contributions of any kind welcome!
 
 [Contributing to the project]: CONTRIBUTING.md
+
+# License
+
+[GPL-3](./LICENCE)
