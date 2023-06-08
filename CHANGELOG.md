@@ -1,3 +1,9 @@
+# [v2.2.0](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v2.1.1...v2.2.0) (2023-06-08)
+  You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/2.2.0/maven-plugin
+
+## ♻ Code refactored
+- [`78cecab`](https://github.com/Candy-Doc/candy-doc-maven-plugin/commit/78cecab)  refactor(assert file content): Refacto assertion mechanism by… (#196) (Issues: [`#196`](https://github.com/Candy-Doc/candy-doc-maven-plugin/issues/196))
+
 # [v2.1.1](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v2.1.0...v2.1.1) (2023-06-07)
   You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/2.1.1/maven-plugin
 
