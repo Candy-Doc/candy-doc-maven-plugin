@@ -1,23 +1,35 @@
 package io.candydoc.ddd.extract_domain_vocabulary;
 
+import io.candydoc.ddd.annotations.Aggregate;
 import io.candydoc.ddd.annotations.BoundedContext;
+import io.candydoc.ddd.annotations.DomainCommand;
+import io.candydoc.ddd.annotations.DomainEvent;
 import io.candydoc.ddd.annotations.SharedKernel;
+import io.candydoc.ddd.annotations.ValueObject;
 import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
-import io.github.classgraph.PackageInfoList;
-import io.github.classgraph.ScanResult;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.reflections8.Reflections;
+import org.reflections8.util.ConfigurationBuilder;
 
 @Slf4j
 public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder {
+
+  public static final Class<? extends Annotation>[] DDD_ANNOTATIONS =
+      new Class[] {
+        Aggregate.class,
+        BoundedContext.class,
+        SharedKernel.class,
+        ValueObject.class,
+        DomainEvent.class,
+        DomainCommand.class,
+      };
 
   public static final Map<DDDPattern, Function<Class<?>, FoundDDDPattern>> DDD_PATTERN_PROCESSOR =
       Map.of(
@@ -36,19 +48,33 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
 
   @Override
   public FoundDomainObjects findDomainObjects(Collection<String> packagesToScan) {
-    String[] packagesAsArray = packagesToScan.toArray(new String[] {});
+    //    String[] packagesAsArray = packagesToScan.toArray(new String[] {});
+    //    final ConfigurationBuilder config =
+    //        new ConfigurationBuilder()
+    //            .setScanners(new SubTypesScanner(false))
+    //            .forPackages(packagesAsArray)
+    //            .filterInputsBy(new FilterBuilder().includePackage(packagesAsArray));
+    //
+    //    Reflections reflections = new Reflections(config);
+
+    Reflections reflections =
+        reflections =
+            new Reflections(
+                new ConfigurationBuilder()
+                    .setUrls(
+                        packagesToScan.stream()
+                            .map(
+                                packageToScan ->
+                                    ClassLoader.getSystemClassLoader()
+                                        .getResource(packageToScan.replace('.', '/')))
+                            .collect(Collectors.toUnmodifiableSet())));
 
     FoundDomainObjects foundDomainObjects = new FoundDomainObjects();
-    ScanResult scanResult =
-        new ClassGraph()
-            .enableClassInfo()
-            .ignoreClassVisibility()
-            .acceptPackages(packagesAsArray)
-            .scan();
     Set<Class<?>> scannedClasses =
-        scanResult.getAllClasses().stream().map(ClassInfo::loadClass).collect(Collectors.toSet());
-
-    addPackageInfoForStrategicPatterns(scannedClasses, scanResult);
+        Arrays.stream(DDD_ANNOTATIONS)
+            .map(reflections::getTypesAnnotatedWith)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toUnmodifiableSet());
 
     scannedClasses.forEach(
         scannedClass -> {
@@ -70,19 +96,6 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
         });
 
     return foundDomainObjects;
-  }
-
-  private static void addPackageInfoForStrategicPatterns(
-      Set<Class<?>> scannedClasses, ScanResult scanResult) {
-    PackageInfoList packageInfoList = scanResult.getPackageInfo();
-    packageInfoList.forEach(
-        packageInfo -> {
-          try {
-            Class<?> packageInfoClass = Class.forName(packageInfo.getName() + ".package-info");
-            scannedClasses.add(packageInfoClass);
-          } catch (ClassNotFoundException ignored) {
-          }
-        });
   }
 
   private static Set<FoundDDDPattern> toFoundDDDPatterns(
