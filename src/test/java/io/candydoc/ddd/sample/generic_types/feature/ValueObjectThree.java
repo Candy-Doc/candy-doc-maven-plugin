@@ -1,4 +1,4 @@
-package io.candydoc.ddd.sample.aggregate_with_many_value_objects.feature;
+package io.candydoc.ddd.sample.generic_types.feature;
 
 import io.candydoc.ddd.annotations.ValueObject;
 
