@@ -12,7 +12,11 @@ import lombok.experimental.SuperBuilder;
 public class DomainService extends TacticalModel {
 
   private static final Set<DDDPattern> ALLOWED_DEPENDENCIES =
-      Set.of(TacticalPattern.DOMAIN_SERVICE, TacticalPattern.DOMAIN_EVENT);
+      Set.of(
+          TacticalPattern.DOMAIN_SERVICE,
+          TacticalPattern.DOMAIN_EVENT,
+          TacticalPattern.AGGREGATE,
+          TacticalPattern.DOMAIN_COMMAND);
 
   @Override
   public DDDPattern dddPattern() {
