@@ -48,15 +48,6 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
 
   @Override
   public FoundDomainObjects findDomainObjects(Collection<String> packagesToScan) {
-    //    String[] packagesAsArray = packagesToScan.toArray(new String[] {});
-    //    final ConfigurationBuilder config =
-    //        new ConfigurationBuilder()
-    //            .setScanners(new SubTypesScanner(false))
-    //            .forPackages(packagesAsArray)
-    //            .filterInputsBy(new FilterBuilder().includePackage(packagesAsArray));
-    //
-    //    Reflections reflections = new Reflections(config);
-
     Reflections reflections =
         reflections =
             new Reflections(
