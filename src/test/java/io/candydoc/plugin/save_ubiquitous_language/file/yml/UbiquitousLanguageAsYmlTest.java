@@ -5,7 +5,6 @@ import static io.candydoc.plugin.save_ubiquitous_language.file.AssertFileContent
 import io.candydoc.ddd.model.FoundDomainObjects;
 import io.candydoc.ddd.model.UbiquitousLanguage;
 import io.candydoc.plugin.fixture.DomainVocabularyFixtures;
-import io.candydoc.plugin.save_ubiquitous_language.file.AssertFileContent;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
@@ -108,7 +107,7 @@ class UbiquitousLanguageAsYmlTest {
       Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_bounded_context_one.yml");
       Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.yml");
 
-      AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
+      assertThat(manifestActualFile).exists().yml().isSameAs(manifestReferenceFile);
     }
 
     @Test
@@ -127,7 +126,7 @@ class UbiquitousLanguageAsYmlTest {
       Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_shared_kernel_one.yml");
       Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.yml");
 
-      AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
+      assertThat(manifestActualFile).exists().yml().isSameAs(manifestReferenceFile);
     }
 
     @Test
@@ -146,7 +145,7 @@ class UbiquitousLanguageAsYmlTest {
       Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_orphan_vocabulary.yml");
       Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.yml");
 
-      AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
+      assertThat(manifestActualFile).exists().yml().isSameAs(manifestReferenceFile);
     }
   }
 }

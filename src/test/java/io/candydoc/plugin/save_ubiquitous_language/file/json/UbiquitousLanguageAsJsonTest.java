@@ -107,7 +107,7 @@ class UbiquitousLanguageAsJsonTest {
       Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_bounded_context_one.json");
       Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.json");
 
-      AssertFileContent.assertThatJson(manifestActualFile).isEqualTo(manifestReferenceFile);
+      assertThat(manifestActualFile).exists().json().isSameAs(manifestReferenceFile);
     }
 
     @Test
@@ -126,7 +126,7 @@ class UbiquitousLanguageAsJsonTest {
       Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_shared_kernel_one.json");
       Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.json");
 
-      AssertFileContent.assertThatJson(manifestActualFile).isEqualTo(manifestReferenceFile);
+      assertThat(manifestActualFile).exists().json().isSameAs(manifestReferenceFile);
     }
 
     @Test
@@ -145,7 +145,7 @@ class UbiquitousLanguageAsJsonTest {
       Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_orphan_vocabulary.json");
       Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.json");
 
-      AssertFileContent.assertThatJson(manifestActualFile).isEqualTo(manifestReferenceFile);
+      assertThat(manifestActualFile).exists().json().isSameAs(manifestReferenceFile);
     }
   }
 }
