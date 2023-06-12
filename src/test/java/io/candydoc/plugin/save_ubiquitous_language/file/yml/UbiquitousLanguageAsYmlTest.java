@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class UbiquitousLanguageAsYmlTest {
@@ -47,11 +48,6 @@ class UbiquitousLanguageAsYmlTest {
     Path actualFile = DESTINATION_FOLDER.resolve("bounded_context_one.yml");
 
     assertThatYml(actualFile).isEqualTo(referenceFile);
-
-    Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_bounded_context_one.yml");
-    Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.yml");
-
-    AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
   }
 
   @Test
@@ -71,11 +67,6 @@ class UbiquitousLanguageAsYmlTest {
     Path actualFile = DESTINATION_FOLDER.resolve("shared_kernel_one.yml");
 
     assertThatYml(actualFile).isEqualTo(referenceFile);
-
-    Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_shared_kernel_one.yml");
-    Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.yml");
-
-    AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
   }
 
   @Test
@@ -95,10 +86,67 @@ class UbiquitousLanguageAsYmlTest {
     Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.yml");
 
     assertThatYml(actualFile).isEqualTo(referenceFile);
+  }
 
-    Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_orphan_vocabulary.yml");
-    Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.yml");
+  @Nested
+  class ManifestTest {
 
-    AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
+    @Test
+    void generate_manifest_from_bounded_context_file_paths() {
+      // given
+      FoundDomainObjects foundDomainObjects =
+          new FoundDomainObjects()
+              .addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_BOUNDED_CONTEXT);
+
+      Set<UbiquitousLanguage> ubiquitousLanguages =
+          UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
+
+      // when
+      ubiquitousLanguageAsYml.saveAll(ubiquitousLanguages);
+
+      // then
+      Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_bounded_context_one.yml");
+      Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.yml");
+
+      AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
+    }
+
+    @Test
+    void generate_manifest_from_shared_kernel_file_paths() {
+      // given
+      FoundDomainObjects foundDomainObjects =
+          new FoundDomainObjects().addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_SHARED_KERNEL);
+
+      Set<UbiquitousLanguage> ubiquitousLanguages =
+          UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
+
+      // when
+      ubiquitousLanguageAsYml.saveAll(ubiquitousLanguages);
+
+      // then
+      Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_shared_kernel_one.yml");
+      Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.yml");
+
+      AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
+    }
+
+    @Test
+    void generate_manifest_from_orphan_vocabulary_file_paths() {
+      // given
+      FoundDomainObjects foundDomainObjects =
+          new FoundDomainObjects().addAll(DomainVocabularyFixtures.ORPHAN_DOMAIN_OBJECTS);
+
+      Set<UbiquitousLanguage> ubiquitousLanguages =
+          UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
+
+      // when
+      ubiquitousLanguageAsYml.saveAll(ubiquitousLanguages);
+
+      // then
+      Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_orphan_vocabulary.yml");
+      Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.yml");
+
+      AssertFileContent.assertThatYml(manifestActualFile).isEqualTo(manifestReferenceFile);
+    }
   }
 }
