@@ -67,4 +67,15 @@ public class FactoryRulesTest {
 
     assertThatDependency(aggregate).isAllowedIn(factory);
   }
+
+  @Test
+  void it_can_depend_on_other_factories() {
+    Dependency another_factory =
+        Dependency.builder()
+            .name(FullName.of("io.candydoc.sample.FactoryTwo"))
+            .pattern(TacticalPattern.FACTORY)
+            .build();
+
+    assertThatDependency(another_factory).isAllowedIn(factory);
+  }
 }
