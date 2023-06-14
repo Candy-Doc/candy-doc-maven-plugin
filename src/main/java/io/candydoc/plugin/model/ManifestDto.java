@@ -11,4 +11,8 @@ import lombok.extern.jackson.Jacksonized;
 public final class ManifestDto {
 
   private List<String> files;
+
+  public static ManifestDto from(List<String> files) {
+    return ManifestDto.builder().files(files).build();
+  }
 }
