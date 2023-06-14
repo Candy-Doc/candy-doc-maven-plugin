@@ -23,8 +23,8 @@ class UbiquitousLanguageAsFileTest {
         UbiquitousLanguageAsFile.forFormat(validFormat, "target");
 
     assertThat(ubiquitousLanguageAsFile).isInstanceOf(expectedInstance);
-    assertThat(ubiquitousLanguageAsFile.extension()).isEqualTo(validFormat);
-    assertThat(ubiquitousLanguageAsFile.destinationFolder())
+    assertThat(ubiquitousLanguageAsFile.getExtension()).isEqualTo(validFormat);
+    assertThat(ubiquitousLanguageAsFile.getDestinationFolder())
         .isEqualTo(Path.of("target", "candy-doc", "ubiquitous_language"));
   }
 
