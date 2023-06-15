@@ -5,7 +5,6 @@ import io.candydoc.ddd.model.UbiquitousLanguage;
 import io.candydoc.plugin.model.ManifestDto;
 import io.candydoc.plugin.model.UbiquitousLanguageDto;
 import io.candydoc.plugin.save_ubiquitous_language.file.json.UbiquitousLanguageAsJson;
-import io.candydoc.plugin.save_ubiquitous_language.file.strategy.ISerializationStrategy;
 import io.candydoc.plugin.save_ubiquitous_language.file.strategy.SerializationStrategy;
 import io.candydoc.plugin.save_ubiquitous_language.file.yml.UbiquitousLanguageAsYml;
 import java.nio.file.Files;
@@ -66,7 +65,7 @@ public abstract class UbiquitousLanguageAsFile implements UbiquitousLanguageRepo
 
   private static class Manifest {
     public static void generateFrom(
-        ISerializationStrategy serializationStrategy, List<String> filePaths) {
+        SerializationStrategy serializationStrategy, List<String> filePaths) {
       ManifestDto manifestDto = ManifestDto.from(filePaths);
       serializationStrategy.writeToFile("MANIFEST", manifestDto);
     }
