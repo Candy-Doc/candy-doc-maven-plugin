@@ -14,15 +14,6 @@ public class DefaultSerializationStrategy implements SerializationStrategy {
   @Getter private final Path destinationFolder;
   @Getter private final String extension;
 
-  //  public SerializationStrategy initDirectory() {
-  //    try {
-  //      Files.createDirectories(destinationFolder);
-  //    } catch (IOException e) {
-  //      throw new UbiquitousLanguageSavingFailed(e);
-  //    }
-  //    return this;
-  //  }
-
   @Override
   public Path writeToFile(String filename, Object dto) {
     String fileName = getFileName(filename);
