@@ -40,6 +40,11 @@ public class AggregateRulesTest {
                     .name(FullName.of("io.candydoc.sample.AggregateTwo"))
                     .pattern(TacticalPattern.AGGREGATE)
                     .build())
+            .dependency(
+                Dependency.builder()
+                    .name(FullName.of("io.candydoc.sample.EntityOne"))
+                    .pattern(TacticalPattern.DOMAIN_ENTITY)
+                    .build())
             .build();
   }
 
@@ -79,6 +84,17 @@ public class AggregateRulesTest {
             .build();
 
     assertThatDependency(domainEvent).isAllowedIn(aggregate);
+  }
+
+  @Test
+  void it_can_depend_on_domain_entity() {
+    Dependency entity =
+        Dependency.builder()
+            .name(FullName.of("io.candydoc.sample.EntityOne"))
+            .pattern(TacticalPattern.DOMAIN_ENTITY)
+            .build();
+
+    assertThatDependency(entity).isAllowedIn(aggregate);
   }
 
   @Test
