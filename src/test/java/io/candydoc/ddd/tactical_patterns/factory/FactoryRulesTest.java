@@ -38,6 +38,11 @@ public class FactoryRulesTest {
                     .name(FullName.of("io.candydoc.sample.FactoryTwo"))
                     .pattern(TacticalPattern.FACTORY)
                     .build())
+            .dependency(
+                Dependency.builder()
+                    .name(FullName.of("io.candydoc.sample.DomainEntityOne"))
+                    .pattern(TacticalPattern.DOMAIN_ENTITY)
+                    .build())
             .build();
   }
 
@@ -66,6 +71,17 @@ public class FactoryRulesTest {
             .build();
 
     assertThatDependency(aggregate).isAllowedIn(factory);
+  }
+
+  @Test
+  void it_can_depend_on_domain_entity() {
+    Dependency domainEntity =
+        Dependency.builder()
+            .name(FullName.of("io.candydoc.sample.DomainEntityOne"))
+            .pattern(TacticalPattern.DOMAIN_ENTITY)
+            .build();
+
+    assertThatDependency(domainEntity).isAllowedIn(factory);
   }
 
   @Test
