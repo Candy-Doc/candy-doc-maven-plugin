@@ -5,6 +5,7 @@ import io.candydoc.ddd.strategic_pattern.BoundedContext;
 import io.candydoc.ddd.strategic_pattern.SharedKernel;
 import io.candydoc.ddd.tactical_pattern.Aggregate;
 import io.candydoc.ddd.tactical_pattern.DomainCommand;
+import io.candydoc.ddd.tactical_pattern.DomainEntity;
 import io.candydoc.ddd.tactical_pattern.DomainEvent;
 import io.candydoc.ddd.tactical_pattern.DomainService;
 import io.candydoc.ddd.tactical_pattern.ValueObject;
@@ -115,6 +116,11 @@ public final class FoundDomainObjects {
           @Override
           public DomainModel.DomainModelBuilder<?, ?> domainService() {
             return DomainService.builder();
+          }
+
+          @Override
+          public DomainModel.DomainModelBuilder<?, ?> domainEntity() {
+            return DomainEntity.builder();
           }
         });
   }

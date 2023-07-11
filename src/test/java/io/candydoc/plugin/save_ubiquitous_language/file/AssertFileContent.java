@@ -1,40 +1,65 @@
 package io.candydoc.plugin.save_ubiquitous_language.file;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import java.io.IOException;
 import java.nio.file.Path;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import org.assertj.core.api.AbstractAssert;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class AssertFileContent {
+public class AssertFileContent extends AbstractAssert<AssertFileContent, Path> {
 
-  private final Path actualPath;
-  private final ObjectMapper trustedMapper;
+  protected ObjectMapper trustedMapper;
 
-  public AssertFileContent isEqualTo(Path expectedPath) {
-    try {
-      JsonNode actualJson = trustedMapper.readTree(actualPath.toFile());
-      JsonNode expectedJson = trustedMapper.readTree(expectedPath.toFile());
+  protected AssertFileContent(Path actual) {
+    super(actual, AssertFileContent.class);
+  }
 
-      assertThat(actualJson).isEqualTo(expectedJson);
-    } catch (Exception e) {
-      fail(e);
-    }
+  public static AssertFileContent assertThat(Path actual) {
+    return new AssertFileContent(actual);
+  }
 
+  public AssertFileContent exists() {
+    isNotNull();
+    org.assertj.core.api.Assertions.assertThat(actual).exists();
     return this;
   }
 
-  public static AssertFileContent assertThatJson(Path actualPath) {
-    return new AssertFileContent(actualPath, new ObjectMapper(new JsonFactory()));
+  public AssertJsonContent json() {
+    return new AssertJsonContent(actual);
   }
 
-  public static AssertFileContent assertThatYml(Path actualPath) {
-    return new AssertFileContent(actualPath, new ObjectMapper(new YAMLFactory()));
+  public AssertYmlContent yml() {
+    return new AssertYmlContent(actual);
+  }
+
+  public AssertFileContent isSameAs(Path reference) {
+    isNotNull();
+    try {
+      JsonNode actualJson = trustedMapper.readTree(actual.toFile());
+      JsonNode referenceJson = trustedMapper.readTree(reference.toFile());
+
+      org.assertj.core.api.Assertions.assertThat(actualJson).isEqualTo(referenceJson);
+    } catch (IOException e) {
+      failWithMessage("Failed to read files <%s> or <%s>", actual, reference);
+    }
+    return this;
+  }
+
+  public static class AssertJsonContent extends AssertFileContent {
+
+    private AssertJsonContent(Path actual) {
+      super(actual);
+      trustedMapper = new ObjectMapper(new JsonFactory());
+    }
+  }
+
+  public static class AssertYmlContent extends AssertFileContent {
+
+    private AssertYmlContent(Path actual) {
+      super(actual);
+      trustedMapper = new ObjectMapper(new YAMLFactory());
+    }
   }
 }
