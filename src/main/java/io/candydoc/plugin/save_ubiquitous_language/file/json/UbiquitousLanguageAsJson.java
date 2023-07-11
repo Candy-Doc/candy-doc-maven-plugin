@@ -6,6 +6,6 @@ import java.nio.file.Path;
 
 public class UbiquitousLanguageAsJson extends UbiquitousLanguageAsFile {
   public UbiquitousLanguageAsJson(Path destinationFolder) {
-    super(SerializationStrategyFactory.forJson(destinationFolder).initDirectory());
+    super(SerializationStrategyFactory.forJson(destinationFolder));
   }
 }

@@ -12,14 +12,16 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
-@RequiredArgsConstructor
 @Accessors(fluent = true)
 public abstract class UbiquitousLanguageAsFile implements UbiquitousLanguageRepository {
 
   private final SerializationStrategy serializationStrategy;
+
+  public UbiquitousLanguageAsFile(SerializationStrategy serializationStrategy) {
+    this.serializationStrategy = serializationStrategy.initDirectory();
+  }
 
   @Override
   public void saveAll(Set<UbiquitousLanguage> ubiquitousLanguages) {

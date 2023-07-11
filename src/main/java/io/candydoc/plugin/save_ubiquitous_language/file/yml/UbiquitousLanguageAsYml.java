@@ -6,6 +6,6 @@ import java.nio.file.Path;
 
 public class UbiquitousLanguageAsYml extends UbiquitousLanguageAsFile {
   public UbiquitousLanguageAsYml(Path destinationFolder) {
-    super(SerializationStrategyFactory.forYml(destinationFolder).initDirectory());
+    super(SerializationStrategyFactory.forYml(destinationFolder));
   }
 }
