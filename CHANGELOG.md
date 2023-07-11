@@ -1,3 +1,9 @@
+# [v2.4.0](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v2.3.0...v2.4.0) (2023-07-11)
+  You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/2.4.0/maven-plugin
+
+## ✨ New minor Features
+- [`e6612ea`](https://github.com/Candy-Doc/candy-doc-maven-plugin/commit/e6612ea)  feat(annotation): add DomainService annotation (#203) (Issues: [`#203`](https://github.com/Candy-Doc/candy-doc-maven-plugin/issues/203))
+
 # [v2.3.0](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v2.2.0...v2.3.0) (2023-07-11)
   You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/2.3.0/maven-plugin
 
