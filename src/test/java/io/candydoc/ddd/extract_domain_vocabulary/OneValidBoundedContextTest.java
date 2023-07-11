@@ -83,6 +83,13 @@ public class OneValidBoundedContextTest {
                                       FullName.of(
                                           "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.ValueObjectOne"))
                                   .build())
+                          .dependency(
+                              Dependency.builder()
+                                  .pattern(TacticalPattern.DOMAIN_ENTITY)
+                                  .name(
+                                      FullName.of(
+                                          "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne"))
+                                  .build())
                           .build());
 
               assertThat(vocabulary.domainModels())
@@ -115,6 +122,16 @@ public class OneValidBoundedContextTest {
                               FullName.of(
                                   "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.DomainEventOne"))
                           .simpleName(SimpleName.of("DomainEventOne"))
+                          .description(Description.of(""))
+                          .build(),
+                      DomainEntity.builder()
+                          .packageName(
+                              PackageName.of(
+                                  "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A"))
+                          .fullName(
+                              FullName.of(
+                                  "io.candydoc.ddd.sample.one_valid_bounded_context.feature_A.EntityOne"))
+                          .simpleName(SimpleName.of("EntityOne"))
                           .description(Description.of(""))
                           .build(),
                       ValueObject.builder()

@@ -24,5 +24,7 @@ public interface DDDPattern {
     T valueObject();
 
     T factory();
+
+    T domainEntity();
   }
 }
