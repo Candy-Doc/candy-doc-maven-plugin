@@ -1,7 +1,11 @@
 package io.candydoc.ddd.extract_domain_vocabulary;
 
+import io.candydoc.ddd.annotations.Aggregate;
 import io.candydoc.ddd.annotations.BoundedContext;
+import io.candydoc.ddd.annotations.DomainCommand;
+import io.candydoc.ddd.annotations.DomainEvent;
 import io.candydoc.ddd.annotations.SharedKernel;
+import io.candydoc.ddd.annotations.ValueObject;
 import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.strategic_pattern.StrategicPattern;
 import io.candydoc.ddd.tactical_pattern.TacticalPattern;
@@ -12,12 +16,20 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections8.Reflections;
-import org.reflections8.scanners.SubTypesScanner;
 import org.reflections8.util.ConfigurationBuilder;
-import org.reflections8.util.FilterBuilder;
 
 @Slf4j
 public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder {
+
+  public static final Class<? extends Annotation>[] DDD_ANNOTATIONS =
+      new Class[] {
+        Aggregate.class,
+        BoundedContext.class,
+        SharedKernel.class,
+        ValueObject.class,
+        DomainEvent.class,
+        DomainCommand.class,
+      };
 
   public static final Map<DDDPattern, Function<Class<?>, FoundDDDPattern>> DDD_PATTERN_PROCESSOR =
       Map.of(
@@ -38,17 +50,24 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
 
   @Override
   public FoundDomainObjects findDomainObjects(Collection<String> packagesToScan) {
-    String[] packagesAsArray = packagesToScan.toArray(new String[] {});
-    final ConfigurationBuilder config =
-        new ConfigurationBuilder()
-            .setScanners(new SubTypesScanner(false))
-            .forPackages(packagesAsArray)
-            .filterInputsBy(new FilterBuilder().includePackage(packagesAsArray));
-
-    Reflections reflections = new Reflections(config);
+    Reflections reflections =
+        reflections =
+            new Reflections(
+                new ConfigurationBuilder()
+                    .setUrls(
+                        packagesToScan.stream()
+                            .map(
+                                packageToScan ->
+                                    ClassLoader.getSystemClassLoader()
+                                        .getResource(packageToScan.replace('.', '/')))
+                            .collect(Collectors.toUnmodifiableSet())));
 
     FoundDomainObjects foundDomainObjects = new FoundDomainObjects();
-    Set<Class<?>> scannedClasses = reflections.getSubTypesOf(Object.class);
+    Set<Class<?>> scannedClasses =
+        Arrays.stream(DDD_ANNOTATIONS)
+            .map(reflections::getTypesAnnotatedWith)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toUnmodifiableSet());
 
     scannedClasses.forEach(
         scannedClass -> {

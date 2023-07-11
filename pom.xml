@@ -110,7 +110,6 @@
     <java.version>11</java.version>
     <lombok.version>1.18.26</lombok.version>
     <log4j.version>2.17.1</log4j.version>
-    <reflections.version>0.11.7</reflections.version>
     <commons-io.version>2.11.0</commons-io.version>
     <jackson.version>2.13.4</jackson.version>
     <junit.version>5.9.1</junit.version>
@@ -118,13 +117,14 @@
     <jsoup.version>1.15.3</jsoup.version>
     <mockito.version>4.8.1</mockito.version>
     <jacoco.version>0.8.8</jacoco.version>
+    <classgraph.version>4.8.157</classgraph.version>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>net.oneandone.reflections8</groupId>
-      <artifactId>reflections8</artifactId>
-      <version>${reflections.version}</version>
+      <groupId>io.github.classgraph</groupId>
+      <artifactId>classgraph</artifactId>
+      <version>${classgraph.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -245,6 +245,11 @@
       <artifactId>assertj-core</artifactId>
       <version>${assertj.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.oneandone.reflections8</groupId>
+      <artifactId>reflections8</artifactId>
+      <version>0.11.7</version>
     </dependency>
   </dependencies>
 
