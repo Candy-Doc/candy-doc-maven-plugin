@@ -1,3 +1,9 @@
+# [v2.3.0](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v2.2.0...v2.3.0) (2023-07-11)
+  You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/2.3.0/maven-plugin
+
+## ✨ New minor Features
+- [`178f2d8`](https://github.com/Candy-Doc/candy-doc-maven-plugin/commit/178f2d8)  feat(annotations): add Domain Entity annotation (#191) (Issues: [`#191`](https://github.com/Candy-Doc/candy-doc-maven-plugin/issues/191))
+
 # [v2.2.0](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v2.1.1...v2.2.0) (2023-06-08)
   You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/2.2.0/maven-plugin
 
