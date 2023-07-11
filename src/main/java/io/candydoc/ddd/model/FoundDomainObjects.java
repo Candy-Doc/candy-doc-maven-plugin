@@ -7,6 +7,7 @@ import io.candydoc.ddd.tactical_pattern.Aggregate;
 import io.candydoc.ddd.tactical_pattern.DomainCommand;
 import io.candydoc.ddd.tactical_pattern.DomainEntity;
 import io.candydoc.ddd.tactical_pattern.DomainEvent;
+import io.candydoc.ddd.tactical_pattern.DomainService;
 import io.candydoc.ddd.tactical_pattern.ValueObject;
 import java.util.Collection;
 import java.util.HashMap;
@@ -110,6 +111,11 @@ public final class FoundDomainObjects {
           @Override
           public DomainModel.DomainModelBuilder<?, ?> valueObject() {
             return ValueObject.builder();
+          }
+
+          @Override
+          public DomainModel.DomainModelBuilder<?, ?> domainService() {
+            return DomainService.builder();
           }
 
           @Override

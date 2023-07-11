@@ -23,6 +23,8 @@ public interface DDDPattern {
 
     T valueObject();
 
+    T domainService();
+
     T domainEntity();
   }
 }
