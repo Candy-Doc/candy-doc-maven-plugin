@@ -1,5 +1,6 @@
 package io.candydoc.ddd.tactical_pattern;
 
+import io.candydoc.ddd.annotations.DomainRepository;
 import io.candydoc.ddd.model.DDDPattern;
 import java.lang.annotation.Annotation;
 import lombok.Getter;
@@ -34,6 +35,18 @@ public enum TacticalPattern implements DDDPattern {
       return visitor.valueObject();
     }
   },
+  DOMAIN_ENTITY(io.candydoc.ddd.annotations.DomainEntity.class) {
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
+      return visitor.domainEntity();
+    }
+  },
+  DOMAIN_REPOSITORY(DomainRepository.class) {
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
+      return visitor.domainRepository();
+    }
+  },
   FACTORY(io.candydoc.ddd.annotations.DomainFactory.class) {
     @Override
     public <T> T accept(Visitor<T> visitor) {
@@ -45,13 +58,6 @@ public enum TacticalPattern implements DDDPattern {
     public <T> T accept(Visitor<T> visitor) {
       return visitor.domainService();
     }
-  },
-  DOMAIN_ENTITY(io.candydoc.ddd.annotations.DomainEntity.class) {
-    @Override
-    public <T> T accept(Visitor<T> visitor) {
-      return visitor.domainEntity();
-    }
   };
-
   private final Class<? extends Annotation> relatedAnnotation;
 }

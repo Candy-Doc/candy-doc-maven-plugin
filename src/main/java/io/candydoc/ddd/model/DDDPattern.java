@@ -28,5 +28,7 @@ public interface DDDPattern {
     T domainService();
 
     T domainEntity();
+
+    T domainRepository();
   }
 }

@@ -7,6 +7,7 @@ import io.candydoc.ddd.tactical_pattern.Aggregate;
 import io.candydoc.ddd.tactical_pattern.DomainCommand;
 import io.candydoc.ddd.tactical_pattern.DomainEntity;
 import io.candydoc.ddd.tactical_pattern.DomainEvent;
+import io.candydoc.ddd.tactical_pattern.DomainRepository;
 import io.candydoc.ddd.tactical_pattern.DomainService;
 import io.candydoc.ddd.tactical_pattern.Factory;
 import io.candydoc.ddd.tactical_pattern.ValueObject;
@@ -127,6 +128,11 @@ public final class FoundDomainObjects {
           @Override
           public DomainModel.DomainModelBuilder<?, ?> domainEntity() {
             return DomainEntity.builder();
+          }
+
+          @Override
+          public DomainModel.DomainModelBuilder<?, ?> domainRepository() {
+            return DomainRepository.builder();
           }
         });
   }
