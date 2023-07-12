@@ -1,6 +1,7 @@
 package io.candydoc.ddd.extract_domain_vocabulary;
 
 import io.candydoc.ddd.annotations.BoundedContext;
+import io.candydoc.ddd.annotations.DomainFactory;
 import io.candydoc.ddd.annotations.SharedKernel;
 import io.candydoc.ddd.model.*;
 import io.candydoc.ddd.strategic_pattern.StrategicPattern;
@@ -35,6 +36,8 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
           ReflectionsDomainVocabularyFinder::toValueObjectPattern,
           TacticalPattern.DOMAIN_SERVICE,
           ReflectionsDomainVocabularyFinder::toDomainServicePattern,
+          TacticalPattern.FACTORY,
+          ReflectionsDomainVocabularyFinder::toFactoryPattern,
           TacticalPattern.DOMAIN_ENTITY,
           ReflectionsDomainVocabularyFinder::toDomainEntityPattern);
 
@@ -135,6 +138,11 @@ public class ReflectionsDomainVocabularyFinder implements DomainVocabularyFinder
     String description =
         clazz.getAnnotation(io.candydoc.ddd.annotations.DomainEvent.class).description();
     return toFoundDDDPattern(TacticalPattern.DOMAIN_EVENT, lastPartOfClassName(clazz), description);
+  }
+
+  private static FoundDDDPattern toFactoryPattern(Class<?> clazz) {
+    String description = clazz.getAnnotation(DomainFactory.class).description();
+    return toFoundDDDPattern(TacticalPattern.FACTORY, lastPartOfClassName(clazz), description);
   }
 
   private static FoundDDDPattern toValueObjectPattern(Class<?> clazz) {
