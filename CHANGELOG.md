@@ -1,3 +1,9 @@
+# [v2.5.0](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v2.4.0...v2.5.0) (2023-07-12)
+  You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/2.5.0/maven-plugin
+
+## ✨ New minor Features
+- [`c13903e`](https://github.com/Candy-Doc/candy-doc-maven-plugin/commit/c13903e)  feat(factory): add factory annotation (#202) (Issues: [`#202`](https://github.com/Candy-Doc/candy-doc-maven-plugin/issues/202))
+
 # [v2.4.0](https://github.com/Candy-Doc/candy-doc-maven-plugin/compare/v2.3.0...v2.4.0) (2023-07-11)
   You can access this release at: https://search.maven.org/artifact/io.candy-doc/candy-doc/2.4.0/maven-plugin
 
