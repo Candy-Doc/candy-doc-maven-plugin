@@ -25,6 +25,8 @@ public interface DDDPattern {
 
     T factory();
 
+    T domainService();
+
     T domainEntity();
   }
 }
