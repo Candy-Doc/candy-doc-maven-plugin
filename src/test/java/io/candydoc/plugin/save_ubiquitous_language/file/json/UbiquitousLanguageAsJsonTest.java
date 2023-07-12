@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class UbiquitousLanguageAsJsonTest {
@@ -84,5 +85,67 @@ class UbiquitousLanguageAsJsonTest {
     Path actualFile = DESTINATION_FOLDER.resolve("orphan_vocabulary.json");
 
     assertThat(actualFile).exists().json().isSameAs(referenceFile);
+  }
+
+  @Nested
+  class ManifestTest {
+
+    @Test
+    void generate_manifest_from_bounded_context_file_paths() {
+      // given
+      FoundDomainObjects foundDomainObjects =
+          new FoundDomainObjects()
+              .addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_BOUNDED_CONTEXT);
+
+      Set<UbiquitousLanguage> ubiquitousLanguages =
+          UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
+
+      // when
+      ubiquitousLanguageAsJson.saveAll(ubiquitousLanguages);
+
+      // then
+      Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_bounded_context_one.json");
+      Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.json");
+
+      assertThat(manifestActualFile).exists().json().isSameAs(manifestReferenceFile);
+    }
+
+    @Test
+    void generate_manifest_from_shared_kernel_file_paths() {
+      // given
+      FoundDomainObjects foundDomainObjects =
+          new FoundDomainObjects().addAll(DomainVocabularyFixtures.DOMAIN_OBJECTS_IN_SHARED_KERNEL);
+
+      Set<UbiquitousLanguage> ubiquitousLanguages =
+          UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
+
+      // when
+      ubiquitousLanguageAsJson.saveAll(ubiquitousLanguages);
+
+      // then
+      Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_shared_kernel_one.json");
+      Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.json");
+
+      assertThat(manifestActualFile).exists().json().isSameAs(manifestReferenceFile);
+    }
+
+    @Test
+    void generate_manifest_from_orphan_vocabulary_file_paths() {
+      // given
+      FoundDomainObjects foundDomainObjects =
+          new FoundDomainObjects().addAll(DomainVocabularyFixtures.ORPHAN_DOMAIN_OBJECTS);
+
+      Set<UbiquitousLanguage> ubiquitousLanguages =
+          UbiquitousLanguage.fromDomainObjects(foundDomainObjects);
+
+      // when
+      ubiquitousLanguageAsJson.saveAll(ubiquitousLanguages);
+
+      // then
+      Path manifestReferenceFile = REFERENCE_FOLDER.resolve("MANIFEST_orphan_vocabulary.json");
+      Path manifestActualFile = DESTINATION_FOLDER.resolve("MANIFEST.json");
+
+      assertThat(manifestActualFile).exists().json().isSameAs(manifestReferenceFile);
+    }
   }
 }
