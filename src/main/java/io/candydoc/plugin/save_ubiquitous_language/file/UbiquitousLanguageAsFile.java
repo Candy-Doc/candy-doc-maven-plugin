@@ -41,7 +41,7 @@ public abstract class UbiquitousLanguageAsFile implements UbiquitousLanguageRepo
           String.format("Output directory '%s' does not exist.", outputDir));
     }
 
-    Path outputFile = outputDirectory.resolve("candy-doc").resolve("ubiquitous_language");
+    Path outputFile = outputDirectory.resolve("candy-doc").resolve("ubiquitous-language");
 
     switch (outputFormat) {
       case "json":
