@@ -111,7 +111,7 @@
     <lombok.version>1.18.26</lombok.version>
     <log4j.version>2.17.1</log4j.version>
     <reflections.version>0.11.7</reflections.version>
-    <commons-io.version>2.11.0</commons-io.version>
+    <commons-io.version>2.14.0</commons-io.version>
     <jackson.version>2.13.4</jackson.version>
     <junit.version>5.9.1</junit.version>
     <assertj.version>3.22.0</assertj.version>
